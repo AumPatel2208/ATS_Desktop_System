@@ -1,0 +1,25 @@
+.Navigation {
+    font-size: 20px;
+    background-color: #eeeeee;
+}
+
+.smallNavIcon {
+    display: none;
+}
+
+.statsIcon {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+@media only screen and (max-width: 768px) {
+    .smallNavIcon {
+        display: block;
+        padding-left: 0px;
+        padding-right: 0px;
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+    .largeNavIcon {
+        display: none;
+    }
+}
