@@ -3,6 +3,23 @@
 - Please run command before trying to run project:
     `yarn install`
 
+## Disclaimer
+Please install before running:
+- NodeJS (npm)
+- Yarn
+
+### On Macs:
+If you do not have Homebrew, install by:
+`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`
+
+then you can:
+`brew install node`
+`brew install yarn`
+
+### On Windows:
+You gotta be a **scrub** and go through the *install wizard*.
+
+
 
 ## Available Scripts
 
