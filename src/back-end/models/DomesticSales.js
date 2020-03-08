@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 //TODO
 // Add id in??
+// fix int issue
 const  DSalesSchema = new Schema({
     ticketNumber: {
         type: int,
@@ -40,7 +41,7 @@ const  DSalesSchema = new Schema({
         required: true
     },
     notes:{
-        type:String,
+        type:String
     }
 
 });
