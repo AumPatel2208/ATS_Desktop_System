@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 //TODO
-// Add id in
+// Add id in????
 const  CustomerSchema = new Schema({
     firstName: {
         type: String,
