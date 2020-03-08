@@ -19,19 +19,22 @@ router.get('/', (q,a)=>{
 
 //find used blanks
 router.get('/:id', (q,a) =>{
-    TST.find(q.params.used, {date: -1})
+    TST.find(q.params.used)
+        .sort({date:-1})
         .then(a.json(post))
 });
 
 //find assigned blanks
 router.get('/:id', (q,a) =>{
-    TST.find(q.params.assigned, {date: -1})
+    TST.find(q.params.assigned)
+        .sort({date: -1})
         .then(a.json(post))
 });
 
 //find blanks by advisor code
 router.get('/:id', (q,a) =>{
-    TST.find(q.params.advisorCode, {date: -1})
+    TST.find(q.params.advisorCode)
+        .sort({date: -1})
         .then(a.json(post))
 });
 
@@ -47,3 +50,5 @@ router.delete('/:id',(q,a)=>{
         .then(Tstocks => Tstocks.remove().then(() => a.json({success :true})))
         .catch(err => a.status(404).json({success:false}));
 });
+
+module.exports = router;
