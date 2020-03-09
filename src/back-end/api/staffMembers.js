@@ -5,7 +5,7 @@ const Staff = require('../models/Staff');
 // q= query, a = answer
 
 router.post('/', (q,a) =>{
-    const{firstName, lastName,address, username, staffType} = q.body;
+    const{firstName, lastName,address, username, staffType, advisorCode} = q.body;
     Staff.create(q.body)
         .then(a.json(post));
 });
@@ -17,15 +17,15 @@ router.get('/', (q,a)=>{
         .then(staffMembers => a.json(staffMembers));
 });
 
-//find one staff based on their id
-router.get('/:id', (q,a) =>{
-    Staff.findById(q.params.id)
+//find one staff based on their code
+router.get('', (q,a) =>{
+    Staff.findById(q.params.advisorCode)
         .then(a.json(post))
 });
 
-//find and update one staff
-router.put('/:id',(q,a)=>{
-    Staff.findByIdAndUpdate(q.params.id, q.body)
+//find and update one staff by code
+router.put('/',(q,a)=>{
+    Staff.findByIdAndUpdate(q.params.advisorCode, q.body)
         .then(a.json(post));
 });
 

@@ -4,11 +4,11 @@ const Schema = mongoose.Schema;
 // Add id in??
 const  SaleSchema = new Schema({
     ticketNumber: {
-        type: int,
+        type: Number,
         required: true
     },
     fare: {
-        type: int,
+        type: Number,
         required: true
     },
     currency: {
@@ -16,7 +16,7 @@ const  SaleSchema = new Schema({
         required: true
     },
     USDExchangeRate: {
-        type: int,
+        type: Number,
         required: true
     },
     paymentMethod: {
@@ -24,20 +24,20 @@ const  SaleSchema = new Schema({
         required: true
     },
     creditCardNum: {
-        type: int,
+        type: Number,
     },
     expDate: {
         type: Date,
     },
     securityCode: {
-        type: int,
+        type: Number,
     },
     commissionRate: {
-        type: int,
+        type: Number,
         required: true
     },
     advisorCode: {
-        type: int,
+        type: Number,
         required: true
     },
     saleDate: {

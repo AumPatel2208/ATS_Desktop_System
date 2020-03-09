@@ -17,24 +17,24 @@ const  CustomerSchema = new Schema({
         required: true
     },
     phoneNumber: {
-        type: int,
+        type: Number,
         required: true
     },
     discount: {
-        type: int,
+        type: Number,
     },
     customerType: {
         type: String,
         required: true
     },
     creditCardNum: {
-        type: int,
+        type: Number,
     },
     expDate: {
         type: Date,
     },
     securityCode: {
-        type: int,
+        type: Number,
     }
 });
 

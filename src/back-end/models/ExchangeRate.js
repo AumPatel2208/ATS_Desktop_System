@@ -14,7 +14,7 @@ const  ExchangeRateSchema = new Schema({
         default: Date.now()
     },
     toUSDRate: {
-        type: int,
+        type: Number,
         required: true
     }
 });

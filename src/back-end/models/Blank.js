@@ -9,7 +9,7 @@ const  BlankSchema = new Schema({
         required: true
     },
     advisorCode: {
-        type: int,
+        type: Number,
     },
     assigned: {
         type: bool,
@@ -22,7 +22,7 @@ const  BlankSchema = new Schema({
         default: false
     },
     batch: {
-        type: int,
+        type: Number,
         required: true
     }
 });

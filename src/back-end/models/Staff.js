@@ -22,6 +22,10 @@ const  StaffSchema = new Schema({
     staffType: {
         type: String,
         required: true
+    },
+    advisorCode:{
+        type: Number,
+        required: true
     }
 });
 
