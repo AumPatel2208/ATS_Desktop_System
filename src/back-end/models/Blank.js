@@ -12,12 +12,12 @@ const  BlankSchema = new Schema({
         type: Number,
     },
     assigned: {
-        type: bool,
+        type: Boolean,
         required: true,
         default: false
     },
     used: {
-        type: bool,
+        type: Boolean,
         required: true,
         default: false
     },
