@@ -29,7 +29,7 @@ router.put('/',(q,a)=>{
         .then(a.json(post));
 });
 
-//Delete one customer
+//Delete one staff
 router.delete('/:id',(q,a)=>{
     Staff.findById(q.params.id)
         .then(staffMember => staffMember.remove().then(() => a.json({success :true})))
