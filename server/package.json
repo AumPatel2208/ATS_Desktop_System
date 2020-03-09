@@ -1,0 +1,17 @@
+{
+    "name": "server",
+    "version": "1.0.0",
+    "description": "Server for ats system",
+    "main": "server.js",
+    "repository": "https://github.com/AumPatel2208/Team_Project_Front-End.git",
+    "author": "Aum_Patel",
+    "license": "MIT",
+    "private": false,
+    "dependencies": {
+        "express": "^4.17.1",
+        "mongoose": "^5.9.3"
+    },
+    "devDependencies": {
+        "nodemon": "^1.18.10"
+    }
+}

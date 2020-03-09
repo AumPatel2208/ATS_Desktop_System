@@ -1,6 +1,6 @@
 import React from 'react';
 import Cards from 'react-credit-cards';
-
+import 'react-credit-cards/lib/styles.scss';
 export default class PaymentForm extends React.Component {
     state = {
         cvc: '',
@@ -38,7 +38,22 @@ export default class PaymentForm extends React.Component {
                         onChange={this.handleInputChange}
                         onFocus={this.handleInputFocus}
                     />
-                    ...
+                    <input
+                        type="tel"
+                        name="expiry"
+                        placeholder="expiry"
+                        onChange={this.handleInputChange}
+                        onFocus={this.handleInputFocus}
+                    />
+                </form>
+                <form>
+                    <input
+                        type="tel"
+                        name="cvc"
+                        placeholder="cvc"
+                        onChange={this.handleInputChange}
+                        onFocus={this.handleInputFocus}
+                    />
                 </form>
             </div>
         );
