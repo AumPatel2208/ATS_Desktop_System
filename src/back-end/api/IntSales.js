@@ -14,14 +14,14 @@ router.post('/', (q,a) =>{
 router.get('/', (q,a)=>{
     IntL.find(q.param.paymentMethod)
         .sort({date: -1})
-        .then(IntL => a.json(Dsales));
+        .then(IntSales => a.json(IntSales));
 });
 
 // find sales by advisor code
 router.get('/', (q,a)=>{
     IntL.find(q.param.advisorCode)
         .sort({date: -1})
-        .then(IntL => a.json(Dsales));
+        .then(IntSales => a.json(IntSales));
 });
 //TODO issue with updating, since this will be tagged to two databases????
 //find and update one sale
@@ -33,7 +33,7 @@ router.put('/:id',(q,a)=>{
 //Delete one entry
 router.delete('/:id',(q,a)=>{
     IntL.findById(q.params.id)
-        .then(IntL => IntL.remove().then(() => a.json({success :true})))
+        .then(IntSales => IntSales.remove().then(() => a.json({success :true})))
         .catch(err => a.status(404).json({success:false}));
 });
 
