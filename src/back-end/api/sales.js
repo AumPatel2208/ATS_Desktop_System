@@ -3,6 +3,7 @@ const router = express.Router();
 //TODO: fix error handling
 const Sale = require('../models/Sale');
 
+//add a sale
 router.post('/', (q,a) =>{
     const{ ticketNumber,fare, currency, USDExchangeRate, paymentMethod, creditCardNum,
         expDate, securityCode, commissionRate, advisorCode, saleDate} = q.body;
@@ -36,7 +37,8 @@ router.put('/:id',(q,a)=>{
     Sale.findByIdAndUpdate(q.params.id, q.body)
         .then(a.json(post));
 });
-//Delete one entry
+
+//Delete one sale
 router.delete('/:id',(q,a)=>{
     Sale.findById(q.params.id)
         .then(sale => sale.remove().then(() => a.json({success :true})))
