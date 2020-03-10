@@ -3,6 +3,9 @@ import { Button, FormGroup, FormControl, FormLabel } from 'react-bootstrap';
 import '../Styles/Login.css';
 import Container from 'reactstrap/lib/Container';
 import axios from 'axios';
+import { useStoreState } from 'pullstate';
+import UserStore from '../store/UserStore';
+
 let apiLinks = require('../api/config.json');
 
 export default function Login(props) {
@@ -20,11 +23,21 @@ export default function Login(props) {
         });
     });
 
+    const { UserID, UserType, isLoggedIn } = useStoreState(UserStore, s => ({
+        UserID: '',
+        UserType: '',
+        isLoggedIn: false
+    }));
+
     function handleSubmit(event) {
         var staff = staffMemebers.filter(
             staffMemeber => staffMemeber.username === username
         );
 
+        UserStore.update(s => {
+            s.UserID = staff.id;
+            s.UserType = staff.staffType;
+        });
         event.preventDefault();
     }
 
