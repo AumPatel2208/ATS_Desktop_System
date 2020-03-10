@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 //TODO
 // Add id in
-const  StaffSchema = new Schema({
+const StaffSchema = new Schema({
     firstName: {
         type: String,
         required: true
@@ -23,9 +23,9 @@ const  StaffSchema = new Schema({
         type: String,
         required: true
     },
-    advisorCode:{
+    advisorCode: {
         type: Number,
-        required: true
+        required: false
     }
 });
 

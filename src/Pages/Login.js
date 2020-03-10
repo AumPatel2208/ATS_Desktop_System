@@ -1,17 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, FormGroup, FormControl, FormLabel } from 'react-bootstrap';
 import '../Styles/Login.css';
 import Container from 'reactstrap/lib/Container';
+import axios from 'axios';
+let apiLinks = require('../api/config.json');
 
 export default function Login(props) {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-
+    const [staffMemebers, setStaffMembers] = useState([{}]);
     function validateForm() {
-        return email.length > 0 && password.length > 0;
+        return username.length > 0 && password.length > 0;
     }
 
+    useEffect(() => {
+        axios.get(apiLinks.STAFFMEMBERS).then(res => {
+            const tempStaffMemebers = res.data;
+            setStaffMembers(tempStaffMemebers);
+        });
+    });
+
     function handleSubmit(event) {
+        var staff = staffMemebers.filter(
+            staffMemeber => staffMemeber.username === username
+        );
+
         event.preventDefault();
     }
 
@@ -19,13 +32,13 @@ export default function Login(props) {
         <Container>
             <div className="Login">
                 <form onSubmit={handleSubmit}>
-                    <FormGroup controlId="email" bsSize="large">
-                        <FormLabel>Email</FormLabel>
+                    <FormGroup controlId="username" bsSize="large">
+                        <FormLabel>Username</FormLabel>
                         <FormControl
                             autoFocus
-                            type="email"
-                            value={email}
-                            onChange={e => setEmail(e.target.value)}
+                            type="username"
+                            value={username}
+                            onChange={e => setUsername(e.target.value)}
                         />
                     </FormGroup>
                     <FormGroup controlId="password" bsSize="large">
