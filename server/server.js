@@ -6,8 +6,20 @@ const customers = require('./api/customers');
 const exchangeRates = require('./api/exchangeRates');
 const sales = require('./api/sales');
 const staffMembers = require('./api/staffMembers');
+
 // const config = require('./config');
 const app = express();
+const bodyParser = require('body-parser');
+app.use(
+    bodyParser.urlencoded({
+        extended: true
+    })
+);
+app.use(bodyParser.json());
+
+//to connect react port 3000 with
+var cors = require('cors');
+app.use(cors());
 
 //DB Config
 const db =
@@ -15,14 +27,22 @@ const db =
 
 //connecting the database
 mongoose
-    .connect(db, { useNewUrlParser: true, useCreateIndex: true })
+    .connect(db, {
+        useUnifiedTopology: true,
+        useNewUrlParser: true
+    })
     .then(() => console.log('MongoDB Connected...'))
     .catch(err => console.log(err));
+// .connect(db, { useNewUrlParser: true, useCreateIndex: true })
 
-app.use('./api/blanks', blanks);
-app.use('./api/customers', customers);
-app.use('./api/exchangeRates', exchangeRates);
-app.use('./api/sales', sales);
-app.use('./api/staffMembers', staffMembers);
+app.use('/api/blanks', blanks);
+app.use('/api/customers', customers);
+app.use('/api/exchangeRates', exchangeRates);
+app.use('/api/sales', sales);
+app.use('/api/staffMembers', staffMembers);
 
 //TODO add in error handling to forward to error page
+
+const port = process.env.PORT || 5000;
+
+app.listen(port, () => console.log(`Server started on port ${port}`));

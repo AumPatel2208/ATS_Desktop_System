@@ -4,8 +4,8 @@ const router = express.Router();
 const Blank = require('../models/Blank');
 
 router.post('/', (q, a) => {
-    const { blankNumber, assigned, used, batch } = q.body;
-    Blank.create(q.body).then(a.json(post));
+    // const { blankNumber, assigned, used, batch } = q.body;
+    Blank.create(q.body).then(item => a.json(item));
 });
 
 // find all blanks, sorted by date added
