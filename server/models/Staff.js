@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const bcrypt = require('bcryptjs');
+const salt = 8;
+
 //TODO
 // Add id in
 const StaffSchema = new Schema({
@@ -33,5 +36,28 @@ const StaffSchema = new Schema({
     }
 });
 
+StaffSchema.pre('post', function (next) {
+    const staff = this;
+    if(!staff.isModified('password')) return next();
+
+    bcrypt.genSalt(salt, function (err, salt) {
+        if(err) return next(err);
+        bcrypt.hash(staff.password,salt, function (err, salt) {
+            if (err) return next(err);
+            staff.password = hash;
+            next();
+        })
+    })
+
+});
+
+StaffSchema.methods.comparePassword = function(enteredValue, p){
+    bcrypt.compare(enteredValue, this.password, function (err, isMatch) {
+        if(err) return p(err);
+        p(null, isMatch);
+    });
+};
+
 module.exports = Staff = mongoose.model('Staff', StaffSchema);
-//password hashing:  https://www.npmjs.com/package/bcryptjs
+
+//http://devsmash.com/blog/implementing-max-login-attempts-with-mongoose
