@@ -36,7 +36,7 @@ const StaffSchema = new Schema({
     }
 });
 
-StaffSchema.pre('post', function (next) {
+StaffSchema.pre('create', function (next) {
     const staff = this;
     if(!staff.isModified('password')) return next();
 
