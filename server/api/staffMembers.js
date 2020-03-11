@@ -4,8 +4,8 @@ const router = express.Router();
 const Staff = require('../models/Staff');
 
 // auto generating a salt and hash (theoretically)
-const bcrypt = require('bcrypt.js');
-const hash = bcrypt.hashSync('bacon', 8);
+//const bcrypt = require('bcrypt.js');
+//const hash = bcrypt.hashSync('bacon', 8);
 
 
 

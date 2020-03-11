@@ -19,7 +19,7 @@ router.post('/', (q,a)=> {
         staff.comparePassword(password, function (err, isMatch) {
             if (err) throw err;
             jwt.sign(
-                config.get('figureoutwhattoputhere'),
+                config.get('jwt'),
                 { expiresIn:1800 },
                 (err, token) => {
                     if (err) throw err;

@@ -7,7 +7,7 @@ function secure(q,a,next) {
         return q.status(404).json({message: "authorisation denied"});
     }
     try {
-        const decoded = jwt.verify(token, "figureoutwhattoputhere");
+        const decoded = jwt.verify(token, config.get('jwt'));
 
         q.user = decoded;
         next();

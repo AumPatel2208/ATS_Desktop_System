@@ -59,5 +59,3 @@ StaffSchema.methods.comparePassword = function(enteredValue, p){
 };
 
 module.exports = Staff = mongoose.model('Staff', StaffSchema);
-
-//http://devsmash.com/blog/implementing-max-login-attempts-with-mongoose
