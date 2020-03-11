@@ -1,7 +1,6 @@
-import { Store } from 'pullstate';
+import { Store } from "pullstate";
 
 export const UserStore = new Store({
-    UserID: '',
-    UserType: '',
-    isLoggedIn: ''
+  User: {},
+  IsAuthenticated: false
 });

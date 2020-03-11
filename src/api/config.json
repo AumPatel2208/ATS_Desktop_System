@@ -1,7 +1,7 @@
 {
-    "CUSTOMERS": "http://localhost:5000/api/customers",
-    "EXCHANGERATES": "http://localhost:5000/api/exchangeRates",
-    "BLANKS": "http://localhost:5000/api/blanks",
-    "SALES": "http://localhost:5000/api/sales",
-    "STAFFMEMBERS": "http://localhost:5000/api/staffMembers"
+  "CUSTOMERS": "/api/customers",
+  "EXCHANGERATES": "/api/exchangeRates",
+  "BLANKS": "/api/blanks",
+  "SALES": "/api/sales",
+  "STAFFMEMBERS": "/api/staffMembers"
 }
