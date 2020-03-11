@@ -34,3 +34,4 @@ const StaffSchema = new Schema({
 });
 
 module.exports = Staff = mongoose.model('Staff', StaffSchema);
+//password hashing:  https://www.npmjs.com/package/bcryptjs

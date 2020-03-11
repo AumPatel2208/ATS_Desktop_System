@@ -2,12 +2,41 @@ const express = require('express');
 const router = express.Router();
 //TODO: fix error handling
 const Staff = require('../models/Staff');
-// q= query, a = answer
 
+// auto generating a salt and hash (theoretically)
+const bcrypt = require('bcrypt.js');
+const hash = bcrypt.hashSync('bacon', 8);
+
+
+
+// q= query, a = answer
+// making a staff member
 router.post('/', (q, a) => {
-    // const{firstName, lastName,address, username, staffType, advisorCode} = q.body;
-    Staff.create(q.body).then(item => a.json(item));
+    bcrypt.hash('bacon',8, function(err,hash){
+        Staff.password = hash;
+        Staff.create(q.body).then(item => a.json(item));
+        a.json({ success: true})
+    });
+    // const{firstName, lastName,address, username, staffType, advisorCode, password} = q.body;
+    //Staff.create(q.body).then(item => a.json(item));
 });
+
+
+//login handler?
+router.get('/', (q,a)=>{
+   bcrypt.compare(q.body.password, Staff.password, function(err,a){
+       if(a){
+//eerror
+        }
+       else if (err){
+           //handle correct
+       }
+       else{
+
+       }
+   });
+});
+
 
 // find all staff, descending order
 router.get('/', (q, a) => {
