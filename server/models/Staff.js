@@ -26,6 +26,10 @@ const StaffSchema = new Schema({
     advisorCode: {
         type: Number,
         required: false
+    },
+    password:{
+        type: String,
+        required: true
     }
 });
 
