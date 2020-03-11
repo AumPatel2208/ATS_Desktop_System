@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
-const config = require('config');
-
+const config = require('../server/config/db');
+const url = config.URI;
 const express = require('express');
 const router = express.Router();
 
@@ -19,7 +19,7 @@ router.post('/', (q,a)=> {
         staff.comparePassword(password, function (err, isMatch) {
             if (err) throw err;
             jwt.sign(
-                config.get('jwt'),
+                url,
                 { expiresIn:1800 },
                 (err, token) => {
                     if (err) throw err;

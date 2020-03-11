@@ -5,19 +5,6 @@ const Sale = require('../models/Sale');
 
 //add a sale
 router.post('/', (q, a) => {
-    // const {
-    //     ticketNumber,
-    //     fare,
-    //     currency,
-    //     USDExchangeRate,
-    //     paymentMethod,
-    //     creditCardNum,
-    //     expDate,
-    //     securityCode,
-    //     commissionRate,
-    //     advisorCode,
-    //     saleDate
-    // } = q.body;
     Sale.create(q.body).then(item => a.json(item));
 });
 

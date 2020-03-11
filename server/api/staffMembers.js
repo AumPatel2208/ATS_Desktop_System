@@ -14,8 +14,6 @@ const Staff = require('../models/Staff');
 router.post('/', (q, a) => {
         Staff.create(q.body).then(item => a.json(item));
         a.json({ success: true})
-    // const{firstName, lastName,address, username, staffType, advisorCode, password} = q.body;
-    //Staff.create(q.body).then(item => a.json(item));
 });
 
 

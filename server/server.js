@@ -6,9 +6,9 @@ const customers = require('./api/customers');
 const exchangeRates = require('./api/exchangeRates');
 const sales = require('./api/sales');
 const staffMembers = require('./api/staffMembers');
-const url = 'mongodb://127.0.0.1:27017/ATS';
+const config = require('../server/config/db');
+const url = config.URI;
 
-// const config = require('./config');
 const app = express();
 const bodyParser = require('body-parser');
 app.use(
@@ -33,8 +33,6 @@ db.once('open', _=>{
 db.on('error', err => {
     console.error('connection error:', err);
 });
-
-
 
 
 app.use('/api/blanks', blanks);
