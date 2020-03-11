@@ -1,7 +1,14 @@
 # Team Project
 
 - Please run command before trying to run project:
-    `yarn install`
+    - `yarn install` installs the dependancies for frontend
+    - `cd server` move into server directory
+    - `yarn install` installs the dependancies for the backend
+- to run project
+    - `yarn electron-dev` or `yarn start` start as desktop app or website
+    - `cd server` move into server directory
+    - `yarn start` run server
+
 
 ## Disclaimer
 Please install before running:
