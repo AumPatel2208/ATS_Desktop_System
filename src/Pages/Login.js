@@ -66,7 +66,6 @@ export default function Login(props) {
 
   return (
     <Container>
-      <h1>hello</h1>
       <div className="Login">
         <form onSubmit={handleSubmit}>
           <FormGroup controlId="username" bssize="large">
