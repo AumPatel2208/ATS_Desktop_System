@@ -36,10 +36,9 @@ const StaffSchema = new Schema({
     }
 });
 
-StaffSchema.pre('create', function (next) {
+StaffSchema.pre('post', function (next) {
     const staff = this;
     if(!staff.isModified('password')) return next();
-
     bcrypt.genSalt(salt, function (err, salt) {
         if(err) return next(err);
         bcrypt.hash(staff.password,salt, function (err, salt) {
