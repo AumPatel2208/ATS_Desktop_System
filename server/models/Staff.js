@@ -25,7 +25,7 @@ const StaffSchema = new Schema({
     },
     advisorCode: {
         type: Number,
-        required: false
+        required: true
     }
 });
 

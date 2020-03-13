@@ -21,60 +21,71 @@
 // // start script
 // // "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\""
 
-import React from "react";
-import { Route, Switch } from "react-router-dom";
-import "./App.css";
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+import './App.css';
 
-import Nav from "./Components/Navbar";
-import Login from "./Pages/Login";
-import Home from "./Pages/Home";
-import NotFound from "./Pages/404";
+import Nav from './Components/Navbar';
+import Login from './Pages/Login';
+import Home from './Pages/Home';
+import NotFound from './Pages/404';
+import RegisterStaff from './Pages/RegisterStaff';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      collections: []
-    };
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            collections: []
+        };
+    }
 
-  componentDidMount() {}
+    componentDidMount() {}
 
-  render() {
-    return (
-      <Switch>
-        <Route
-          exact={true}
-          path="/"
-          render={() => (
-            <div className="App">
-              <Nav />
-              <Home />
-            </div>
-          )}
-        />
-        <Route
-          exact={true}
-          path="/login"
-          render={() => (
-            <div className="App">
-              <Nav />
-              <Login />
-            </div>
-          )}
-        />
+    render() {
+        return (
+            <Switch>
+                <Route
+                    exact={true}
+                    path="/"
+                    render={() => (
+                        <div className="App">
+                            <Nav />
+                            <Home />
+                        </div>
+                    )}
+                />
+                <Route
+                    exact={true}
+                    path="/login"
+                    render={() => (
+                        <div className="App">
+                            <Nav />
+                            <Login />
+                        </div>
+                    )}
+                />
+                <Route
+                    exact={true}
+                    path="/registerStaff"
+                    render={() => (
+                        <div className="App">
+                            <Nav />
+                            <RegisterStaff />
+                        </div>
+                    )}
+                />
 
-        <Route
-          render={() => (
-            <div className="App">
-              <Nav />
-              <NotFound />
-            </div>
-          )}
-        />
-      </Switch>
-    );
-  }
+                <Route
+                    render={() => (
+                        <div className="App">
+                            <Nav />
+                            <NotFound />
+                        </div>
+                    )}
+                />
+            </Switch>
+        );
+    }
 }
 
 export default App;
