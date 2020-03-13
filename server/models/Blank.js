@@ -26,5 +26,5 @@ const BlankSchema = new Schema({
         required: true
     }
 });
-
+// eslint-disable-next-line no-undef
 module.exports = Blank = mongoose.model('Blank', BlankSchema);

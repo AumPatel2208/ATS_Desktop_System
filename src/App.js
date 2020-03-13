@@ -30,6 +30,7 @@ import Login from './Pages/Login';
 import Home from './Pages/Home';
 import NotFound from './Pages/404';
 import RegisterStaff from './Pages/RegisterStaff';
+import Customers from './Pages/Customers';
 
 class App extends React.Component {
     constructor(props) {
@@ -51,6 +52,16 @@ class App extends React.Component {
                         <div className="App">
                             <Nav />
                             <Home />
+                        </div>
+                    )}
+                />
+                <Route
+                    exact={true}
+                    path="/customers"
+                    render={() => (
+                        <div className="App">
+                            <Nav />
+                            <Customers />
                         </div>
                     )}
                 />

@@ -17,6 +17,7 @@ const ExchangeRateSchema = new Schema({
     }
 });
 
+// eslint-disable-next-line no-undef
 module.exports = ExchangeRate = mongoose.model(
     'ExchangeRate',
     ExchangeRateSchema

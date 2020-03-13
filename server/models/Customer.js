@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 //TODO
 // Add id in????
 // fix int issues
-const  CustomerSchema = new Schema({
+const CustomerSchema = new Schema({
     firstName: {
         type: String,
         required: true
@@ -21,21 +21,21 @@ const  CustomerSchema = new Schema({
         required: true
     },
     discount: {
-        type: Number,
+        type: Number
     },
     customerType: {
         type: String,
         required: true
     },
     creditCardNum: {
-        type: Number,
+        type: Number
     },
     expDate: {
-        type: Date,
+        type: Date
     },
     securityCode: {
-        type: Number,
+        type: Number
     }
 });
-
+// eslint-disable-next-line no-undef
 module.exports = Customer = mongoose.model('Customer', CustomerSchema);

@@ -28,5 +28,5 @@ const StaffSchema = new Schema({
         required: true
     }
 });
-
+// eslint-disable-next-line no-undef
 module.exports = Staff = mongoose.model('Staff', StaffSchema);

@@ -4,8 +4,7 @@ import {
     FormGroup,
     FormControl,
     FormLabel,
-    Dropdown,
-    DropdownButton
+    Dropdown
 } from 'react-bootstrap';
 import '../Styles/Login.css';
 import Container from 'reactstrap/lib/Container';
@@ -13,8 +12,8 @@ import axios from 'axios';
 // import { useStoreState } from "pullstate";
 // import UserStore from "../store/UserStore";
 import CheckStore from '../store/CheckStore';
-import { useStoreState } from 'pullstate';
-import { UserStore } from '../store/UserStore.js';
+// import { useStoreState } from 'pullstate';
+// import { UserStore } from '../store/UserStore.js';
 
 let apiLinks = require('../api/config.json');
 // "proxy": "http://localhost:5000"
@@ -44,10 +43,14 @@ export default function Login(props) {
 
     //Do get request when functional component is mounted/updated
     useEffect(() => {
+        let mounted = true;
         axios.get(apiLinks.STAFFMEMBERS).then(res => {
-            const tempStaffMembers = res.data;
-            setStaffMembers(tempStaffMembers);
+            if (mounted) {
+                const tempStaffMembers = res.data;
+                setStaffMembers(tempStaffMembers);
+            }
         });
+        return () => (mounted = false);
     });
 
     function handleSubmit(event) {

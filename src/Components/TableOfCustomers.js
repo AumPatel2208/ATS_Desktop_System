@@ -13,6 +13,7 @@ const _ = require('lodash'); //Library to Change Cases of things
 
 let apiLinks = require('../api/config.json');
 export default class TableOfCustomers extends Component {
+    mounted = false; //to make sure server process is stopped
     //Set the state to an empty list of objects that will be taken from the database
     state = {
         customers: [],
@@ -22,9 +23,13 @@ export default class TableOfCustomers extends Component {
 
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
+        this.mounted = true;
+
         axios.get(apiLinks.CUSTOMERS).then(res => {
-            const customers = res.data;
-            this.setState({ customers });
+            if (this.mounted) {
+                const customers = res.data;
+                this.setState({ customers });
+            }
         });
     }
 
