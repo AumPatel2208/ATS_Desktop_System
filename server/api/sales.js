@@ -37,6 +37,7 @@ router.post('/', (q, a) => {
 router.post('/', (q, a) => {
     const ticketNum = toString(q.body[0].ticketNumber);
     const blankCode = ticketNum.substring(0,2);
+    let saleTp = "";
     if (blankCode == "201"){
         saleTp = "domestic";
     }
