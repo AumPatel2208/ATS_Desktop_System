@@ -1,3 +1,5 @@
+const bcrypt = require( "bcrypt");
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 //TODO
@@ -5,27 +7,27 @@ const Schema = mongoose.Schema;
 const StaffSchema = new Schema({
     firstName: {
         type: String,
-        required: true
+       // required: true
     },
     lastName: {
         type: String,
-        required: true
+       // required: true
     },
     address: {
         type: String,
-        required: true
+       // required: true
     },
     username: {
         type: String,
-        required: true
+        //required: true
     },
     staffType: {
         type: String,
-        required: true
+        //required: true
     },
     advisorCode: {
         type: Number,
-        required: true
+       // required: true
     }
 });
 

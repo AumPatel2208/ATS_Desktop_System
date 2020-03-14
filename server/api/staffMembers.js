@@ -2,13 +2,31 @@ const express = require('express');
 const router = express.Router();
 //TODO: fix error handling
 const Staff = require('../models/Staff');
+const bcrypt = require('bcrypt');
+const salt = 10;
 // q= query, a = answer
 
 router.post('/', (q, a) => {
-    // const{firstName, lastName,address, username, staffType, advisorCode} = q.body;
-    Staff.create(q.body).then(item => a.json(item));
-});
+    console.log(q.body[0].password);
+    //const newStaff = new Staff;
+    newStaff = {
+        username: q.body[0].username,
+        firstName: q.body[0].firstName,
+        lastName: q.body[0].lastName,
+        address: q.body[0].address,
+        password:bcrypt.hashSync(q.body[0].password, 8),
+        staffType: q.body[0].staffType,
+        advisorCode: q.body[0].advisorCode
+    };
+    Staff.create(newStaff, (err, newStaff) => {
+        if (err) {
+            console.log("problem registering: " + err);
+        } else {
+            console.log(newStaff);
+        }
 
+    });
+});
 // find all staff, descending order
 router.get('/', (q, a) => {
     Staff.find()
