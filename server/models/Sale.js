@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 // Add id in??
 const  SaleSchema = new Schema({
     ticketNumber: {
-        type: Number,
+        type: String,
         required: true
     },
     fare: {
@@ -47,7 +47,11 @@ const  SaleSchema = new Schema({
     },
     notes:{
         type: String
+    },
+    saleType:{
+        type: String
     }
+
 
 });
 

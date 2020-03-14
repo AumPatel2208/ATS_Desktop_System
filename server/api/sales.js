@@ -3,6 +3,7 @@ const router = express.Router();
 //TODO: fix error handling
 const Sale = require('../models/Sale');
 
+/*
 //add a sale
 router.post('/', (q, a) => {
     // const {
@@ -18,7 +19,54 @@ router.post('/', (q, a) => {
     //     advisorCode,
     //     saleDate
     // } = q.body;
+
+    const ticketNum = toString(q.body[0].ticketNumber);
+    const blankCode = ticketNum.substring(0,2);
+    if (blankCode == "201"){
+        Sale.saleType = "domestic";
+    }
+    else{
+        Sale.saleType = "interline";
+    }
     Sale.create(q.body).then(item => a.json(item));
+
+});
+*/
+
+
+router.post('/', (q, a) => {
+    const ticketNum = toString(q.body[0].ticketNumber);
+    const blankCode = ticketNum.substring(0,2);
+    if (blankCode == "201"){
+        saleTp = "domestic";
+    }
+    else{
+        saleTp = "interline";
+    }
+
+    newSale = {
+        ticketNumber: q.body[0].ticketNumber,
+        fare: q.body[0].fare,
+        currency: q.body[0].currency,
+        USDExchangeRate: q.body[0].USDExchangeRate,
+        paymentMethod: q.body[0].paymentMethod,
+        creditCardNum: q.body[0].creditCardNum,
+        expDate: q.body[0].expDate,
+        securityCode: q.body[0].securityCode,
+        commissionRate: q.body[0].commissionRate,
+        advisorCode: q.body[0].advisorCode,
+        saleDate: q.body[0].saleDate,
+        saleType: saleTp
+    };
+
+    Sale.create(newSale, (err, newSale) => {
+        if (err) {
+            console.log("problem selling: " + err);
+        } else {
+            console.log(newSale);
+        }
+
+    });
 });
 
 // find all sale by payment type
