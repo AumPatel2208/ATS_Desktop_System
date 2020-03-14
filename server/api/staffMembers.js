@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const config = require('../config/db');
 const url = config.URI;
 
-const secure = require('../config/secure');
+//const secure = require('../config/secure');
 
 
 // q= query, a = answer
