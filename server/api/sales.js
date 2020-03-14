@@ -70,7 +70,16 @@ router.post('/', (q, a) => {
     });
 });
 
-// find all sale by payment type
+//FOR THE REPORTS - gets sale type
+router.get('/',(q,a)=>{
+    Sale.find(q.param.saleType)
+        .sort({date: -1})
+        .then(sales => a.json(sales));
+
+});
+
+
+// find all sales by payment type
 router.get('/', (q, a) => {
     Sale.find(q.param.paymentMethod)
         .sort({ date: -1 })
