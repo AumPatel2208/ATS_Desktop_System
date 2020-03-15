@@ -6,7 +6,8 @@ const customers = require('./api/customers');
 const exchangeRates = require('./api/exchangeRates');
 const sales = require('./api/sales');
 const staffMembers = require('./api/staffMembers');
-
+const config = require('../server/config/db');
+const url = config.URI;
 // const config = require('./config');
 const app = express();
 const bodyParser = require('body-parser');
@@ -22,18 +23,20 @@ var cors = require('cors');
 app.use(cors());
 
 //DB Config
-const db =
-    'mongodb+srv://Aum:Aum@cluster0-zkn6t.mongodb.net/test?retryWrites=true&w=majority'; //config.get('URI');
+//const db ='mongodb+srv://Aum:Aum@cluster0-zkn6t.mongodb.net/test?retryWrites=true&w=majority'; //config.get('URI');
 
 //connecting the database
-mongoose
-    .connect(db, {
-        useUnifiedTopology: true,
-        useNewUrlParser: true
-    })
-    .then(() => console.log('MongoDB Connected...'))
-    .catch(err => console.log(err));
-// .connect(db, { useNewUrlParser: true, useCreateIndex: true })
+mongoose.connect(url, {useNewUrlParser: true});
+
+// to test the connection
+const db = mongoose.connection;
+db.once('open', _=>{
+    console.log('connected to database:', url)
+});
+db.on('error', err => {
+    console.error('connection error:', err);
+});
+
 
 app.use('/api/blanks', blanks);
 app.use('/api/customers', customers);
