@@ -31,6 +31,7 @@ import Home from './Pages/Home';
 import NotFound from './Pages/404';
 import RegisterStaff from './Pages/RegisterStaff';
 import Customers from './Pages/Customers';
+import { CustomerUpdate } from './Components/CustomerUpdate';
 
 class App extends React.Component {
     constructor(props) {
@@ -44,57 +45,55 @@ class App extends React.Component {
 
     render() {
         return (
-            <Switch>
-                <Route
-                    exact={true}
-                    path="/"
-                    render={() => (
-                        <div className="App">
-                            <Nav />
-                            <Home />
-                        </div>
-                    )}
-                />
-                <Route
-                    exact={true}
-                    path="/customers"
-                    render={() => (
-                        <div className="App">
-                            <Nav />
-                            <Customers />
-                        </div>
-                    )}
-                />
-                <Route
-                    exact={true}
-                    path="/login"
-                    render={() => (
-                        <div className="App">
-                            <Nav />
-                            <Login />
-                        </div>
-                    )}
-                />
-                <Route
-                    exact={true}
-                    path="/registerStaff"
-                    render={() => (
-                        <div className="App">
-                            <Nav />
-                            <RegisterStaff />
-                        </div>
-                    )}
-                />
-
-                <Route
-                    render={() => (
-                        <div className="App">
-                            <Nav />
-                            <NotFound />
-                        </div>
-                    )}
-                />
-            </Switch>
+            <div>
+                <Nav></Nav>
+                <Switch>
+                    <Route
+                        exact={true}
+                        path="/"
+                        render={() => (
+                            <div className="App">
+                                <Home />
+                            </div>
+                        )}
+                    />
+                    <Route
+                        exact={true}
+                        path="/customers"
+                        render={() => (
+                            <div className="App">
+                                <Customers />
+                            </div>
+                        )}
+                    ></Route>
+                    <Route path="/customers/:id" component={CustomerUpdate} />
+                    <Route
+                        exact={true}
+                        path="/login"
+                        render={() => (
+                            <div className="App">
+                                <Login />
+                            </div>
+                        )}
+                    />
+                    <Route
+                        exact={true}
+                        path="/registerStaff"
+                        render={() => (
+                            <div className="App">
+                                <RegisterStaff />
+                            </div>
+                        )}
+                    />
+                    <Route
+                        render={() => (
+                            <div className="App">
+                                <NotFound />
+                            </div>
+                        )}
+                    />
+                </Switch>
+            </div>
         );
     }
 }

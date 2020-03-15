@@ -17,7 +17,7 @@ const CustomerSchema = new Schema({
         required: true
     },
     phoneNumber: {
-        type: Number,
+        type: String,
         required: true
     },
     discount: {
@@ -34,7 +34,7 @@ const CustomerSchema = new Schema({
         type: Date
     },
     securityCode: {
-        type: Number
+        type: String
     }
 });
 // eslint-disable-next-line no-undef

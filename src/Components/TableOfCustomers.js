@@ -1,13 +1,16 @@
 import React, { Component, Fragment } from 'react';
-import { Container, Table, Button } from 'reactstrap';
+import { Container, Table } from 'reactstrap';
 import axios from 'axios';
 import {
     Form,
     FormGroup,
     FormLabel,
     FormControl,
-    Dropdown
+    Dropdown,
+    Button
 } from 'react-bootstrap';
+import { CustomerUpdate } from './CustomerUpdate';
+import { Lightbox } from './Lightbox';
 
 const _ = require('lodash'); //Library to Change Cases of things
 
@@ -33,19 +36,26 @@ export default class TableOfCustomers extends Component {
         });
     }
 
-    onOpenClick(e, _id) {
-        console.log(e, _id);
+    onOpenClick(_id) {
+        console.log(_id);
     }
 
     filter() {
         // console.log(this.state.filterString);
-        this.setState({
-            customers: this.state.customers.filter(
-                customer =>
-                    String(customer[this.state.filterCondition]) ===
-                    String(this.state.filterString)
+        if (
+            !(
+                this.state.filterCondition === 'Please Select' ||
+                this.state.filterString === ''
             )
-        });
+        ) {
+            this.setState({
+                customers: this.state.customers.filter(
+                    customer =>
+                        String(customer[this.state.filterCondition]) ===
+                        String(this.state.filterString)
+                )
+            });
+        }
     }
     reset() {
         axios.get(apiLinks.CUSTOMERS).then(res => {
@@ -75,11 +85,13 @@ export default class TableOfCustomers extends Component {
                     <td>{phoneNumber}</td>
                     <td>{customerType}</td>
                     <td>
+                        {/* <CustomerUpdate id={_id}></CustomerUpdate> */}
                         <Button
                             className="open-btn"
                             color="primary"
                             size="sm"
                             onClick={this.onOpenClick.bind(this, _id)}
+                            href={'./customers/' + _id}
                         >
                             open
                         </Button>
@@ -139,11 +151,20 @@ export default class TableOfCustomers extends Component {
                             }}
                         />
                     </FormGroup>
-
-                    <Button bssize="large" onClick={() => this.filter()}>
+                    <Button
+                        bssize="large"
+                        variant="outline-primary"
+                        onClick={() => this.filter()}
+                        block
+                    >
                         Filter
-                    </Button>
-                    <Button bssize="large" onClick={() => this.reset()}>
+                    </Button>{' '}
+                    <Button
+                        bssize="large"
+                        variant="outline-danger"
+                        onClick={() => this.reset()}
+                        block
+                    >
                         Reset
                     </Button>
                 </Form>

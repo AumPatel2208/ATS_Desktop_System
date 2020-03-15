@@ -18,12 +18,12 @@ router.get('/', (q, a) => {
 
 //find one customer based on their id
 router.get('/:id', (q, a) => {
-    Customer.findById(q.params.id).then(a.json(post));
+    Customer.findById(q.params.id).then(item => a.json(item));
 });
 
 //find and update one customer
 router.put('/:id', (q, a) => {
-    Customer.findByIdAndUpdate(q.params.id, q.body).then(a.json(post));
+    Customer.findByIdAndUpdate(q.params.id, q.body).then(item => a.json(item));
 });
 
 //Delete one customer
