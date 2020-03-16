@@ -48,14 +48,9 @@ const SaleSchema = new Schema({
     notes: {
         type: String
     },
-    saleType:{
+    saleType: {
         type: String
     }
-<<<<<<< HEAD
-=======
-
-
->>>>>>> origin/security2
 });
 // eslint-disable-next-line no-undef
 module.exports = Sale = mongoose.model('Sale', SaleSchema);

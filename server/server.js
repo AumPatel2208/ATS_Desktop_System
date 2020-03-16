@@ -6,6 +6,7 @@ const customers = require('./api/customers');
 const exchangeRates = require('./api/exchangeRates');
 const sales = require('./api/sales');
 const staffMembers = require('./api/staffMembers');
+const secure = require('./api/secure');
 const config = require('../server/config/db');
 const url = config.URI;
 // const config = require('./config');
@@ -26,23 +27,23 @@ app.use(cors());
 //const db ='mongodb+srv://Aum:Aum@cluster0-zkn6t.mongodb.net/test?retryWrites=true&w=majority'; //config.get('URI');
 
 //connecting the database
-mongoose.connect(url, {useNewUrlParser: true});
+mongoose.connect(url, { useNewUrlParser: true });
 
 // to test the connection
 const db = mongoose.connection;
-db.once('open', _=>{
-    console.log('connected to database:', url)
+db.once('open', _ => {
+    console.log('connected to database:', url);
 });
 db.on('error', err => {
     console.error('connection error:', err);
 });
-
 
 app.use('/api/blanks', blanks);
 app.use('/api/customers', customers);
 app.use('/api/exchangeRates', exchangeRates);
 app.use('/api/sales', sales);
 app.use('/api/staffMembers', staffMembers);
+app.use('/api/secure', secure);
 
 //TODO add in error handling to forward to error page
 
