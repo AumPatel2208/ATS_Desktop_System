@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config/db');
-// const jwt = config.jwt;
 const express = require('express');
 const router = express.Router();
 
@@ -41,19 +40,6 @@ router.post('/', (q, a) => {
                 }
             );
         });
-        // staff.comparePassword(password, function(err, isMatch) {
-        //     if (err) throw err;
-        //     if (isMatch)
-        //         jwt.sign(url, { expiresIn: 1800 }, (err, token) => {
-        //             if (err) throw err;
-        //             q.json({
-        //                 token,
-        //                 staff: {
-        //                     id: staff.id
-        //                 }
-        //             });
-        //         });
-        // });
     });
 });
 
