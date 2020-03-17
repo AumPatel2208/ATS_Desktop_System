@@ -4,19 +4,17 @@ import axios from 'axios';
 import {
     Form,
     FormGroup,
-    Dropdown, FormControl
+    Dropdown
 } from 'react-bootstrap';
 
 const _ = require('lodash'); //Library to Change Cases of things
 
 let apiLinks = require('../api/config.json');
-export default class ReportTableI extends Component {
+export default class ReportTableG extends Component {
     //Set the state to an empty list of objects that will be taken from the database
     state = {
         sales: [],
-       // saleType: '',
-        advisorCode: "",
-        saleTypeValue: 'Choose Sale Type'
+        filterCondition: 'Choose Flight Type'
     };
 
     //runs when component mounts, use to gets the data from db
@@ -30,19 +28,17 @@ export default class ReportTableI extends Component {
     onOpenClick(e, _id) {
         console.log(e, _id);
     }
-/*
+
     filter() {
         // console.log(this.state.filterString);
         this.setState({
             sales: this.state.sales.filter(
                 sale =>
-                    String(sale[this.state.saleType]) ===
-                    String(this.state.saleTypeValue)
+                    String(sale[this.state.filterCondition])// ===
+                //String(this.state.filterString)
             )
         });
     }
-
- */
     render() {
         const row = (
             _id,
@@ -55,8 +51,7 @@ export default class ReportTableI extends Component {
             commissionRate,
             advisorCode,
             saleDate,
-            notes,
-            saleType
+            notes
         ) => (
             <Fragment>
                 <tr key={_id}>
@@ -68,7 +63,6 @@ export default class ReportTableI extends Component {
                     <td>{advisorCode}</td>
                     <td>{saleDate}</td>
                     <td>{notes}</td>
-                    <td>{saleType}</td>
                     <td>
                         <Button
                             className="open-btn"
@@ -87,38 +81,32 @@ export default class ReportTableI extends Component {
             <Container>
                 <Form>
                     <FormGroup controlId="filterCondition" bssize="large">
-
                         <Dropdown
                             onSelect={key => {
-                                this.setState( {saleTypeValue: key});
-                                this.setState({
-                                    sales: this.state.sales.filter(
-                                        sale =>
-                                            sale[this.state.saleType] ===
-                                            String(this.state.saleTypeValue)
-                                    )
-                            });
-                            }}
+                                this.setState({ filterCondition: key });
 
+                                // console.log(_.startCase(key));
+                            }}
                         >
                             <Dropdown.Toggle
                                 variant="success"
                                 id="dropdown-basic"
                             >
-                                {_.startCase(this.state.saleTypeValue)}
+                                {_.startCase(this.state.filterCondition)}
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu>
                                 <Dropdown.Item eventKey="Domestic">
-                                     Domestic
+                                    Domestic
                                 </Dropdown.Item>
                                 <Dropdown.Item eventKey="Interline">
-                                     Interline
+                                    Interline
                                 </Dropdown.Item>
 
                             </Dropdown.Menu>
                         </Dropdown>
                     </FormGroup>
+
 
                 </Form>
                 <Table className="mt-4">
@@ -173,4 +161,3 @@ export default class ReportTableI extends Component {
         );
     }
 }
-

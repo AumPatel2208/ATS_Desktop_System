@@ -7,21 +7,22 @@ import {
 } from 'react-bootstrap';
 import '../Styles/Login.css';
 import Container from 'reactstrap/lib/Container';
-import ReportHandler from "../Components/ReportHandler";
 import TableOfCustomers from "../Components/TableOfCustomers";
 import ReportTableI from "../Components/ReportTableI";
 import TableOfData from "../Components/TableOfData";
+import ReportTurnoverT from "../Components/ReportTurnoverT";
+import ReportTableG from "../Components/ReportTableG";
 
 let apiLinks = require('../api/config.json');
 
 export default function Reports() {
 const [tableType, setTableType] = useState("Select Report Type");
-const [tableCode, setTableCode] = useState("A");
+const [tableCode, setTableCode] = useState("");
 
 
     const global = (
         <Container>
-            <TableOfCustomers></TableOfCustomers>
+            <ReportTableG></ReportTableG>
         </Container>
     );
     const individual = (
@@ -31,7 +32,7 @@ const [tableCode, setTableCode] = useState("A");
     );
     const blanks = (
         <Container>
-            <label> BLANKS</label>
+            <ReportTurnoverT></ReportTurnoverT>
         </Container>
     );
 
@@ -45,7 +46,7 @@ function reportHandler() {
     } else if (tableCode == "C") {
         return <Fragment>{blanks}</Fragment>;
     } else {
-        return 0
+        return "Please Select A Report Type"
     }
 
 }
@@ -72,8 +73,7 @@ function reportHandler() {
                                     setTableCode('A' );
                                 } else if (key === 'Global') {
                                     setTableCode('B' );
-                                }
-                                else if (key === 'Ticket Turnover') {
+                                } else if (key === 'Ticket Turnover') {
                                     setTableCode('C');
                                 }
                                 reportHandler()

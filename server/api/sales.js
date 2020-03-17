@@ -39,10 +39,10 @@ router.post('/', (q, a) => {
     const blankCode = ticketNum.substring(0,2);
     let saleTp = "";
     if (blankCode == "201"){
-        saleTp = "domestic";
+        saleTp = "Domestic";
     }
     else{
-        saleTp = "interline";
+        saleTp = "Interline";
     }
 
     newSale = {
