@@ -1,102 +1,109 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, Fragment} from 'react';
 import {
     Button,
     FormGroup,
-    FormControl,
-    FormLabel,
     Dropdown,
-    DropdownButton
+     Form
 } from 'react-bootstrap';
 import '../Styles/Login.css';
 import Container from 'reactstrap/lib/Container';
-import axios from 'axios';
-// import { useStoreState } from "pullstate";
-// import UserStore from "../store/UserStore";
-import CheckStore from '../store/CheckStore';
-import { useStoreState } from 'pullstate';
-import { UserStore } from '../store/UserStore.js';
+import ReportHandler from "../Components/ReportHandler";
+import TableOfCustomers from "../Components/TableOfCustomers";
+import ReportTableI from "../Components/ReportTableI";
+import TableOfData from "../Components/TableOfData";
 
 let apiLinks = require('../api/config.json');
-// "proxy": "http://localhost:5000"
 
 export default function Reports() {
-const [reportType, setReportType] = useState("");
-const [reportCode, setReportCode] = useState("");
+const [tableType, setTableType] = useState("Select Report Type");
+const [tableCode, setTableCode] = useState("A");
 
 
-function handleSubmit(event) {
-       /*
-        var staff = staffMemebers.filter(
-            staffMemeber => staffMemeber.username === username
-        );
-        staff = { ...staff };
-        staff = staff[0];
+    const global = (
+        <Container>
+            <TableOfCustomers></TableOfCustomers>
+        </Container>
+    );
+    const individual = (
+        <Container>
+            <ReportTableI></ReportTableI>
+        </Container>
+    );
+    const blanks = (
+        <Container>
+            <label> BLANKS</label>
+        </Container>
+    );
 
-        UserStore.update(s => {
-            s.User = staff;
-            s.IsAuthenticated = true; // need to move later after jwtAuthentication
+function reportHandler() {
 
-        */
-        //});
-        event.preventDefault();
+
+    if (tableCode == "A") {
+        return <Fragment>{individual}</Fragment>;
+    } else if (tableCode == "B") {
+        return <Fragment>{global}</Fragment>;
+    } else if (tableCode == "C") {
+        return <Fragment>{blanks}</Fragment>;
+    } else {
+        return 0
     }
 
+}
+
+//add in handling here to determine the form that shows up
     return (
         <Container>
             <h1>Generate Reports</h1>
             <div className="Reports">
-                <form onSubmit={handleSubmit}>
+            </div>
+                <Form>
 
+                    <FormGroup controlId="tableType" bssize="large">
 
-                    <FormGroup controlId="reportType" bssize="large">
-                        <FormLabel>Staff Type</FormLabel>
                         <Dropdown
                             onSelect={key => {
-                                setReportType(key);
+                                setTableType(key);
                                 console.log(key);
                                 var temp = Math.floor(
                                     Math.random() * 9999999 + 1000000
                                 );
-
-                                setReportCode(temp.toString());
-                                if (key === 'Domestic') {
-                                    setReportCode('1' + reportCode);
-                                } else if (key === 'Interline') {
-                                    setReportCode('2' + reportCode);
+                                setTableCode(temp.toString());
+                                if (key === 'Individual') {
+                                    setTableCode('A' );
+                                } else if (key === 'Global') {
+                                    setTableCode('B' );
                                 }
+                                else if (key === 'Ticket Turnover') {
+                                    setTableCode('C');
+                                }
+                                reportHandler()
                             }}
                         >
-
                             <Dropdown.Toggle
                                 variant="success"
                                 id="dropdown-basic"
                             >
-                                {reportType}
+                                {tableType}
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu>
-                                <Dropdown.Item eventKey="Domestic">
-                                    Domestic
+                                <Dropdown.Item eventKey="Individual">
+                                    Individual
                                 </Dropdown.Item>
-                                <Dropdown.Item eventKey="Interline">
-                                    Interline
+                                <Dropdown.Item eventKey="Global">
+                                    Global
+                                </Dropdown.Item>
+                                <Dropdown.Item eventKey="Ticket Turnover">
+                                    Ticket Turnover
                                 </Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
                     </FormGroup>
+                    <Fragment>{reportHandler()}</Fragment>
 
-                    <Button
-                        block
-                        bssize="large"
-                        //disabled={!validateForm()}
-                        type="submit"
-                    >
-                        Generate Report
-                    </Button>
-                </form>
-            </div>
-            <CheckStore></CheckStore>
+                </Form>
         </Container>
     );
+
 }
 
