@@ -9,11 +9,8 @@ import {
 import '../Styles/Login.css';
 import Container from 'reactstrap/lib/Container';
 import axios from 'axios';
-// import { useStoreState } from "pullstate";
-// import UserStore from "../store/UserStore";
+
 import CheckStore from '../store/CheckStore';
-// import { useStoreState } from 'pullstate';
-// import { UserStore } from '../store/UserStore.js';
 
 let apiLinks = require('../api/config.json');
 // "proxy": "http://localhost:5000"

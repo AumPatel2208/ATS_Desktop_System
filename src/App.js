@@ -31,8 +31,11 @@ import Login from './Pages/Login';
 import Home from './Pages/Home';
 import NotFound from './Pages/404';
 import RegisterStaff from './Pages/RegisterStaff';
+
+import Reports from './Pages/Reports';
 import Customers from './Pages/Customers';
 import { CustomerUpdate } from './Components/CustomerUpdate';
+
 
 class App extends React.Component {
     constructor(props) {
@@ -141,6 +144,16 @@ class App extends React.Component {
                         )}
                     />
                     <Route
+                    exact={true}
+                    path="/reports"
+                    render={() => (
+                        <div className="App">
+                            <Nav />
+                            <Reports />
+                        </div>
+                    )}
+                />
+                    <Route
                         render={() => (
                             <div className="App">
                                 <NotFound />
@@ -149,6 +162,7 @@ class App extends React.Component {
                     />
                 </Switch>
             </div>
+
         );
     }
 }

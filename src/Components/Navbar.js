@@ -60,6 +60,11 @@ class Navigation extends Component {
                                 Register Staff
                             </NavLink>
                         </NavItem>
+                        <NavItem>
+                            <NavLink tag={Link} to="/reports">
+                                Reports
+                            </NavLink>
+                        </NavItem>
                         {/* <NavItem>
               <NavLink tag={Link} to="/login">
                 Login
