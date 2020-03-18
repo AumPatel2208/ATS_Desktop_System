@@ -18,7 +18,7 @@ export default class ReportTableI extends Component {
        // advisorCode: "",
         saleTypeValue: 'Choose Sale Type'
     };
-
+//TODO: add in advisor filtering so just one advisor
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
         axios.get(apiLinks.SALES).then(res => {
@@ -30,19 +30,6 @@ export default class ReportTableI extends Component {
     onOpenClick(e, _id) {
         console.log(e, _id);
     }
-/*
-    filter() {
-        // console.log(this.state.filterString);
-        this.setState({
-            sales: this.state.sales.filter(
-                sale =>
-                    String(sale[this.state.saleType]) ===
-                    String(this.state.saleTypeValue)
-            )
-        });
-    }
-
- */
     render() {
         const row = (
             _id,
@@ -99,7 +86,6 @@ export default class ReportTableI extends Component {
                                                 String(sale[this.state.saleT]) ===
                                                 "interline")
                                     });
-                                    //String(this.state.saleTypeValue))
                                 } else {
                                     this.setState({
                                         sales: this.state.sales.filter(
