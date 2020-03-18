@@ -14,8 +14,8 @@ export default class ReportTableI extends Component {
     //Set the state to an empty list of objects that will be taken from the database
     state = {
         sales: [],
-       // saleType: '',
-        advisorCode: "",
+        saleT: 'saleType',
+       // advisorCode: "",
         saleTypeValue: 'Choose Sale Type'
     };
 
@@ -86,18 +86,28 @@ export default class ReportTableI extends Component {
         return (
             <Container>
                 <Form>
-                    <FormGroup controlId="filterCondition" bssize="large">
+                    <FormGroup controlId="saleT" bssize="large">
 
                         <Dropdown
                             onSelect={key => {
-                                this.setState( {saleTypeValue: key});
-                                this.setState({
-                                    sales: this.state.sales.filter(
-                                        sale =>
-                                            sale[this.state.saleType] ===
-                                            String(this.state.saleTypeValue)
-                                    )
-                            });
+                                this.setState({saleTypeValue: key});
+
+                                if (key === "Interline") {
+                                    this.setState({
+                                        sales: this.state.sales.filter(
+                                            sale =>
+                                                String(sale[this.state.saleT]) ===
+                                                "interline")
+                                    });
+                                    //String(this.state.saleTypeValue))
+                                } else {
+                                    this.setState({
+                                        sales: this.state.sales.filter(
+                                            sale =>
+                                                String(sale[this.state.saleT]) ===
+                                                "domestic")
+                                    });
+                                }
                             }}
 
                         >
