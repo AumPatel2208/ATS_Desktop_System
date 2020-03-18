@@ -9,23 +9,20 @@ import {
 import '../Styles/Login.css';
 import Container from 'reactstrap/lib/Container';
 import axios from 'axios';
-
 import CheckStore from '../store/CheckStore';
 
 let apiLinks = require('../api/config.json');
-// "proxy": "http://localhost:5000"
 
-export default function RegisterStaff(props) {
+export default function CreateUser() {
     //state hooks
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [staffType, setStaffType] = useState('Choose');
     const [address, setAddress] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [discount, setDiscount] = useState('');
+    const [customerType, setCustomerType] = useState('Choose');
+
     const [staffMembers, setStaffMembers] = useState([{}]);
-    const [advisorCode, setAdvisorCode] = useState('');
     //validation for form
     function validateForm() {
         return (
@@ -34,7 +31,7 @@ export default function RegisterStaff(props) {
             confirmPassword === password &&
             firstName.length > 0 &&
             lastName.length > 0 &&
-            staffType !== 'Choose'
+            customerType !== 'Choose'
         );
     }
 
@@ -59,7 +56,7 @@ export default function RegisterStaff(props) {
             lastName,
             address,
             username,
-            staffType,
+            customerType,
             advisorCode
         };
         // axios
@@ -132,11 +129,11 @@ export default function RegisterStaff(props) {
                             type="password"
                         />
                     </FormGroup>
-                    <FormGroup controlId="staffType" bssize="large">
+                    <FormGroup controlId="customerType" bssize="large">
                         <FormLabel>Staff Type</FormLabel>
                         <Dropdown
                             onSelect={key => {
-                                setStaffType(key);
+                                setCustomerType(key);
                                 console.log(key);
                                 var temp = Math.floor(
                                     Math.random() * 9999999 + 1000000
@@ -155,7 +152,7 @@ export default function RegisterStaff(props) {
                                 variant="success"
                                 id="dropdown-basic"
                             >
-                                {staffType}
+                                {customerType}
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu>
@@ -179,7 +176,7 @@ export default function RegisterStaff(props) {
                     >
                         Register
                     </Button>
-                    {/* <Button
+                    <Button
                         onClick={e => {
                             e.preventDefault();
                             console.log(staffMembers);
@@ -197,7 +194,7 @@ export default function RegisterStaff(props) {
                                     lastName: 'B',
                                     address: '34 Center',
                                     username: 'tutu1',
-                                    staffType: 'TravelAdvisor',
+                                    customerType: 'TravelAdvisor',
                                     password: '12',
                                     advisorCode: '13345678'
                                 }
@@ -205,10 +202,10 @@ export default function RegisterStaff(props) {
                         }}
                     >
                         ADD MA BOI
-                    </Button> */}
+                    </Button>
                 </form>
             </div>
-            {/* <CheckStore></CheckStore> */}
+            <CheckStore></CheckStore>
         </Container>
     );
 }

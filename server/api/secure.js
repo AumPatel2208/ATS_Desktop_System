@@ -1,37 +1,56 @@
-const jwt = require("jsonwebtoken");
-const config = require('../server/config/db');
-const url = config.URI;
+const jwt = require('jsonwebtoken');
+const config = require('../config/db');
 const express = require('express');
 const router = express.Router();
 
-const bcrypt = require('bcrypt.js');
+const bcrypt = require('bcryptjs');
 const secure = require('../config/secure');
 
 // bc need to encrypt password
 const Staff = require('../models/Staff');
 
-router.post('/', (q,a)=> {
-    const{username, password} = q.body;
+router.post('/', (q, a) => {
+    const { username, password } = q.body;
 
-    Staff.findOne(username).then(staff =>{
-        if(!staff) return a.status(404).json({message: "No such user exists"});
+    //Simple Validation for empty
+    if (!username || !password) {
+        return a.status(400).json({ msg: 'Please enter all fields' });
+    }
 
-        staff.comparePassword(password, function (err, isMatch) {
-            if (err) throw err;
+    Staff.findOne({ username }).then(staff => {
+        if (!staff)
+            return a.status(400).json({ message: 'No such user exists' });
+
+        bcrypt.compare(password, staff.password).then(isMatch => {
+            if (!isMatch)
+                return a.status(400).json({ msg: 'Invalid Credentials' });
+
             jwt.sign(
-                url,
-                { expiresIn:1800 },
+                { id: staff.id },
+                config.jwt,
+                { expiresIn: 3600 }, //only lasts an hour
                 (err, token) => {
                     if (err) throw err;
-                    q.json({
-                        token, staff:{
+                    a.json({
+                        token,
+                        staff: {
                             id: staff.id
                         }
                     });
-                })
-        })
+                }
+            );
+        });
     });
+});
 
-    });
+//get user via token
+// @route   GET api/secure/staff
+// @desc    Get User Data
+// @access  Private
+router.get('/staff', secure, (q, a) => {
+    Staff.findById(q.staff.id)
+        .select('-password') //disregard password
+        .then(staff => a.json(staff));
+});
 
 module.exports = router;

@@ -23,6 +23,7 @@
 
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import axios from 'axios';
 import './App.css';
 
 import Nav from './Components/Navbar';
@@ -30,7 +31,11 @@ import Login from './Pages/Login';
 import Home from './Pages/Home';
 import NotFound from './Pages/404';
 import RegisterStaff from './Pages/RegisterStaff';
+
 import Reports from './Pages/Reports';
+import Customers from './Pages/Customers';
+import { CustomerUpdate } from './Components/CustomerUpdate';
+
 
 class App extends React.Component {
     constructor(props) {
@@ -40,42 +45,105 @@ class App extends React.Component {
         };
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+        // //Loading User
+        // axios
+        //     .get('api/secure/staff', () => {
+        //         // get token from local storage
+        //         const token = localStorage.token;
+        //         // Headers
+        //         const config = {
+        //             headers: {
+        //                 'Content-type': 'application/json'
+        //             }
+        //         };
+        //         // if token, add to headers
+        //         if (token) {
+        //             config.headers['x-auth-token'] = token;
+        //         }
+        //         return config;
+        //     })
+        //     .then(res => {
+        //         console.log(res.data);
+        //     })
+        //     .catch(err => {
+        //         console.log(err);
+        //     });
+    }
+
+    // tokenConfig = () => {
+    //     // get token from local storage
+    //     const token = localStorage.token;
+
+    //     // Headers
+    //     const config = {
+    //         headers: {
+    //             'Content-type': 'application/json'
+    //         }
+    //     };
+
+    //     // if token, add to headers
+    //     if (token) {
+    //         config.headers['x-auth-token'] = token;
+    //     }
+
+    //     return config;
+    // };
 
     render() {
         return (
-            <Switch>
-                <Route
-                    exact={true}
-                    path="/"
-                    render={() => (
-                        <div className="App">
-                            <Nav />
-                            <Home />
-                        </div>
-                    )}
-                />
-                <Route
-                    exact={true}
-                    path="/login"
-                    render={() => (
-                        <div className="App">
-                            <Nav />
-                            <Login />
-                        </div>
-                    )}
-                />
-                <Route
-                    exact={true}
-                    path="/registerStaff"
-                    render={() => (
-                        <div className="App">
-                            <Nav />
-                            <RegisterStaff />
-                        </div>
-                    )}
-                />
-                <Route
+            <div>
+                <Nav></Nav>
+                <Switch>
+                    <Route
+                        exact={true}
+                        path="/"
+                        render={() => (
+                            <div className="App">
+                                <Home />
+                            </div>
+                        )}
+                    />
+                    <Route
+                        exact={true}
+                        path="/customers"
+                        render={() => (
+                            <div className="App">
+                                <Customers />
+                            </div>
+                        )}
+                    ></Route>
+                    <Route
+                        path="/customers/:id"
+                        render={props => (
+                            <CustomerUpdate {...props} isNew={false} />
+                        )}
+                    />
+                    <Route
+                        path="/customer/create"
+                        render={props => (
+                            <CustomerUpdate {...props} isNew={true} />
+                        )}
+                    />
+                    <Route
+                        exact={true}
+                        path="/login"
+                        render={() => (
+                            <div className="App">
+                                <Login />
+                            </div>
+                        )}
+                    />
+                    <Route
+                        exact={true}
+                        path="/registerStaff"
+                        render={() => (
+                            <div className="App">
+                                <RegisterStaff />
+                            </div>
+                        )}
+                    />
+                    <Route
                     exact={true}
                     path="/reports"
                     render={() => (
@@ -85,16 +153,16 @@ class App extends React.Component {
                         </div>
                     )}
                 />
+                    <Route
+                        render={() => (
+                            <div className="App">
+                                <NotFound />
+                            </div>
+                        )}
+                    />
+                </Switch>
+            </div>
 
-                <Route
-                    render={() => (
-                        <div className="App">
-                            <Nav />
-                            <NotFound />
-                        </div>
-                    )}
-                />
-            </Switch>
         );
     }
 }

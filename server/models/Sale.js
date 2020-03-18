@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 //TODO
 // Add id in??
-const  SaleSchema = new Schema({
+const SaleSchema = new Schema({
     ticketNumber: {
         type: String,
         required: true
@@ -24,13 +24,13 @@ const  SaleSchema = new Schema({
         required: true
     },
     creditCardNum: {
-        type: Number,
+        type: Number
     },
     expDate: {
-        type: Date,
+        type: Date
     },
     securityCode: {
-        type: Number,
+        type: Number
     },
     commissionRate: {
         type: Number,
@@ -45,14 +45,12 @@ const  SaleSchema = new Schema({
         required: true,
         default: Date.now()
     },
-    notes:{
+    notes: {
         type: String
     },
-    saleType:{
+    saleType: {
         type: String
     }
-
-
 });
-
+// eslint-disable-next-line no-undef
 module.exports = Sale = mongoose.model('Sale', SaleSchema);

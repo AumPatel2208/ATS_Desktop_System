@@ -1,7 +1,8 @@
 {
-  "CUSTOMERS": "/api/customers",
-  "EXCHANGERATES": "/api/exchangeRates",
-  "BLANKS": "/api/blanks",
-  "SALES": "/api/sales",
-  "STAFFMEMBERS": "/api/staffMembers"
+    "CUSTOMERS": "/api/customers",
+    "EXCHANGERATES": "/api/exchangeRates",
+    "BLANKS": "/api/blanks",
+    "SALES": "/api/sales",
+    "STAFFMEMBERS": "/api/staffMembers",
+    "SECURE": "/api/secure"
 }
