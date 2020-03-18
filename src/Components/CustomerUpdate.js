@@ -33,13 +33,16 @@ export class CustomerUpdate extends Component {
         // console.log(this.props.match.params);
         // const getLink = apiLinks.CUSTOMERS + '/' + this.props.match.params.id;
         const getLink = apiLinks.CUSTOMERS + '/' + this.props.match.params.id;
+        if (!this.props.isNew)
+            axios.get(getLink).then(res => {
+                const tempCustomer = res.data;
+                // console.log(res);
 
-        axios.get(getLink).then(res => {
-            const tempCustomer = res.data;
-            // console.log(res);
-
-            this.setState({ ...this.state.customer, customer: tempCustomer });
-        });
+                this.setState({
+                    ...this.state.customer,
+                    customer: tempCustomer
+                });
+            });
     }
 
     render() {
@@ -55,14 +58,35 @@ export class CustomerUpdate extends Component {
             // });
             e.preventDefault();
 
-            axios
-                .put(
-                    apiLinks.CUSTOMERS + '/' + this.state.customer._id,
-                    this.state.customer
-                )
-                .then(res => {
-                    console.log(res);
-                });
+            if (!this.props.isNew) {
+                axios
+                    .put(
+                        apiLinks.CUSTOMERS + '/' + this.state.customer._id,
+                        this.state.customer
+                    )
+                    .then(res => {
+                        console.log(res);
+                    });
+            } else {
+                console.log(this.state.customer);
+                const newCustomer = {
+                    firstName: this.state.customer.firstName,
+                    lastName: this.state.customer.lastName,
+                    address: this.state.customer.address,
+                    phoneNumber: this.state.customer.phoneNumber,
+                    discount: this.state.customer.discount,
+                    customerType: this.state.customer.customerType,
+                    creditCardNum: this.state.customer.creditCardNum,
+                    expDate: this.state.customer.expDate,
+                    securityCode: this.state.customer.securityCode
+                };
+                axios
+                    .post(apiLinks.CUSTOMERS, newCustomer)
+                    .then(response => {
+                        console.log(response);
+                    })
+                    .catch(res => console.log(res));
+            }
             // axios
             //     .put(apiLinks.CUSTOMERS + '/' + this.state.customer._id, {
             //         firstName: 'Royal',
@@ -234,7 +258,9 @@ export class CustomerUpdate extends Component {
                         </Dropdown>
                     </FormGroup>
                     <Button block bssize="large" type="submit">
-                        Login
+                        {this.props.isNew
+                            ? 'Create Customer'
+                            : 'Update Customer'}
                     </Button>
                 </form>
             </Container>

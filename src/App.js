@@ -23,6 +23,7 @@
 
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import axios from 'axios';
 import './App.css';
 
 import Nav from './Components/Navbar';
@@ -41,7 +42,50 @@ class App extends React.Component {
         };
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+        // //Loading User
+        // axios
+        //     .get('api/secure/staff', () => {
+        //         // get token from local storage
+        //         const token = localStorage.token;
+        //         // Headers
+        //         const config = {
+        //             headers: {
+        //                 'Content-type': 'application/json'
+        //             }
+        //         };
+        //         // if token, add to headers
+        //         if (token) {
+        //             config.headers['x-auth-token'] = token;
+        //         }
+        //         return config;
+        //     })
+        //     .then(res => {
+        //         console.log(res.data);
+        //     })
+        //     .catch(err => {
+        //         console.log(err);
+        //     });
+    }
+
+    // tokenConfig = () => {
+    //     // get token from local storage
+    //     const token = localStorage.token;
+
+    //     // Headers
+    //     const config = {
+    //         headers: {
+    //             'Content-type': 'application/json'
+    //         }
+    //     };
+
+    //     // if token, add to headers
+    //     if (token) {
+    //         config.headers['x-auth-token'] = token;
+    //     }
+
+    //     return config;
+    // };
 
     render() {
         return (
@@ -66,7 +110,18 @@ class App extends React.Component {
                             </div>
                         )}
                     ></Route>
-                    <Route path="/customers/:id" component={CustomerUpdate} />
+                    <Route
+                        path="/customers/:id"
+                        render={props => (
+                            <CustomerUpdate {...props} isNew={false} />
+                        )}
+                    />
+                    <Route
+                        path="/customer/create"
+                        render={props => (
+                            <CustomerUpdate {...props} isNew={true} />
+                        )}
+                    />
                     <Route
                         exact={true}
                         path="/login"

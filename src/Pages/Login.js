@@ -35,7 +35,9 @@ export default function Login(props) {
     });
 
     //Global State
+    // eslint-disable-next-line no-unused-vars
     const User = useStoreState(UserStore, s => s.UserType);
+    // eslint-disable-next-line no-unused-vars
     const IsAuthenticated = useStoreState(UserStore, s => s.IsAuthenticated);
 
     // const { UserID, UserType, isLoggedIn } = useStoreState(UserStore, s => ({
@@ -45,32 +47,41 @@ export default function Login(props) {
     // }));
 
     function handleSubmit(event) {
-        var staff = staffMemebers.filter(
-            staffMemeber => staffMemeber.username === username
-        );
-        staff = { ...staff };
-        staff = staff[0];
+        // Headers
+        const headersConfig = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
 
-        UserStore.update(s => {
-            s.User = staff;
-            s.IsAuthenticated = true; // need to move later after jwtAuthentication
-        });
-
-        // UserStore.update(s => {
-        //   s.UserID = staff.id;
-        //   s.UserType = staff.staffType;
-        // });
-
-        // console.log(UserID);
-        // console.log(UserType);
-        // console.log(isLoggedIn);
+        axios
+            .post(apiLinks.SECURE, { username, password }, headersConfig)
+            .then(res => {
+                // dispatch({
+                //     //this dispatch sends the following data to the reducer
+                //     type: LOGIN_SUCCESS,
+                //     payload: res.data // this return the user data and the token
+                // })
+                var staff = staffMemebers.filter(
+                    staffMemeber => staffMemeber._id === res.data.staff.id
+                );
+                staff = { ...staff };
+                staff = staff[0];
+                localStorage.setItem('token', res.data.token);
+                UserStore.update(s => {
+                    s.User = staff;
+                    s.IsAuthenticated = true; // need to move later after jwtAuthentication
+                });
+            })
+            .catch(err => {
+                alert('Login Failed! \n Error: ' + err);
+            });
 
         event.preventDefault();
     }
 
     return (
         <Container>
-            <h1>hello</h1>
             <div className="Login">
                 <form onSubmit={handleSubmit}>
                     <FormGroup controlId="username" bssize="large">

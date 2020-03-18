@@ -21,7 +21,8 @@ export default class TableOfCustomers extends Component {
     state = {
         customers: [],
         filterString: '',
-        filterCondition: 'Please Select'
+        filterCondition: 'Please Select',
+        sort: 'Please Select'
     };
 
     //runs when component mounts, use to gets the data from db
@@ -34,6 +35,9 @@ export default class TableOfCustomers extends Component {
                 this.setState({ customers });
             }
         });
+        // const temp = []
+        //     .concat(this.state.customers)
+        //     .sort((a, b) => a.firstName > b.firstName);
     }
 
     onOpenClick(_id) {
@@ -63,6 +67,14 @@ export default class TableOfCustomers extends Component {
             this.setState({ customers });
         });
     }
+    sortList(key) {
+        this.setState({
+            customers: []
+                .concat(this.state.customers)
+                .sort((a, b) => (a[`${key}`] > b[`${key}`] ? 1 : -1))
+        });
+    }
+
     render() {
         /**
          * Will return a Fragment to be used when mapping in the render function.
@@ -89,11 +101,11 @@ export default class TableOfCustomers extends Component {
                         <Button
                             className="open-btn"
                             color="primary"
-                            size="sm"
+                            size="lg"
                             onClick={this.onOpenClick.bind(this, _id)}
                             href={'./customers/' + _id}
                         >
-                            open
+                            EDIT
                         </Button>
                     </td>
                 </tr>
@@ -166,8 +178,56 @@ export default class TableOfCustomers extends Component {
                         block
                     >
                         Reset
+                    </Button>{' '}
+                    <Button
+                        bssize="large"
+                        variant="info"
+                        href="/customer/create"
+                        block
+                    >
+                        Create New Customer
                     </Button>
                 </Form>
+                <br></br>
+                <br></br>
+                <Form>
+                    <FormGroup controlId="sort" bssize="large">
+                        <FormLabel>Sort</FormLabel>
+                        <Dropdown
+                            onSelect={key => {
+                                this.setState({ sort: key });
+                                this.sortList(key);
+                                // console.log(_.startCase(key));
+                            }}
+                        >
+                            <Dropdown.Toggle
+                                variant="success"
+                                id="dropdown-basic"
+                            >
+                                {_.startCase(this.state.sort)}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item eventKey="firstName">
+                                    First Name
+                                </Dropdown.Item>
+                                <Dropdown.Item eventKey="lastName">
+                                    Last Name
+                                </Dropdown.Item>
+                                <Dropdown.Item eventKey="address">
+                                    Address
+                                </Dropdown.Item>
+                                <Dropdown.Item eventKey="phoneNumber">
+                                    Phone Number
+                                </Dropdown.Item>
+                                <Dropdown.Item eventKey="customerType">
+                                    Customer Type
+                                </Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </FormGroup>
+                </Form>
+
                 <Table className="mt-4">
                     <thead>
                         <tr>
