@@ -4,7 +4,7 @@ import axios from 'axios';
 import {
     Form,
     FormGroup,
-    Dropdown, FormControl
+    Dropdown, FormControl, FormLabel
 } from 'react-bootstrap';
 
 const _ = require('lodash'); //Library to Change Cases of things
@@ -15,15 +15,16 @@ export default class ReportTableG extends Component {
     state = {
         sales: [],
         saleT: 'saleType',
-        advisor:'advisorCode',
+        dates: 'saleDate',
+        dateinput: '',
         saleTypeValue: 'Choose Sale Type',
         cash: 0,
         credit: 0,
-        cheque: 0
+        cheque: 0,
+        advisorSales: 0
 
 
     };
-
 
 
     //runs when component mounts, use to gets the data from db
@@ -37,17 +38,37 @@ export default class ReportTableG extends Component {
     onOpenClick(e, _id) {
         console.log(e, _id);
     }
+/*
+    aggregateSales(){
+        var i;
+        for (i=0; i<sales.length; i++){
+            if (String(sale[this.state.advisor]) === String(advisor)){
+                if (String(sale[this.state.paymentMethod]) === "creditCard"){
+                    this.state.credit += parseInt(sale[this.state.fare]);
+                }
+                else if (String(sale[this.state.paymentMethod]) === "cash"){
+                    this.state.cash += parseInt(sale[this.state.fare]);
+                }
+                else if (String(sale[this.state.paymentMethod]) === "cheque"){
+                    this.state.cheque += parseInt(sale[this.state.fare]);
+                }
+            } */
+
+        //}
+
+
+   // }
+
+
     render() {
         const row = (
             _id,
-            fare,
+            advisorCode,
+            advisorSales,
             currency,
             USDExchangeRate,
-            paymentMethod,
             commissionRate,
-            advisorCode,
             saleDate,
-            saleType,
             cash,
             credit,
             cheque,
@@ -55,13 +76,12 @@ export default class ReportTableG extends Component {
         ) => (
             <Fragment>
                 <tr key={_id}>
-                    <td>{fare}</td>
+                    <td>{advisorCode}</td>
+                    <td>{this.state.advisorSales}</td>
                     <td>{currency}</td>
                     <td>{USDExchangeRate}</td>
                     <td>{commissionRate}</td>
-                    <td>{advisorCode}</td>
                     <td>{saleDate}</td>
-                    <td>{saleType}</td>
                     <td>{cash}</td>
                     <td>{credit}</td>
                     <td>{cheque}</td>
@@ -84,13 +104,9 @@ export default class ReportTableG extends Component {
             <Container>
                 <Form>
                     <FormGroup controlId="saleT" bssize="large">
-
                         <Dropdown
                             onSelect={key => {
                                 this.setState({saleTypeValue: key});
-                                var credit = 0;
-                                var cash = 0;
-                                var cheque = 0;
                                 if (key === "Interline") {
                                     this.setState({
                                         sales: this.state.sales.filter(
@@ -105,40 +121,13 @@ export default class ReportTableG extends Component {
                                                 String(sale[this.state.saleT]) ===
                                                 "domestic")
                                     });
-                                }
-
-/*
-
-FILTER BY DATES FIRST THEN ADD THIS UP
-                                var i;
-                                for (i=0; i<sales.length; i++){
-                                    if (String(sale[this.state.advisor]) === String(advisor){
-                                        if (String(sale[this.state.paymentMethod]) === "creditCard"){
-                                            credit += parseInt(sale[this.state.fare]);
-                                        }
-                                        else if (String(sale[this.state.paymentMethod]) === "cash"){
-                                            cash += parseInt(sale[this.state.fare]);
-                                        }
-                                        else if (String(sale[this.state.paymentMethod]) === "cheque"){
-                                            cheque += parseInt(sale[this.state.fare]);
-                                        }
-                                    }
-                                    }
-
- */
-
-
-
-                            }}
-
-                        >
+                                }}}>
                             <Dropdown.Toggle
                                 variant="success"
                                 id="dropdown-basic"
                             >
                                 {_.startCase(this.state.saleTypeValue)}
                             </Dropdown.Toggle>
-
                             <Dropdown.Menu>
                                 <Dropdown.Item eventKey="Domestic">
                                     Domestic
@@ -146,23 +135,41 @@ FILTER BY DATES FIRST THEN ADD THIS UP
                                 <Dropdown.Item eventKey="Interline">
                                     Interline
                                 </Dropdown.Item>
-
                             </Dropdown.Menu>
                         </Dropdown>
+
+                        <FormLabel>Enter Start Date: D/MM/YYYY</FormLabel>
+                        <FormControl
+                            autoFocus
+                            type="string"
+                            value={this.state.sales.dateinput}
+                            onChange={e => {
+                                this.setState({
+                                    dateinput: e.target.value
+                                });
+
+                                this.setState({
+                                    sales: this.state.sales.filter(
+                                        sale =>
+                                            String(sale[this.state.dates]) ===
+                                            this.state.sales.dateinput)
+                                })
+                            }}
+                        />
+                        <FormLabel>{this.state.sales.dateinput}</FormLabel>
                     </FormGroup>
-
-
 
                 </Form>
                 <Table className="mt-4">
 
                     <thead>
                     <tr>
-                        <th>Currency</th>
-                        <th>USD Exchange Rate</th>
-                        <th>Payment Method</th>
-                        <th>Commission Rate</th>
                         <th>Advisor Code</th>
+                        <th>Sales</th>
+                        <th>Currency</th>
+
+                        <th>USD Exchange Rate</th>
+                        <th>Commission Rate</th>
                         <th>Sale Date</th>
                         <th>Credit</th>
                         <th>Cash</th>
@@ -176,20 +183,22 @@ FILTER BY DATES FIRST THEN ADD THIS UP
                     {this.state.sales.map(
                         ({
                              _id,
+                             advisorCode,
+                             advisorSales,
                              currency,
                              USDExchangeRate,
                              commissionRate,
-                             advisorCode,
                              saleDate
 
                          }) => (
                             <Fragment key={_id}>
                                 {row(
                                     _id,
+                                    advisorCode,
+                                    this.state.advisorSales,
                                     currency,
                                     USDExchangeRate,
                                     commissionRate,
-                                    advisorCode,
                                     saleDate,
                                 )}
                             </Fragment>

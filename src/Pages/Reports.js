@@ -7,9 +7,7 @@ import {
 } from 'react-bootstrap';
 import '../Styles/Login.css';
 import Container from 'reactstrap/lib/Container';
-import TableOfCustomers from "../Components/TableOfCustomers";
 import ReportTableI from "../Components/ReportTableI";
-import TableOfData from "../Components/TableOfData";
 import ReportTurnoverT from "../Components/ReportTurnoverT";
 import ReportTableG from "../Components/ReportTableG";
 
