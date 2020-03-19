@@ -18,14 +18,13 @@ export default class ReportTableG extends Component {
         dates: 'saleDate',
         dateinput: '',
         saleTypeValue: 'Choose Sale Type',
-        cash: 0,
-        credit: 0,
-        cheque: 0,
+        cash: 1,
+        credit: 2,
+        cheque: 3,
         advisorSales: 0
 
 
     };
-
 
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
@@ -138,7 +137,7 @@ export default class ReportTableG extends Component {
                             </Dropdown.Menu>
                         </Dropdown>
 
-                        <FormLabel>Enter Start Date: D/MM/YYYY</FormLabel>
+                        <FormLabel>Enter Start Date: DD/MM/YYYY</FormLabel>
                         <FormControl
                             autoFocus
                             type="string"
@@ -147,16 +146,22 @@ export default class ReportTableG extends Component {
                                 this.setState({
                                     dateinput: e.target.value
                                 });
-
-                                this.setState({
-                                    sales: this.state.sales.filter(
-                                        sale =>
-                                            String(sale[this.state.dates]) ===
-                                            this.state.sales.dateinput)
-                                })
                             }}
                         />
-                        <FormLabel>{this.state.sales.dateinput}</FormLabel>
+                        <Button
+                            bssize="medium"
+                            variant="outline-danger"
+                            onClick={() => this.setState({
+                                sales: this.state.sales.filter(
+                                    sale =>
+                                        String(sale[this.state.dates]) ===
+                                        String(this.state.dateinput))
+                            })}
+                            block
+                        >
+                            Generate
+                        </Button>{''}
+                        <FormLabel>{this.state.dates}</FormLabel>
                     </FormGroup>
 
                 </Form>
@@ -200,6 +205,10 @@ export default class ReportTableG extends Component {
                                     USDExchangeRate,
                                     commissionRate,
                                     saleDate,
+                                    this.state.cash,
+                                    this.state.credit,
+                                    this.state.cheque,
+
                                 )}
                             </Fragment>
                         )
