@@ -18,15 +18,10 @@ export default class ReportTableG extends Component {
         dates: 'saleDate',
         dateinput: '',
         saleTypeValue: 'Choose Sale Type',
-        cash: 1,
-        credit: 2,
-        cheque: 3,
-        advisorSales: 0,
         summedValues: [
-            {advisorCode: "1234", paymentMethod: "cash", fare: 1234567, saleNum: 0}
-        ]
-
-
+            {advisorCode: 78, "paymentMethod": "cash", "fare": 1234567, "saleNum": 0}
+        ],
+        dict: {},
     };
 
     //runs when component mounts, use to gets the data from db
@@ -36,28 +31,33 @@ export default class ReportTableG extends Component {
             this.setState({ sales });
         });
     }
-
     onOpenClick(e, _id) {
         console.log(e, _id);
     }
 
+    addPayment(){
+        if (this.state.paymentMethod === "creditCard") {
+            this.state.dict["credit"] += this.state.fare;
+        } else if (this.state.paymentMethod === "cheque") {
+            this.state.dict["cheque"] += this.state.fare;
+        } else if (this.state.paymentMethod === "cash") {
+            this.state.dict["cash"] += this.state.fare;
+        }
+        this.state.dict["saleNum"] += 1;
+        this.state.dict["total"] += this.state.dict["fare"];
+    }
     aggregateSales(){
-        var dict = {};
-        var i;
-        while (i=0, i< this.state.sales.length, i++) {
-            if (dict["advisorCode"] == this.state.sales.advisorCode) {
-                if (dict["paymentMethod"] === "creditCard") {
-                    this.state.credit += dict["fare"]
-                } else if (dict["paymentMethod"] === "cheque") {
-                    this.state.cheque += dict["fare"]
-                } else if (dict["paymentMethod"] === "cash") {
-                    this.state.cash += dict["fare"]
-                }
-                dict["saleNum"] += 1;
-                dict["total"] += dict["fare"];
+        var x;
+        while (x=0, x< this.state.sales.length, x++) {
+            if (this.state.dict["advisorCode"] === this.state.sales.advisorCode) {
+                this.addPayment();
             }
-        }this.state.summedValues.push(dict);
-        return this.state.summedValues;
+            else{
+                this.state.dict = {"advisorCode": this.state.advisorCode, "cash":0, "credit":0, "cheque":0, "saleNum": 0,"total": 0};
+                this.addPayment();
+                this.state.summedValues.push(this.state.dict);
+            }
+        }
 
    }
 
@@ -66,7 +66,7 @@ export default class ReportTableG extends Component {
         const row = (
             _id,
             advisorCode,
-            advisorSales,
+            saleNum,
             currency,
             USDExchangeRate,
             commissionRate,
@@ -79,7 +79,7 @@ export default class ReportTableG extends Component {
             <Fragment>
                 <tr key={_id}>
                     <td>{advisorCode}</td>
-                    <td>{this.state.advisorSales}</td>
+                    <td>{saleNum}</td>
                     <td>{currency}</td>
                     <td>{USDExchangeRate}</td>
                     <td>{commissionRate}</td>
@@ -93,7 +93,7 @@ export default class ReportTableG extends Component {
                             className="open-btn"
                             color="primary"
                             size="sm"
-                            onClick={this.onOpenClick.bind(this, _id)}
+                            onClick={this.onOpenClick.bind(this, advisorCode)}
                         >
                             open
                         </Button>
@@ -139,6 +139,8 @@ export default class ReportTableG extends Component {
                                 </Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
+
+
                         <FormLabel>Enter Start Date: DD/MM/YYYY</FormLabel>
                         <FormControl
                             autoFocus
@@ -159,20 +161,20 @@ export default class ReportTableG extends Component {
                                         String(sale[this.state.dates]) ===
                                         String(this.state.dateinput))
                             })}
-                            block
                         >
                             Enter Date
                         </Button>{''}
+
+
                         <Button
                             bssize="medium"
                             variant="outline-danger"
                             onClick={() => this.aggregateSales()
                             }
-                            block
                         >
+
                             Generate Report
                         </Button>{''}
-                        <FormLabel>{this.state.dates}</FormLabel>
                     </FormGroup>
 
                 </Form>
@@ -193,37 +195,17 @@ export default class ReportTableG extends Component {
                         <th>USD Total</th>
                     </tr>
                     </thead>
-
-
                     <tbody>
-                    {this.state.sales.map(
-                        ({
-                             _id,
-                             advisorCode,
-                             advisorSales,
-                             currency,
-                             USDExchangeRate,
-                             commissionRate,
-                             saleDate
-
-                         }) => (
-                            <Fragment key={_id}>
+                            <Fragment key={this.state.sales.advisorCode}>
                                 {row(
-                                    _id,
-                                    advisorCode,
-                                    this.state.advisorSales,
-                                    currency,
-                                    USDExchangeRate,
-                                    commissionRate,
-                                    saleDate,
-                                    this.state.cash,
-                                    this.state.credit,
-                                    this.state.cheque,
+                                    this.state.summedValues[0]["advisorCode"],
+                                    this.state.summedValues["saleNum"],
+                                    this.state.summedValues["cash"],
+                                    this.state.summedValues["credit"],
+                                    this.state.summedValues["cheque"],
 
                                 )}
                             </Fragment>
-                        )
-                    )}
                     </tbody>
                 </Table>
             </Container>
