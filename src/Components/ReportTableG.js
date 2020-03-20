@@ -21,7 +21,10 @@ export default class ReportTableG extends Component {
         cash: 1,
         credit: 2,
         cheque: 3,
-        advisorSales: 0
+        advisorSales: 0,
+        summedValues: [
+            {advisorCode: "1234", paymentMethod: "cash", fare: 1234567, saleNum: 0}
+        ]
 
 
     };
@@ -37,26 +40,26 @@ export default class ReportTableG extends Component {
     onOpenClick(e, _id) {
         console.log(e, _id);
     }
-/*
+
     aggregateSales(){
+        var dict = {};
         var i;
-        for (i=0; i<sales.length; i++){
-            if (String(sale[this.state.advisor]) === String(advisor)){
-                if (String(sale[this.state.paymentMethod]) === "creditCard"){
-                    this.state.credit += parseInt(sale[this.state.fare]);
+        while (i=0, i< this.state.sales.length, i++) {
+            if (dict["advisorCode"] == this.state.sales.advisorCode) {
+                if (dict["paymentMethod"] === "creditCard") {
+                    this.state.credit += dict["fare"]
+                } else if (dict["paymentMethod"] === "cheque") {
+                    this.state.cheque += dict["fare"]
+                } else if (dict["paymentMethod"] === "cash") {
+                    this.state.cash += dict["fare"]
                 }
-                else if (String(sale[this.state.paymentMethod]) === "cash"){
-                    this.state.cash += parseInt(sale[this.state.fare]);
-                }
-                else if (String(sale[this.state.paymentMethod]) === "cheque"){
-                    this.state.cheque += parseInt(sale[this.state.fare]);
-                }
-            } */
+                dict["saleNum"] += 1;
+                dict["total"] += dict["fare"];
+            }
+        }this.state.summedValues.push(dict);
+        return this.state.summedValues;
 
-        //}
-
-
-   // }
+   }
 
 
     render() {
@@ -111,14 +114,14 @@ export default class ReportTableG extends Component {
                                         sales: this.state.sales.filter(
                                             sale =>
                                                 String(sale[this.state.saleT]) ===
-                                                "interline")
+                                                "Interline")
                                     });
                                 } else {
                                     this.setState({
                                         sales: this.state.sales.filter(
                                             sale =>
                                                 String(sale[this.state.saleT]) ===
-                                                "domestic")
+                                                "Domestic")
                                     });
                                 }}}>
                             <Dropdown.Toggle
@@ -136,7 +139,6 @@ export default class ReportTableG extends Component {
                                 </Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
-
                         <FormLabel>Enter Start Date: DD/MM/YYYY</FormLabel>
                         <FormControl
                             autoFocus
@@ -159,7 +161,16 @@ export default class ReportTableG extends Component {
                             })}
                             block
                         >
-                            Generate
+                            Enter Date
+                        </Button>{''}
+                        <Button
+                            bssize="medium"
+                            variant="outline-danger"
+                            onClick={() => this.aggregateSales()
+                            }
+                            block
+                        >
+                            Generate Report
                         </Button>{''}
                         <FormLabel>{this.state.dates}</FormLabel>
                     </FormGroup>
