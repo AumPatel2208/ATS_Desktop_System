@@ -18,9 +18,11 @@ export default class ReportTableG extends Component {
         dates: 'saleDate',
         dateinput: '',
         saleTypeValue: 'Choose Sale Type',
+        x: 0,
         summedValues: [
             {"advisorCode": 78, "cash": 0, "credit": 3, "cheque": 4,"total": 1234567, "saleNum": 0},
-            {"advisorCode": 89, "cash": 0, "credit": 3, "cheque": 4,"total": 1234567, "saleNum": 0}
+            {"advisorCode": 89, "cash": 0, "credit": 3, "cheque": 8,"total": 1234567, "saleNum": 0},
+            {"advisorCode": 903, "cash": 0, "credit": 3, "cheque": 8,"total": 1234567, "saleNum": 0}
         ],
         dict: {},
     };
@@ -48,8 +50,8 @@ export default class ReportTableG extends Component {
         this.state.dict["total"] += this.state.dict["fare"];
     }
     aggregateSales(){
-        var x;
-        while (x=0, x< this.state.sales.length, x++) {
+
+        while (this.state.x=0, this.state.x< this.state.sales.length, this.state.x++) {
             if (this.state.dict["advisorCode"] === this.state.sales.advisorCode) {
                 this.addPayment();
             }
@@ -64,19 +66,19 @@ export default class ReportTableG extends Component {
    }
 
    handleRows(){
-        var x;
+
         var row2;
-       while (x=0, x< this.state.summedValues.length, x++){
+      // while (this.state.x=0, this.state.x< this.state.summedValues.length, this.state.x++){
            return row2= (
-               this.state.summedValues[x]["advisorCode"],
-                   this.state.summedValues[x]["saleNum"],
-                   this.state.summedValues[x]["cash"],
-                   this.state.summedValues[x]["credit"],
-                   this.state.summedValues[x]["cheque"],
-                   this.state.summedValues[x]["total"]
+                this.state.summedValues[this.state.x]["advisorCode"],
+                   this.state.summedValues[this.state.x]["saleNum"],
+                   this.state.summedValues[this.state.x]["cash"],
+                   this.state.summedValues[this.state.x]["credit"],
+                   this.state.summedValues[this.state.x]["cheque"],
+                   this.state.summedValues[this.state.x]["total"]
            )
 
-       }
+       //}
 
 
 
@@ -96,9 +98,9 @@ export default class ReportTableG extends Component {
             total
         ) => (
             <Fragment>
-                <tr>
-                    <td>{advisorCode}</td>
-                    <td>{saleNum}</td>
+                <tr key = {this.state.x}>
+                    <td>{this.state.summedValues[this.state.x]["advisorCode"]}</td>
+                    <td>{this.state.summedValues[this.state.x]["saleNum"]}</td>
                     <td>{currency}</td>
                     <td>{USDExchangeRate}</td>
                     <td>{commissionRate}</td>
@@ -210,9 +212,29 @@ export default class ReportTableG extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    <Fragment>
-                                {this.handleRows()}
+                    {this.state.summedValues.map(
+                        ({
+                             advisorCode,
+                            saleNum,
+                            credit,
+                            cash,
+                            cheque,
+                            total
+
+                         }) => (
+                            <Fragment key={advisorCode} >
+                                {row(
+
+                                    advisorCode,
+                                    saleNum,
+                                    credit,
+                                    cash,
+                                    cheque,
+                                    total
+                                )}
                             </Fragment>
+                        )
+                    )}
                     </tbody>
                 </Table>
             </Container>
