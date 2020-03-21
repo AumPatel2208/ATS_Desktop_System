@@ -99,8 +99,8 @@ export default class ReportTableG extends Component {
         ) => (
             <Fragment>
                 <tr key = {this.state.x}>
-                    <td>{this.state.summedValues[this.state.x]["advisorCode"]}</td>
-                    <td>{this.state.summedValues[this.state.x]["saleNum"]}</td>
+                    <td>{advisorCode}</td>
+                    <td>{saleNum}</td>
                     <td>{currency}</td>
                     <td>{USDExchangeRate}</td>
                     <td>{commissionRate}</td>
