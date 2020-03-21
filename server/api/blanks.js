@@ -23,7 +23,7 @@ router.post('/', (q, a) => {
         newBlanks = {
             ticketNumber: q.body[0].ticketNumber,
             batchValues: q.body[0].batchValues,
-            date: Date.now(),
+            date: q.body[0].date,
             batchType: batchTp,
             amount: amount,
             advisorCode: q.body[0].advisorCode,

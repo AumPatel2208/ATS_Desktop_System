@@ -1,83 +1,68 @@
 import React, {useState, Fragment} from 'react';
-import { Container } from 'reactstrap';
+import { Container, Label } from 'reactstrap';
 import ReportTurnoverT from "../Components/ReportTurnoverT";
-import {Dropdown, FormControl, FormGroup, FormLabel} from "react-bootstrap";
+import {Dropdown, Form, FormControl, FormGroup, FormLabel, } from "react-bootstrap";
 
+import axios from 'axios';
+import CheckStore from '../store/CheckStore';
 
+let apiLinks = require('../api/config.json');
 
 
 export default function Blanks() {
 
-
+    const [batchValues, setBatchValues] = useState("");
+    const [date, setDate] = useState("");
     const [actionType, setActionType] = useState("Select Action Type");
     const [actionCode, setActionCode] = useState("");
 
 
-    const add =(
-        <Container>
-            <form>
-                <FormGroup controlId="username" bssize="large">
-                    <FormLabel>Username</FormLabel>
-                    <FormControl
-                        autoFocus
-                        type="username"
-                        //value={username}
-                        //onChange={e => setUsername(e.target.value)}
-                    />
-                </FormGroup>
-            </form>
+    function handleSubmit(event) {
+        event.preventDefault();
+        console.log('hello');
 
-        </Container>
-    );
-    const assign =(
-        <Container>
+        const tempBlanks = {
+            batchValues,
+            date
+        };
+        axios.post(apiLinks.BLANKS, tempBlanks).then(response => {
+            console.log(response);
+        });
+    }
 
 
-        </Container>
-    );
 
-function actionHandler() {
-        if(actionCode == "A"){
-            return <Fragment>{add}</Fragment>
-        }
-        else{
-            return <Fragment>{assign}</Fragment>
-        }
-}
     return (
         <Container>
-            <h1>BLANKS</h1>
-
-            <Dropdown
-                onSelect={key => {
-                    setActionType(key);
-                    if (key === "Add") {
-                        setActionCode("A");
-                    }
-                    actionHandler()
-                }}
-
-
-            >
-                <Dropdown.Toggle
-                    variant="success"
-                    id="dropdown-basic"
-                >
-                    {actionType}
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu>
-                    <Dropdown.Item eventKey="Add">
-                        Add
-                    </Dropdown.Item>
-                    <Dropdown.Item eventKey="Assign">
-                        Assign
-                    </Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
-            <FormLabel>Blank Stock</FormLabel>
-            <ReportTurnoverT></ReportTurnoverT>
+<h3>Add New Blanks</h3>
+                <form onSubmit={handleSubmit}>
+                    <FormGroup controlId="username" bssize="large">
+                        <FormLabel>Batch</FormLabel>
+                        <FormControl
+                            autoFocus
+                            type="batchValues"
+                            value={batchValues}
+                            onChange={e => setBatchValues(e.target.value)}
+                        />
+                    </FormGroup>
+                    <FormGroup controlId="date" bssize="large">
+                        <FormLabel>Receipt Date DD/MM/YYYY</FormLabel>
+                        <FormControl
+                            autoFocus
+                            type="string"
+                            value={date}
+                            onChange={e => setDate(e.target.value)}
+                        />
+                    </FormGroup>
+                </form>
+            <Form>
+                <h3>Blank Stock</h3>
+                <ReportTurnoverT></ReportTurnoverT>
+            </Form>
         </Container>
+
+
+
     );
 }
 
