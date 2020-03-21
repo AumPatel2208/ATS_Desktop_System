@@ -18,71 +18,55 @@ export default class ReportTableG extends Component {
         dates: 'saleDate',
         dateinput: '',
         saleTypeValue: 'Choose Sale Type',
-        x: 0,
-        summedValues: [
-            {"advisorCode": 78, "cash": 0, "credit": 3, "cheque": 4,"total": 1234567, "saleNum": 0},
-            {"advisorCode": 89, "cash": 0, "credit": 3, "cheque": 8,"total": 1234567, "saleNum": 0},
-            {"advisorCode": 903, "cash": 0, "credit": 3, "cheque": 8,"total": 1234567, "saleNum": 0}
-        ],
+        summedValues: [],
         dict: {},
     };
 
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
         axios.get(apiLinks.SALES).then(res => {
+
             const sales = res.data;
-            this.setState({ sales });
+            this.setState({sales});
         });
     }
+
     onOpenClick(e, _id) {
         console.log(e, _id);
     }
 
-    addPayment(){
-        if (this.state.paymentMethod === "creditCard") {
-            this.state.dict["credit"] += this.state.fare;
-        } else if (this.state.paymentMethod === "cheque") {
-            this.state.dict["cheque"] += this.state.fare;
-        } else if (this.state.paymentMethod === "cash") {
-            this.state.dict["cash"] += this.state.fare;
+    aggregateSales() {
+        var x =0, y=0;
+        for (x = 0; x < this.state.sales.length; x++) {
+            var k=0;
+            for (k=0;k<this.state.summedValues.length;k++) {
+                if (this.state.summedValues[k].advisorCode == this.state.sales[x].advisorCode)
+                    break;
+            }
+            y = k;
+            if (k == this.state.summedValues.length ) {
+                    this.state.dict = {
+                    advisorCode: this.state.sales[x].advisorCode,
+                    cash: 0,
+                    credit: 0,
+                    cheque: 0,
+                    saleNum: 0,
+                    total: 0
+                };
+                y = this.state.summedValues.push(this.state.dict) - 1;
+            }
+            if (this.state.sales[x].paymentMethod === "creditCard") {
+                this.state.summedValues[y].credit += this.state.sales[x].fare;
+            } else if (this.state.sales[x].paymentMethod === "cheque") {
+                this.state.summedValues[y].cheque += this.state.sales[x].fare;
+            } else if (this.state.sales[x].paymentMethod === "cash") {
+                this.state.summedValues[y].cash += this.state.sales[x].fare;
+            }
+            this.state.summedValues[y].saleNum += 1;
+            this.state.summedValues[y].total += this.state.sales[x].fare;
+
         }
-        this.state.dict["saleNum"] += 1;
-        this.state.dict["total"] += this.state.dict["fare"];
     }
-    aggregateSales(){
-
-        while (this.state.x=0, this.state.x< this.state.sales.length, this.state.x++) {
-            if (this.state.dict["advisorCode"] === this.state.sales.advisorCode) {
-                this.addPayment();
-            }
-            else{
-                this.state.dict = {"advisorCode": this.state.advisorCode, "cash":0, "credit":0, "cheque":0, "saleNum": 0,"total": 0};
-                this.addPayment();
-                this.state.summedValues.push(this.state.dict);
-            }
-        }
-
-
-   }
-
-   handleRows(){
-
-        var row2;
-      // while (this.state.x=0, this.state.x< this.state.summedValues.length, this.state.x++){
-           return row2= (
-                this.state.summedValues[this.state.x]["advisorCode"],
-                   this.state.summedValues[this.state.x]["saleNum"],
-                   this.state.summedValues[this.state.x]["cash"],
-                   this.state.summedValues[this.state.x]["credit"],
-                   this.state.summedValues[this.state.x]["cheque"],
-                   this.state.summedValues[this.state.x]["total"]
-           )
-
-       //}
-
-
-
-   }
 
     render() {
         const row = (
@@ -98,7 +82,7 @@ export default class ReportTableG extends Component {
             total
         ) => (
             <Fragment>
-                <tr key = {this.state.x}>
+                <tr key = {advisorCode}>
                     <td>{advisorCode}</td>
                     <td>{saleNum}</td>
                     <td>{currency}</td>
@@ -126,71 +110,15 @@ export default class ReportTableG extends Component {
         return (
             <Container>
                 <Form>
-                    <FormGroup controlId="saleT" bssize="large">
-                        <Dropdown
-                            onSelect={key => {
-                                this.setState({saleTypeValue: key});
-                                if (key === "Interline") {
-                                    this.setState({
-                                        sales: this.state.sales.filter(
-                                            sale =>
-                                                String(sale[this.state.saleT]) ===
-                                                "Interline")
-                                    });
-                                } else {
-                                    this.setState({
-                                        sales: this.state.sales.filter(
-                                            sale =>
-                                                String(sale[this.state.saleT]) ===
-                                                "Domestic")
-                                    });
-                                }}}>
-                            <Dropdown.Toggle
-                                variant="success"
-                                id="dropdown-basic"
-                            >
-                                {_.startCase(this.state.saleTypeValue)}
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                <Dropdown.Item eventKey="Domestic">
-                                    Domestic
-                                </Dropdown.Item>
-                                <Dropdown.Item eventKey="Interline">
-                                    Interline
-                                </Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
 
-
-                        <FormLabel>Enter Start Date: DD/MM/YYYY</FormLabel>
-                        <FormControl
-                            autoFocus
-                            type="string"
-                            value={this.state.sales.dateinput}
-                            onChange={e => {
-                                this.setState({
-                                    dateinput: e.target.value
-                                });
-                            }}
-                        />
+                    <FormGroup>
                         <Button
                             bssize="medium"
                             variant="outline-danger"
-                            onClick={() => this.setState({
-                                sales: this.state.sales.filter(
-                                    sale =>
-                                        String(sale[this.state.dates]) ===
-                                        String(this.state.dateinput))
-                            })}
-                        >
-                            Enter Date
-                        </Button>{''}
-
-
-                        <Button
-                            bssize="medium"
-                            variant="outline-danger"
-                            onClick={() => this.aggregateSales()
+//                            onClick={() => this.aggregateSales()
+                                onClick={() => this.setState({
+                                    sales: this.aggregateSales()
+                                })
                             }
                         >
 
