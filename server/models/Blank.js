@@ -17,7 +17,7 @@ const BlankSchema = new Schema({
         required: true
     },
     amount:{
-        type: Number
+        type: String
     },
     advisorCode: {
         type: Number

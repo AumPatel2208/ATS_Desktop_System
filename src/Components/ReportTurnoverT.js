@@ -33,19 +33,22 @@ export default class ReportTurnoverT extends Component{
         //filter then add up for each?
         const row = (
             _id,
-            blankNumber,
-            advisorCode,
+            batchValues,
+            date,
+            batchType,
+            amount,
             assigned,
             used,
-            batch
+
         ) => (
             <Fragment>
                 <tr key={_id}>
-                    <td>{blankNumber}</td>
-                    <td>{advisorCode}</td>
+                    <td>{batchValues}</td>
+                    <td>{date}</td>
+                    <td>{batchType}</td>
+                    <td>{amount}</td>
                     <td>{assigned}</td>
                     <td>{used}</td>
-                    <td>{batch}</td>
                     <td>
                         <Button
                             className="open-btn"
@@ -66,30 +69,32 @@ export default class ReportTurnoverT extends Component{
                     <thead>
                     <tr>
                         <th>Batch</th>
-                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Batch Quantity</th>
                         <th>Assigned</th>
                         <th>Used</th>
-                        <th>Batch Number</th>
+
                     </tr>
                     </thead>
                     <tbody>
                     {this.state.blanks.map(
                         ({
                              _id,
-                            blankNumber,
-                            advisorCode,
+                            batchValues,
+                            date,
+                            amount,
                             assigned,
-                            used,
-                            batch
+                            used
+
                          }) => (
                             <Fragment key={_id}>
                                 {row(
                                     _id,
-                                    blankNumber,
-                                    advisorCode,
+                                    batchValues,
+                                    date,
+                                    amount,
                                     assigned,
-                                    used,
-                                    batch
+                                    used
                                 )}
                             </Fragment>
                         )

@@ -6,10 +6,10 @@ const Blank = require('../models/Blank');
 router.post('/', (q, a) => {
     // const { blankNumber, assigned, used, batch } = q.body;
     //Blank.create(q.body).then(item => a.json(item));
-    const f = toString(q.body[0].batchValues);
+    const f = q.body[0].batchValues;
     const b = f.indexOf("-");
     const c = parseInt(f.substring(0,b));
-    const d = parseInt(f.substring(b+1));
+    const d = parseInt(f.substring(b+1, f.length));
 
     let amount = d-c;
     let batchTp = "";
