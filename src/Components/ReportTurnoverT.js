@@ -65,8 +65,8 @@ export default class ReportTurnoverT extends Component{
                 <Table className="mt-4">
                     <thead>
                     <tr>
-                        <th>Blank Number</th>
-                        <th>Advisor Code</th>
+                        <th>Batch</th>
+                        <th>Amount</th>
                         <th>Assigned</th>
                         <th>Used</th>
                         <th>Batch Number</th>
