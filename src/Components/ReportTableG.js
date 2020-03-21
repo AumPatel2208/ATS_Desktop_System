@@ -19,7 +19,8 @@ export default class ReportTableG extends Component {
         dateinput: '',
         saleTypeValue: 'Choose Sale Type',
         summedValues: [
-            {advisorCode: 78, "paymentMethod": "cash", "fare": 1234567, "saleNum": 0}
+            {"advisorCode": 78, "cash": 0, "credit": 3, "cheque": 4,"total": 1234567, "saleNum": 0},
+            {"advisorCode": 89, "cash": 0, "credit": 3, "cheque": 4,"total": 1234567, "saleNum": 0}
         ],
         dict: {},
     };
@@ -59,12 +60,30 @@ export default class ReportTableG extends Component {
             }
         }
 
+
    }
 
+   handleRows(){
+        var x;
+        var row2;
+       while (x=0, x< this.state.summedValues.length, x++){
+           return row2= (
+               this.state.summedValues[x]["advisorCode"],
+                   this.state.summedValues[x]["saleNum"],
+                   this.state.summedValues[x]["cash"],
+                   this.state.summedValues[x]["credit"],
+                   this.state.summedValues[x]["cheque"],
+                   this.state.summedValues[x]["total"]
+           )
+
+       }
+
+
+
+   }
 
     render() {
         const row = (
-            _id,
             advisorCode,
             saleNum,
             currency,
@@ -77,7 +96,7 @@ export default class ReportTableG extends Component {
             total
         ) => (
             <Fragment>
-                <tr key={_id}>
+                <tr>
                     <td>{advisorCode}</td>
                     <td>{saleNum}</td>
                     <td>{currency}</td>
@@ -184,11 +203,6 @@ export default class ReportTableG extends Component {
                     <tr>
                         <th>Advisor Code</th>
                         <th>Sales</th>
-                        <th>Currency</th>
-
-                        <th>USD Exchange Rate</th>
-                        <th>Commission Rate</th>
-                        <th>Sale Date</th>
                         <th>Credit</th>
                         <th>Cash</th>
                         <th>Cheque</th>
@@ -196,15 +210,8 @@ export default class ReportTableG extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                            <Fragment key={this.state.sales.advisorCode}>
-                                {row(
-                                    this.state.summedValues[0]["advisorCode"],
-                                    this.state.summedValues["saleNum"],
-                                    this.state.summedValues["cash"],
-                                    this.state.summedValues["credit"],
-                                    this.state.summedValues["cheque"],
-
-                                )}
+                    <Fragment>
+                                {this.handleRows()}
                             </Fragment>
                     </tbody>
                 </Table>
