@@ -65,6 +65,11 @@ class Navigation extends Component {
                                 Reports
                             </NavLink>
                         </NavItem>
+                        <NavItem>
+                            <NavLink tag={Link} to="/blanks">
+                                Blanks
+                            </NavLink>
+                        </NavItem>
                         {/* <NavItem>
               <NavLink tag={Link} to="/login">
                 Login

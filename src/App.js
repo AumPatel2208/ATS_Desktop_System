@@ -33,6 +33,7 @@ import NotFound from './Pages/404';
 import RegisterStaff from './Pages/RegisterStaff';
 
 import Reports from './Pages/Reports';
+import Blanks from './Pages/Blanks';
 import Customers from './Pages/Customers';
 import { CustomerUpdate } from './Components/CustomerUpdate';
 
@@ -153,6 +154,16 @@ class App extends React.Component {
                         </div>
                     )}
                 />
+                    <Route
+                        exact={true}
+                        path="/blanks"
+                        render={() => (
+                            <div className="App">
+                                <Nav />
+                                <Blanks />
+                            </div>
+                        )}
+                    />
                     <Route
                         render={() => (
                             <div className="App">
