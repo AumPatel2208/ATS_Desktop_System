@@ -176,7 +176,6 @@ class App extends React.Component {
                         path="/blanks"
                         render={() => (
                             <div className="App">
-                                <Nav />
                                 <Blanks />
                             </div>
                         )}
