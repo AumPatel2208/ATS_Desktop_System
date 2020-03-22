@@ -12,24 +12,47 @@ const _ = require('lodash'); //Library to Change Cases of things
 let apiLinks = require('../api/config.json');
 
 
+
 export default class ReportTurnoverT extends Component{
     //Set the state to an empty list of objects that will be taken from the database
     state = {
         blanks: [],
-        assign: 'assigned'
+        assigns: [],
+        assign: 'assigned',
+        batch: 'batchValues',
+        sd: '03042019',
+        ed: '03052019'
     };
 //TODO: handle discounts in the customer section
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
-        axios.get(apiLinks.BLANKS).then(res => {
+        const startEnd = {
+            start : this.state.sd,
+            end: this.state.ed
+        };
+
+
+        axios.get( apiLinks.BLANKS +'/byDate', {startEnd}).then(res => {
             const blanks = res.data;
-            this.setState({ blanks });
+            this.setState({blanks});
         });
     }
+
+
 
     onOpenClick(e, _id) {
         console.log(e, _id);
     }
+
+    filterAssigned(){
+        this.setState({
+            assigns: this.state.blanks.filter(
+                assig =>
+                    String(assig[this.state.assign]) ===
+                    "true")
+        });
+    }
+
     render() {
         const row = (
             _id,
@@ -65,6 +88,17 @@ export default class ReportTurnoverT extends Component{
 
         return (
             <Container>
+                <Button
+                    bssize="medium"
+                    variant="outline-danger"
+                    //                            onClick={() => this.aggregateSales()
+                    onClick={() => this.setState({
+                        assigns: this.filterAssigned()
+                    })
+                    }
+                >
+                    FILTERS
+                </Button>
                 <h4>Received Blanks</h4>
                 <Table className="mt-4">
                     <thead>
@@ -152,21 +186,18 @@ export default class ReportTurnoverT extends Component{
                     <tbody>
                     {this.state.blanks.map(
                         ({
-                             _id,
+
                              batchValues,
-                             date,
                              amount,
 
                          }) => (
-                            <Fragment key={_id}>
+                            <Fragment >
                                 {row(
-                                    _id,
                                     batchValues,
-                                    date,
                                     amount,
+
                                 )}
                             </Fragment>
-
                         )
                     )}
                     </tbody>

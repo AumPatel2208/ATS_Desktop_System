@@ -49,11 +49,25 @@ router.get('/', (q, a) => {
         .then(blanks => a.json(blanks));
 });
 
+router.get('/byDate',(q,a)=>{
+   // x = JSON.parse(q.body);
+console.log(q);
+   // Blank.methods.getDates( q.param.start, q.param.end)
+    /*
+    Blank.find()
+        .then(sd => a.json.startEnd.start)
+        .then(ed =>)
+        .methods.getDates(x.startEnd.start, x.startEnd.end)
+
+
+     */
+
+    });
+
 //find and update one blank
 router.put('/:id', (q, a) => {
     Blank.findByIdAndUpdate(q.params.id, q.body).then(a.json(post));
 });
-//TODO issue with deleting bc wouldn't match with sales deletion
 //Delete one blank
 router.delete('/:id', (q, a) => {
     Blank.findById(q.params.id)
