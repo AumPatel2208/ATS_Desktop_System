@@ -39,9 +39,8 @@ export default class ReportTableI extends Component {
             currency,
             USDExchangeRate,
             paymentMethod,
-            // add in credit data
-            commissionRate,
             advisorCode,
+            commissionRate,
             saleDate,
             notes,
             saleType
@@ -52,9 +51,9 @@ export default class ReportTableI extends Component {
                     <td>{fare}</td>
                     <td>{currency}</td>
                     <td>{USDExchangeRate}</td>
-                    <td>{commissionRate}</td>
                     <td>{advisorCode}</td>
                     <td>{saleDate}</td>
+                    <td>{commissionRate}</td>
                     <td>{notes}</td>
                     <td>{saleType}</td>
                     <td>
@@ -143,12 +142,6 @@ export default class ReportTableI extends Component {
                             onClick={() => this.setState({
                                 sales: this.state.sales.filter(
                                     sale =>
-                                        String(sale[this.state.dates]) ===
-                                        String(this.state.dateinput))
-                            })}
-                            onClick={() => this.setState({
-                                sales: this.state.sales.filter(
-                                    sale =>
                                             String(sale[this.state.code]) ===
                                          String(this.state.inputCode))
 
@@ -166,10 +159,10 @@ export default class ReportTableI extends Component {
                         <th>Ticket Number</th>
                         <th>Fare</th>
                         <th>Currency</th>
-                        <th>USD Exchange Rate</th>
                         <th>Payment Method</th>
-                        <th>Commission Rate</th>
                         <th>Advisor Code</th>
+                        <th>USD Exchange Rate</th>
+                        <th>Commission Rate</th>
                         <th>Sale Date</th>
                         <th>Notes</th>
                     </tr>
@@ -181,12 +174,13 @@ export default class ReportTableI extends Component {
                              ticketNumber,
                              fare,
                              currency,
-                             USDExchangeRate,
                              paymentMethod,
-                             // add in credit data
-                             commissionRate,
                              advisorCode,
+                             USDExchangeRate,
+                             commissionRate,
                              saleDate,
+// add in credit data
+
                              notes
                          }) => (
                             <Fragment key={_id}>
@@ -195,12 +189,13 @@ export default class ReportTableI extends Component {
                                     ticketNumber,
                                     fare,
                                     currency,
-                                    USDExchangeRate,
                                     paymentMethod,
-                                    // add in credit data
                                     commissionRate,
                                     advisorCode,
+                                    USDExchangeRate,
                                     saleDate,
+                                    // add in credit data
+
                                     notes
                                 )}
                             </Fragment>
