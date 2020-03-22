@@ -1,20 +1,15 @@
 import React, {useState, Fragment} from 'react';
 import { Container, Label } from 'reactstrap';
 import ReportTurnoverT from "../Components/ReportTurnoverT";
-import {Dropdown, Form, FormControl, FormGroup, FormLabel, } from "react-bootstrap";
+import {Button, Dropdown, Form, FormControl, FormGroup, FormLabel,} from "react-bootstrap";
 
 import axios from 'axios';
-import CheckStore from '../store/CheckStore';
-
 let apiLinks = require('../api/config.json');
-
 
 export default function Blanks() {
 
     const [batchValues, setBatchValues] = useState("");
     const [date, setDate] = useState("");
-    const [actionType, setActionType] = useState("Select Action Type");
-    const [actionCode, setActionCode] = useState("");
 
 
     function handleSubmit(event) {
@@ -29,9 +24,6 @@ export default function Blanks() {
             console.log(response);
         });
     }
-
-
-
     return (
         <Container>
 <h3>Add New Blanks</h3>
@@ -54,15 +46,19 @@ export default function Blanks() {
                             onChange={e => setDate(e.target.value)}
                         />
                     </FormGroup>
+                    <Button
+                        onClick={e => {
+                            handleSubmit(e)
+                        }}
+                    >
+                        Add Blanks
+                    </Button>
                 </form>
             <Form>
                 <h3>Blank Stock</h3>
                 <ReportTurnoverT></ReportTurnoverT>
             </Form>
         </Container>
-
-
-
     );
 }
 

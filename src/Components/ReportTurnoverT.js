@@ -16,6 +16,7 @@ export default class ReportTurnoverT extends Component{
     //Set the state to an empty list of objects that will be taken from the database
     state = {
         blanks: [],
+        assign: 'assigned'
     };
 //TODO: handle discounts in the customer section
     //runs when component mounts, use to gets the data from db
@@ -30,7 +31,6 @@ export default class ReportTurnoverT extends Component{
         console.log(e, _id);
     }
     render() {
-        //filter then add up for each?
         const row = (
             _id,
             batchValues,
@@ -65,14 +65,15 @@ export default class ReportTurnoverT extends Component{
 
         return (
             <Container>
+                <h4>Received Blanks</h4>
                 <Table className="mt-4">
                     <thead>
                     <tr>
                         <th>Batch</th>
                         <th>Date</th>
                         <th>Batch Quantity</th>
-                        <th>Assigned</th>
-                        <th>Used</th>
+                        <th>New Blanks Assigned</th>
+                        <th>Advisor Assigned To</th>
 
                     </tr>
                     </thead>
@@ -83,8 +84,6 @@ export default class ReportTurnoverT extends Component{
                             batchValues,
                             date,
                             amount,
-                            assigned,
-                            used
 
                          }) => (
                             <Fragment key={_id}>
@@ -93,10 +92,81 @@ export default class ReportTurnoverT extends Component{
                                     batchValues,
                                     date,
                                     amount,
-                                    assigned,
-                                    used
                                 )}
                             </Fragment>
+
+                        )
+                    )}
+                    </tbody>
+                </Table>
+                <h4>Assigned and Used Blanks</h4>
+                <Table className="mt-4">
+                    <thead>
+                    <tr>
+                        <th>Assigned Blanks</th>
+                        <th>Advisor Code</th>
+                        <th>Batch Quantity</th>
+                        <th>Used Blanks</th>
+                        <th>Amount Used</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    { this.state.blanks.map(
+                        ({
+                             _id,
+                             batchValues,
+                             advisorCode,
+                             amount,
+                            used,
+                           // amount
+
+                         }) => (
+                            <Fragment key={_id}>
+                                {row(
+                                    _id,
+                                    batchValues,
+                                    advisorCode,
+                                    amount,
+                                    used,
+                                   // amount
+                                )}
+                            </Fragment>
+
+                        )
+                    )}
+                    </tbody>
+                </Table>
+                <h4>Final Amounts</h4>
+                <Table className="mt-4">
+                    <thead>
+                    <tr>
+                        <th>Available Blanks </th>
+                        <th>Amount</th>
+                        <th>Advisor Code</th>
+                        <th>Advisor Blanks</th>
+                        <th>Amount</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {this.state.blanks.map(
+                        ({
+                             _id,
+                             batchValues,
+                             date,
+                             amount,
+
+                         }) => (
+                            <Fragment key={_id}>
+                                {row(
+                                    _id,
+                                    batchValues,
+                                    date,
+                                    amount,
+                                )}
+                            </Fragment>
+
                         )
                     )}
                     </tbody>
