@@ -4,7 +4,7 @@ import axios from 'axios';
 import {
     Form,
     FormGroup,
-    Dropdown, FormControl
+    Dropdown, FormControl, FormLabel
 } from 'react-bootstrap';
 
 const _ = require('lodash'); //Library to Change Cases of things
@@ -15,7 +15,8 @@ export default class ReportTableI extends Component {
     state = {
         sales: [],
         saleT: 'saleType',
-       // advisorCode: "",
+        code: 'advisorCode',
+        inputCode: '',
         saleTypeValue: 'Choose Sale Type'
     };
 //TODO: add in advisor filtering so just one advisor
@@ -84,14 +85,14 @@ export default class ReportTableI extends Component {
                                         sales: this.state.sales.filter(
                                             sale =>
                                                 String(sale[this.state.saleT]) ===
-                                                "interline")
+                                                "Interline")
                                     });
                                 } else {
                                     this.setState({
                                         sales: this.state.sales.filter(
                                             sale =>
                                                 String(sale[this.state.saleT]) ===
-                                                "domestic")
+                                                "Domestic")
                                     });
                                 }
                             }}
@@ -114,6 +115,48 @@ export default class ReportTableI extends Component {
 
                             </Dropdown.Menu>
                         </Dropdown>
+                        <FormLabel>Enter Start Date: DD/MM/YYYY</FormLabel>
+                        <FormControl
+                            autoFocus
+                            type="string"
+                            value={this.state.sales.dateinput}
+                            onChange={e => {
+                                this.setState({
+                                    dateinput: e.target.value
+                                });
+                            }}
+                        />
+                        <FormLabel>Enter Advisor Code</FormLabel>
+                        <FormControl
+                            autoFocus
+                            type="string"
+                            value={this.state.sales.inputCode}
+                            onChange={e => {
+                                this.setState({
+                                    inputCode: e.target.value
+                                });
+                            }}
+                        />
+                        <Button
+                            bssize="medium"
+                            variant="outline-danger"
+                            onClick={() => this.setState({
+                                sales: this.state.sales.filter(
+                                    sale =>
+                                        String(sale[this.state.dates]) ===
+                                        String(this.state.dateinput))
+                            })}
+                            onClick={() => this.setState({
+                                sales: this.state.sales.filter(
+                                    sale =>
+                                            String(sale[this.state.code]) ===
+                                         String(this.state.inputCode))
+
+                            })}
+                            block
+                        >
+                            Generate Report
+                        </Button>
                     </FormGroup>
 
                 </Form>

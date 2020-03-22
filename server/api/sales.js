@@ -106,10 +106,13 @@ router.put('/:id', (q, a) => {
 });
 
 //Delete one sale
+
 router.delete('/:id', (q, a) => {
     Sale.findById(q.params.id)
         .then(sale => sale.remove().then(() => a.json({ success: true })))
         .catch(err => a.status(404).json({ success: false }));
 });
+
+
 
 module.exports = router;

@@ -4,7 +4,7 @@ import axios from 'axios';
 import {
     Form,
     FormGroup,
-    Dropdown, FormControl
+    Dropdown, FormControl, FormLabel
 } from 'react-bootstrap';
 
 const _ = require('lodash'); //Library to Change Cases of things
@@ -15,53 +15,80 @@ export default class ReportTableG extends Component {
     state = {
         sales: [],
         saleT: 'saleType',
-        advisor:'advisorCode',
+        dates: 'saleDate',
+        dateinput: '',
         saleTypeValue: 'Choose Sale Type',
-        cash: 0,
-        credit: 0,
-        cheque: 0
-
-
+        summedValues: [],
+        dict: {},
     };
-
-
 
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
         axios.get(apiLinks.SALES).then(res => {
+
             const sales = res.data;
-            this.setState({ sales });
+            this.setState({sales});
         });
     }
 
     onOpenClick(e, _id) {
         console.log(e, _id);
     }
+
+    aggregateSales() {
+        var x =0, y=0;
+        for (x = 0; x < this.state.sales.length; x++) {
+            var k=0;
+            for (k=0;k<this.state.summedValues.length;k++) {
+                if (this.state.summedValues[k].advisorCode == this.state.sales[x].advisorCode)
+                    break;
+            }
+            y = k;
+            if (k == this.state.summedValues.length ) {
+                    this.state.dict = {
+                    advisorCode: this.state.sales[x].advisorCode,
+                    cash: 0,
+                    credit: 0,
+                    cheque: 0,
+                    saleNum: 0,
+                    total: 0
+                };
+                y = this.state.summedValues.push(this.state.dict) - 1;
+            }
+            if (this.state.sales[x].paymentMethod === "creditCard") {
+                this.state.summedValues[y].credit += this.state.sales[x].fare;
+            } else if (this.state.sales[x].paymentMethod === "cheque") {
+                this.state.summedValues[y].cheque += this.state.sales[x].fare;
+            } else if (this.state.sales[x].paymentMethod === "cash") {
+                this.state.summedValues[y].cash += this.state.sales[x].fare;
+            }
+            this.state.summedValues[y].saleNum += 1;
+            this.state.summedValues[y].total += this.state.sales[x].fare;
+
+        }
+    }
+
     render() {
         const row = (
-            _id,
-            fare,
+            advisorCode,
+            saleNum,
             currency,
             USDExchangeRate,
-            paymentMethod,
             commissionRate,
-            advisorCode,
             saleDate,
-            saleType,
             cash,
             credit,
             cheque,
             total
         ) => (
             <Fragment>
-                <tr key={_id}>
-                    <td>{fare}</td>
+                <tr key = {advisorCode}>
+                    <td>{advisorCode}</td>
+                    <td>{saleNum}</td>
                     <td>{currency}</td>
                     <td>{USDExchangeRate}</td>
                     <td>{commissionRate}</td>
-                    <td>{advisorCode}</td>
                     <td>{saleDate}</td>
-                    <td>{saleType}</td>
                     <td>{cash}</td>
                     <td>{credit}</td>
                     <td>{cheque}</td>
@@ -71,7 +98,7 @@ export default class ReportTableG extends Component {
                             className="open-btn"
                             color="primary"
                             size="sm"
-                            onClick={this.onOpenClick.bind(this, _id)}
+                            onClick={this.onOpenClick.bind(this, advisorCode)}
                         >
                             open
                         </Button>
@@ -83,114 +110,55 @@ export default class ReportTableG extends Component {
         return (
             <Container>
                 <Form>
-                    <FormGroup controlId="saleT" bssize="large">
 
-                        <Dropdown
-                            onSelect={key => {
-                                this.setState({saleTypeValue: key});
-                                var credit = 0;
-                                var cash = 0;
-                                var cheque = 0;
-                                if (key === "Interline") {
-                                    this.setState({
-                                        sales: this.state.sales.filter(
-                                            sale =>
-                                                String(sale[this.state.saleT]) ===
-                                                "interline")
-                                    });
-                                } else {
-                                    this.setState({
-                                        sales: this.state.sales.filter(
-                                            sale =>
-                                                String(sale[this.state.saleT]) ===
-                                                "domestic")
-                                    });
-                                }
-
-/*
-
-FILTER BY DATES FIRST THEN ADD THIS UP
-                                var i;
-                                for (i=0; i<sales.length; i++){
-                                    if (String(sale[this.state.advisor]) === String(advisor){
-                                        if (String(sale[this.state.paymentMethod]) === "creditCard"){
-                                            credit += parseInt(sale[this.state.fare]);
-                                        }
-                                        else if (String(sale[this.state.paymentMethod]) === "cash"){
-                                            cash += parseInt(sale[this.state.fare]);
-                                        }
-                                        else if (String(sale[this.state.paymentMethod]) === "cheque"){
-                                            cheque += parseInt(sale[this.state.fare]);
-                                        }
-                                    }
-                                    }
-
- */
-
-
-
-                            }}
-
+                    <FormGroup>
+                        <Button
+                            bssize="medium"
+                            variant="outline-danger"
+//                            onClick={() => this.aggregateSales()
+                                onClick={() => this.setState({
+                                    sales: this.aggregateSales()
+                                })
+                            }
                         >
-                            <Dropdown.Toggle
-                                variant="success"
-                                id="dropdown-basic"
-                            >
-                                {_.startCase(this.state.saleTypeValue)}
-                            </Dropdown.Toggle>
 
-                            <Dropdown.Menu>
-                                <Dropdown.Item eventKey="Domestic">
-                                    Domestic
-                                </Dropdown.Item>
-                                <Dropdown.Item eventKey="Interline">
-                                    Interline
-                                </Dropdown.Item>
-
-                            </Dropdown.Menu>
-                        </Dropdown>
+                            Generate Report
+                        </Button>{''}
                     </FormGroup>
-
-
 
                 </Form>
                 <Table className="mt-4">
 
                     <thead>
                     <tr>
-                        <th>Currency</th>
-                        <th>USD Exchange Rate</th>
-                        <th>Payment Method</th>
-                        <th>Commission Rate</th>
                         <th>Advisor Code</th>
-                        <th>Sale Date</th>
+                        <th>Sales</th>
                         <th>Credit</th>
                         <th>Cash</th>
                         <th>Cheque</th>
                         <th>USD Total</th>
                     </tr>
                     </thead>
-
-
                     <tbody>
-                    {this.state.sales.map(
+                    {this.state.summedValues.map(
                         ({
-                             _id,
-                             currency,
-                             USDExchangeRate,
-                             commissionRate,
                              advisorCode,
-                             saleDate
+                            saleNum,
+                            credit,
+                            cash,
+                            cheque,
+                            total
 
                          }) => (
-                            <Fragment key={_id}>
+                            <Fragment key={advisorCode} >
                                 {row(
-                                    _id,
-                                    currency,
-                                    USDExchangeRate,
-                                    commissionRate,
+
                                     advisorCode,
-                                    saleDate,
+                                    saleNum,
+                                    credit,
+                                    cash,
+                                    cheque,
+                                    total
                                 )}
                             </Fragment>
                         )

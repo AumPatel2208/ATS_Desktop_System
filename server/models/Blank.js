@@ -4,9 +4,20 @@ const Schema = mongoose.Schema;
 // Add id in????
 // fix int issues
 const BlankSchema = new Schema({
-    blankNumber: {
+    batchValues: {
         type: String,
         required: true
+    },
+    date:{
+        type: String,
+        required: true
+    },
+    batchType:{
+        type: String,
+        required: true
+    },
+    amount:{
+        type: String
     },
     advisorCode: {
         type: Number
@@ -20,10 +31,6 @@ const BlankSchema = new Schema({
         type: Boolean,
         required: true,
         default: false
-    },
-    batch: {
-        type: Number,
-        required: true
     }
 });
 // eslint-disable-next-line no-undef
