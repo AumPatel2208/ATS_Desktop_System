@@ -21,6 +21,8 @@
 // // start script
 // // "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\""
 
+//Add REACT function to do the authentication thing for routes
+
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import axios from 'axios';
@@ -35,13 +37,13 @@ import RegisterStaff from './Pages/RegisterStaff';
 import Reports from './Pages/Reports';
 import Customers from './Pages/Customers';
 import { CustomerUpdate } from './Components/CustomerUpdate';
-
+import { Authenticate } from './Authenticate';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            collections: []
+            userID: {}
         };
     }
 
@@ -69,26 +71,41 @@ class App extends React.Component {
         //     .catch(err => {
         //         console.log(err);
         //     });
+        // axios.get('api/secure/staff');
+        // axios.get('api/secure/staff', this.tokenConfig()).then(res => {
+        //     console.log(res.data);
+        // });
+        // console.log(localStorage.token);
+        //() => {
+        // // return { token: localStorage.token };
+        // // get token from local storage
+        // const token = localStorage.token;
+        // // Headers
+        // const config = {
+        //     headers: {
+        //         'Content-type': 'application/json'
+        //     }
+        // };
+        // // if token, add to headers
+        // if (token) {
+        //     config.headers['x-auth-token'] = token;
+        // }
+        // return config;
+
+        // axios
+        //     .get(
+        //         'api/secure/staff',
+        //         { token: localStorage.token },
+        //         { headers: { 'Content-Type': 'application/json' } }
+        //     )
+        //     .then(res => {
+        //         this.setState({ ...this.state, tokenPayload: res.data });
+        //     });
+
+        axios.get('api/secure/staff').then(res => {
+            this.setState({ ...this.state, userID: res.data });
+        });
     }
-
-    // tokenConfig = () => {
-    //     // get token from local storage
-    //     const token = localStorage.token;
-
-    //     // Headers
-    //     const config = {
-    //         headers: {
-    //             'Content-type': 'application/json'
-    //         }
-    //     };
-
-    //     // if token, add to headers
-    //     if (token) {
-    //         config.headers['x-auth-token'] = token;
-    //     }
-
-    //     return config;
-    // };
 
     render() {
         return (
@@ -144,15 +161,15 @@ class App extends React.Component {
                         )}
                     />
                     <Route
-                    exact={true}
-                    path="/reports"
-                    render={() => (
-                        <div className="App">
-                            <Nav />
-                            <Reports />
-                        </div>
-                    )}
-                />
+                        exact={true}
+                        path="/reports"
+                        render={() => (
+                            <div className="App">
+                                {/* <Nav /> */}
+                                <Reports />
+                            </div>
+                        )}
+                    />
                     <Route
                         render={() => (
                             <div className="App">
@@ -162,7 +179,6 @@ class App extends React.Component {
                     />
                 </Switch>
             </div>
-
         );
     }
 }

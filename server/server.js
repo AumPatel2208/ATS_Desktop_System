@@ -12,12 +12,14 @@ const url = config.URI;
 // const config = require('./config');
 const app = express();
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 app.use(
     bodyParser.urlencoded({
         extended: true
     })
 );
 app.use(bodyParser.json());
+app.use(cookieParser(config.jwt));
 
 //to connect react port 3000 with
 var cors = require('cors');

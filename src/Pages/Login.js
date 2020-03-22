@@ -8,6 +8,7 @@ import axios from 'axios';
 import CheckStore from '../store/CheckStore';
 import { useStoreState } from 'pullstate';
 import { UserStore } from '../store/UserStore.js';
+import { Redirect } from 'react-router-dom';
 
 let apiLinks = require('../api/config.json');
 
@@ -16,35 +17,31 @@ export default function Login(props) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [staffMemebers, setStaffMembers] = useState([{}]);
+    const [isSignedIn, setIsSignedIn] = useState(false);
 
     //validation for form
     function validateForm() {
         return username.length > 0 && password.length > 0;
     }
-
+    // var isDone = false;
     //Do get request when functional component is mounted/updated
     useEffect(() => {
         let mounted = true;
-        axios.get(apiLinks.STAFFMEMBERS).then(res => {
+
+        axios.get(apiLinks.STAFFMEMBERS).then(async res => {
             if (mounted) {
-                const tempStaffMemebers = res.data;
+                const tempStaffMemebers = await res.data;
                 setStaffMembers(tempStaffMemebers);
             }
         });
         return () => (mounted = false);
-    });
+    }, []);
 
     //Global State
     // eslint-disable-next-line no-unused-vars
     const User = useStoreState(UserStore, s => s.UserType);
     // eslint-disable-next-line no-unused-vars
     const IsAuthenticated = useStoreState(UserStore, s => s.IsAuthenticated);
-
-    // const { UserID, UserType, isLoggedIn } = useStoreState(UserStore, s => ({
-    //   UserID: s.UserID,
-    //   UserType: s.UserType,
-    //   isLoggedIn: false
-    // }));
 
     function handleSubmit(event) {
         // Headers
@@ -57,26 +54,22 @@ export default function Login(props) {
         axios
             .post(apiLinks.SECURE, { username, password }, headersConfig)
             .then(res => {
-                // dispatch({
-                //     //this dispatch sends the following data to the reducer
-                //     type: LOGIN_SUCCESS,
-                //     payload: res.data // this return the user data and the token
-                // })
                 var staff = staffMemebers.filter(
                     staffMemeber => staffMemeber._id === res.data.staff.id
                 );
                 staff = { ...staff };
                 staff = staff[0];
-                localStorage.setItem('token', res.data.token);
+                // localStorage.setItem('token', res.data.token);
+
                 UserStore.update(s => {
                     s.User = staff;
                     s.IsAuthenticated = true; // need to move later after jwtAuthentication
+                    setIsSignedIn(true);
                 });
             })
             .catch(err => {
                 alert('Login Failed! \n Error: ' + err);
             });
-
         event.preventDefault();
     }
 
@@ -112,6 +105,8 @@ export default function Login(props) {
                 </form>
             </div>
             <CheckStore></CheckStore>
+
+            {isSignedIn ? <Redirect to="/"></Redirect> : null}
         </Container>
     );
 }

@@ -31,9 +31,22 @@ router.get('/', (q, a) => {
         .then(staffMembers => a.json(staffMembers));
 });
 
+//find one staff based on their id
+router.get('/:id', (q, a) => {
+    Staff.findById(q.params.id).then(staff => {
+        var staffWithoutPass = staff;
+        // delete staffWithoutPass.password;
+        staffWithoutPass.password = undefined;
+
+        a.json(staffWithoutPass);
+    });
+});
+
 //find and update one staff by code
 router.put('/', (q, a) => {
-    Staff.findByIdAndUpdate(q.params.advisorCode, q.body).then(a.json(post));
+    Staff.findByIdAndUpdate(q.params.advisorCode, q.body).then(item =>
+        a.json(item)
+    );
 });
 
 //Delete one staff
