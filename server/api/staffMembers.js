@@ -4,7 +4,6 @@ const Staff = require('../models/Staff');
 const bcrypt = require('bcryptjs');
 const salt = 10;
 
-//TODO: fix error handling
 
 // q= query, a = answer
 // request   response

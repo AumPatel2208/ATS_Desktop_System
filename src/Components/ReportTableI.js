@@ -17,14 +17,17 @@ export default class ReportTableI extends Component {
         saleT: 'saleType',
         code: 'advisorCode',
         inputCode: '',
-        saleTypeValue: 'Choose Sale Type'
+        saleTypeValue: 'Choose Sale Type',
+        ed: '',
+        sd: ''
     };
-//TODO: add in advisor filtering so just one advisor
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
-        axios.get(apiLinks.SALES).then(res => {
+        let start = this.state.sd;
+        let end = this.state.ed;
+        axios.get(apiLinks.SALES +'/byDate',{params:{start, end}}).then(res => {
             const sales = res.data;
-            this.setState({ sales });
+            this.setState({sales});
         });
     }
 
@@ -114,14 +117,25 @@ export default class ReportTableI extends Component {
 
                             </Dropdown.Menu>
                         </Dropdown>
-                        <FormLabel>Enter Start Date: DD/MM/YYYY</FormLabel>
+                        <FormLabel>From</FormLabel>
                         <FormControl
                             autoFocus
                             type="string"
-                            value={this.state.sales.dateinput}
+                            value={this.state.sd}
                             onChange={e => {
                                 this.setState({
-                                    dateinput: e.target.value
+                                    sd: e.target.value
+                                });
+                            }}
+                        />
+                        <FormLabel>To</FormLabel>
+                        <FormControl
+                            autoFocus
+                            type="string"
+                            value={this.state.ed}
+                            onChange={e => {
+                                this.setState({
+                                    ed: e.target.value
                                 });
                             }}
                         />
@@ -139,13 +153,22 @@ export default class ReportTableI extends Component {
                         <Button
                             bssize="medium"
                             variant="outline-danger"
-                            onClick={() => this.setState({
+                            onClick={() => {
+                                let start = this.state.sd;
+                                let end = this.state.ed;
+
+                                axios.get( apiLinks.BLANKS +'/byDate',{params:{start, end}}).then(res => {
+                                    const sales = res.data;
+                                    this.setState({sales});
+                                });
+
+                                this.setState({
                                 sales: this.state.sales.filter(
                                     sale =>
                                             String(sale[this.state.code]) ===
                                          String(this.state.inputCode))
 
-                            })}
+                            })}}
                             block
                         >
                             Generate Report

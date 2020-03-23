@@ -20,12 +20,15 @@ export default class ReportTableG extends Component {
         saleTypeValue: 'Choose Sale Type',
         summedValues: [],
         dict: {},
+        sd: '',
+        ed: ''
     };
 
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
-        axios.get(apiLinks.SALES).then(res => {
-
+        let start = this.state.sd;
+        let end = this.state.ed;
+        axios.get(apiLinks.SALES +'/byDate',{params:{start, end}}).then(res => {
             const sales = res.data;
             this.setState({sales});
         });
@@ -109,17 +112,46 @@ export default class ReportTableG extends Component {
 
         return (
             <Container>
+                <FormLabel>From</FormLabel>
+                <FormControl
+                    autoFocus
+                    type="string"
+                    value={this.state.sd}
+                    onChange={e => {
+                        this.setState({
+                            sd: e.target.value
+                        });
+                    }}
+                />
+                <FormLabel>To</FormLabel>
+                <FormControl
+                    autoFocus
+                    type="string"
+                    value={this.state.ed}
+                    onChange={e => {
+                        this.setState({
+                            ed: e.target.value
+                        });
+                    }}
+                />
                 <Form>
-
                     <FormGroup>
                         <Button
                             bssize="medium"
                             variant="outline-danger"
-//                            onClick={() => this.aggregateSales()
-                                onClick={() => this.setState({
+
+                                onClick={() =>{
+                                    let start = this.state.sd;
+                                    let end = this.state.ed;
+                                    axios.get(apiLinks.SALES +'/byDate',{params:{start, end}}).then(res => {
+                                    const sales = res.data;
+                                    this.setState({sales});
+                                });
+
+                                    this.setState({
                                     sales: this.aggregateSales()
                                 })
-                            }
+                            }}
                         >
 
                             Generate Report

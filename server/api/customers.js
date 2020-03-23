@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-//TODO: fix error handling
 const Customer = require('../models/Customer');
 // q= query, a = answer
 

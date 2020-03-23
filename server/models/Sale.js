@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-//TODO
-// Add id in??
 const SaleSchema = new Schema({
     ticketNumber: {
         type: String,

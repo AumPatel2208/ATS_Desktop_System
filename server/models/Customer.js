@@ -1,8 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-//TODO
-// Add id in????
-// fix int issues
 const CustomerSchema = new Schema({
     firstName: {
         type: String,

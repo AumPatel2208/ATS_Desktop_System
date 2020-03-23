@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-//TODO: fix error handling
 const Sale = require('../models/Sale');
 
 /*
@@ -80,11 +79,16 @@ router.get('/',(q,a)=>{
 
 
 // find all sales by payment type
-router.get('/', (q, a) => {
-    Sale.find(q.param.paymentMethod)
-        .sort({ date: -1 })
+router.get('/byDate',(q,a)=>{
+    // x = JSON.parse(q.body);
+    let sd = q.query.start;
+    let ed = q.query.end;
+    console.log(q.url);
+    Sale.find({date:{$lte:ed, $gte:sd}})
         .then(sales => a.json(sales));
+
 });
+
 
 // find sales by advisor code
 router.get('/', (q, a) => {
