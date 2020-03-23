@@ -16,13 +16,17 @@ export default function Blanks() {
         event.preventDefault();
         console.log('hello');
 
-        const tempBlanks = {
-            batchValues,
-            date
-        };
-        axios.post(apiLinks.BLANKS, tempBlanks).then(response => {
-            console.log(response);
-        });
+       // const tempBlanks = {
+       //     batchValues,
+       //     date
+       // };
+        var obj = { batchValues: batchValues, date:date};
+        const tempBlanks = JSON.stringify();
+        axios.post(apiLinks.BLANKS, { batchValues: batchValues, date: date}).then(response => {
+            //axios.post(apiLinks.BLANKS, tempBlanks).then(response => {
+                console.log(response);
+            });
+
     }
     return (
         <Container>

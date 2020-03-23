@@ -4,15 +4,15 @@ const Schema = mongoose.Schema;
 const BlankSchema = new Schema({
     batchValues: {
         type: String,
-        required: true
+
     },
     date:{
         type: String,
-        required: true
+
     },
     batchType:{
         type: String,
-        required: true
+
     },
     amount:{
         type: String
