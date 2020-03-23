@@ -32,6 +32,7 @@ import Nav from './Components/Navbar';
 import Login from './Pages/Login';
 import Home from './Pages/Home';
 import NotFound from './Pages/404';
+import Restricted from './Pages/Restricted';
 import RegisterStaff from './Pages/RegisterStaff';
 
 import Reports from './Pages/Reports';
@@ -40,78 +41,39 @@ import Customers from './Pages/Customers';
 import { CustomerUpdate } from './Components/CustomerUpdate';
 import { Authenticate } from './Authenticate';
 
+const apiLinks = require('./api/config.json');
+
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userID: {}
+            userID: '',
+            staff: undefined,
+            isAuthenticated: false
         };
     }
 
-    componentDidMount() {
-        // //Loading User
-        // axios
-        //     .get('api/secure/staff', () => {
-        //         // get token from local storage
-        //         const token = localStorage.token;
-        //         // Headers
-        //         const config = {
-        //             headers: {
-        //                 'Content-type': 'application/json'
-        //             }
-        //         };
-        //         // if token, add to headers
-        //         if (token) {
-        //             config.headers['x-auth-token'] = token;
-        //         }
-        //         return config;
-        //     })
-        //     .then(res => {
-        //         console.log(res.data);
-        //     })
-        //     .catch(err => {
-        //         console.log(err);
-        //     });
-        // axios.get('api/secure/staff');
-        // axios.get('api/secure/staff', this.tokenConfig()).then(res => {
-        //     console.log(res.data);
-        // });
-        // console.log(localStorage.token);
-        //() => {
-        // // return { token: localStorage.token };
-        // // get token from local storage
-        // const token = localStorage.token;
-        // // Headers
-        // const config = {
-        //     headers: {
-        //         'Content-type': 'application/json'
-        //     }
-        // };
-        // // if token, add to headers
-        // if (token) {
-        //     config.headers['x-auth-token'] = token;
-        // }
-        // return config;
-
-        // axios
-        //     .get(
-        //         'api/secure/staff',
-        //         { token: localStorage.token },
-        //         { headers: { 'Content-Type': 'application/json' } }
-        //     )
-        //     .then(res => {
-        //         this.setState({ ...this.state, tokenPayload: res.data });
-        //     });
-
-        axios.get('api/secure/staff').then(res => {
+    async componentDidMount() {
+        //Loading User
+        await axios.get('api/secure/staff').then(res => {
             this.setState({ ...this.state, userID: res.data });
+        });
+        await axios.get('api/staffMembers/' + this.state.userID).then(res => {
+            this.setState({
+                ...this.state,
+                staff: res.data,
+                isAuthenticated: true
+            });
         });
     }
 
     render() {
         return (
             <div>
-                <Nav></Nav>
+                <Nav
+                    isAuthenticated={this.state.isAuthenticated}
+                    user={this.state.user}
+                ></Nav>
                 <Switch>
                     <Route
                         exact={true}
@@ -127,7 +89,11 @@ class App extends React.Component {
                         path="/customers"
                         render={() => (
                             <div className="App">
-                                <Customers />
+                                {this.state.isAuthenticated ? (
+                                    <Customers />
+                                ) : (
+                                    <Restricted></Restricted>
+                                )}
                             </div>
                         )}
                     ></Route>

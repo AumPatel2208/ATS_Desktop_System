@@ -106,7 +106,9 @@ export default function Login(props) {
             </div>
             <CheckStore></CheckStore>
 
-            {isSignedIn ? <Redirect to="/"></Redirect> : null}
+            {isSignedIn ? (
+                <Redirect to="/">{window.location.reload(false)}</Redirect>
+            ) : null}
         </Container>
     );
 }

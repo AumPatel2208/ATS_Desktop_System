@@ -7,12 +7,17 @@ const exchangeRates = require('./api/exchangeRates');
 const sales = require('./api/sales');
 const staffMembers = require('./api/staffMembers');
 const secure = require('./api/secure');
+const backup = require('./api/backup');
+const restore = require('./api/restore');
 const config = require('../server/config/db');
 const url = config.URI;
 // const config = require('./config');
 const app = express();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const backupFunction = require('./backupFunction');
+var CronJob = require('cron').CronJob;
+
 app.use(
     bodyParser.urlencoded({
         extended: true
@@ -29,7 +34,7 @@ app.use(cors());
 //const db ='mongodb+srv://Aum:Aum@cluster0-zkn6t.mongodb.net/test?retryWrites=true&w=majority'; //config.get('URI');
 
 //connecting the database
-mongoose.connect(url, { useNewUrlParser: true });
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // to test the connection
 const db = mongoose.connection;
@@ -46,9 +51,23 @@ app.use('/api/exchangeRates', exchangeRates);
 app.use('/api/sales', sales);
 app.use('/api/staffMembers', staffMembers);
 app.use('/api/secure', secure);
+app.use('/api/backup', backup);
+app.use('/api/restore', restore);
 
 //TODO add in error handling to forward to error page
 
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
+
+// 12pm every day
+// '00 12 * 0-11 0-6'
+var job = new CronJob(
+    '00 12 * 0-11 0-6',
+    function() {
+        backupFunction('', true);
+    },
+    null,
+    true,
+    'GMT'
+);

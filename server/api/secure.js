@@ -71,7 +71,7 @@ router.get('/staff', (q, a) => {
         if (err) {
             a.json({ err: err });
         }
-        console.log(decoded.id);
+        // console.log('Secure: ', decoded.id);
 
         a.json(decoded.id);
     });

@@ -1,32 +1,9 @@
-// import React from 'react';
-// import { Link } from 'react-router-dom';
-
-// const NotFound = () => (
-//     <div>
-//         {/* <img
-//             src={PageNotFound}
-//             style={{
-//                 width: 400,
-//                 height: 400,
-//                 display: 'block',
-//                 margin: 'auto',
-//                 position: 'relative'
-//             }}
-//         /> */}
-//         <center>
-//             <h3>Error 404: Page Not Found</h3>
-//             <Link to="/">Return to Home Page</Link>
-//         </center>
-//     </div>
-// );
-// export default NotFound;
-
 import React, { Component } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
-import '../Styles/404.scss';
+import '../Styles/Restricted.scss';
 
-import fourOhFour from '../assets/img/fourOhFour.svg';
+import fourOhFour from '../assets/img/Restricted.svg';
 // import astrodude from '../assets/img/astrodude.png';
 import Container from 'reactstrap/lib/Container';
 
@@ -54,12 +31,12 @@ class App extends Component {
     render() {
         return (
             <Container>
-                <div className="flex main-wrap justifyCenter">
-                    <div className="main-container flex">
+                <div className="res-flex main-wrap justifyCenter">
+                    <div className="res-main-container flex">
                         <CSSTransition
                             in={this.state.pageLoaded}
                             timeout={600}
-                            classNames="fourOhFour"
+                            classNames="res-fourOhFour"
                             onEntered={() => {
                                 this.setState({
                                     fourOhFourLoaded: true,
@@ -71,7 +48,7 @@ class App extends Component {
                         >
                             {state => (
                                 <div
-                                    className="fourOhFour flex justifyCenter"
+                                    className="res-fourOhFour flex justifyCenter"
                                     onMouseMove={e => {
                                         this.onMouseMove(e);
                                     }}
@@ -85,7 +62,7 @@ class App extends Component {
                                     <img src={fourOhFour} alt="oops" />
                                     {/* <img
                                         src={astrodude}
-                                        className="astrodude"
+                                        className="res-astrodude"
                                         alt="oops"
                                         style={{
                                             paddingTop: this.state.astrotop,
@@ -98,17 +75,18 @@ class App extends Component {
                         <CSSTransition
                             in={this.state.fourOhFourLoaded}
                             timeout={600}
-                            classNames="error-text"
+                            classNames="res-error-text"
                             unmountOnExit
                         >
                             {state => (
-                                <div className="error-text flex justifyCenter">
+                                <div className="res-error-text flex justifyCenter">
                                     <h3
                                         style={{
                                             color: 'white'
                                         }}
                                     >
-                                        Oops… Looks like you got lost
+                                        Oops… Looks like you do not have access
+                                        to this page.
                                     </h3>
                                     <a href="/">GO HOME</a>
                                 </div>

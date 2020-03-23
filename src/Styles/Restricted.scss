@@ -1,0 +1,111 @@
+// .main-wrap {
+//     background-image: url('../assets/img/stars.svg');
+//     background-size: 60%;
+//     margin: 30px;
+//     width: calc(100% - 60px);
+//     height: calc(100% - 60px);
+// }
+.res-main-container {
+    width: 100%;
+    height: 100%;
+    padding: 50px;
+    border-radius: 50px;
+    align-self: center;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #3a1717;
+    background-image: url('../assets/img/stars.svg');
+    // background-color: $main-bg;
+}
+.res-fourOhFour {
+    position: relative;
+    opacity: 0;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    &.res-fourOhFour-enter-done {
+        opacity: 1;
+        transition: all 0.8s ease-in-out;
+        .res-astrodude {
+            transition: all 0.8s ease-in-out;
+        }
+    }
+    img {
+        max-width: 100%;
+        &:first-child {
+            z-index: 1;
+        }
+    }
+}
+.res-astrodude {
+    position: absolute;
+    align-self: center;
+    transition: all 0.8s ease-in-out;
+}
+.res-error-text {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    opacity: 0;
+    &.res-error-text-enter-done {
+        opacity: 1;
+        transition: all 0.8s ease-in-out;
+        h3 {
+            padding-top: 50px;
+            padding-bottom: 30px;
+            transition: all 0.8s ease-in-out;
+        }
+    }
+    h3 {
+        margin: 0px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        font-size: 22px;
+        font-weight: 300;
+    }
+    a {
+        color: #ffffff;
+        font-size: 16px;
+        text-decoration: none;
+        font-weight: 700;
+        padding: 15px 40px;
+        border: 3px solid #ffffff;
+        position: relative;
+        z-index: 1;
+        transition: all 0.4s ease-in-out;
+        &:before {
+            content: '';
+            position: absolute;
+            height: 0%;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #ffffff;
+            z-index: -1;
+            transition: all 0.4s ease-in-out;
+        }
+        &:hover {
+            color: #3a1717;
+            &:before {
+                height: 100%;
+            }
+        }
+        &:active {
+            transform: scale(0.9);
+        }
+    }
+}
+
+@media only screen and (max-width: 920px) {
+    .res-main-wrap {
+        background-size: unset;
+        .res-main-container {
+            width: 100%;
+            height: unset;
+            padding: 100px 0px;
+            .res-astrodude {
+                width: 15%;
+            }
+        }
+    }
+}

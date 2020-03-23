@@ -40,6 +40,7 @@ router.get('/:id', (q, a) => {
 
         a.json(staffWithoutPass);
     });
+    // console.log('Staff');
 });
 
 //find and update one staff by code
