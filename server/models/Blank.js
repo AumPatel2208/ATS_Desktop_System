@@ -7,7 +7,7 @@ const BlankSchema = new Schema({
 
     },
     date:{
-        type: String,
+        type: Date,
 
     },
     batchType:{
