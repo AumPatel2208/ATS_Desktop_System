@@ -44,6 +44,9 @@ export default class ReportTableI extends Component {
             paymentMethod,
             advisorCode,
             commissionRate,
+            creditCardNum,
+            expDate,
+            securityCode,
             saleDate,
             notes,
             saleType
@@ -57,6 +60,9 @@ export default class ReportTableI extends Component {
                     <td>{advisorCode}</td>
                     <td>{saleDate}</td>
                     <td>{commissionRate}</td>
+                    <td>{creditCardNum}</td>
+                    <td>{expDate}</td>
+                    <td>{securityCode}</td>
                     <td>{notes}</td>
                     <td>{saleType}</td>
                     <td>
@@ -186,6 +192,9 @@ export default class ReportTableI extends Component {
                         <th>Advisor Code</th>
                         <th>USD Exchange Rate</th>
                         <th>Commission Rate</th>
+                        <th>Card Number</th>
+                        <th>Expiration Date</th>
+                        <th>Security Code</th>
                         <th>Sale Date</th>
                         <th>Notes</th>
                     </tr>
@@ -201,9 +210,10 @@ export default class ReportTableI extends Component {
                              advisorCode,
                              USDExchangeRate,
                              commissionRate,
+                             creditCardNum,
+                             expDate,
+                             securityCode,
                              saleDate,
-// add in credit data
-
                              notes
                          }) => (
                             <Fragment key={_id}>
@@ -214,11 +224,12 @@ export default class ReportTableI extends Component {
                                     currency,
                                     paymentMethod,
                                     commissionRate,
+                                    creditCardNum,
+                                    expDate,
+                                    securityCode,
                                     advisorCode,
                                     USDExchangeRate,
                                     saleDate,
-                                    // add in credit data
-
                                     notes
                                 )}
                             </Fragment>
