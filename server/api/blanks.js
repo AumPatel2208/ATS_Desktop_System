@@ -53,16 +53,10 @@ router.get('/byDate',(q,a)=>{
    // x = JSON.parse(q.body);
     let sd = q.query.start;
     let ed = q.query.end;
+    console.log(q.url);
     Blank.find({date:{$lte:ed, $gte:sd}})
         .then(blanks => a.json(blanks));
-    /*
-    Blank.find()
-        .then(sd => a.json.startEnd.start)
-        .then(ed =>)
-        .methods.getDates(x.startEnd.start, x.startEnd.end)
 
-
-     */
 
     });
 

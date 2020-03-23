@@ -34,13 +34,15 @@ const BlankSchema = new Schema({
     }
 });
 // eslint-disable-next-line no-undef
-
+/*
 BlankSchema.method.getDates = function getDates(sd,ed){
     var dateRange = Blank.find({
         date:{$lte:ed, $gte:sd}
     });
     return dateRange;
 };
+
+ */
 
 
 module.exports = Blank = mongoose.model('Blank', BlankSchema);

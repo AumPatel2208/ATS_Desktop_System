@@ -20,23 +20,23 @@ export default class ReportTurnoverT extends Component{
         assigns: [],
         assign: 'assigned',
         batch: 'batchValues',
-        sd: '03042019',
-        ed: '03052019'
+        sd: '',
+        ed: ''
     };
 //TODO: handle discounts in the customer section
     //runs when component mounts, use to gets the data from db
+
     componentDidMount() {
-        const startEnd = {
-            start : this.state.sd,
-            end: this.state.ed
-        };
+            let start = this.state.sd;
+            let end = this.state.ed;
 
-
-        axios.get( apiLinks.BLANKS +'/byDate', {startEnd}).then(res => {
+        axios.get( apiLinks.BLANKS +'/byDate',{params:{start, end}}).then(res => {
             const blanks = res.data;
             this.setState({blanks});
         });
     }
+
+
 
 
 
@@ -88,16 +88,45 @@ export default class ReportTurnoverT extends Component{
 
         return (
             <Container>
+
+                <FormLabel>From</FormLabel>
+                <FormControl
+                    autoFocus
+                    type="string"
+                    value={this.state.sd}
+                    onChange={e => {
+                        this.setState({
+                            sd: e.target.value
+                        });
+                    }}
+                />
+                <FormLabel>To</FormLabel>
+                <FormControl
+                    autoFocus
+                    type="string"
+                    value={this.state.ed}
+                    onChange={e => {
+                        this.setState({
+                            ed: e.target.value
+                        });
+                    }}
+                />
                 <Button
                     bssize="medium"
                     variant="outline-danger"
-                    //                            onClick={() => this.aggregateSales()
-                    onClick={() => this.setState({
-                        assigns: this.filterAssigned()
-                    })
-                    }
+                    onClick={() =>{
+
+                        let start = this.state.sd;
+                        let end = this.state.ed;
+
+                        axios.get( apiLinks.BLANKS +'/byDate',{params:{start, end}}).then(res => {
+                            const blanks = res.data;
+                            this.setState({blanks});
+                        });
+                    }}
+
                 >
-                    FILTERS
+                    Generate Report
                 </Button>
                 <h4>Received Blanks</h4>
                 <Table className="mt-4">
