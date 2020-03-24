@@ -42,6 +42,7 @@ import { CustomerUpdate } from './Components/CustomerUpdate';
 import { Authenticate } from './Authenticate';
 import BackupRestore from './Pages/BackupRestore';
 import ExRates from "./Pages/ExRates";
+import Sale from "./Pages/Sale";
 
 const apiLinks = require('./api/config.json');
 
@@ -163,6 +164,15 @@ class App extends React.Component {
                         render={() => (
                             <div className="App">
                                 <ExRates></ExRates>
+                            </div>
+                        )}
+                    />
+                    <Route
+                        exact={true}
+                        path="/sale"
+                        render={() => (
+                            <div className="App">
+                                <Sale></Sale>
                             </div>
                         )}
                     />

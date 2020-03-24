@@ -10,7 +10,6 @@ let apiLinks = require('../api/config.json');
 export default class RatesForm extends Component{
     state = {
         rates: [],
-        today: new Date(),
         date: new Date(),
         eRate: "",
         code: ""

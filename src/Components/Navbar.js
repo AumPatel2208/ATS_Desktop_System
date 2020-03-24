@@ -80,6 +80,11 @@ class Navigation extends Component {
                                 Exchange Rates
                             </NavLink>
                         </NavItem>
+                        <NavItem>
+                            <NavLink tag={Link} to="/sale">
+                                Sell Ticket
+                            </NavLink>
+                        </NavItem>
                         {/* <NavItem>
               <NavLink tag={Link} to="/login">
                 Login

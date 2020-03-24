@@ -76,7 +76,13 @@ router.get('/',(q,a)=>{
         .then(sales => a.json(sales));
 
 });
+//FOR THE REPORTS - gets sale type
+router.get('/customer',(q,a)=>{
+    Sale.find()
+        .sort({date: -1})
+        .then(sales => a.json(sales));
 
+});
 
 // find all sales by payment type
 router.get('/byDate',(q,a)=>{
