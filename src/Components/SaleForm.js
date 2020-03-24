@@ -3,11 +3,14 @@ import React, {Component, Fragment} from "react";
 import {Dropdown, Form, FormControl, FormGroup, FormLabel} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import axios from "axios";
+import {useStoreState} from "pullstate";
+import {UserStore} from "../store/UserStore";
 
 let apiLinks = require('../api/config.json');
 
 
 export default class SaleForm extends Component{
+
     state = {
         sales: [],
         date: new Date(),
@@ -23,13 +26,72 @@ export default class SaleForm extends Component{
         expDate: "-",
         secCode: "-",
         rate: "",
-        adCode: "",
+        adCode:"",
         notes:"",
         USDExchangeRate: ""
     };
 
+    creditHandler(){
+        if (this.state.method === "CreditCard"){
+            return <Fragment>
 
 
+                <FormLabel>Credit Card Number</FormLabel>
+                <FormControl
+                    autoFocus
+                    type="string"
+                    value={this.state.creditNum}
+                    onChange={e => {
+                        this.setState({
+                            creditNum: e.target.value
+                        });
+                    }}
+                />
+                <FormLabel>Expiration Date</FormLabel>
+                <FormControl
+                    autoFocus
+                    type="string"
+                    value={this.state.expDate}
+                    onChange={e => {
+                        this.setState({
+                            expDate: e.target.value
+                        });
+                    }}
+                />
+                <FormLabel>Security Code</FormLabel>
+                <FormControl
+                    autoFocus
+                    type="string"
+                    value={this.state.secCode}
+                    onChange={e => {
+                        this.setState({
+                            secCode: e.target.value
+                        });
+                    }}
+                />
+
+            </Fragment>
+        }
+
+    }
+
+    taxHandler(){
+        if(this.state.saleType === "Interline"){
+            return <Fragment>
+                <FormLabel>Local Tax</FormLabel>
+                <FormControl
+                    autoFocus
+                    type="string"
+                    value={this.state.Tlocal}
+                    onChange={e => {
+                        this.setState({
+                            Tlocal: e.target.value
+                        });
+                    }}
+                />
+            </Fragment>
+        }
+    }
     handleSubmit(event) {
         const newSale = {
             ticketNumber: this.state.tickNum,
@@ -54,6 +116,10 @@ export default class SaleForm extends Component{
         event.preventDefault();
         console.log('hello');
 
+        let User = useStoreState(UserStore, s=> s.User);
+        this.setState({adCode: User.advisorCode});
+        this.setState({commissionRate: User.commissionRate});
+
         axios.post(apiLinks.SALES, newSale ).then(response => {
             console.log(response);
         });
@@ -65,6 +131,7 @@ export default class SaleForm extends Component{
         return (
             <Container>
                 <Form>
+
                     <Dropdown
                         onSelect={key => {
                             this.setState({saleType: key});
@@ -85,7 +152,6 @@ export default class SaleForm extends Component{
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-
                     <Dropdown
                         onSelect={key => {
                             this.setState({method: key});
@@ -106,10 +172,6 @@ export default class SaleForm extends Component{
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-
-
-
-
 
 
 
@@ -135,17 +197,11 @@ export default class SaleForm extends Component{
                             });
                         }}
                     />
-                    <FormLabel>Local Tax</FormLabel>
-                    <FormControl
-                        autoFocus
-                        type="string"
-                        value={this.state.Tlocal}
-                        onChange={e => {
-                            this.setState({
-                                Tlocal: e.target.value
-                            });
-                        }}
-                    />
+
+                    <Fragment>{this.creditHandler()}</Fragment>
+                    <Fragment>{this.taxHandler()}</Fragment>
+
+
                     <FormLabel>Other Tax</FormLabel>
                     <FormControl
                         autoFocus
@@ -157,10 +213,7 @@ export default class SaleForm extends Component{
                             });
                         }}
                     />
-                    <br/>
-<FormLabel>ADD COMMISSION RATE HANDLING </FormLabel>
-                    <FormLabel>ADD HANDLING TO GET CODE OF ISGNED IN ADVISOR </FormLabel>
-                    <br/>
+
                     <FormLabel>Customer Name</FormLabel>
                     <FormControl
                         autoFocus

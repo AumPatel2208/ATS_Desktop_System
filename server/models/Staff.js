@@ -29,6 +29,10 @@ const StaffSchema = new Schema({
     advisorCode: {
         type: Number
         // required: true
+    },
+    commissionRate: {
+        type: Number
+
     }
 });
 // eslint-disable-next-line no-undef

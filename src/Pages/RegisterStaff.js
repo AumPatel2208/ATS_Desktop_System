@@ -26,6 +26,7 @@ export default function RegisterStaff(props) {
     const [address, setAddress] = useState('');
     const [staffMembers, setStaffMembers] = useState([{}]);
     const [advisorCode, setAdvisorCode] = useState('');
+    const [commissionRate, setCommissionRate] = useState('');
     //validation for form
     function validateForm() {
         return (
@@ -34,6 +35,7 @@ export default function RegisterStaff(props) {
             confirmPassword === password &&
             firstName.length > 0 &&
             lastName.length > 0 &&
+            commissionRate.length >0 &&
             staffType !== 'Choose'
         );
     }
@@ -62,7 +64,8 @@ export default function RegisterStaff(props) {
                 username,
                 password,
                 staffType,
-                advisorCode
+                advisorCode,
+                commissionRate
             }
         ];
         // axios
@@ -134,6 +137,14 @@ export default function RegisterStaff(props) {
                             onChange={e => setConfirmPassword(e.target.value)}
                             type="password"
                         />
+                        <FormGroup controlId="commissionRate" bssize="large">
+                            <FormLabel>Commission Rate</FormLabel>
+                            <FormControl
+                                value={commissionRate}
+                                onChange={e => setCommissionRate(e.target.value)}
+
+                            />
+                        </FormGroup>
                     </FormGroup>
                     <FormGroup controlId="staffType" bssize="large">
                         <FormLabel>Staff Type</FormLabel>

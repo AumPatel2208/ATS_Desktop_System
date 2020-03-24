@@ -37,6 +37,14 @@ export default class AssignBlanks extends Component{
 
     }
 
+    handleReAssignSubmit(event) {
+        event.preventDefault();
+        console.log('hello');
+
+       //ADD REASSIGN HEREEEEEEEEEEEEEEE
+
+    }
+
     render() {
         return (
             <Container>
@@ -103,10 +111,10 @@ export default class AssignBlanks extends Component{
                 </FormGroup>
                 <Button
                     onClick={e => {
-                        this.handleSubmit(e)
+                        this.handleReAssignSubmit(e)
                     }}
                 >
-                    Add Blanks
+                    Re-assign Blanks
                 </Button>
             </Container>
 
