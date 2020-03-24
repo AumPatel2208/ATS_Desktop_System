@@ -1,4 +1,6 @@
 import React, { Component, Fragment, } from 'react';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 import { Container, Table, Button } from 'reactstrap';
 import axios from 'axios';
 import {
@@ -21,14 +23,16 @@ export default class ReportTurnoverT extends Component{
         assign: 'assigned',
         batch: 'batchValues',
         sd: '',
+        startDate: new Date(),
+        endDate: new Date(),
         ed: ''
     };
 //TODO: handle discounts in the customer section
     //runs when component mounts, use to gets the data from db
 
     componentDidMount() {
-            let start = this.state.sd;
-            let end = this.state.ed;
+            let start = this.state.startDate;
+            let end = this.state.endDate;
 
         axios.get( apiLinks.BLANKS +'/byDate',{params:{start, end}}).then(res => {
             const blanks = res.data;
@@ -88,36 +92,30 @@ export default class ReportTurnoverT extends Component{
 
         return (
             <Container>
+                <FormLabel>From:  </FormLabel>
+                <DatePicker
+                selected = {this.state.startDate}
+                onChange={ date=>
+                    this.setState({startDate: date.target.value})
+                }
+                />
+                <br/>
+                    <FormLabel>To:  </FormLabel>
+                <DatePicker
+                    selected = {this.state.endDate}
+                    onChange={ date=>
+                        this.setState({endDate: date.target.value})
+                    }
 
-                <FormLabel>From</FormLabel>
-                <FormControl
-                    autoFocus
-                    type="string"
-                    value={this.state.sd}
-                    onChange={e => {
-                        this.setState({
-                            sd: e.target.value
-                        });
-                    }}
                 />
-                <FormLabel>To</FormLabel>
-                <FormControl
-                    autoFocus
-                    type="string"
-                    value={this.state.ed}
-                    onChange={e => {
-                        this.setState({
-                            ed: e.target.value
-                        });
-                    }}
-                />
+                <br/>
                 <Button
                     bssize="medium"
                     variant="outline-danger"
                     onClick={() =>{
 
-                        let start = this.state.sd;
-                        let end = this.state.ed;
+                        let start = this.state.startDate;
+                        let end = this.state.endDate;
 
                         axios.get( apiLinks.BLANKS +'/byDate',{params:{start, end}}).then(res => {
                             const blanks = res.data;

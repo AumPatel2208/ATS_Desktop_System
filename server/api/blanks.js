@@ -5,12 +5,17 @@ const Blank = require('../models/Blank');
 router.post('/', (q, a) => {
     // const { blankNumber, assigned, used, batch } = q.body;
     //Blank.create(q.body).then(item => a.json(item));
-    const f = q.body[0].batchValues;
-    const b = f.indexOf("-");
-    const c = parseInt(f.substring(0,b));
-    const d = parseInt(f.substring(b+1, f.length));
 
+    const f = String(q.param.batchValues);
+console.log(f);
+    console.log(q.param.batchValues);
+    var x = f.split("-");
+    var c = (x[0]);
+    var d = (x[1]);
+    console.log(c);
+    console.log(d);
     let amount = d-c;
+
     let batchTp = "";
     if (f.substring(0-2)==="201"){
         batchTp = "Domestic";
@@ -20,14 +25,13 @@ router.post('/', (q, a) => {
     }
 
         newBlanks = {
-            ticketNumber: q.body[0].ticketNumber,
-            batchValues: q.body[0].batchValues,
-            date: q.body[0].date,
+            batchValues: q.param.batchValues,
+            date: q.param.date,
             batchType: batchTp,
             amount: amount,
-            advisorCode: q.body[0].advisorCode,
-            assigned: q.body[0].assigned,
-            used: q.body[0].used
+            advisorCode: q.param.advisorCode,
+            assigned: q.param.assigned,
+            used: q.param.used
 
         };
 
@@ -52,6 +56,7 @@ router.get('/byDate',(q,a)=>{
    // x = JSON.parse(q.body);
     let sd = q.query.start;
     let ed = q.query.end;
+
     console.log(q.url);
     Blank.find({date:{$lte:ed, $gte:sd}})
         .then(blanks => a.json(blanks));
