@@ -29,7 +29,7 @@ export default class AddBlanks extends Component{
         event.preventDefault();
         console.log('hello');
 
-        axios.post(apiLinks.BLANKS, ).then(response => {
+        axios.post(apiLinks.BLANKS ).then(response => {
             console.log(response);
         });
 

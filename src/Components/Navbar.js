@@ -75,6 +75,11 @@ class Navigation extends Component {
                                 Backup-Restore
                             </NavLink>
                         </NavItem>
+                        <NavItem>
+                            <NavLink tag={Link} to="/exchange-rates">
+                                Exchange Rates
+                            </NavLink>
+                        </NavItem>
                         {/* <NavItem>
               <NavLink tag={Link} to="/login">
                 Login
