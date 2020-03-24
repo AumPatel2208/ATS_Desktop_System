@@ -70,6 +70,11 @@ class Navigation extends Component {
                                 Blanks
                             </NavLink>
                         </NavItem>
+                        <NavItem>
+                            <NavLink tag={Link} to="/backup-restore">
+                                Backup-Restore
+                            </NavLink>
+                        </NavItem>
                         {/* <NavItem>
               <NavLink tag={Link} to="/login">
                 Login

@@ -11,8 +11,10 @@ module.exports = function restore(name) {
     terminal(command, err => {
         if (err) {
             console.log('x Restore Failed. Name : ', name, ', Error: ', err);
+            return false;
         } else {
             console.log('✔️ Restore Successful. Name : ', name);
+            return true;
         }
     });
 };

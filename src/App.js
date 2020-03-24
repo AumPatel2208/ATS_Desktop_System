@@ -40,6 +40,7 @@ import Blanks from './Pages/Blanks';
 import Customers from './Pages/Customers';
 import { CustomerUpdate } from './Components/CustomerUpdate';
 import { Authenticate } from './Authenticate';
+import BackupRestore from './Pages/BackupRestore';
 
 const apiLinks = require('./api/config.json');
 
@@ -143,6 +144,15 @@ class App extends React.Component {
                         render={() => (
                             <div className="App">
                                 <Blanks />
+                            </div>
+                        )}
+                    />
+                    <Route
+                        exact={true}
+                        path="/backup-restore"
+                        render={() => (
+                            <div className="App">
+                                <BackupRestore></BackupRestore>
                             </div>
                         )}
                     />

@@ -19,19 +19,28 @@ module.exports = function backup(name, isAuto) {
         'mongodump --uri="' + config.URI + '" --out="' + path + '" --gzip';
 
     terminal(command, err => {
-        if (err)
-            console.log(
-                'x Database Backup Failed. Status: ',
-                isAuto ? 'Auto' : 'Manual',
-                ', Error: ',
-                err
-            );
-        else
-            console.log(
-                '✔️ Database Backup Completed. Status: ',
-                isAuto ? 'Auto' : 'Manual',
-                ', Path: ',
-                path
-            );
+        if (err) {
+            var msg = () => {
+                return (
+                    'x Database Backup Failed. Status: ' +
+                    (isAuto ? 'Auto' : 'Manual') +
+                    ', Error: ' +
+                    err
+                );
+            };
+            console.log(msg);
+            return msg;
+        } else {
+            var msg = () => {
+                return (
+                    '✔️ Database Backup Completed. Status: ',
+                    isAuto ? 'Auto' : 'Manual',
+                    ', Path: ',
+                    path
+                );
+            };
+            console.log();
+            return msg;
+        }
     });
 };

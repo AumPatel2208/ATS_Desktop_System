@@ -4,11 +4,12 @@ const Staff = require('../models/Staff');
 const bcrypt = require('bcryptjs');
 const salt = 10;
 
-
 // q= query, a = answer
 // request   response
 
 router.post('/', (q, a) => {
+    console.log(q.body);
+
     q.body.map(staff => {
         var newStaff = {
             username: staff.username,

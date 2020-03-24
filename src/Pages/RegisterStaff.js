@@ -52,16 +52,19 @@ export default function RegisterStaff(props) {
 
     function handleSubmit(event) {
         event.preventDefault();
-        console.log('hello');
+        // console.log('hello');
 
-        const tempStaffMember = {
-            firstName,
-            lastName,
-            address,
-            username,
-            staffType,
-            advisorCode
-        };
+        const tempStaffMember = [
+            {
+                firstName,
+                lastName,
+                address,
+                username,
+                password,
+                staffType,
+                advisorCode
+            }
+        ];
         // axios
         //     .post('http://localhost:5000/api/staffMembers/', tempStaffMember)
         //     .then(response => {

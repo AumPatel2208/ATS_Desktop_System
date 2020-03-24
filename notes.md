@@ -3,26 +3,37 @@
 ## **Access**
 
 ### Customers
-- Office Manager
-- Travel Advisor
+
+-   Office Manager
+-   Travel Advisor
+
 ### Reports
-- Office Manager
-- Travel Advisor (some are restricted)
+
+-   Office Manager
+-   Travel Advisor (some are restricted)
 
 ### Blanks
-- Office Manager
-- System Administrator
+
+-   Office Manager
+-   System Administrator
 
 ### Register Staff
-- Office Manager
-- ?? system admin ??
+
+-   Office Manager
+-   ?? system admin ??
 
 ### Commission Rates
-- Office Manager
+
+-   Office Manager
 
 ### Exchange Rates
-- Office Manager
+
+-   Office Manager
 
 ### Backup Restore
-- System Administrator
-- 
+
+-   System Administrator
+
+## **_Issues_**
+
+-   Login Stopped working for some reason after implementing backup restore in the back end. code is in temp folder to compare

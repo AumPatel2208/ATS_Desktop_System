@@ -4,5 +4,7 @@
     "BLANKS": "/api/blanks",
     "SALES": "/api/sales",
     "STAFFMEMBERS": "/api/staffMembers",
-    "SECURE": "/api/secure"
+    "SECURE": "/api/secure",
+    "BACKUP": "/api/backup",
+    "RESTORE": "/api/restore"
 }

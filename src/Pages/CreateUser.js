@@ -49,7 +49,7 @@ export default function CreateUser() {
 
     function handleSubmit(event) {
         event.preventDefault();
-        console.log('hello');
+        // console.log('hello');
 
         const tempStaffMember = {
             firstName,
