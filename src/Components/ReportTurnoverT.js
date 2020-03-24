@@ -211,13 +211,8 @@ export default class ReportTurnoverT extends Component{
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.blanks.map(
-                        ({
-
-                             batchValues,
-                             amount,
-
-                         }) => (
+                    {this.state.blanks.map(({batchValues, amount
+                    })=> (
                             <Fragment >
                                 {row(
                                     batchValues,

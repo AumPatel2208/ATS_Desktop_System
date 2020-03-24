@@ -8,18 +8,14 @@ let apiLinks = require('../api/config.json');
 
 export default class AddBlanks extends Component{
     state = {
-        startDate: new Date(),
-        endDate: new Date(),
         batchValues: "",
         date: new Date()
 
     };
-//TODO: handle discounts in the customer section
     //runs when component mounts, use to gets the data from db
 
+    /*
     componentDidMount() {
-        let start = this.state.startDate;
-        let end = this.state.endDate;
 
         axios.get( apiLinks.BLANKS +'/byDate',{params:{start, end}}).then(res => {
             const blanks = res.data;
@@ -27,11 +23,13 @@ export default class AddBlanks extends Component{
         });
     }
 
+     */
+
     handleSubmit(event) {
         event.preventDefault();
         console.log('hello');
 
-        axios.post(apiLinks.BLANKS, { batchValues: this.state.batchValues, date: this.state.date}).then(response => {
+        axios.post(apiLinks.BLANKS, ).then(response => {
             console.log(response);
         });
 
