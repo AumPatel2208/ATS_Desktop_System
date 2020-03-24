@@ -40,7 +40,7 @@ export default function Blanks() {
         <Container>
             <Fragment>{displayHandler()}</Fragment>
             <br/>
-                <h3>Blank Stock</h3>
+                <h2>Blank Stock</h2>
                 <ReportTurnoverT></ReportTurnoverT>
         </Container>
     );

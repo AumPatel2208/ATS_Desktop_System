@@ -18,6 +18,7 @@ router.post('/', (q, a) => {
     }
 
     Staff.findOne({ username }).then(staff => {
+        console.log(staff);
         if (!staff)
             return a.status(400).json({ message: 'No such user exists' });
 

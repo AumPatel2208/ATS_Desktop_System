@@ -6,6 +6,7 @@ import {
     FormGroup,
     Dropdown, FormControl, FormLabel
 } from 'react-bootstrap';
+import DatePicker from "react-datepicker";
 
 const _ = require('lodash'); //Library to Change Cases of things
 
@@ -18,13 +19,13 @@ export default class ReportTableI extends Component {
         code: 'advisorCode',
         inputCode: '',
         saleTypeValue: 'Choose Sale Type',
-        ed: '',
-        sd: ''
+        startDate: new Date(),
+        endDate: new Date()
     };
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
-        let start = this.state.sd;
-        let end = this.state.ed;
+        let start = this.state.startDate;
+        let end = this.state.endDate;
         axios.get(apiLinks.SALES +'/byDate',{params:{start, end}}).then(res => {
             const sales = res.data;
             this.setState({sales});
@@ -123,28 +124,24 @@ export default class ReportTableI extends Component {
 
                             </Dropdown.Menu>
                         </Dropdown>
-                        <FormLabel>From</FormLabel>
-                        <FormControl
-                            autoFocus
-                            type="string"
-                            value={this.state.sd}
-                            onChange={e => {
-                                this.setState({
-                                    sd: e.target.value
-                                });
-                            }}
+                        <br></br>
+                        <FormLabel>From:  </FormLabel>
+                        <DatePicker
+                            selected = {this.state.startDate}
+                            onChange={ date=>
+                                this.setState({startDate: date.target.value})
+                            }
                         />
-                        <FormLabel>To</FormLabel>
-                        <FormControl
-                            autoFocus
-                            type="string"
-                            value={this.state.ed}
-                            onChange={e => {
-                                this.setState({
-                                    ed: e.target.value
-                                });
-                            }}
+                        <br/>
+                        <FormLabel>To:  </FormLabel>
+                        <DatePicker
+                            selected = {this.state.endDate}
+                            onChange={ date=>
+                                this.setState({endDate: date.target.value})
+                            }
+
                         />
+                        <br></br>
                         <FormLabel>Enter Advisor Code</FormLabel>
                         <FormControl
                             autoFocus
@@ -160,8 +157,8 @@ export default class ReportTableI extends Component {
                             bssize="medium"
                             variant="outline-danger"
                             onClick={() => {
-                                let start = this.state.sd;
-                                let end = this.state.ed;
+                                let start = this.state.startDate;
+                                let end = this.state.endDate;
 
                                 axios.get( apiLinks.BLANKS +'/byDate',{params:{start, end}}).then(res => {
                                     const sales = res.data;

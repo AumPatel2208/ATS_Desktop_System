@@ -92,6 +92,7 @@ export default class ReportTurnoverT extends Component{
 
         return (
             <Container>
+                <br></br>
                 <FormLabel>From:  </FormLabel>
                 <DatePicker
                 selected = {this.state.startDate}
@@ -124,8 +125,10 @@ export default class ReportTurnoverT extends Component{
                     }}
 
                 >
-                    Generate Report
+                    Enter Dates
                 </Button>
+                <br></br>
+                <br></br>
                 <h4>Received Blanks</h4>
                 <Table className="mt-4">
                     <thead>

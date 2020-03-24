@@ -52,7 +52,8 @@ function reportHandler() {
 //add in handling here to determine the form that shows up
     return (
         <Container>
-            <h1>Generate Reports</h1>
+            <h2>Generate Reports</h2>
+            <br></br>
             <div className="Reports">
             </div>
                 <Form>
