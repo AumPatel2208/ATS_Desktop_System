@@ -34,6 +34,7 @@ router.post('/', (q, a) => {
 
 
 router.post('/', (q, a) => {
+    /*
     const ticketNum = toString(q.body[0].ticketNumber);
     const blankCode = ticketNum.substring(0,2);
     let saleTp = "";
@@ -43,6 +44,8 @@ router.post('/', (q, a) => {
     else{
         saleTp = "Interline";
     }
+
+     */
 
     newSale = {
         ticketNumber: q.body[0].ticketNumber,
@@ -56,7 +59,10 @@ router.post('/', (q, a) => {
         commissionRate: q.body[0].commissionRate,
         advisorCode: q.body[0].advisorCode,
         saleDate: q.body[0].saleDate,
-        saleType: saleTp
+        saleType: q.body[0].saleType,
+        localTax: q.body[0].localTax,
+        otherTax: q.body[0].otherTax,
+        custName: q.body[0].custName
     };
 
     Sale.create(newSale, (err, newSale) => {

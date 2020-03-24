@@ -38,7 +38,8 @@ export default function Blanks() {
 
     return (
         <Container>
-            <Fragment>{displayHandler()}</Fragment>
+            <Fragment>{manager}</Fragment>
+            <Fragment>{admin}</Fragment>
             <br/>
                 <h2>Blank Stock</h2>
                 <ReportTurnoverT></ReportTurnoverT>

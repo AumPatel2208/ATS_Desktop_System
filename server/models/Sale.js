@@ -22,13 +22,13 @@ const SaleSchema = new Schema({
         required: true
     },
     creditCardNum: {
-        type: Number
+        type: String
     },
     expDate: {
-        type: Date
+        type: String
     },
     securityCode: {
-        type: Number
+        type: String
     },
     commissionRate: {
         type: Number,
@@ -47,6 +47,15 @@ const SaleSchema = new Schema({
         type: String
     },
     saleType: {
+        type: String
+    },
+    localTax: {
+        type: String
+    },
+    otherTax: {
+        type: String
+    },
+    custName: {
         type: String
     }
 });

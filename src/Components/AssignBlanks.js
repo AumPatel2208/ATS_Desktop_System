@@ -13,6 +13,7 @@ export default class AssignBlanks extends Component{
         batchValues: "",
         date: new Date()
 
+
     };
     //runs when component mounts, use to gets the data from db
 
@@ -51,6 +52,47 @@ export default class AssignBlanks extends Component{
                 </FormGroup>
                 <FormGroup controlId="date" bssize="large">
                     <FormLabel>Advisor Code</FormLabel>
+                    <FormControl
+                        selected = {this.state.advisorCode}
+                        onChange={ e=>
+                            this.setState({advisorCode: e.target.value})
+                        }
+
+                    />
+                </FormGroup>
+                <Button
+                    onClick={e => {
+                        this.handleSubmit(e)
+                    }}
+                >
+                    Add Blanks
+                </Button>
+                <br></br>
+                <br/>
+
+
+                <h3>Re-assign Blanks</h3>
+                <FormGroup controlId="username" bssize="large">
+                    <FormLabel>Batch</FormLabel>
+                    <FormControl
+                        autoFocus
+                        type="batchValues"
+                        value={this.state.batchValues}
+                        onChange={e => this.setState({batchValues: e.target.value, date: Date.now()})}
+                    />
+                </FormGroup>
+                <FormGroup controlId="date" bssize="large">
+                    <FormLabel>Initial Advisor's Code</FormLabel>
+                    <FormControl
+                        selected = {this.state.advisorCode}
+                        onChange={ e=>
+                            this.setState({advisorCode: e.target.value})
+                        }
+
+                    />
+                </FormGroup>
+                <FormGroup controlId="date" bssize="large">
+                    <FormLabel>New Advisor's Code</FormLabel>
                     <FormControl
                         selected = {this.state.advisorCode}
                         onChange={ e=>
