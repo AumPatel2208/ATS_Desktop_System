@@ -35,5 +35,3 @@
 -   System Administrator
 
 ## **_Issues_**
-
--   Login Stopped working for some reason after implementing backup restore in the back end. code is in temp folder to compare
