@@ -1,14 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const Blank = require('../models/Blank');
+const bodyParser = require('body-parser');
 
 router.post('/', (q, a) => {
     // const { blankNumber, assigned, used, batch } = q.body;
     //Blank.create(q.body).then(item => a.json(item));
+    console.log(q.body.batchValues);
+    console.log(q.body)
 
-    const f = String(q.param.batchValues);
-console.log(f);
-    console.log(q.param.batchValues);
+    const f = String(q.body.batchValues);
+//console.log(f);
+
     var x = f.split("-");
     var c = (x[0]);
     var d = (x[1]);
@@ -20,21 +23,17 @@ console.log(f);
     if (f.substring(0-2)==="201"){
         batchTp = "Domestic";
     }
-    else{
+    else if (f.substring(0-2)==="440"||"420"){
         batchTp = "Interline";
     }
 
         newBlanks = {
-            batchValues: q.param.batchValues,
-            date: q.param.date,
+            batchValues: q.body.batchValues,
+            date: q.body.date,
             batchType: batchTp,
             amount: amount,
-            advisorCode: q.param.advisorCode,
-            assigned: q.param.assigned,
-            used: q.param.used
 
         };
-
         Blank.create(newBlanks, (err, newBlanks) => {
             if (err) {
                 console.log("problem selling: " + err);

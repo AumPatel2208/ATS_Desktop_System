@@ -14,6 +14,7 @@ router.post('/', (q, a) => {
     });
 
     newExchangeRate.save().then(item => a.json(item));
+    console.log(newExchangeRate);
 });
 
 // find all rates, descending order by currency code

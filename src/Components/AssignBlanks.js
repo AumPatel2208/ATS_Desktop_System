@@ -73,7 +73,7 @@ export default class AssignBlanks extends Component{
                         this.handleSubmit(e)
                     }}
                 >
-                    Add Blanks
+                    Assign Blanks
                 </Button>
                 <br></br>
                 <br/>

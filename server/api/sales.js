@@ -3,54 +3,7 @@ const router = express.Router();
 const Sale = require('../models/Sale');
 const bodyParser = require('body-parser');
 
-/*
-//add a sale
 router.post('/', (q, a) => {
-    // const {
-    //     ticketNumber,
-    //     fare,
-    //     currency,
-    //     USDExchangeRate,
-    //     paymentMethod,
-    //     creditCardNum,
-    //     expDate,
-    //     securityCode,
-    //     commissionRate,
-    //     advisorCode,
-    //     saleDate
-    // } = q.body;
-
-    const ticketNum = toString(q.body[0].ticketNumber);
-    const blankCode = ticketNum.substring(0,2);
-    if (blankCode == "201"){
-        Sale.saleType = "domestic";
-    }
-    else{
-        Sale.saleType = "interline";
-    }
-    Sale.create(q.body).then(item => a.json(item));
-
-});
-*/
-
-
-router.post('/', (q, a) => {
-    /*
-    const ticketNum = toString(q.body[0].ticketNumber);
-    const blankCode = ticketNum.substring(0,2);
-    let saleTp = "";
-    if (blankCode == "201"){
-        saleTp = "Domestic";
-    }
-    else{
-        saleTp = "Interline";
-    }
-
-     */
-   // const j = JSON.parse(q.body);
-    //const j = q.data[0].ticketNumber;
-    const j = q.param.ticketNumber;
-//console.log(j);
     console.log(q.body.ticketNumber);
 
     newSale = {
