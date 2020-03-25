@@ -15,6 +15,15 @@ router.get('/', (q, a) => {
         .then(customers => a.json(customers));
 });
 
+router.get('/discount', (q, a) => {
+    let st = q.query.st;
+    x = st.split(" ");
+
+    console.log(q.url);
+    Customer.find({firstName:x[0], lastName:x[1]})
+        .then(customer => a.json(customer));
+});
+
 //find one customer based on their id
 router.get('/:id', (q, a) => {
     Customer.findById(q.params.id).then(item => a.json(item));
@@ -23,6 +32,16 @@ router.get('/:id', (q, a) => {
 //find and update one customer
 router.put('/:id', (q, a) => {
     Customer.findByIdAndUpdate(q.params.id, q.body).then(item => a.json(item));
+});
+
+
+router.put('/discount', (q, a) => {
+    let st = q.query.st;
+    x = st.split(" ");
+
+    console.log(q);
+    Customer.find({firstName:x[0], lastName:x[1]})
+        .then(customer => a.json(customer));
 });
 
 //Delete one customer

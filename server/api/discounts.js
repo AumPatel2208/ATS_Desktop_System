@@ -4,6 +4,7 @@ const Discount = require('../models/Discount');
 const bodyParser = require('body-parser');
 
 router.post('/', (q, a) => {
+console.log(q + "DISCOUNT POST");
 
     newdiscount = {
         name: q.body.name,

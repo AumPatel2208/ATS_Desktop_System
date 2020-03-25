@@ -9,7 +9,15 @@ const staffMembers = require('./api/staffMembers');
 const secure = require('./api/secure');
 const backup = require('./api/backup');
 const restore = require('./api/restore');
+
+const blankAssigned = require('./api/blankAssigned');
+const blankUsed = require('./api/blankUsed');
+const discounts = require('./api/discounts')
+
 const config = require('../server/config/db');
+
+
+
 const url = config.URI;
 // const config = require('./config');
 const app = express();
@@ -53,6 +61,9 @@ app.use('/api/staffMembers', staffMembers);
 app.use('/api/secure', secure);
 app.use('/api/backup', backup);
 app.use('/api/restore', restore);
+app.use('/api/blankUsed', blankUsed);
+app.use('/api/blankAssigned', blankAssigned);
+app.use('/api/discounts', discounts);
 
 //TODO add in error handling to forward to error page
 

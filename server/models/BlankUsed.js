@@ -31,5 +31,5 @@ const BlankUsedSchema = new Schema({
     }
 });
 
-module.exports = BlankUsed = mongoose.model('BlankUsed', BlankUsedchema);
+module.exports = BlankUsed = mongoose.model('BlankUsed', BlankUsedSchema);
 

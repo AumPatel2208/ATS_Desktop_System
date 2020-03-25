@@ -32,6 +32,9 @@ const CustomerSchema = new Schema({
     },
     securityCode: {
         type: String
+    },
+    discountName: {
+        type: String
     }
 });
 // eslint-disable-next-line no-undef

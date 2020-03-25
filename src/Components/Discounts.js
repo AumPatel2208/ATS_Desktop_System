@@ -17,6 +17,7 @@ let apiLinks = require('../api/config.json');
 export default class Discounts extends Component {
     state = {
         discounts: [],
+        customers: [],
         name:"",
         fixed: "",
         b1:"-",
@@ -29,9 +30,6 @@ export default class Discounts extends Component {
         cName:"",
         dName:"",
         dType: "Select Discount Type"
-
-
-
     };
 
     //runs when component mounts, use to gets the data from db
@@ -45,6 +43,9 @@ export default class Discounts extends Component {
     }
 
     createDiscount(e){
+        e.preventDefault();
+        const st = this.state.cName;
+
         const newDiscount = {
             name: this.state.name,
             fixedValue: this.state.fixed,
@@ -55,16 +56,28 @@ export default class Discounts extends Component {
             flexibleBand3: this.state.b3,
             band3Value: this.state.b3v
         };
+        console.log(newDiscount);
 
-        e.preventDefault();
-
-        axios.post(apiLinks.DISCOUNT, newDiscount ).then(response => {
+        axios.post(apiLinks.DISCOUNT +'/', newDiscount ).then(response => {
             console.log(response);
         });
-
     }
 
-    assignDiscount(){
+    assignDiscount(e){
+        e.preventDefault();
+
+        const st = this.state.cName;
+        axios.get(apiLinks.CUSTOMERS + '/discount', {params:{st}})
+            .then(res => {
+                console.log(res);
+            });
+
+        axios.put(apiLinks.CUSTOMERS + '/discount', {params:{st}},
+            this.state.customers.dName
+        )
+            .then(res => {
+                console.log(res);
+            });
 
     }
 
@@ -189,13 +202,25 @@ export default class Discounts extends Component {
                     bssize="medium"
                     variant="outline-danger"
                     onClick={e => {
-                        this.createDiscount(e)
-                    }}
+                          this.createDiscount(e)} }
+                    //onClick= {this.createDiscount()}
                     block
                 >
                     Create Discount
                 </Button>
+    <Button
+        bssize="medium"
+        variant="outline-danger"
+        onClick={e => {
+            this.assignDiscount(e)
+        }}
+        block
+    >
+        Assign Discount
+    </Button>
 
+
+<br/>
 
 
                 <h2>Assign Discount</h2>
@@ -251,7 +276,7 @@ export default class Discounts extends Component {
                 </Button>
 
 
-
+<br/>
 
 
     <h2>Current Discounts</h2>
