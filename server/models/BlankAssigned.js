@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 const BlankAssignedSchema = new Schema({
     batchStart: {
         type: String
-
     },
     batchEnd: {
         type: String
@@ -15,7 +14,6 @@ const BlankAssignedSchema = new Schema({
     },
     batchType:{
         type: String,
-
     },
     amount:{
         type: String

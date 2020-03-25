@@ -11,6 +11,7 @@ import Container from 'reactstrap/lib/Container';
 import axios from 'axios';
 
 import CheckStore from '../store/CheckStore';
+import {CommissionUpdate} from "../Components/CommissionUpdate";
 
 let apiLinks = require('../api/config.json');
 // "proxy": "http://localhost:5000"
@@ -84,6 +85,12 @@ export default function RegisterStaff(props) {
 
     return (
         <Container>
+
+            <CommissionUpdate></CommissionUpdate>
+
+
+
+
             <div className="RegisterStaff">
                 <form onSubmit={handleSubmit}>
                     <FormGroup controlId="username" bssize="large">

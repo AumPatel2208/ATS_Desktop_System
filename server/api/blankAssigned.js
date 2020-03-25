@@ -5,7 +5,7 @@ const BlankAssigned = require('../models/BlankAssigned');
 router.post('/', (q, a) => {
     // const { blankNumber, assigned, used, batch } = q.body;
     //Blank.create(q.body).then(item => a.json(item));
-
+    console.log(q.body);
     const f = String(q.param.batchValues);
     console.log(f);
     console.log(q.param.batchValues);
@@ -48,7 +48,7 @@ router.get('/byDate',(q,a)=>{
     let sd = q.query.start;
     let ed = q.query.end;
 
-    console.log(q.url);
+    //console.log(q.url);
     BlankAssigned.find({date:{$lte:ed, $gte:sd}})
         .then(blanks => a.json(blanks));
 

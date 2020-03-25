@@ -18,7 +18,8 @@ router.post('/', (q, a) => {
             address: staff.address,
             password: bcrypt.hashSync(staff.password, salt),
             staffType: staff.staffType,
-            advisorCode: staff.advisorCode
+            advisorCode: staff.advisorCode,
+            commissionRate: staff.commissionRate
         };
         Staff.create(newStaff).then(item => a.json(item));
     });
@@ -29,6 +30,16 @@ router.get('/', (q, a) => {
     Staff.find()
         .sort({ name: -1 })
         .then(staffMembers => a.json(staffMembers));
+});
+
+//get by advisor code
+router.get('/commission', (q, a) => {
+        let st = q.query.st;
+        console.log(q.url);
+
+        Staff.find({advisorCode:st})
+            .then(staff => a.json(staff));
+
 });
 
 //find one staff based on their id
