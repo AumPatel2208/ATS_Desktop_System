@@ -8,5 +8,6 @@
     "BACKUP": "/api/backup",
     "RESTORE": "/api/restore",
     "ASSIGN": "/api/blankAssigned",
-    "USED": "/api/blankUsed"
+    "USED": "/api/blankUsed",
+    "DISCOUNT": "/api/discounts"
 }

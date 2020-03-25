@@ -19,6 +19,8 @@ export default class ReportTurnoverT extends Component{
     //Set the state to an empty list of objects that will be taken from the database
     state = {
         blanks: [],
+        aBlanks: [],
+        uBlanks: [],
         assigns: [],
         assign: 'assigned',
         batch: 'batchValues',
@@ -27,7 +29,6 @@ export default class ReportTurnoverT extends Component{
         endDate: new Date(),
         ed: ''
     };
-//TODO: handle discounts in the customer section
     //runs when component mounts, use to gets the data from db
 
     componentDidMount() {
@@ -96,8 +97,8 @@ export default class ReportTurnoverT extends Component{
                 <FormLabel>From:  </FormLabel>
                 <DatePicker
                 selected = {this.state.startDate}
-                onChange={ date=>
-                    this.setState({startDate: date.target.value})
+                onChange={ e=>
+                    this.setState({startDate: e.target.value})
                 }
                 />
                 <br/>
@@ -122,6 +123,17 @@ export default class ReportTurnoverT extends Component{
                             const blanks = res.data;
                             this.setState({blanks});
                         });
+
+                        axios.get( apiLinks.ASSIGN +'/byDate',{params:{start, end}}).then(res => {
+                            const aBlanks = res.data;
+                            this.setState({aBlanks});
+                        });
+
+                        axios.get( apiLinks.USED +'/byDate',{params:{start, end}}).then(res => {
+                            const uBlanks = res.data;
+                            this.setState({uBlanks});
+                        });
+
                     }}
 
                 >
@@ -129,6 +141,9 @@ export default class ReportTurnoverT extends Component{
                 </Button>
                 <br></br>
                 <br></br>
+
+
+
                 <h4>Received Blanks</h4>
                 <Table className="mt-4">
                     <thead>
@@ -136,23 +151,19 @@ export default class ReportTurnoverT extends Component{
                         <th>Batch</th>
                         <th>Date</th>
                         <th>Batch Quantity</th>
-                        <th>New Blanks Assigned</th>
-                        <th>Advisor Assigned To</th>
-
                     </tr>
                     </thead>
                     <tbody>
                     {this.state.blanks.map(
                         ({
-                             _id,
+
                             batchValues,
                             date,
                             amount,
 
                          }) => (
-                            <Fragment key={_id}>
+                            <Fragment >
                                 {row(
-                                    _id,
                                     batchValues,
                                     date,
                                     amount,
@@ -163,37 +174,58 @@ export default class ReportTurnoverT extends Component{
                     )}
                     </tbody>
                 </Table>
-                <h4>Assigned and Used Blanks</h4>
+
+
+
+                <h4>Assigned Received Blanks</h4>
+                <Table className="mt-4">
+                    <thead>
+                    <tr>
+                        <th>New Blanks Assigned</th>
+                        <th>Advisor Assigned To</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {this.state.aBlanks.map(
+                        ({
+                             batchValues,
+                             advisorCode
+
+                         }) => (
+                            <Fragment>
+                                {row(
+                                    batchValues,
+                                   advisorCode
+                                )}
+                            </Fragment>
+                        ))}
+                    </tbody>
+                </Table>
+
+
+
+                <h4>Assigned Blanks</h4>
                 <Table className="mt-4">
                     <thead>
                     <tr>
                         <th>Assigned Blanks</th>
                         <th>Advisor Code</th>
                         <th>Batch Quantity</th>
-                        <th>Used Blanks</th>
-                        <th>Amount Used</th>
-
                     </tr>
                     </thead>
                     <tbody>
-                    { this.state.blanks.map(
+                    { this.state.aBlanks.map(
                         ({
-                             _id,
                              batchValues,
                              advisorCode,
                              amount,
-                            used,
-                           // amount
-
                          }) => (
-                            <Fragment key={_id}>
+                            <Fragment>
                                 {row(
-                                    _id,
                                     batchValues,
                                     advisorCode,
-                                    amount,
-                                    used,
-                                   // amount
+                                    amount
+
                                 )}
                             </Fragment>
 
@@ -201,14 +233,42 @@ export default class ReportTurnoverT extends Component{
                     )}
                     </tbody>
                 </Table>
-                <h4>Final Amounts</h4>
+
+
+
+                <h4>Used Blanks</h4>
                 <Table className="mt-4">
                     <thead>
                     <tr>
-                        <th>Available Blanks </th>
+                        <th>Used Blanks</th>
+                        <th>Amount Used</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    { this.state.uBlanks.map(
+                        ({
+                             batchValues,
+                             amount,
+                         }) => (
+                            <Fragment >
+                                {row(
+                                    batchValues,
+                                    amount,
+                                )}
+                            </Fragment>
+                        ))}
+                    </tbody>
+                </Table>
+
+
+                <h4>All Available Blanks</h4>
+                <Table className="mt-4">
+                    <thead>
+                    <tr>
+                        <th>All Available Blanks </th>
                         <th>Amount</th>
                         <th>Advisor Code</th>
-                        <th>Advisor Blanks</th>
+                        <th>All Assigned Blanks</th>
                         <th>Amount</th>
 
                     </tr>
@@ -227,6 +287,36 @@ export default class ReportTurnoverT extends Component{
                     )}
                     </tbody>
                 </Table>
+
+
+                <h4>All Assigned Blanks </h4>
+                <Table className="mt-4">
+                    <thead>
+                    <tr>
+                        <th>All Available Blanks </th>
+                        <th>Amount</th>
+                        <th>Advisor Code</th>
+                        <th>All Assigned Blanks</th>
+                        <th>Amount</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {this.state.aBlanks.map(({batchValues, amount
+                                            })=> (
+                            <Fragment >
+                                {row(
+                                    batchValues,
+                                    amount,
+
+                                )}
+                            </Fragment>
+                        )
+                    )}
+                    </tbody>
+                </Table>
+
+
             </Container>
         );
     }

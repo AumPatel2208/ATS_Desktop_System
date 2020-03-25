@@ -49,6 +49,15 @@ export class CommissionUpdate extends Component {
                      //onSubmit={this.updateCommission().bind(this)}>
                      {console.log(this.state.customer)} */}
 
+                    <Button
+                        bssize="large"
+                        variant="info"
+                        href="/customer/create"
+                        block
+                    >
+                        Create New Customer
+                    </Button>
+
                     <FormGroup controlId="commissionRate" bssize="large">
                         <FormLabel>Enter Advisor Code</FormLabel>
                         <FormControl

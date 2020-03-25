@@ -207,9 +207,7 @@ export default class SaleForm extends Component{
                         type="string"
                         value={this.state.Tother}
                         onChange={e => {
-                            this.setState({
-                                Tother: e.target.value
-                            });
+                            this.setState({Tother: e.target.value});
                         }}
                     />
 
