@@ -15,6 +15,7 @@ router.post('/', (q, a) => {
     console.log(c);
     console.log(d);
     let amount = d-c;
+    let remain = [{start: c, end:d}];
 
     assignedBlanks = {
         batchStart: c,
@@ -23,7 +24,8 @@ router.post('/', (q, a) => {
         batchType: q.param.batchType,
         amount: amount,
         advisorCode: q.param.advisorCode,
-        batchId: q.param.batchId
+        batchId: q.param.batchId,
+        remaining: remain
     };
 
     BlankAssigned.create(assignedBlanks, (err, assignedBlanks) => {

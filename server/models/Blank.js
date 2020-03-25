@@ -5,6 +5,12 @@ const BlankSchema = new Schema({
     batchValues: {
         type: String,
     },
+    batchStart:{
+        type: String
+    },
+    batchEnd:{
+        type: String
+    },
     date:{
         type: Date,
     },
@@ -13,6 +19,9 @@ const BlankSchema = new Schema({
     },
     amount:{
         type: String
+    },
+    remaining:{
+        type: Array
     }
 });
 

@@ -23,6 +23,9 @@ const BlankAssignedSchema = new Schema({
     },
     batchId: {
         type: String
+    },
+    remaining:{
+        type: Array
     }
 });
 

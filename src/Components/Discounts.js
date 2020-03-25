@@ -208,18 +208,6 @@ export default class Discounts extends Component {
                 >
                     Create Discount
                 </Button>
-    <Button
-        bssize="medium"
-        variant="outline-danger"
-        onClick={e => {
-            this.assignDiscount(e)
-        }}
-        block
-    >
-        Assign Discount
-    </Button>
-
-
 <br/>
 
 

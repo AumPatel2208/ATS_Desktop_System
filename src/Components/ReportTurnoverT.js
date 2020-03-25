@@ -32,10 +32,8 @@ export default class ReportTurnoverT extends Component{
     //runs when component mounts, use to gets the data from db
 
     componentDidMount() {
-            let start = this.state.startDate;
-            let end = this.state.endDate;
 
-        axios.get( apiLinks.BLANKS +'/byDate',{params:{start, end}}).then(res => {
+        axios.get( apiLinks.BLANKS ).then(res => {
             const blanks = res.data;
             this.setState({blanks});
         });
@@ -44,45 +42,36 @@ export default class ReportTurnoverT extends Component{
 
 
 
-
+/*
     onOpenClick(e, _id) {
         console.log(e, _id);
     }
 
-    filterAssigned(){
-        this.setState({
-            assigns: this.state.blanks.filter(
-                assig =>
-                    String(assig[this.state.assign]) ===
-                    "true")
-        });
-    }
+ */
+
 
     render() {
         const row = (
-            _id,
             batchValues,
             date,
-            batchType,
             amount,
-            assigned,
-            used,
+            advisorCode,
+
 
         ) => (
             <Fragment>
-                <tr key={_id}>
+                <tr >
                     <td>{batchValues}</td>
                     <td>{date}</td>
-                    <td>{batchType}</td>
                     <td>{amount}</td>
-                    <td>{assigned}</td>
-                    <td>{used}</td>
+                    <td>{advisorCode}</td>
+
                     <td>
                         <Button
                             className="open-btn"
                             color="primary"
                             size="sm"
-                            onClick={this.onOpenClick.bind(this, _id)}
+                            //onClick={this.onOpenClick.bind(this)}
                         >
                             open
                         </Button>
@@ -265,11 +254,8 @@ export default class ReportTurnoverT extends Component{
                 <Table className="mt-4">
                     <thead>
                     <tr>
-                        <th>All Available Blanks </th>
-                        <th>Amount</th>
-                        <th>Advisor Code</th>
-                        <th>All Assigned Blanks</th>
-                        <th>Amount</th>
+                        <th>Available Batches of Blanks </th>
+                        <th>Amount in Batch</th>
 
                     </tr>
                     </thead>
@@ -279,8 +265,7 @@ export default class ReportTurnoverT extends Component{
                             <Fragment >
                                 {row(
                                     batchValues,
-                                    amount,
-
+                                    amount
                                 )}
                             </Fragment>
                         )
@@ -293,8 +278,6 @@ export default class ReportTurnoverT extends Component{
                 <Table className="mt-4">
                     <thead>
                     <tr>
-                        <th>All Available Blanks </th>
-                        <th>Amount</th>
                         <th>Advisor Code</th>
                         <th>All Assigned Blanks</th>
                         <th>Amount</th>
@@ -308,7 +291,6 @@ export default class ReportTurnoverT extends Component{
                                 {row(
                                     batchValues,
                                     amount,
-
                                 )}
                             </Fragment>
                         )

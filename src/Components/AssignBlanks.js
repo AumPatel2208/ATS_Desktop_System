@@ -10,7 +10,8 @@ export default class AssignBlanks extends Component{
     state = {
         batchValues: "",
         date: new Date(),
-        code: ""
+        code: "",
+        oG: ""
 
     };
     //runs when component mounts, use to gets the data from db
@@ -68,12 +69,66 @@ export default class AssignBlanks extends Component{
                 </Button>
  */
 
+findInitBatch(e) {
+    var y = String(this.state.batchValues).split("-");
+
+    var start = y[0];
+    var end = y[1];
+    axios.get(apiLinks.BLANKS + '/assign', {params: {start, end}}).then(response => {
+        const oG = response.data;
+        this.setState({oG});
+        console.log(response);
+    })
+}
+
+updateInitBatch(e){
+    var y = String(this.state.batchValues).split("-");
+
+
+    var start = y[0];
+    var end = y[1];
+
+    var s = this.state.oG.batchStart;
+    var e =  this.state.oG.batchEnd;
+
+    var x = this.state.oG.remaining;
+    var i =0;
+    for(i = 0; i < x.length; i++){
+        if (start <= s && end>= e){
+            if (start != s-1 && end !=e+1){
+                x[i] = {start: start, end: s-1}
+                x.push({start: e+1, end: end})
+            }
+            else if (start == s-1){
+                x[i] = {start: start, end: start}
+            }
+            else if (end == e+1){
+                x[i] = {start: end, end: end}
+            }
+            else if (end == e){
+                x[i] = {start: end, end: end}
+            }
+            //CHECK FOR ALL EDGE CASES!!!
+        }
+    }
+
+this.setState(oG.remaining: x);
+
+
+    var iden = this.state.oG.id;
+    axios.put(apiLinks.BLANKS + '/id', {params: {iden}},  ).then(response => {
+        console.log(response);
+});
+}
+
+
 
     handleSubmit(event) {
         const assignBlanks ={
             batchValues: this.state.batchValues,
             advisorCode: this.state.code,
-            date: this.state.date
+            date: this.state.date,
+            batchId: this.state.oG.id
         };
 
         event.preventDefault();
@@ -81,7 +136,6 @@ export default class AssignBlanks extends Component{
 
         axios.post(apiLinks.ASSIGN,assignBlanks).then(response => {
             console.log(response);
-            console.log("hit");
         });
 
     }

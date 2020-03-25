@@ -9,6 +9,8 @@ router.post('/', (q, a) => {
     console.log(q.body.batchValues);
     console.log(q.body)
 
+
+
     const f = String(q.body.batchValues);
 //console.log(f);
 
@@ -18,7 +20,7 @@ router.post('/', (q, a) => {
     console.log(c);
     console.log(d);
     let amount = d-c;
-
+    let remain = [{start: c, end:d}];
     let batchTp = "";
     if (f.substring(0-2)==="201"){
         batchTp = "Domestic";
@@ -29,9 +31,12 @@ router.post('/', (q, a) => {
 
         newBlanks = {
             batchValues: q.body.batchValues,
+            batchStart: c,
+            batchEnd:d,
             date: q.body.date,
             batchType: batchTp,
             amount: amount,
+            remaining: remain
 
         };
         Blank.create(newBlanks, (err, newBlanks) => {
@@ -51,6 +56,24 @@ router.get('/', (q, a) => {
         .then(blanks => a.json(blanks));
 });
 
+
+router.get('/assign', (q, a) => {
+    let s = q.query.start;
+    let e = q.query.end;
+    Blank.find({batchStart: {$lte:s},batchEnd: {$gte:e}})
+        .sort({ date: -1 })
+        .then(blanks => a.json(blanks));
+});
+
+let sd = q.query.start;
+let ed = q.query.end;
+
+console.log(q.url);
+Discount.find({date:{$lte:ed, $gte:sd}})
+    .then(discounts => a.json(discounts));
+
+
+
 router.get('/byDate',(q,a)=>{
    // x = JSON.parse(q.body);
     let sd = q.query.start;
@@ -67,6 +90,14 @@ router.get('/byDate',(q,a)=>{
 router.put('/:id', (q, a) => {
     Blank.findByIdAndUpdate(q.params.id, q.body).then(a.json(post));
 });
+
+
+router.put('/id', (q, a) => {
+    let i = q.query.iden;
+    Blank.find({id:i})
+        .then(blanks => a.json(blanks))
+});
+
 //Delete one blank
 router.delete('/:id', (q, a) => {
     Blank.findById(q.params.id)
