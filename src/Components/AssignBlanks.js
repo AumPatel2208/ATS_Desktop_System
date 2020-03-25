@@ -31,7 +31,7 @@ export default class AssignBlanks extends Component{
         event.preventDefault();
         console.log('hello');
 
-        axios.post(apiLinks.BLANKS, { batchValues: this.state.batchValues, date: this.state.date}).then(response => {
+        axios.post(apiLinks.ASSIGN, { batchValues: this.state.batchValues, date: this.state.date}).then(response => {
             console.log(response);
         });
 

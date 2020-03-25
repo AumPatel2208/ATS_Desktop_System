@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Sale = require('../models/Sale');
+const bodyParser = require('body-parser');
 
 /*
 //add a sale
@@ -46,23 +47,28 @@ router.post('/', (q, a) => {
     }
 
      */
+   // const j = JSON.parse(q.body);
+    //const j = q.data[0].ticketNumber;
+    const j = q.param.ticketNumber;
+//console.log(j);
+    console.log(q.body.ticketNumber);
 
     newSale = {
-        ticketNumber: q.body[0].ticketNumber,
-        fare: q.body[0].fare,
-        currency: q.body[0].currency,
-        USDExchangeRate: q.body[0].USDExchangeRate,
-        paymentMethod: q.body[0].paymentMethod,
-        creditCardNum: q.body[0].creditCardNum,
-        expDate: q.body[0].expDate,
-        securityCode: q.body[0].securityCode,
-        commissionRate: q.body[0].commissionRate,
-        advisorCode: q.body[0].advisorCode,
-        saleDate: q.body[0].saleDate,
-        saleType: q.body[0].saleType,
-        localTax: q.body[0].localTax,
-        otherTax: q.body[0].otherTax,
-        custName: q.body[0].custName
+        ticketNumber: q.body.ticketNumber,
+        fare: q.body.fare,
+        currency: q.body.currency,
+        USDExchangeRate: q.body.USDExchangeRate,
+        paymentMethod: q.body.paymentMethod,
+        creditCardNum: q.body.creditCardNum,
+        expDate: q.body.expDate,
+        securityCode: q.body.securityCode,
+        commissionRate: q.body.commissionRate,
+        advisorCode: q.body.advisorCode,
+        saleDate: q.body.saleDate,
+        saleType: q.body.saleType,
+        localTax: q.body.localTax,
+        otherTax: q.body.otherTax,
+        custName: q.body.custName
     };
 
     Sale.create(newSale, (err, newSale) => {

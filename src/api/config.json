@@ -6,5 +6,7 @@
     "STAFFMEMBERS": "/api/staffMembers",
     "SECURE": "/api/secure",
     "BACKUP": "/api/backup",
-    "RESTORE": "/api/restore"
+    "RESTORE": "/api/restore",
+    "ASSIGN": "/api/blankAssigned",
+    "USED": "/api/blankUsed"
 }

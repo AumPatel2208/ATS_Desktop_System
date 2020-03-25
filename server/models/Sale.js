@@ -3,23 +3,18 @@ const Schema = mongoose.Schema;
 const SaleSchema = new Schema({
     ticketNumber: {
         type: String,
-        required: true
     },
     fare: {
         type: Number,
-        required: true
     },
     currency: {
         type: String,
-        required: true
     },
     USDExchangeRate: {
         type: Number,
-        required: true
     },
     paymentMethod: {
         type: String,
-        required: true
     },
     creditCardNum: {
         type: String
@@ -32,15 +27,12 @@ const SaleSchema = new Schema({
     },
     commissionRate: {
         type: Number,
-        required: true
     },
     advisorCode: {
         type: Number,
-        required: true
     },
     saleDate: {
         type: String,
-        required: true,
         default: Date.now()
     },
     notes: {

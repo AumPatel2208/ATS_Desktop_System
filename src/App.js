@@ -45,6 +45,17 @@ import ExRates from "./Pages/ExRates";
 import Sale from "./Pages/Sale";
 
 const apiLinks = require('./api/config.json');
+/* CODE TO LOCK A PAGE
+
+
+{this.state.isAuthenticated ? (
+                                    <Customers />
+                                ) : (
+                                    <Restricted></Restricted>
+                                )}
+
+
+ */
 
 class App extends React.Component {
     constructor(props) {
@@ -92,11 +103,7 @@ class App extends React.Component {
                         path="/customers"
                         render={() => (
                             <div className="App">
-                                {this.state.isAuthenticated ? (
-                                    <Customers />
-                                ) : (
-                                    <Restricted></Restricted>
-                                )}
+<Customers/>
                             </div>
                         )}
                     ></Route>

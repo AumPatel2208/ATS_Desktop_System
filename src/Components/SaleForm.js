@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import axios from "axios";
 import {useStoreState} from "pullstate";
 import {UserStore} from "../store/UserStore";
+import {GetUSer} from "../store/User";
 
 let apiLinks = require('../api/config.json');
 
@@ -115,10 +116,8 @@ export default class SaleForm extends Component{
 
         event.preventDefault();
         console.log('hello');
-
-        let User = useStoreState(UserStore, s=> s.User);
-        this.setState({adCode: User.advisorCode});
-        this.setState({commissionRate: User.commissionRate});
+        this.setState({adCode: GetUSer.advisorCode});
+        this.setState({commissionRate: GetUSer.commissionRate});
 
         axios.post(apiLinks.SALES, newSale ).then(response => {
             console.log(response);
@@ -218,10 +217,10 @@ export default class SaleForm extends Component{
                     <FormControl
                         autoFocus
                         type="string"
-                        value={this.state.Tother}
+                        value={this.state.custName}
                         onChange={e => {
                             this.setState({
-                                Tother: e.target.value
+                                custName: e.target.value
                             });
                         }}
                     />
