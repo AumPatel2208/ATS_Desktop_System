@@ -29,45 +29,7 @@ export default class AssignBlanks extends Component{
  */
 
 
-/*
- <h3>Re-assign Blanks</h3>
-                <FormGroup controlId="username" bssize="large">
-                    <FormLabel>Batch</FormLabel>
-                    <FormControl
-                        autoFocus
-                        type="batchValues"
-                        value={this.state.batchValues}
-                        onChange={e => this.setState({batchValues: e.target.value, date: Date.now()})}
-                    />
-                </FormGroup>
-                <FormGroup controlId="date" bssize="large">
-                    <FormLabel>Initial Advisor's Code</FormLabel>
-                    <FormControl
-                        selected = {this.state.advisorCode}
-                        onChange={ e=>
-                            this.setState({advisorCode: e.target.value})
-                        }
 
-                    />
-                </FormGroup>
-                <FormGroup controlId="date" bssize="large">
-                    <FormLabel>New Advisor's Code</FormLabel>
-                    <FormControl
-                        selected = {this.state.advisorCode}
-                        onChange={ e=>
-                            this.setState({advisorCode: e.target.value})
-                        }
-
-                    />
-                </FormGroup>
-                <Button
-                    onClick={e => {
-                        this.handleReAssignSubmit(e)
-                    }}
-                >
-                    Re-assign Blanks
-                </Button>
- */
 
 findInitBatch(e) {
     var y = String(this.state.batchValues).split("-");
@@ -81,6 +43,7 @@ findInitBatch(e) {
     })
 }
 
+/*
 updateInitBatch(e){
     var y = String(this.state.batchValues).split("-");
 
@@ -122,6 +85,8 @@ this.setState(oG.remaining: x);
 }
 
 
+ */
+
 
     handleSubmit(event) {
         const assignBlanks ={
@@ -139,7 +104,7 @@ this.setState(oG.remaining: x);
         });
 
     }
-/*
+
     handleReAssignSubmit(event) {
         event.preventDefault();
         console.log('hello');
@@ -148,7 +113,6 @@ this.setState(oG.remaining: x);
 
     }
 
- */
 
     render() {
 
@@ -184,6 +148,47 @@ this.setState(oG.remaining: x);
                 </Button>
                 <br></br>
                 <br/>
+
+
+
+
+                <h3>Re-assign Blanks</h3>
+                <FormGroup controlId="username" bssize="large">
+                    <FormLabel>Batch</FormLabel>
+                    <FormControl
+                        autoFocus
+                        type="batchValues"
+                        value={this.state.batchValues}
+                        onChange={e => this.setState({batchValues: e.target.value, date: Date.now()})}
+                    />
+                </FormGroup>
+                <FormGroup controlId="date" bssize="large">
+                    <FormLabel>Initial Advisor's Code</FormLabel>
+                    <FormControl
+                        selected = {this.state.advisorCode}
+                        onChange={ e=>
+                            this.setState({advisorCode: e.target.value})
+                        }
+
+                    />
+                </FormGroup>
+                <FormGroup controlId="date" bssize="large">
+                    <FormLabel>New Advisor's Code</FormLabel>
+                    <FormControl
+                        selected = {this.state.advisorCode}
+                        onChange={ e=>
+                            this.setState({advisorCode: e.target.value})
+                        }
+
+                    />
+                </FormGroup>
+                <Button
+                    onClick={e => {
+                        this.handleReAssignSubmit(e)
+                    }}
+                >
+                    Re-assign Blanks
+                </Button>
 
 
             </Container>
