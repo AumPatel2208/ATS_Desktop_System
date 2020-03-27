@@ -157,18 +157,23 @@ export default class ReportTableG extends Component {
 
                 <FormLabel>From:  </FormLabel>
                 <DatePicker
-                    selected = {this.state.startDate}
-                    onChange={ date=>
-                        this.setState({startDate: date.target.value})
-                    }
+                    selected={this.state.startDate}
+                    onChange = {date => {
+                        this.setState({
+                            startDate: date
+                        })}}
+
                 />
                 <br/>
                 <FormLabel>To:  </FormLabel>
                 <DatePicker
-                    selected = {this.state.endDate}
-                    onChange={ date=>
-                        this.setState({endDate: date.target.value})
-                    }
+
+                    selected={this.state.endDate}
+                    onChange = {date => {
+                        this.setState({
+                            endDate: date
+                        })}}
+
 
                 />
                 <br/>
@@ -179,8 +184,10 @@ export default class ReportTableG extends Component {
                             variant="outline-danger"
 
                                 onClick={() =>{
-                                    let start = this.state.startDate;
-                                    let end = this.state.endDate;
+                                    let start = new Date(this.state.startDate);
+                                    let end =new  Date(this.state.endDate);
+                                    start.setHours(0,0,0,0);
+                                    end.setHours(0,0,0,0);
 
                                     axios.get( apiLinks.SALES +'/byDate',{params:{start, end}}).then(res => {
                                         const sales = res.data;
