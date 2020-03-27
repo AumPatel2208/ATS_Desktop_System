@@ -21,15 +21,6 @@ const CustomerSchema = new Schema({
         type: String,
 
     },
-    creditCardNum: {
-        type: Number
-    },
-    expDate: {
-        type: Date
-    },
-    securityCode: {
-        type: String
-    },
     discountName: {
         type: String
     },

@@ -7,7 +7,8 @@ import {
     FormGroup,
     FormLabel,
     FormControl,
-    Container
+    Container,
+    Form
 } from 'react-bootstrap';
 
 let apiLinks = require('../api/config.json');
@@ -45,126 +46,8 @@ export class CustomerUpdate extends Component {
             });
     }
 
-    render() {
-        function updateCustomer(e) {
-            // for (var key in this.state.customers) {
-            //     if (this.state.customers[key] === '') {
-            //         console.log(key, ' ', this.state.customers[key]);
-            //     }
-            // }
-            // console.log(this.state.customer);
-            // axios.put(apiLinks.CUSTOMERS, this.state.customers).then(res => {
-            //     console.log(res);
-            // });
-            e.preventDefault();
-
-            if (!this.props.isNew) {
-                axios
-                    .put(
-                        apiLinks.CUSTOMERS + '/' + this.state.customer._id,
-                        this.state.customer
-                    )
-                    .then(res => {
-                        console.log(res);
-                    });
-            } else {
-                console.log(this.state.customer);
-                const newCustomer = {
-                    firstName: this.state.customer.firstName,
-                    lastName: this.state.customer.lastName,
-                    address: this.state.customer.address,
-                    phoneNumber: this.state.customer.phoneNumber,
-                    discount: this.state.customer.discount,
-                    customerType: this.state.customer.customerType,
-                    creditCardNum: this.state.customer.creditCardNum,
-                    expDate: this.state.customer.expDate,
-                    securityCode: this.state.customer.securityCode
-                };
-                axios
-                    .post(apiLinks.CUSTOMERS, newCustomer)
-                    .then(response => {
-                        console.log(response);
-                    })
-                    .catch(res => console.log(res));
-            }
-            // axios
-            //     .put(apiLinks.CUSTOMERS + '/' + this.state.customer._id, {
-            //         firstName: 'Royal',
-            //         customerType: 'regular'
-            //     })
-            //     .then(res => {
-            //         console.log(res);
-            //     });
-        }
-        return (
-            <Container>
-                <form onSubmit={updateCustomer.bind(this)}>
-                    {/* {console.log(this.state.customer)} */}
-                    <FormGroup controlId="firstName" bssize="large">
-                        <FormLabel>First Name</FormLabel>
-                        <FormControl
-                            autoFocus
-                            type="String"
-                            value={this.state.customer.firstName}
-                            onChange={e =>
-                                this.setState({
-                                    customer: {
-                                        ...this.state.customer,
-                                        firstName: e.target.value
-                                    }
-                                })
-                            }
-                        />
-                    </FormGroup>
-                    <FormGroup controlId="lastName" bssize="large">
-                        <FormLabel>Last Name</FormLabel>
-                        <FormControl
-                            autoFocus
-                            type="String"
-                            value={this.state.customer.lastName}
-                            onChange={e =>
-                                this.setState({
-                                    customer: {
-                                        ...this.state.customer,
-                                        lastName: e.target.value
-                                    }
-                                })
-                            }
-                        />
-                    </FormGroup>
-                    <FormGroup controlId="address" bssize="large">
-                        <FormLabel>Address</FormLabel>
-                        <FormControl
-                            autoFocus
-                            type="String"
-                            value={this.state.customer.address}
-                            onChange={e =>
-                                this.setState({
-                                    customer: {
-                                        ...this.state.customer,
-                                        address: e.target.value
-                                    }
-                                })
-                            }
-                        />
-                    </FormGroup>
-                    <FormGroup controlId="phoneNumber" bssize="large">
-                        <FormLabel>Phone Number</FormLabel>
-                        <FormControl
-                            autoFocus
-                            type="String"
-                            value={this.state.customer.phoneNumber}
-                            onChange={e =>
-                                this.setState({
-                                    customer: {
-                                        ...this.state.customer,
-                                        phoneNumber: e.target.value
-                                    }
-                                })
-                            }
-                        />
-                    </FormGroup>
-                    <FormGroup controlId="discount" bssize="large">
+    /*
+     <FormGroup controlId="discount" bssize="large">
                         <FormLabel>Discount</FormLabel>
                         <FormControl
                             autoFocus
@@ -240,7 +123,7 @@ export class CustomerUpdate extends Component {
                                 });
                             }}
                         >
-                            <Dropdown.Toggle
+                        <Dropdown.Toggle
                                 variant="success"
                                 id="dropdown-basic"
                             >
@@ -256,14 +139,142 @@ export class CustomerUpdate extends Component {
                                 </Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
+    */
+
+
+
+
+
+    render() {
+        function updateCustomer(e) {
+            // for (var key in this.state.customers) {
+            //     if (this.state.customers[key] === '') {
+            //         console.log(key, ' ', this.state.customers[key]);
+            //     }
+            // }
+            // console.log(this.state.customer);
+            // axios.put(apiLinks.CUSTOMERS, this.state.customers).then(res => {
+            //     console.log(res);
+            // });
+            e.preventDefault();
+
+            if (!this.props.isNew) {
+                axios
+                    .put(
+                        apiLinks.CUSTOMERS + '/' + this.state.customer._id,
+                        this.state.customer
+                    )
+                    .then(res => {
+                        console.log(res);
+                    });
+            } else {
+                console.log(this.state.customer);
+                const newCustomer = {
+                    firstName: this.state.customer.firstName,
+                    lastName: this.state.customer.lastName,
+                    address: this.state.customer.address,
+                    phoneNumber: this.state.customer.phoneNumber,
+                    discount: this.state.customer.discount,
+                    customerType: this.state.customer.customerType,
+                    //creditCardNum: this.state.customer.creditCardNum,
+                   // expDate: this.state.customer.expDate,
+                   // securityCode: this.state.customer.securityCode
+                };
+                axios
+                    .post(apiLinks.CUSTOMERS, newCustomer)
+                    .then(response => {
+                        console.log(response);
+                    })
+                    .catch(res => console.log(res));
+            }
+            // axios
+            //     .put(apiLinks.CUSTOMERS + '/' + this.state.customer._id, {
+            //         firstName: 'Royal',
+            //         customerType: 'regular'
+            //     })
+            //     .then(res => {
+            //         console.log(res);
+            //     });
+        }
+        return (
+            <Form>
+                <form onSubmit={updateCustomer.bind(this)}>
+                    {/* {console.log(this.state.customer)} */}
+                    <FormGroup controlId="firstName" bssize="large">
+                        <FormLabel>First Name</FormLabel>
+                        <FormControl
+                            autoFocus
+                            type="String"
+                            value={this.state.customer.firstName}
+                            onChange={e =>
+                                this.setState({
+                                    customer: {
+                                        ...this.state.customer,
+                                        firstName: e.target.value
+                                    }
+                                })
+                            }
+                        />
                     </FormGroup>
-                    <Button block bssize="large" type="submit">
-                        {this.props.isNew
-                            ? 'Create Customer'
-                            : 'Update Customer'}
-                    </Button>
+                    <FormGroup controlId="lastName" bssize="large">
+                        <FormLabel>Last Name</FormLabel>
+                        <FormControl
+                            autoFocus
+                            type="String"
+                            value={this.state.customer.lastName}
+                            onChange={e =>
+                                this.setState({
+                                    customer: {
+                                        ...this.state.customer,
+                                        lastName: e.target.value
+                                    }
+                                })
+                            }
+                        />
+                    </FormGroup>
+                    <FormGroup controlId="address" bssize="large">
+                        <FormLabel>Address</FormLabel>
+                        <FormControl
+                            autoFocus
+                            type="String"
+                            value={this.state.customer.address}
+                            onChange={e =>
+                                this.setState({
+                                    customer: {
+                                        ...this.state.customer,
+                                        address: e.target.value
+                                    }
+                                })
+                            }
+                        />
+                    </FormGroup>
+                    <FormGroup controlId="phoneNumber" bssize="large">
+                        <FormLabel>Phone Number</FormLabel>
+                        <FormControl
+                            autoFocus
+                            type="String"
+                            value={this.state.customer.phoneNumber}
+                            onChange={e =>
+                                this.setState({
+                                    customer: {
+                                        ...this.state.customer,
+                                        phoneNumber: e.target.value
+                                    }
+                                })
+                            }
+                        />
+                    </FormGroup>
+                   <Button  block bssize="large" type="submit">
+                       {this.props.isNew
+                           ? 'Create Customer'
+                           : 'Update Customer'}
+
+                   </Button>
                 </form>
-            </Container>
+
+            </Form>
+
+
         );
     }
 }

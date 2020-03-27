@@ -4,7 +4,7 @@ const Sale = require('../models/Sale');
 const bodyParser = require('body-parser');
 
 router.post('/', (q, a) => {
-    console.log(q.body.ticketNumber);
+    //console.log(q.body.ticketNumber);
 
     newSale = {
         ticketNumber: q.body.ticketNumber,

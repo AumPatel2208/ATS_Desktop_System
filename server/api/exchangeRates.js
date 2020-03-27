@@ -38,6 +38,38 @@ router.get('/byDate', (q, a) => {
         .then(exchangeRates => a.json(exchangeRates));
 });
 
+
+router.get('/sale', (req, res) => {
+   /* let d = new Date(req.query.d);
+    d.setHours(0,0,0,0);
+    console.log(d);
+
+    let c = req.query.currency;
+    console.log(c);
+
+//    ExchangeRate.find({date:d, currencyCode:c })
+    ExchangeRate.find({currencyCode:c })
+ //       .then(exchangeRates => res.json(exchangeRates))
+        .then(function  (x) {
+            console.log("db response");
+            console.log(x);
+            res.json(x)
+        })
+        .catch(function (err) {
+            console.log(err)
+        })
+        .then(function () {
+            console.log("rates")
+        })
+
+    console.log("Done");
+    return res;
+            //a.json(exchangeRates));
+*/
+   console.log("Send");
+   res.send('Hello');
+});
+
 // find rates, by currency code
 router.get('/', (q, a) => {
     ExchangeRate.find(q.param.currencyCode).then(exchangeRates =>

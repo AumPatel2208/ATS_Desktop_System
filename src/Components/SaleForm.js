@@ -9,31 +9,101 @@ import {GetUSer} from "../store/User";
 
 let apiLinks = require('../api/config.json');
 
+/*
+function getExchangRate(ccode) {
+    let d = new Date(Date.now());
+    d.setHours(0, 0, 0, 0);
+    let currency = ccode;
+    let r = {};
+    const url = apiLinks.EXCHANGERATES + '/sale';
 
-export default class SaleForm extends Component{
+    console.log (url);
+    //let currency = this.state.Ccode;
+    axios.get(url, { params: {d,currency}})
 
-    state = {
-        sales: [],
-        date: new Date(),
-        code: "",
-        custName:"",
-        saleType: "Select Sale Type",
-        tickNum: "",
-        fare: "",
-        Tlocal: "",
-        Tother: "",
-        method: "Payment Method",
-        creditNum: "-",
-        expDate: "-",
-        secCode: "-",
-        rate: "",
-        adCode:"",
-        notes:"",
-        USDExchangeRate: ""
-    };
+           .then(function (response) {
+                console.log("A response");
+                console.log(response);
+                r =  response;
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+            .then(function (response) { console.log("Finmal")});
 
-    creditHandler(){
-        if (this.state.method === "CreditCard"){
+        console.log("After");
+        return r;
+}
+*/
+export default class SaleForm extends Component {
+    constructor() {
+        super();
+        this.getExchangRate = this.getExchangRate.bind(this);
+
+        this.handleClick = this.handleClick.bind(this);
+
+        this.state = {
+            sales: [],
+            date: new Date(),
+            custName: "",
+            saleType: "Select Sale Type",
+            tickNum: "",
+            fare: "",
+            Tlocal: "",
+            Tother: "",
+            method: "Payment Method",
+            creditNum: "-",
+            expDate: "-",
+            secCode: "-",
+            rate: "",
+            adCode: "",
+            notes: "",
+            USDExchangeRate: "",
+            Ccode: ""
+        };
+    }
+
+    componentDidMount() {
+        this.handleClick()
+    }
+
+    handleClick() {
+        console.log("Click");
+        axios.get('https://api.github.com/users/njclayhh')
+            .then(response => console.log(response))
+
+    }
+    getExchangRate() {
+        let d = new Date(Date.now());
+        d.setHours(0, 0, 0, 0);
+        let currency = this.state.Ccode;
+        let r = {};
+        const url = apiLinks.EXCHANGERATES + '/sale';
+
+        console.log (url);
+        //let currency = this.state.Ccode;
+
+        axios.get('https://api.github.com/users/njclayhh')
+            .then(response => console.log(response))
+        /*
+        axios.get(url, { params: {d,currency}})
+
+            .then(function (response) {
+                console.log("A response");
+                console.log(response);
+                r =  response;
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+            .then(function (response) { console.log("Finmal")});
+        */
+        console.log("After");
+        return r;
+    }
+
+    creditHandler() {
+        if (this.state.method === "CreditCard") {
             return <Fragment>
 
 
@@ -76,8 +146,8 @@ export default class SaleForm extends Component{
 
     }
 
-    taxHandler(){
-        if(this.state.saleType === "Interline"){
+    taxHandler() {
+        if (this.state.saleType === "Interline") {
             return <Fragment>
                 <FormLabel>Local Tax</FormLabel>
                 <FormControl
@@ -90,17 +160,85 @@ export default class SaleForm extends Component{
                         });
                     }}
                 />
+                <FormLabel>Currency Code</FormLabel>
+                <FormControl
+                    autoFocus
+                    type="string"
+                    value={this.state.Ccode}
+                    onChange={e => {
+                        this.setState({
+                            Ccode: e.target.value
+                        });
+                    }}
+                />
             </Fragment>
         }
     }
+
+    /*
+    async getExchangRate(){
+        let d = new Date(Date.now());
+        d.setHours(0,0,0,0);
+        let currency = this.state.Ccode;
+        axios.get(apiLinks.EXCHANGERATES + '/sale',{
+            params: {d, currency}})
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        if (this.state.saleType == "Interline") {
+
+            console.log(currency)
+            try {
+                const response = await axios.get(apiLinks.EXCHANGERATES + '/sale', {params: {d, currency}})
+                //.wait(3000)
+                // .then(function (response) {
+                console.log(response)
+                //})
+            }
+            catch(err) {
+                        console.log(err)
+                    }
+                //const rate = response.data;
+                //  this.setState({USDExchangeRate : rate.USDExchangeRate});
+
+ */
+
+
     handleSubmit(event) {
+
+
+        event.preventDefault();
+        console.log('hello');
+        this.setState({adCode: GetUSer.advisorCode});
+        //this.setState({commissionRate: GetUSer.commissionRate});
+        let d = new Date(Date.now());
+        d.setHours(0, 0, 0, 0);
+        /*
+                if (this.state.saleType == "Interline") {
+                   let currency = this.state.Ccode;
+                    axios.get(apiLinks.EXCHANGERATES + '/sale', {params: {d, currency}})
+                        .then(function (response){console.log(response)})
+                        .catch(function (err) {
+                            console.log(err)
+                        })
+                            //const rate = response.data;
+                          //  this.setState({USDExchangeRate : rate.USDExchangeRate});
+
+                        }
+
+         */
+
         const newSale = {
             ticketNumber: this.state.tickNum,
             saleType: this.state.saleType,
-            fare:this.state.fare,
-            currency: this.state.code,
+            fare: this.state.fare,
+            currency: this.state.Ccode,
             localTax: this.state.Tlocal,
-            otherTax:this.state.Tother,
+            otherTax: this.state.Tother,
             paymentMethod: this.state.method,
             creditCardNum: this.state.creditNum,
             expDate: this.state.expDate,
@@ -108,26 +246,23 @@ export default class SaleForm extends Component{
             commissionRate: this.state.rate,
             custName: this.state.custName,
             advisorCode: this.state.adCode,
-            saleDate: Date.now(),
+            saleDate: d,
             notes: this.state.notes,
             USDExchangeRate: this.state.USDExchangeRate
 
         };
 
-        event.preventDefault();
-        console.log('hello');
-        this.setState({adCode: GetUSer.advisorCode});
-        this.setState({commissionRate: GetUSer.commissionRate});
-
-        axios.post(apiLinks.SALES, newSale ).then(response => {
-            console.log(response);
+        axios.post(apiLinks.SALES, newSale).then(response => {
+            // console.log(response);
         });
+
 
     }
 
     render() {
 
         return (
+            /*
             <Container>
                 <Form>
 
@@ -171,7 +306,6 @@ export default class SaleForm extends Component{
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-
 
 
                     <FormLabel>Ticket Number</FormLabel>
@@ -235,21 +369,17 @@ export default class SaleForm extends Component{
                     />
 
 
-
-
-
                     <Button
                         bssize="medium"
                         variant="outline-danger"
                         onClick={e => {
-                            let today = this.state.date;
-                            axios.get( apiLinks.EXCHANGERATES +'/byDate',{params:{today}}).then(res => {
-                                const exchange = res.data;
-                                this.setState({USDExchangeRate: exchange.toUSDRate});
-                            });
 
-                            this.handleSubmit(e)
+                            //this.handleSubmit(e)
+                            //this.getExchangRate()
+                            this.getExchangRate()
                         }}
+                        //                        onClick={this.getExchangRate}
+                        onClick={this.handleClick}
                         block
                     >
                         Sell Ticket
@@ -257,7 +387,15 @@ export default class SaleForm extends Component{
 
                 </Form>
             </Container>
+        */
+            <div className='button_container'>
+                <button className='button' onClick={this.handleClick}>
+                    Click Me
+                </button>
+            </div>
         );
     }
 }
+
+
 

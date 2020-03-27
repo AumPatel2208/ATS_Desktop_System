@@ -10,6 +10,7 @@ import Container from 'reactstrap/lib/Container';
 import ReportTableI from "../Components/ReportTableI";
 import ReportTurnoverT from "../Components/ReportTurnoverT";
 import ReportTableG from "../Components/ReportTableG";
+import ReportTableGRate from "../Components/ReportTableGRate";
 
 let apiLinks = require('../api/config.json');
 
@@ -18,9 +19,14 @@ const [tableType, setTableType] = useState("Select Report Type");
 const [tableCode, setTableCode] = useState("");
 
 
-    const global = (
+    const globalA = (
         <Container>
             <ReportTableG></ReportTableG>
+        </Container>
+    );
+    const globalR = (
+        <Container>
+            <ReportTableGRate></ReportTableGRate>
         </Container>
     );
     const individual = (
@@ -40,10 +46,13 @@ function reportHandler() {
     if (tableCode == "A") {
         return <Fragment>{individual}</Fragment>;
     } else if (tableCode == "B") {
-        return <Fragment>{global}</Fragment>;
+        return <Fragment>{globalA}</Fragment>;
     } else if (tableCode == "C") {
+        return <Fragment>{globalR}</Fragment>;
+    } else if (tableCode == "D") {
         return <Fragment>{blanks}</Fragment>;
-    } else {
+    }
+    else {
         return "Please Select A Report Type"
     }
 
@@ -70,10 +79,12 @@ function reportHandler() {
                                 setTableCode(temp.toString());
                                 if (key === 'Individual') {
                                     setTableCode('A' );
-                                } else if (key === 'Global') {
+                                } else if (key === 'GlobalA') {
                                     setTableCode('B' );
-                                } else if (key === 'Ticket Turnover') {
+                                } else if (key === 'GlobalR') {
                                     setTableCode('C');
+                                }else if (key === 'Ticket Turnover') {
+                                    setTableCode('D');
                                 }
                                 reportHandler()
                             }}
@@ -89,8 +100,11 @@ function reportHandler() {
                                 <Dropdown.Item eventKey="Individual">
                                     Individual
                                 </Dropdown.Item>
-                                <Dropdown.Item eventKey="Global">
-                                    Global
+                                <Dropdown.Item eventKey="GlobalA">
+                                    Global By Advisor
+                                </Dropdown.Item>
+                                <Dropdown.Item eventKey="GlobalR">
+                                    Global By Rate
                                 </Dropdown.Item>
                                 <Dropdown.Item eventKey="Ticket Turnover">
                                     Ticket Turnover
