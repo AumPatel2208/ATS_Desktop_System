@@ -31,8 +31,8 @@ export class CommissionUpdate extends Component {
      updateCommission(e) {
         e.preventDefault();
          const st = this.state.staff.advisorCode;
-        axios.put(apiLinks.STAFFMEMBERS + '/commission', {params:{st}},
-            this.state.staff.commissionRate
+        axios.put(apiLinks.STAFFMEMBERS + '/commission' ,
+            this.state.staff.commissionRate,{params:{st}}
         )
             .then(res => {
                 console.log(res);

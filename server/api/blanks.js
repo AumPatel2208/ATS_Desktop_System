@@ -51,6 +51,7 @@ router.post('/', (q, a) => {
 
 // find all blanks, sorted by date added
 router.get('/', (q, a) => {
+    console.log(q);
     Blank.find()
         .sort({ date: -1 })
         .then(blanks => a.json(blanks));
@@ -60,9 +61,32 @@ router.get('/', (q, a) => {
 router.get('/assign', (q, a) => {
     let s = q.query.start;
     let e = q.query.end;
-    Blank.find({batchStart: {$lte:s},batchEnd: {$gte:e}})
+    console.log(q.query);
+    Blank.find()
         .sort({ date: -1 })
         .then(blanks => a.json(blanks));
+    //console.log(a)
+   // a.send("hello");
+    /*
+    //console.log(s,e)
+    //Blank.findOne({batchStart: {$lte:s},batchEnd: {$gte:e}})
+    var x;
+    Blank.findOne({'batchStart' : s}, function (err, blank) {
+        if (err) {
+            console.log(err)
+        } else {
+            x = blank;
+            a.json(x);
+
+        }
+
+    });
+   // a.json(x);
+       // .then(blanks => a.json(blanks));
+
+  //  Blank._findOne
+
+     */
 });
 
 
@@ -76,8 +100,6 @@ router.get('/byDate',(q,a)=>{
     console.log(q.url);
     Blank.find({date:{$lte:ed, $gte:sd}})
         .then(blanks => a.json(blanks));
-
-
     });
 
 //find and update one blank

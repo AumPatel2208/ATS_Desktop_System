@@ -32,60 +32,105 @@ export default class AssignBlanks extends Component{
 
 
 findInitBatch(e) {
+console.log("hello")
+    axios.get(apiLinks.BLANKS + '/assign', {params:{start:1,end:2}}).then(resp => {
+        const blanks = resp.data;
+        console.log(blanks);
+
+
+    });
+
+    /*
+    axios.get( apiLinks.BLANKS ).then(res => {
+        const blanks = res.data;
+        this.setState({blanks});
+    });
+
+
     var y = String(this.state.batchValues).split("-");
 
     var start = y[0];
     var end = y[1];
-    axios.get(apiLinks.BLANKS + '/assign', {params: {start, end}}).then(response => {
-        const oG = response.data;
-        this.setState({oG});
-        console.log(response);
-    })
+    axios.get(apiLinks.BLANKS + '/assign', {params: {start, end}})
+        .then(function(response) {
+            return response
+        });
+
+            //response => {console.log(response.data);
+       // const oG = a.data;
+       // this.setState({oG});
+
+   // })
+    console.log(this.state.oG)
+//})
+
+     */
 }
 
-/*
+
 updateInitBatch(e){
+
+    //this.findInitBatch(e);
+
     var y = String(this.state.batchValues).split("-");
 
 
-    var start = y[0];
-    var end = y[1];
+    var st = y[0];
+    var en = y[1];
 
     var s = this.state.oG.batchStart;
     var e =  this.state.oG.batchEnd;
 
     var x = this.state.oG.remaining;
+console.log(this.state.oG);
+console.log(x);
+
+var z = x.length;
+
     var i =0;
-    for(i = 0; i < x.length; i++){
-        if (start <= s && end>= e){
-            if (start != s-1 && end !=e+1){
-                x[i] = {start: start, end: s-1}
-                x.push({start: e+1, end: end})
+    for(i = 0; i < z; i++){
+        if (st <= s && en>= e){
+            if (st != s-1 && en !=e+1){
+                //if taking the entire batch
+                if(st == s && en == e){
+                    x[i].pop()
+                }
+                //if taking a middle portion
+                else {
+                    x[i] = {start: st, end: s - 1}
+                    x.push({start: e + 1, end: en})
+                }
             }
-            else if (start == s-1){
-                x[i] = {start: start, end: start}
+            //leaving only one at beginning
+            else if (st == s-1){
+                if (en == e+1){
+                    x[i] = {start: st, end: st}
+                    x.push({start: en, end: en})
+                }
+                //not leaving any at the end
+                else if (en == e){
+                    x[i] = {start: st, end: st}
+                }
             }
-            else if (end == e+1){
-                x[i] = {start: end, end: end}
+            //none at start, check for end
+            else if (st == s){
+                if (en == e+1){
+                    x[i] = {start: en, end: en};
+                }
             }
-            else if (end == e){
-                x[i] = {start: end, end: end}
-            }
-            //CHECK FOR ALL EDGE CASES!!!
         }
     }
 
-this.setState(oG.remaining: x);
-
+this.setState({remaining: x});
 
     var iden = this.state.oG.id;
-    axios.put(apiLinks.BLANKS + '/id', {params: {iden}},  ).then(response => {
+    axios.put(apiLinks.BLANKS + '/id', {params: {iden}}, this.state.oG ).then(response => {
         console.log(response);
 });
 }
 
 
- */
+
 
 
     handleSubmit(event) {
@@ -141,7 +186,9 @@ this.setState(oG.remaining: x);
                 <Button
                     onClick={e => {
                         console.log("hit");
-                        this.handleSubmit(e)
+                      //  this.handleSubmit(e);
+                        //this.updateInitBatch(e)
+                        this.findInitBatch(e)
                     }}
                 >
                     Assign Blanks

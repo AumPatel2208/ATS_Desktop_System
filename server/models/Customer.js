@@ -17,12 +17,9 @@ const CustomerSchema = new Schema({
         type: String,
         required: true
     },
-    discount: {
-        type: Number
-    },
     customerType: {
         type: String,
-        required: true
+
     },
     creditCardNum: {
         type: Number
@@ -34,6 +31,9 @@ const CustomerSchema = new Schema({
         type: String
     },
     discountName: {
+        type: String
+    },
+    discountType:{
         type: String
     }
 });

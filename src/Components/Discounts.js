@@ -29,7 +29,22 @@ export default class Discounts extends Component {
 
         cName:"",
         dName:"",
-        dType: "Select Discount Type"
+        dType: "Select Discount Type",
+        customer:{
+            _id: '',
+            firstName: '',
+            lastName: '',
+            address: '',
+            phoneNumber: '',
+            discount: 0,
+            customerType: null,
+            creditCardNum: 0,
+            expDate: '',
+            securityCode: '',
+            discountName: '',
+            discountType: ''
+        }
+
     };
 
     //runs when component mounts, use to gets the data from db
@@ -63,18 +78,26 @@ export default class Discounts extends Component {
         });
     }
 
+
+
+
+
     assignDiscount(e){
         e.preventDefault();
 
         const st = this.state.cName;
         axios.get(apiLinks.CUSTOMERS + '/discount', {params:{st}})
             .then(res => {
+                const tempCustomer = res.data;
+                this.setState({customer : tempCustomer})
                 console.log(res);
             });
 
+        this.setState({discountName: this.state.dName});
+        this.setState({discountType: this.state.dType});
+
         axios.put(apiLinks.CUSTOMERS + '/discount', {params:{st}},
-            this.state.customers.dName
-        )
+            this.state.customer)
             .then(res => {
                 console.log(res);
             });

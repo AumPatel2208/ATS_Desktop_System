@@ -31,9 +31,9 @@ export default class AddBlanks extends Component{
 
         const newblanks = {
             batchValues: this.state.batchValues,
-            date: this.state.date
+            date: Date.now()
         }
-        axios.post(apiLinks.BLANKS, newblanks ).then(response => {
+        axios.post(apiLinks.BLANKS, newblanks).then(response => {
             console.log(response);
         });
 

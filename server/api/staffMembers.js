@@ -33,7 +33,7 @@ router.get('/', (q, a) => {
 });
 
 //get by advisor code
-router.get('/commission', (q, a) => {
+router.put('/commission', (q, a) => {
         let st = q.query.st;
         console.log(q.url);
 
