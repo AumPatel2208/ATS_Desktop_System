@@ -24,6 +24,12 @@ router.get('/', (q, a) => {
         .then(exchangeRates => a.json(exchangeRates));
 });
 
+router.get('/byDate', (q, a) => {
+    let d = q.query.start;
+    ExchangeRate.find({date: d})
+        .then(exchangeRates => a.json(exchangeRates));
+});
+
 // find rates, by currency code
 router.get('/', (q, a) => {
     ExchangeRate.find(q.param.currencyCode).then(exchangeRates =>

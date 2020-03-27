@@ -10,11 +10,10 @@ let apiLinks = require('../api/config.json');
 export default class RatesForm extends Component{
     state = {
         rates: [],
-        date: new Date(),
+        dateE: new Date(),
         eRate: "",
         code: ""
     };
-
 
     handleSubmit(event) {
         const newRate = {
@@ -103,19 +102,24 @@ export default class RatesForm extends Component{
 
                         <FormLabel>Search For Rates By Date  </FormLabel>
                         <DatePicker
-                            selected = {this.state.date}
-                            onChange={ e=>
-                                this.setState({date: e.target.value})
-                            }
+                            //selected = {this.state.date}
+                          //  onSelect= { e=> this.setState({date: e.target.value})}
+                            //onChange={ e=> this.setState({date: e.target.value})}
+                            selected={this.state.dateE}
+                            onChange = {date => {
+                            this.setState({
+                                dateE: date
+                            })}}
 
-                        />
+></DatePicker>
+
                         <Button
                             bssize="medium"
                             variant="outline-danger"
                             onClick={() => {
-                                let start = this.state.date;
+                                let start = this.state.dateE;
 
-                                axios.get(apiLinks.BLANKS + '/byDate', {params: {start}}).then(res => {
+                                axios.get(apiLinks.EXCHANGERATES + '/byDate', {params: {start}}).then(res => {
                                     const rates = res.data;
                                     this.setState({rates});
                                 });

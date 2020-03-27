@@ -65,12 +65,6 @@ router.get('/assign', (q, a) => {
         .then(blanks => a.json(blanks));
 });
 
-let sd = q.query.start;
-let ed = q.query.end;
-
-console.log(q.url);
-Discount.find({date:{$lte:ed, $gte:sd}})
-    .then(discounts => a.json(discounts));
 
 
 
