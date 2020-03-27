@@ -8,7 +8,7 @@ const ExchangeRateSchema = new Schema({
     },
     date: {
         type: Date,
-        default: Date.now()
+        //default: Date.now()
     },
     toUSDRate: {
         type: Number,

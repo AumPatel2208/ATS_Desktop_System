@@ -49,7 +49,7 @@ export default class RatesForm extends Component{
                             className="open-btn"
                             color="primary"
                             size="sm"
-                            onClick={this.onOpenClick.bind(this)}
+                          //  onClick={this.onOpenClick.bind(this)}
                         >
                             open
                         </Button>
@@ -118,10 +118,11 @@ export default class RatesForm extends Component{
                             variant="outline-danger"
                             onClick={() => {
                                 let start = this.state.dateE;
-
+                                //(apiLinks.EXCHANGERATES + '/byDate', {params: {start}})
                                 axios.get(apiLinks.EXCHANGERATES + '/byDate', {params: {start}}).then(res => {
                                     const rates = res.data;
                                     this.setState({rates});
+                                    console.log(rates)
                                 });
 
                             }}

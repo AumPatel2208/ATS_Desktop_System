@@ -7,10 +7,12 @@ router.post('/', (q, a) => {
     // const { currencyCode, date, toUSDRate } = q.body;
     // ExchangeRate.create(q.body).then(item => a.json(item));
     // console.log(q.body);
-
+let dt = new Date(Date.now());
+dt.setHours(0,0,0,0)
     const newExchangeRate = new ExchangeRate({
         currencyCode: q.body.currencyCode,
-        toUSDRate: q.body.toUSDRate
+        toUSDRate: q.body.toUSDRate,
+        date: dt
     });
 
     newExchangeRate.save().then(item => a.json(item));
@@ -25,8 +27,14 @@ router.get('/', (q, a) => {
 });
 
 router.get('/byDate', (q, a) => {
-    let d = q.query.start;
-    ExchangeRate.find({date: d})
+    let d = new Date(q.query.start);
+    d.setHours(0,0,0,0);
+       // d.setHours(0,0,0,0);
+   // let df = d.setHours(0,0,0,0);
+    console.log(d)
+    ExchangeRate.find({date:d})
+    //ExchangeRate.find()
+   // console.log(ExchangeRate.find({date: "2020-03-25T10:40:36.900Z"}))
         .then(exchangeRates => a.json(exchangeRates));
 });
 

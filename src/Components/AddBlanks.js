@@ -9,7 +9,7 @@ let apiLinks = require('../api/config.json');
 export default class AddBlanks extends Component{
     state = {
         batchValues: "",
-        date: new Date()
+        enteredDate: new Date()
 
     };
     //runs when component mounts, use to gets the data from db
@@ -28,10 +28,11 @@ export default class AddBlanks extends Component{
     handleSubmit(event) {
         event.preventDefault();
         console.log('hello');
-
+let dt = new Date(this.state.enteredDate);
+dt.setHours(0,0,0,0)
         const newblanks = {
             batchValues: this.state.batchValues,
-            date: Date.now()
+            date: dt
         }
         axios.post(apiLinks.BLANKS, newblanks).then(response => {
             console.log(response);
@@ -57,11 +58,11 @@ export default class AddBlanks extends Component{
         <FormGroup controlId="date" bssize="large">
             <FormLabel>Receipt Date:</FormLabel>
             <DatePicker
-                selected = {this.state.date}
-                onChange={ e=>
-                    this.setState({date: e.target.value})
-                }
-
+                selected={this.state.enteredDate}
+                onChange = {date => {
+                    this.setState({
+                        enteredDate: date
+                    })}}
             />
             <br/>
         </FormGroup>
