@@ -38,7 +38,8 @@ router.put('/commission', (q, a) => {
         console.log(q.url);
 
         Staff.find({advisorCode:st})
-            .then(staff => a.json(staff));
+            .then(staff => console.log(staff))
+                //a.json(staff));
 
 });
 
