@@ -1,8 +1,9 @@
-import {Container} from "reactstrap";
-import {Button, FormControl, FormGroup, FormLabel} from "react-bootstrap";
+import {Container, Table} from "reactstrap";
+import {Button, Dropdown, Form, FormControl, FormGroup, FormLabel} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import React, {Component, Fragment} from "react";
 import axios from "axios";
+import {Assignment} from "./Assignment";
 
 let apiLinks = require('../api/config.json');
 
@@ -11,34 +12,128 @@ export default class AssignBlanks extends Component{
         batchValues: "",
         date: new Date(),
         code: "",
-        oG: ""
+        oG: "",
+        i: 0,
+        blanks :[],
 
     };
-    //runs when component mounts, use to gets the data from db
-/*
-    componentDidMount() {
-        let start = this.state.startDate;
-        let end = this.state.endDate;
 
-        axios.get( apiLinks.BLANKS +'/byDate',{params:{start, end}}).then(res => {
+    //runs when component mounts, use to gets the data from db
+
+    componentDidMount() {
+
+        axios.get( apiLinks.BLANKS ).then(res => {
             const blanks = res.data;
             this.setState({blanks});
         });
     }
+    onOpenClick(_id) {
+        console.log(_id);
+    }
 
- */
+    render() {
+        /**
+         * Will return a Fragment to be used when mapping in the render function.
+         * Allows to break down the data into rows and TD.
+         * @param {The MongoDB ID of the object in the collection} _id
+         */
+        const row = (
+            _id,
+           start,
+            end,
+            i
+        ) => (
+            <Fragment>
+                <tr key={_id}>
+                    <td>{start}</td>
+                    <td>{end}</td>
+                    <td>{i}</td>
+                    <td>
+                    { <Assignment id={_id} index={i}></Assignment> }
+                    <Button
+                        className="open-btn"
+                        color="primary"
+                        size="lg"
+                        onClick={this.onOpenClick.bind(this, _id)}
+                        href={'./blanks/' + _id}
+                    >
+                        Assign from Batch
+                    </Button>
+                </td>
+                </tr>
+            </Fragment>
+        );
+
+        return (
+            <Container>
+                <Table className="mt-4">
+                    <thead>
+                    <tr>
+                        <th>Batch Start</th>
+                        <th>Batch End</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {this.state.blanks.map(
+                        ({_id, remaining}) => {
+                            return (
+                                <tr key={_id}>
+                                    {
+                                        remaining.map((sub, i) => {
+                                            return(
+
+                                               <tr key = {i}>
+                                                      <td>{_id}</td>
+                                                  <td> {sub.start}</td>
+                                                   <td>{sub.end}</td>
+                                                   <td>
+                                                       { <Assignment id={_id} index={i}></Assignment> }
+                                                       <Button
+                                                           className="open-btn"
+                                                           color="primary"
+                                                           size="lg"
+                                                           onClick={this.onOpenClick.bind(this, _id)}
+                                                           href={'./blanks/' + _id}
+                                                       >
+                                                           Assign from Batch
+                                                       </Button>
+                                                   </td>
+                                        </tr>
+
+                                            )
+                                        }
+                                        )
+                                    }
+                                </tr>
+                            )
+                        }
+                    )}
+                    </tbody>
+                </Table>
+            </Container>
+        );
+    }
 
 
 
 
-findInitBatch(e) {
-console.log("hello")
-    axios.get(apiLinks.BLANKS + '/assign', {params:{start:1,end:2}}).then(resp => {
-        const blanks = resp.data;
-        console.log(blanks);
 
 
-    });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /*
     axios.get( apiLinks.BLANKS ).then(res => {
@@ -67,7 +162,7 @@ console.log("hello")
      */
 }
 
-
+/*
 updateInitBatch(e){
 
     //this.findInitBatch(e);
@@ -242,3 +337,4 @@ this.setState({remaining: x});
 
         )
     }}
+    */

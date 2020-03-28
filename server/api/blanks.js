@@ -90,7 +90,9 @@ router.get('/assign', (q, a) => {
 });
 
 
-
+router.get('/:id', (q, a) => {
+    Blank.findById(q.params.id).then(item => a.json(item));
+});
 
 router.get('/byDate',(q,a)=>{
    // x = JSON.parse(q.body);

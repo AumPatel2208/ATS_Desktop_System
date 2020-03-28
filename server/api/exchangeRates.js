@@ -40,8 +40,11 @@ router.get('/byDate', (q, a) => {
 
 
 router.get('/sale', (req, res) => {
-   /* let d = new Date(req.query.d);
+    let d = new Date(Date.now());
     d.setHours(0,0,0,0);
+    ExchangeRate.find({date: d})
+        .then(rates => res.json(rates));
+   /*
     console.log(d);
 
     let c = req.query.currency;
@@ -66,8 +69,7 @@ router.get('/sale', (req, res) => {
     return res;
             //a.json(exchangeRates));
 */
-   console.log("Send");
-   res.send('Hello');
+
 });
 
 // find rates, by currency code

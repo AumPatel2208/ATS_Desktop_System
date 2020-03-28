@@ -30,8 +30,28 @@ export  class SaleForm extends Component{
         rate: "",
         adCode:"",
         notes:"",
-        USDExchangeRate: ""
+        USDExchangeRate: "",
+        eRate: {
+            eDate: Date,
+            currency: '',
+            USDExchange: ''
+        },
+        exch: [],
+        cCode: ""
+
     };
+
+    componentDidMount() {
+        const getLink = apiLinks.EXCHANGERATES + '/sale';
+        axios.get(getLink).then(res => {
+            const exchData = res.data;
+            this.setState({
+                ...this.state.exch,
+                exch: exchData}
+            )
+            console.log(this.state.exch)
+        })
+    }
 
     creditHandler(){
         if (this.state.method === "CreditCard"){
@@ -95,10 +115,10 @@ export  class SaleForm extends Component{
                     <FormControl
                         autoFocus
                         type="string"
-                        value={this.state.code}
+                        value={this.state.cCode}
                         onChange={e => {
                             this.setState({
-                                code: e.target.value
+                                cCode: e.target.value
                             });
                         }}
                     />
@@ -106,49 +126,47 @@ export  class SaleForm extends Component{
 
         }
     }
-    handleSubmit(event) {
-
-
-        event.preventDefault();
-        console.log('hello');
-        this.setState({adCode: GetUSer.advisorCode});
-        this.setState({commissionRate: GetUSer.commissionRate});
-
-
-
-        const newSale = {
-            ticketNumber: this.state.tickNum,
-            saleType: this.state.saleType,
-            fare:this.state.fare,
-            currency: this.state.code,
-            localTax: this.state.Tlocal,
-            otherTax:this.state.Tother,
-            paymentMethod: this.state.method,
-            creditCardNum: this.state.creditNum,
-            expDate: this.state.expDate,
-            securityCode: this.state.secCode,
-            commissionRate: this.state.rate,
-            custName: this.state.custName,
-            advisorCode: this.state.adCode,
-            saleDate: Date.now(),
-            notes: this.state.notes,
-            USDExchangeRate: this.state.code
-
-        };
-        axios.post(apiLinks.SALES, newSale ).then(response => {
-            console.log(response);
-        });
-
-    }
 
     render() {
+        function submitSale(event) {
+
+            event.preventDefault();
+
+            this.setState({adCode: GetUSer.advisorCode});
+            this.setState({commissionRate: GetUSer.commissionRate});
+
+           const newSale = {
+                ticketNumber: this.state.tickNum,
+                saleType: this.state.saleType,
+                fare:this.state.fare,
+                currency: this.state.cCode,
+                localTax: this.state.Tlocal,
+                otherTax:this.state.Tother,
+                paymentMethod: this.state.method,
+                creditCardNum: this.state.creditNum,
+                expDate: this.state.expDate,
+                securityCode: this.state.secCode,
+                commissionRate: this.state.rate,
+                custName: this.state.custName,
+                advisorCode: this.state.adCode,
+                saleDate: Date.now(),
+                notes: this.state.notes,
+                USDExchangeRate: this.state.exch[0].toUSDRate,
+            };
+            axios.post(apiLinks.SALES, newSale )
+                 .then(response => {
+                       console.log(response);
+                       console.log(this.state.exch)
+                 })
+                .catch(res => console.log(res));
+
+        }
 
         return (
             <Container>
-                <Form>
+                <Form onSubmit={submitSale.bind(this)}>
 
-                    <Dropdown
-                        onSelect={key => {
+                    <Dropdown onSelect={key => {
                             this.setState({saleType: key});
                         }}
                     >
@@ -250,19 +268,12 @@ export  class SaleForm extends Component{
                         }}
                     />
 
-
-
                     <Button
                         bssize="medium"
-                        variant="outline-danger"
-                        onClick={e => {
-                            this.handleSubmit(e)
-                        }}
-                        block
+                        type="submit"
                     >
                         Sell Ticket
                     </Button>
-
                 </Form>
             </Container>
         );
