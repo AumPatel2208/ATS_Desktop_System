@@ -41,8 +41,6 @@ export default function Blanks() {
             <Fragment>{manager}</Fragment>
             <Fragment>{admin}</Fragment>
             <br/>
-                <h2>Blank Stock</h2>
-                <ReportTurnoverT></ReportTurnoverT>
         </Container>
     );
 }

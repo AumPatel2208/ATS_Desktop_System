@@ -43,6 +43,7 @@ import { Authenticate } from './Authenticate';
 import BackupRestore from './Pages/BackupRestore';
 import ExRates from "./Pages/ExRates";
 import Sale from "./Pages/Sale";
+import {Assignment} from "./Components/Assignment";
 
 const apiLinks = require('./api/config.json');
 /* CODE TO LOCK A PAGE
@@ -154,6 +155,12 @@ class App extends React.Component {
                             <div className="App">
                                 <Blanks />
                             </div>
+                        )}
+                    />
+                    <Route
+                        path="/blanks/:id"
+                        render={props => (
+                            <Assignment {...props}  />
                         )}
                     />
                     <Route

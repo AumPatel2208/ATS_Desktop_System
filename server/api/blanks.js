@@ -51,7 +51,7 @@ router.post('/', (q, a) => {
 
 // find all blanks, sorted by date added
 router.get('/', (q, a) => {
-    console.log(q);
+    //console.log(q);
     Blank.find()
         .sort({ date: -1 })
         .then(blanks => a.json(blanks));
@@ -106,7 +106,8 @@ router.get('/byDate',(q,a)=>{
 
 //find and update one blank
 router.put('/:id', (q, a) => {
-    Blank.findByIdAndUpdate(q.params.id, q.body).then(a.json(post));
+    //Blank.findByIdAndUpdate(q.params.id, q.body).then(a.json(post));
+    Blank.findByIdAndUpdate(q.params.id, q.body).then(item => a.json(item));
 });
 
 

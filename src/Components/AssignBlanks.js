@@ -49,13 +49,13 @@ export default class AssignBlanks extends Component{
                     <td>{end}</td>
                     <td>{i}</td>
                     <td>
-                    { <Assignment id={_id} index={i}></Assignment> }
+                    {/* <Assignment id={_id} index={i}></Assignment> */}
                     <Button
                         className="open-btn"
                         color="primary"
                         size="lg"
                         onClick={this.onOpenClick.bind(this, _id)}
-                        href={'./blanks/' + _id}
+                        href={'./blanks/' + _id +"-"+ i}
                     >
                         Assign from Batch
                     </Button>
@@ -84,18 +84,21 @@ export default class AssignBlanks extends Component{
                                         remaining.map((sub, i) => {
                                             return(
 
+
+
+
                                                <tr key = {i}>
                                                       <td>{_id}</td>
                                                   <td> {sub.start}</td>
                                                    <td>{sub.end}</td>
                                                    <td>
-                                                       { <Assignment id={_id} index={i}></Assignment> }
+                                                       { /*<Assignment id={_id} index={i}></Assignment> */}
                                                        <Button
                                                            className="open-btn"
                                                            color="primary"
                                                            size="lg"
                                                            onClick={this.onOpenClick.bind(this, _id)}
-                                                           href={'./blanks/' + _id}
+                                                           href={'./blanks/' + _id +"-"+ i}
                                                        >
                                                            Assign from Batch
                                                        </Button>

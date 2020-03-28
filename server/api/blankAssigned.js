@@ -1,30 +1,33 @@
 const express = require('express');
 const router = express.Router();
 const BlankAssigned = require('../models/BlankAssigned');
+const bodyParser = require('body-parser');
 
 router.post('/', (q, a) => {
     // const { blankNumber, assigned, used, batch } = q.body;
     //Blank.create(q.body).then(item => a.json(item));
-    console.log(q.body);
-    const f = String(q.param.batchValues);
-    console.log(f);
-    console.log(q.param.batchValues);
+    //console.log(q.body);
+    const f = String(q.body.batchValues);
+    //console.log(f);
+   // console.log(q.param.batchValues);
     var x = f.split("-");
     var c = (x[0]);
     var d = (x[1]);
-    console.log(c);
-    console.log(d);
+    //console.log(c);
+    //console.log(d);
     let amount = d-c;
     let remain = [{start: c, end:d}];
+
+
 
     assignedBlanks = {
         batchStart: c,
         batchEnd: d,
-        date: q.param.date,
-        batchType: q.param.batchType,
+        date: q.body.date,
+        batchType: q.body.batchType,
         amount: amount,
-        advisorCode: q.param.advisorCode,
-        batchId: q.param.batchId,
+        advisorCode: q.body.advisorCode,
+        batchId: q.body.batchId,
         remaining: remain
     };
 
