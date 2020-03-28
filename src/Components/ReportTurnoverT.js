@@ -37,6 +37,11 @@ export default class ReportTurnoverT extends Component{
             const blanks = res.data;
             this.setState({blanks});
         });
+
+        axios.get( apiLinks.ASSIGN ).then(res => {
+            const aBlanks = res.data;
+            this.setState({aBlanks});
+        });
     }
 
 
