@@ -23,6 +23,7 @@ router.post('/', (q, a) => {
     assignedBlanks = {
         batchStart: c,
         batchEnd: d,
+        batchValues: q.body.batchValues,
         date: q.body.date,
         batchType: q.body.batchType,
         amount: amount,

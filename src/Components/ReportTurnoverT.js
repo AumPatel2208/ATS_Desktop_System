@@ -1,7 +1,7 @@
 import React, { Component, Fragment, } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import { Container, Table, Button } from 'reactstrap';
+import { Container, Table, Button, Col} from 'reactstrap';
 import axios from 'axios';
 import {
     Form,
@@ -33,21 +33,16 @@ export default class ReportTurnoverT extends Component{
 
     componentDidMount() {
 
-        axios.get( apiLinks.BLANKS ).then(res => {
-            const blanks = res.data;
-            this.setState({blanks});
-        });
-
-        axios.get( apiLinks.ASSIGN ).then(res => {
-            const aBlanks = res.data;
-            this.setState({aBlanks});
-        });
     }
 
 
 
 
 /*
+
+
+
+
     onOpenClick(e, _id) {
         console.log(e, _id);
     }
@@ -57,6 +52,7 @@ export default class ReportTurnoverT extends Component{
 
     render() {
         const row = (
+            _id,
             batchValues,
             date,
             amount,
@@ -64,30 +60,42 @@ export default class ReportTurnoverT extends Component{
 
 
         ) => (
-            <Fragment>
+            <Fragment key = {_id}>
                 <tr >
+                    <td>{_id}</td>
                     <td>{batchValues}</td>
                     <td>{date}</td>
                     <td>{amount}</td>
                     <td>{advisorCode}</td>
 
                     <td>
-                        <Button
-                            className="open-btn"
-                            color="primary"
-                            size="sm"
-                            //onClick={this.onOpenClick.bind(this)}
-                        >
-                            open
-                        </Button>
+
                     </td>
                 </tr>
             </Fragment>
         );
 
+        const row2 = (
+            batchValues,
+            advisorCode,
+            amount
+        ) => (
+            <Fragment>
+                <tr >
+                    <td>{batchValues}</td>
+                    <td>{advisorCode}</td>
+                    <td>{amount}</td>
+                    <td>
+                    </td>
+                </tr>
+            </Fragment>
+        );
+
+
         return (
             <Container>
                 <br></br>
+
                 <FormLabel>From:  </FormLabel>
                 <DatePicker
 
@@ -108,6 +116,7 @@ export default class ReportTurnoverT extends Component{
                             endDate: date
                         })}}
                 />
+
                 <br/>
                 <Button
                     bssize="medium"
@@ -145,7 +154,7 @@ export default class ReportTurnoverT extends Component{
 
 
                 <h4>Received Blanks</h4>
-                <Table className="mt-4">
+                <Table className="mt-4" >
                     <thead>
                     <tr>
                         <th>Batch</th>
@@ -205,7 +214,7 @@ export default class ReportTurnoverT extends Component{
 
 
                 <h4>Assigned Blanks</h4>
-                <Table className="mt-4">
+                <Table >
                     <thead>
                     <tr>
                         <th>Assigned Blanks</th>
@@ -221,7 +230,7 @@ export default class ReportTurnoverT extends Component{
                              amount,
                          }) => (
                             <Fragment>
-                                {row(
+                                {row2(
                                     batchValues,
                                     advisorCode,
                                     amount
@@ -271,16 +280,22 @@ export default class ReportTurnoverT extends Component{
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.blanks.map(({batchValues, amount
-                    })=> (
-                            <Fragment >
-                                {row(
-                                    batchValues,
-                                    amount
-                                )}
-                            </Fragment>
-                        )
-                    )}
+                    {this.state.blanks.map(
+                        ({_id, remaining}) => {
+                            if (_id == this.state.myId) {
+                                return (
+                                    <tr key={_id}>
+                                        {
+                                            remaining.map((sub, i) => {
+                                                    return(
+                                                        <tr key = {i}>
+                                                            <td>{_id}</td>
+                                                            <td> {sub.start}</td>
+                                                            <td>{sub.end}</td>
+                                                        </tr>
+                                                    )})}
+                                    </tr>
+                                )}})}
                     </tbody>
                 </Table>
 
@@ -296,10 +311,11 @@ export default class ReportTurnoverT extends Component{
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.aBlanks.map(({batchValues, amount
+                    {this.state.aBlanks.map(({advisorCode,batchValues, amount
                                             })=> (
                             <Fragment >
                                 {row(
+                                    advisorCode,
                                     batchValues,
                                     amount,
                                 )}

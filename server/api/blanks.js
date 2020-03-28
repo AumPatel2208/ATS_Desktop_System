@@ -95,14 +95,15 @@ router.get('/:id', (q, a) => {
 });
 
 router.get('/byDate',(q,a)=>{
-   // x = JSON.parse(q.body);
+    // x = JSON.parse(q.body);
     let sd = q.query.start;
     let ed = q.query.end;
 
-    console.log(q.url);
+    //console.log(q.url);
     Blank.find({date:{$lte:ed, $gte:sd}})
         .then(blanks => a.json(blanks));
-    });
+
+});
 
 //find and update one blank
 router.put('/:id', (q, a) => {
