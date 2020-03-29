@@ -72,6 +72,7 @@ dt.setHours(0,0,0,0)
             onClick={e => {
                 this.handleSubmit(e)
             }}
+            href={"./blanks"}
         >
             Add Blanks
         </Button>

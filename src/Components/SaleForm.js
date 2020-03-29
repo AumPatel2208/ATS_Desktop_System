@@ -172,6 +172,14 @@ dt.setHours(0,0,0,0);
             this.setState({adCode: GetUSer.advisorCode});
             this.setState({commissionRate: GetUSer.commissionRate});
 
+            if (this.state.saleType == "Domestic"){
+                this.setState({currency: "USD"});
+                this.setState({USDExchangeRate: 1});
+            }
+            else {
+                this.setState({USDExchangeRate: this.state.exch[0].toUSDRate});
+            }
+
            const newSale = {
                 ticketNumber: this.state.tickNum,
                 saleType: this.state.saleType,
@@ -188,7 +196,7 @@ dt.setHours(0,0,0,0);
                 advisorCode: this.props.staff.advisorCode,
                 saleDate: dt,
                 notes: this.state.notes,
-                USDExchangeRate: this.state.exch[0].toUSDRate,
+                USDExchangeRate: this.state.USDExchangeRate
             };
             axios.post(apiLinks.SALES, newSale )
                  .then(response => {
@@ -212,7 +220,7 @@ dt.setHours(0,0,0,0);
 
             axios.post(apiLinks.USED, newUsed).then(response => {
                 console.log(response);
-            })
+            });
                 //UPDATING ASSIGNMENT - REMOVING FROM ASSIGNED LIST
                 let x = this.state.blanks[0].remaining;
                 let  y= x.findIndex( k => k===this.state.tickNum);
