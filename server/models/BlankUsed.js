@@ -2,12 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const BlankUsedSchema = new Schema({
-    batchStart: {
+    batchValues: {
         type: String
 
-    },
-    batchEnd: {
-        type: String
     },
     date:{
         type: Date,
@@ -17,18 +14,13 @@ const BlankUsedSchema = new Schema({
         type: String,
 
     },
-    amount:{
-        type: String
-    },
     advisorCode: {
         type: Number
     },
     batchId: {
         type: String
     },
-    batchAssignedId: {
-        type: String
-    }
+
 });
 
 module.exports = BlankUsed = mongoose.model('BlankUsed', BlankUsedSchema);

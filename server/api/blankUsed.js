@@ -6,25 +6,13 @@ router.post('/', (q, a) => {
     // const { blankNumber, assigned, used, batch } = q.body;
     //Blank.create(q.body).then(item => a.json(item));
 
-    const f = String(q.param.batchValues);
-    console.log(f);
-    console.log(q.param.batchValues);
-    var x = f.split("-");
-    var c = (x[0]);
-    var d = (x[1]);
-    console.log(c);
-    console.log(d);
-    let amount = d-c;
-
-
+    let batchTp = "red";
     usedBlanks = {
-        batchValues: q.param.batchValues,
-        date: q.param.date,
+        batchValues: q.body.batchValues,
+        date: q.body.date,
         batchType: batchTp,
-        amount: amount,
-        advisorCode: q.param.advisorCode,
-        assigned: q.param.assigned,
-        used: q.param.used
+        advisorCode: q.body.advisorCode,
+        bacthId: q.body.batchId
 
     };
 

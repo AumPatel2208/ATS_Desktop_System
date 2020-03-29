@@ -37,11 +37,21 @@ export  class SaleForm extends Component{
             USDExchange: ''
         },
         exch: [],
-        cCode: ""
+        cCode: "",
+        myId: "",
+        blanks: []
 
     };
 
     componentDidMount() {
+
+        const {match:{params}} = this.props;
+        const l = params.id.split('-');
+
+        this.setState({tickNum: l[1]});
+        this.setState({myId: l[0]});
+
+//getting the day's exchange rate for the given currency
         const getLink = apiLinks.EXCHANGERATES + '/sale';
         axios.get(getLink).then(res => {
             const exchData = res.data;
@@ -51,6 +61,16 @@ export  class SaleForm extends Component{
             )
             console.log(this.state.exch)
         })
+
+        //getting the originally assigned amount to remove the sold ticket
+        axios.get( apiLinks.ASSIGN ).then(res => {
+            const blanks = res.data;
+            this.setState({blanks});
+        });
+
+        //filtering by ID
+        const bl = this.state.blanks.filter(i => String(i._id )=== this.state.myId)
+
     }
 
     creditHandler(){
@@ -127,10 +147,20 @@ export  class SaleForm extends Component{
         }
     }
 
+
+
+
+
     render() {
+
         function submitSale(event) {
 
+
+let dt = new Date(Date.now());
+dt.setHours(0,0,0,0);
+
             event.preventDefault();
+
 
             this.setState({adCode: GetUSer.advisorCode});
             this.setState({commissionRate: GetUSer.commissionRate});
@@ -149,7 +179,7 @@ export  class SaleForm extends Component{
                 commissionRate: this.state.rate,
                 custName: this.state.custName,
                 advisorCode: this.state.adCode,
-                saleDate: Date.now(),
+                saleDate: dt,
                 notes: this.state.notes,
                 USDExchangeRate: this.state.exch[0].toUSDRate,
             };
@@ -160,7 +190,44 @@ export  class SaleForm extends Component{
                  })
                 .catch(res => console.log(res));
 
-        }
+            //USING THE BLANK/ADDING TO THE USED DATABASE SECTION
+
+            let d = new Date(Date.now());
+            d.setHours(0,0,0,0);
+
+            const newUsed= {
+                date: d,
+                batchValues: this.state.tickNum,
+                advisorCode: this.state.adCode,
+                batchId: this.state.myId
+
+            };
+
+            axios.post(apiLinks.USED, newUsed).then(response => {
+                console.log(response);
+            })
+                //UPDATING ASSIGNMENT - REMOVING FROM ASSIGNED LIST
+                let x = this.state.blanks[0].remaining;
+                let  y= x.findIndex( k => k===this.state.tickNum);
+                x.splice(y);
+
+
+                const updatedBlank ={
+                    _id: this.state.blanks._id,
+                    batchValues: this.state.blanks.batchValues,
+                    batchStart: this.state.blanks.batchStart,
+                    batchEnd: this.state.blanks.batchEnd,
+                    date: this.state.blanks.date,
+                    batchType: this.state.blanks.batchType,
+                    amount: this.state.blanks.amount,
+                    remaining: x
+                };
+
+
+                axios.put(apiLinks.ASSIGN +"/" + this.state.myId, updatedBlank)
+
+
+            }
 
         return (
             <Container>
