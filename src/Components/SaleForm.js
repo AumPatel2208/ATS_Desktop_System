@@ -42,6 +42,11 @@ export  class SaleForm extends Component{
     };
 
     componentDidMount() {
+
+        const {match:{params}} = this.props;
+        this.setState({tickNum: params.num});
+
+
         const getLink = apiLinks.EXCHANGERATES + '/sale';
         axios.get(getLink).then(res => {
             const exchData = res.data;
@@ -129,6 +134,8 @@ export  class SaleForm extends Component{
 
     render() {
         function submitSale(event) {
+let dt = new Date(Date.now());
+dt.setHours(0,0,0,0);
 
             event.preventDefault();
 
@@ -149,7 +156,7 @@ export  class SaleForm extends Component{
                 commissionRate: this.state.rate,
                 custName: this.state.custName,
                 advisorCode: this.state.adCode,
-                saleDate: Date.now(),
+                saleDate: dt,
                 notes: this.state.notes,
                 USDExchangeRate: this.state.exch[0].toUSDRate,
             };
