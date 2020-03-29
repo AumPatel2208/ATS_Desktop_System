@@ -4,16 +4,28 @@ import { useStoreState } from 'pullstate';
 import { UserStore } from '../store/UserStore';
 import { Link } from 'react-router-dom';
 
-export default function NavItemsAuth() {
+export default function NavItemsAuth(props) {
     //Global State
-    const User = useStoreState(UserStore, s => s.User);
-    const IsAuthenticated = useStoreState(UserStore, s => s.IsAuthenticated);
+    // const User = useStoreState(UserStore, s => s.User);
+    // const IsAuthenticated = useStoreState(UserStore, s => s.IsAuthenticated);
     const authLinks = (
-        <NavItem>
-            <span className="navbar-text mr-3">
-                <strong>{`Welcome ${User.username}`}</strong>
-            </span>
-        </NavItem>
+        <Fragment>
+            <NavItem>
+                {/* <span className="navbar-text mr-3"> */}
+                <strong>
+                    {props.staff !== undefined
+                        ? `Welcome ${props.staff.username}`
+                        : 'UsernameNot found'}
+                </strong>
+
+                {/* </span> */}
+            </NavItem>
+            <NavItem>
+                <NavLink tag={Link} to="/logout">
+                    Logout
+                </NavLink>
+            </NavItem>
+        </Fragment>
     );
     const guestLinks = (
         <NavItem>
@@ -22,5 +34,7 @@ export default function NavItemsAuth() {
             </NavLink>
         </NavItem>
     );
-    return <Fragment>{IsAuthenticated ? authLinks : guestLinks}</Fragment>;
+    return (
+        <Fragment>{props.isAuthenticated ? authLinks : guestLinks}</Fragment>
+    );
 }

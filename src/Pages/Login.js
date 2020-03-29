@@ -75,6 +75,9 @@ export default function Login(props) {
 
     return (
         <Container>
+            {isSignedIn || props.isAuthenticated
+                ? window.location.replace('./')
+                : null}
             <div className="Login">
                 <form onSubmit={handleSubmit}>
                     <FormGroup controlId="username" bssize="large">
@@ -104,11 +107,6 @@ export default function Login(props) {
                     </Button>
                 </form>
             </div>
-            <CheckStore></CheckStore>
-
-            {isSignedIn ? (
-                <Redirect to="/">{window.location.reload(false)}</Redirect>
-            ) : null}
         </Container>
     );
 }

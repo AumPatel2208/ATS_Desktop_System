@@ -26,20 +26,6 @@ router.post('/', (q, a) => {
             if (!isMatch)
                 return a.status(400).json({ msg: 'Invalid Credentials' });
 
-            // var toke = jwt.sign(
-            //     { id: staff.id },
-            //     config.jwt,
-            //     { expiresIn: 3600 }, //only lasts an hour
-            //     (err, token) => {
-            //         if (err) throw err;
-            //         a.json({
-            //             token: token,
-            //             staff: {
-            //                 id: staff.id
-            //             }
-            //         });
-            //     }
-            // );
             jwt.sign(
                 { id: staff.id },
                 config.jwt,
@@ -55,10 +41,14 @@ router.post('/', (q, a) => {
                     });
                 }
             );
-
-            // a.json({ token: toke, staffID: staff.id });
         });
     });
+});
+
+//Logout
+router.post('/logout', (q, a) => {
+    a.clearCookie('token');
+    a.json({ msg: 'Logged Out' });
 });
 
 //get user via token
