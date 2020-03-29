@@ -70,17 +70,17 @@ class App extends React.Component {
     }
 
     async componentDidMount() {
-        //Loading User
-        await axios.get('api/secure/staff').then(res => {
-            this.setState({ ...this.state, userID: res.data });
-        });
-        await axios.get('api/staffMembers/' + this.state.userID).then(res => {
-            this.setState({
-                ...this.state,
-                staff: res.data,
-                isAuthenticated: true
-            });
-        });
+        // temp disable //Loading User
+        // await axios.get('api/secure/staff').then(res => {
+        //     this.setState({ ...this.state, userID: res.data });
+        // });
+        // await axios.get('api/staffMembers/' + this.state.userID).then(res => {
+        //     this.setState({
+        //         ...this.state,
+        //         staff: res.data,
+        //         isAuthenticated: true
+        //     });
+        // });
     }
 
     render() {

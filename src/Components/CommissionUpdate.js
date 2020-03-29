@@ -75,7 +75,7 @@ export class CommissionUpdate extends Component {
                      //onSubmit={this.updateCommission().bind(this)}>
                      {console.log(this.state.customer)} */}
 
-                    <FormGroup controlId="commissionRate" bssize="large">
+                    <FormGroup controlId="advisorCode" bssize="large">
                         <FormLabel>Enter Advisor Code</FormLabel>
                         <FormControl
                             autoFocus
