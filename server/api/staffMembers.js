@@ -33,12 +33,13 @@ router.get('/', (q, a) => {
 });
 
 //get by advisor code
-router.put('/commission', (q, a) => {
-        let st = q.query.st;
+router.put('/:id', (q, a) => {
+       // let st = q.query.st;
         console.log(q.url);
 
-        Staff.find({advisorCode:st})
-            .then(staff => console.log(staff))
+        Staff.findOneAndUpdate(q.params.id, q.body).then(item => a.json(item));
+
+    //.then(staff => console.log(staff))
                 //a.json(staff));
 
 });

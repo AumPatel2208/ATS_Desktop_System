@@ -15,7 +15,9 @@ const _ = require('lodash'); //Library to Change Cases of things
 
 export class CommissionUpdate extends Component {
     state = {
-        staff: ''
+        staff: [],
+        code: '',
+        rate: ''
     };
 
     componentDidMount() {
@@ -28,14 +30,37 @@ export class CommissionUpdate extends Component {
             });
     }
 
+    // componentDidMount() {
+    //     axios.get(apiLinks.STAFFMEMBERS).then(res => {
+    //         const staff = res.data;
+    //         this.setState({staff});
+    //         console.log(staff)
+    //     });
+
+    // }
+
     updateCommission(e) {
         e.preventDefault();
         const st = this.state.staff.advisorCode;
+
+        const bl = this.state.staff.filter(i => String(i.advisorCode) === st);
+        console.log(bl);
+
+        const updatedStaff = {
+            username: this.state.staff.username,
+            firstName: this.state.staff.firstName,
+            lastName: this.state.staff.lastName,
+            address: this.state.staff.address,
+            //password: bcrypt.hashSync(staff.password, salt),
+            staffType: this.state.staff.staffType,
+            advisorCode: this.state.staff.advisorCode,
+            commissionRate: this.state.staff.commissionRate
+        };
+
         axios
             .put(
-                apiLinks.STAFFMEMBERS + '/commission',
-                this.state.staff.commissionRate,
-                { params: { st } }
+                apiLinks.STAFFMEMBERS + '/' + this.state.staff._id,
+                updatedStaff
             )
             .then(res => {
                 console.log(res);
@@ -55,13 +80,10 @@ export class CommissionUpdate extends Component {
                         <FormControl
                             autoFocus
                             type="String"
-                            value={this.state.staff.advisorCode}
+                            value={this.state.code}
                             onChange={e =>
                                 this.setState({
-                                    staff: {
-                                        ...this.state.staff,
-                                        advisorCode: e.target.value
-                                    }
+                                    code: e.target.value
                                 })
                             }
                         />
@@ -72,13 +94,10 @@ export class CommissionUpdate extends Component {
                         <FormControl
                             autoFocus
                             type="String"
-                            value={this.state.staff.commissionRate}
+                            value={this.state.rate}
                             onChange={e =>
                                 this.setState({
-                                    staff: {
-                                        ...this.state.staff,
-                                        commissionRate: e.target.value
-                                    }
+                                    rate: e.target.value
                                 })
                             }
                         />

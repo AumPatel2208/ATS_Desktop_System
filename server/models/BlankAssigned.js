@@ -8,6 +8,9 @@ const BlankAssignedSchema = new Schema({
     batchEnd: {
         type: String
     },
+    batchValues:{
+        type: String
+    },
     date:{
         type: Date,
 
