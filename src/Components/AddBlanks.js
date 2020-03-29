@@ -28,8 +28,10 @@ export default class AddBlanks extends Component{
     handleSubmit(event) {
         event.preventDefault();
         console.log('hello');
+
 let dt = new Date(this.state.enteredDate);
 dt.setHours(0,0,0,0)
+
         const newblanks = {
             batchValues: this.state.batchValues,
             date: dt

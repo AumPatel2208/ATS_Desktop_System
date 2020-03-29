@@ -32,6 +32,10 @@ export default class ReportTurnoverT extends Component{
     //runs when component mounts, use to gets the data from db
 
     componentDidMount() {
+        axios.get( apiLinks.BLANKS ).then(res => {
+            const blanks = res.data;
+            this.setState({blanks});
+        });
 
     }
 
@@ -128,10 +132,35 @@ export default class ReportTurnoverT extends Component{
                         start.setHours(0,0,0,0);
                         end.setHours(0,0,0,0);
 
+                        /*
                         axios.get( apiLinks.BLANKS +'/byDate',{params:{start, end}}).then(res => {
                             const blanks = res.data;
                             this.setState({blanks});
                         });
+
+                         */
+
+                        //this.state.blanks.filter(i => (i._id == "5e7fad407ac973c76d5f797e"));
+
+                        const fl = this.state.blanks.filter(i => (Date.parse(i.date)>= Date.parse(start)));
+                        this.setState({blanks: fl});
+                      //  const bl = this.state.blanks.filter(i => (i.date-start >0));
+                        const tl = this.state.blanks.filter(i => (Date.parse(i.date)<= Date.parse(end)));
+                        this.setState({blanks: tl});
+                       // const bl2 = this.state.blanks.filter(i => String(i.date )<= end);
+
+                        /*this.setState({
+                            blanks: this.state.blanks.filter(
+                                blank => (blank[this.state.date]) >
+                                    start)})
+
+
+                        axios.get( apiLinks.BLANKS +'/byDate',{params:{start, end}}).then(res => {
+                            const Blanks = res.data;
+                            this.setState({Blanks});
+                        });
+
+                         */
 
                         axios.get( apiLinks.ASSIGN +'/byDate',{params:{start, end}}).then(res => {
                             const aBlanks = res.data;
@@ -282,20 +311,19 @@ export default class ReportTurnoverT extends Component{
                     <tbody>
                     {this.state.blanks.map(
                         ({_id, remaining}) => {
-                            if (_id == this.state.myId) {
+                            //if (_id == this.state.myId) {
                                 return (
                                     <tr key={_id}>
                                         {
                                             remaining.map((sub, i) => {
                                                     return(
                                                         <tr key = {i}>
-                                                            <td>{_id}</td>
-                                                            <td> {sub.start}</td>
-                                                            <td>{sub.end}</td>
+                                                            <td> {sub.start+"-"+sub.end}</td>
+
                                                         </tr>
                                                     )})}
                                     </tr>
-                                )}})}
+                                )})}
                     </tbody>
                 </Table>
 
