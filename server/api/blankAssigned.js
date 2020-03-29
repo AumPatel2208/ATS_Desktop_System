@@ -16,8 +16,14 @@ router.post('/', (q, a) => {
     //console.log(c);
     //console.log(d);
     let amount = d-c;
-    let remain = [{start: c, end:d}];
+    let remain = [];
 
+    for (i=0; i<= d-c; i++){
+        remain.push(parseInt(c)+i)
+    }
+
+    console.log(remain);
+      //  {start: c, end:d}];
 
 
     assignedBlanks = {
@@ -63,7 +69,7 @@ router.get('/byDate',(q,a)=>{
 
 //find and update one blank
 router.put('/:id', (q, a) => {
-    BlankAssigned.findByIdAndUpdate(q.params.id, q.body).then(a.json(post));
+    BlankAssigned.findByIdAndUpdate(q.params.id, q.body).then(item => a.json(item));
 });
 //Delete one blank
 router.delete('/:id', (q, a) => {

@@ -78,15 +78,17 @@ export default class AdvisorBlanks extends Component{
                     <tbody>
 
                     {this.state.blanks.map(
-                        ({num, remaining}) => {
+                        ({_id, remaining}) => {
                             return (
-                                <tr key={num}>
+                                <tr key={_id}>
                                     {
                                         remaining.map((sub, i) => {
                                                 return(
+
                                                     <tr key = {i}>
-                                                        <td>{num =sub.start +'-'+sub.end}</td>
-                                                        <td> {}</td>
+
+                                                        <td>{i}</td>
+                                                        <td> {sub}</td>
                                                         <td>{}</td>
                                                         <td>
                                                             { /*<Assignment id={_id} index={i}></Assignment> */}
@@ -94,8 +96,8 @@ export default class AdvisorBlanks extends Component{
                                                                 className="open-btn"
                                                                 color="primary"
                                                                 size="lg"
-                                                                onClick={this.onOpenClick.bind(this, num)}
-                                                                href={'./sales/' + num }
+                                                                onClick={this.onOpenClick.bind(this, _id)}
+                                                                href={'./sales/' +_id +'-'+sub}
                                                             >
                                                                 Sell Blank
                                                             </Button>

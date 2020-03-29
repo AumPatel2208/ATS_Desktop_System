@@ -217,7 +217,7 @@ class App extends React.Component {
                         )}
                     />
                     <Route
-                        path="/sales/:num"
+                        path="/sales/:id"
                         render={props => <SaleForm {...props} />}
                     />
                     <Route
