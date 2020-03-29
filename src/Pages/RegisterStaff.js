@@ -30,27 +30,45 @@ export default function RegisterStaff(props) {
     const [commissionRate, setCommissionRate] = useState('');
     //validation for form
     function validateForm() {
-        return (
-            username.length > 0 &&
-            password.length > 0 &&
-            confirmPassword === password &&
-            firstName.length > 0 &&
-            lastName.length > 0 &&
-            commissionRate.length > 0 &&
-            staffType !== 'Choose'
-        );
+        return props.isNew
+            ? username.length > 0 &&
+                  password.length > 0 &&
+                  confirmPassword === password &&
+                  firstName.length > 0 &&
+                  lastName.length > 0 &&
+                  address.length > 0 &&
+                  commissionRate.length > 0 &&
+                  staffType !== 'Choose'
+            : username.length > 0 &&
+                  firstName.length > 0 &&
+                  lastName.length > 0 &&
+                  commissionRate > 0 &&
+                  staffType !== 'Choose';
     }
 
     //Do get request when functional component is mounted/updated
     useEffect(() => {
         let mounted = true;
-
-        axios.get(apiLinks.STAFFMEMBERS).then(async res => {
-            if (mounted) {
-                const tempStaffMembers = await res.data;
-                setStaffMembers(tempStaffMembers);
-            }
-        });
+        if (props.isNew) {
+            axios.get(apiLinks.STAFFMEMBERS).then(async res => {
+                if (mounted) {
+                    const tempStaffMembers = await res.data;
+                    setStaffMembers(tempStaffMembers);
+                }
+            });
+        } else {
+            const getLink = apiLinks.STAFFMEMBERS + '/' + props.match.params.id;
+            axios.get(getLink).then(async res => {
+                const tempStaffMember = await res.data;
+                setUsername(tempStaffMember.username);
+                setFirstName(tempStaffMember.firstName);
+                setLastName(tempStaffMember.lastName);
+                setStaffType(tempStaffMember.staffType);
+                setAddress(tempStaffMember.address);
+                setAdvisorCode(tempStaffMember.advisorCode);
+                setCommissionRate(tempStaffMember.commissionRate);
+            });
+        }
         return () => (mounted = false);
     }, []);
 
@@ -58,6 +76,29 @@ export default function RegisterStaff(props) {
         event.preventDefault();
         // console.log('hello');
 
+        // const tempStaffMember = props.isNew
+        //     ? [
+        //           {
+        //               firstName,
+        //               lastName,
+        //               address,
+        //               username,
+        //               password,
+        //               staffType,
+        //               advisorCode,
+        //               commissionRate
+        //           }
+        //       ]
+        //     : [
+        //           {
+        //               firstName,
+        //               lastName,
+        //               address,
+        //               username,
+        //               staffType,
+        //               commissionRate
+        //           }
+        //       ];
         const tempStaffMember = [
             {
                 firstName,
@@ -70,6 +111,7 @@ export default function RegisterStaff(props) {
                 commissionRate
             }
         ];
+
         // axios
         //     .post('http://localhost:5000/api/staffMembers/', tempStaffMember)
         //     .then(response => {
@@ -79,14 +121,26 @@ export default function RegisterStaff(props) {
         //         console.log(error);
         //     });
         // http://localhost:5000/api/staffMembers/
-        axios.post(apiLinks.STAFFMEMBERS, tempStaffMember).then(response => {
-            console.log(response);
-        });
+
+        const getLink = !props.isNew
+            ? apiLinks.STAFFMEMBERS + '/' + props.match.params.id
+            : null;
+        console.log(getLink);
+
+        props.isNew
+            ? axios
+                  .post(apiLinks.STAFFMEMBERS, tempStaffMember)
+                  .then(response => {
+                      console.log(response);
+                  })
+            : axios.put(getLink, tempStaffMember).then(res => {
+                  console.log(res);
+              });
     }
 
     return (
         <Container>
-            <CommissionUpdate></CommissionUpdate>
+            {/* <CommissionUpdate></CommissionUpdate> */}
 
             <div className="RegisterStaff">
                 <form onSubmit={handleSubmit}>
@@ -126,30 +180,34 @@ export default function RegisterStaff(props) {
                             onChange={e => setAddress(e.target.value)}
                         />
                     </FormGroup>
-                    <FormGroup controlId="password" bssize="large">
-                        <FormLabel>Password</FormLabel>
-                        <FormControl
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}
-                            type="password"
-                        />
-                    </FormGroup>
-                    <FormGroup controlId="confirmPassword" bssize="large">
-                        <FormLabel>Confirm Password</FormLabel>
-                        <FormControl
-                            value={confirmPassword}
-                            onChange={e => setConfirmPassword(e.target.value)}
-                            type="password"
-                        />
-                        <FormGroup controlId="commissionRate" bssize="large">
-                            <FormLabel>Commission Rate</FormLabel>
+                    {props.isNew ? (
+                        <FormGroup controlId="password" bssize="large">
+                            <FormLabel>Password</FormLabel>
                             <FormControl
-                                value={commissionRate}
-                                onChange={e =>
-                                    setCommissionRate(e.target.value)
-                                }
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
+                                type="password"
                             />
                         </FormGroup>
+                    ) : null}
+                    {props.isNew ? (
+                        <FormGroup controlId="confirmPassword" bssize="large">
+                            <FormLabel>Confirm Password</FormLabel>
+                            <FormControl
+                                value={confirmPassword}
+                                onChange={e =>
+                                    setConfirmPassword(e.target.value)
+                                }
+                                type="password"
+                            />
+                        </FormGroup>
+                    ) : null}
+                    <FormGroup controlId="commissionRate" bssize="large">
+                        <FormLabel>Commission Rate</FormLabel>
+                        <FormControl
+                            value={commissionRate}
+                            onChange={e => setCommissionRate(e.target.value)}
+                        />
                     </FormGroup>
                     <FormGroup controlId="staffType" bssize="large">
                         <FormLabel>Staff Type</FormLabel>
@@ -196,7 +254,7 @@ export default function RegisterStaff(props) {
                         disabled={!validateForm()}
                         type="submit"
                     >
-                        Register
+                        {props.isNew ? 'Register' : 'Update'}
                     </Button>
                     {/* <Button
                         onClick={e => {

@@ -12,11 +12,9 @@ const restore = require('./api/restore');
 
 const blankAssigned = require('./api/blankAssigned');
 const blankUsed = require('./api/blankUsed');
-const discounts = require('./api/discounts')
+const discounts = require('./api/discounts');
 
 const config = require('../server/config/db');
-
-
 
 const url = config.URI;
 // const config = require('./config');
@@ -42,7 +40,11 @@ app.use(cors());
 //const db ='mongodb+srv://Aum:Aum@cluster0-zkn6t.mongodb.net/test?retryWrites=true&w=majority'; //config.get('URI');
 
 //connecting the database
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+});
 
 // to test the connection
 const db = mongoose.connection;

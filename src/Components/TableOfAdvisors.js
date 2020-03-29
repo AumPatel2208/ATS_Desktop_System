@@ -111,7 +111,7 @@ export default class TableOfAdvisors extends Component {
                             color="primary"
                             size="lg"
                             onClick={this.onOpenClick.bind(this, _id)}
-                            href={'./customers/' + _id}
+                            href={'./staff/' + _id}
                         >
                             EDIT
                         </Button>

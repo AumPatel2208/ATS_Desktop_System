@@ -95,7 +95,10 @@ class Navigation extends Component {
                 Login
               </NavLink>
             </NavItem> */}
-                        <NavItemsAuth></NavItemsAuth>
+                        <NavItemsAuth
+                            isAuthenticated={this.props.isAuthenticated}
+                            staff={this.props.staff}
+                        ></NavItemsAuth>
                     </Nav>
                 </Collapse>
             </Navbar>

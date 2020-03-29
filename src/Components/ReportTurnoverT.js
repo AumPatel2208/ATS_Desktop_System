@@ -203,7 +203,7 @@ export default class ReportTurnoverT extends Component{
                             <Fragment >
                                 {row(
                                     batchValues,
-                                    date,
+                                    date.substring(0,10),
                                     amount,
                                 )}
                             </Fragment>
@@ -311,16 +311,17 @@ export default class ReportTurnoverT extends Component{
                     <tbody>
                     {this.state.blanks.map(
                         ({_id, remaining}) => {
-                            //if (_id == this.state.myId) {
                                 return (
                                     <tr key={_id}>
-                                        {
-                                            remaining.map((sub, i) => {
+                                        {remaining.map((sub, i) => {
                                                     return(
-                                                        <tr key = {i}>
-                                                            <td> {sub.start+"-"+sub.end}</td>
+                                                        <Fragment>
+                                                            {row(
+                                                                sub.start+"-"+sub.end,
+                                                                sub.end- sub.start
+                                                            )}
+                                                        </Fragment>
 
-                                                        </tr>
                                                     )})}
                                     </tr>
                                 )})}

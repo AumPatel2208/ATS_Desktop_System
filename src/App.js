@@ -45,8 +45,8 @@ import ExRates from './Pages/ExRates';
 import Sale from './Pages/Sale';
 import { Assignment } from './Components/Assignment';
 import TableOfAdvisors from './Components/TableOfAdvisors';
-import AdvisorBlanks from "./Components/AdvisorBlanks";
-import {SaleForm} from "./Components/SaleForm";
+import AdvisorBlanks from './Components/AdvisorBlanks';
+import { SaleForm } from './Components/SaleForm';
 
 const apiLinks = require('./api/config.json');
 /* CODE TO LOCK A PAGE
@@ -73,8 +73,12 @@ class App extends React.Component {
 
     async componentDidMount() {
         //Loading User
-        await axios.get('api/secure/staff').then(res => {
-            this.setState({ ...this.state, userID: res.data });
+        await axios.get('api/secure/staff').then((res, err) => {
+            if (err) {
+                console.log('Not Logged In!');
+            } else {
+                this.setState({ ...this.state, userID: res.data });
+            }
         });
         await axios.get('api/staffMembers/' + this.state.userID).then(res => {
             this.setState({
@@ -85,12 +89,24 @@ class App extends React.Component {
         });
     }
 
+    logout() {
+        axios.post('api/secure/logout').then(res => {
+            alert(res.data.msg);
+        });
+        this.setState({
+            ...this.state,
+            staff: undefined,
+            isAuthenticated: false
+        });
+        window.location.replace('./');
+    }
+
     render() {
         return (
             <div>
                 <Nav
                     isAuthenticated={this.state.isAuthenticated}
-                    user={this.state.user}
+                    staff={this.state.staff}
                 ></Nav>
                 <Switch>
                     <Route
@@ -139,7 +155,20 @@ class App extends React.Component {
                         path="/login"
                         render={() => (
                             <div className="App">
-                                <Login />
+                                <Login
+                                    isAuthenticated={this.state.isAuthenticated}
+                                />
+                            </div>
+                        )}
+                    />
+                    <Route
+                        exact={true}
+                        path="/logout"
+                        render={() => (
+                            <div className="App">
+                                {this.state.isAuthenticated
+                                    ? this.logout()
+                                    : null}
                             </div>
                         )}
                     />

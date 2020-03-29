@@ -11,6 +11,13 @@ let apiLinks = require('../api/config.json');
 
 
 export  class SaleForm extends Component{
+constructor(props) {
+    super(props);
+    this.state={
+        isOpen: false,
+        stats:{}
+    }
+}
 
     state = {
         sales: [],
@@ -178,7 +185,7 @@ dt.setHours(0,0,0,0);
                 securityCode: this.state.secCode,
                 commissionRate: this.state.rate,
                 custName: this.state.custName,
-                advisorCode: this.state.adCode,
+                advisorCode: this.props.staff.advisorCode,
                 saleDate: dt,
                 notes: this.state.notes,
                 USDExchangeRate: this.state.exch[0].toUSDRate,
