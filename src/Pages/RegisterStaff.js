@@ -11,7 +11,7 @@ import Container from 'reactstrap/lib/Container';
 import axios from 'axios';
 
 import CheckStore from '../store/CheckStore';
-import {CommissionUpdate} from "../Components/CommissionUpdate";
+import { CommissionUpdate } from '../Components/CommissionUpdate';
 
 let apiLinks = require('../api/config.json');
 // "proxy": "http://localhost:5000"
@@ -36,7 +36,7 @@ export default function RegisterStaff(props) {
             confirmPassword === password &&
             firstName.length > 0 &&
             lastName.length > 0 &&
-            commissionRate.length >0 &&
+            commissionRate.length > 0 &&
             staffType !== 'Choose'
         );
     }
@@ -44,14 +44,15 @@ export default function RegisterStaff(props) {
     //Do get request when functional component is mounted/updated
     useEffect(() => {
         let mounted = true;
-        axios.get(apiLinks.STAFFMEMBERS).then(res => {
+
+        axios.get(apiLinks.STAFFMEMBERS).then(async res => {
             if (mounted) {
-                const tempStaffMembers = res.data;
+                const tempStaffMembers = await res.data;
                 setStaffMembers(tempStaffMembers);
             }
         });
         return () => (mounted = false);
-    });
+    }, []);
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -85,11 +86,7 @@ export default function RegisterStaff(props) {
 
     return (
         <Container>
-
             <CommissionUpdate></CommissionUpdate>
-
-
-
 
             <div className="RegisterStaff">
                 <form onSubmit={handleSubmit}>
@@ -148,8 +145,9 @@ export default function RegisterStaff(props) {
                             <FormLabel>Commission Rate</FormLabel>
                             <FormControl
                                 value={commissionRate}
-                                onChange={e => setCommissionRate(e.target.value)}
-
+                                onChange={e =>
+                                    setCommissionRate(e.target.value)
+                                }
                             />
                         </FormGroup>
                     </FormGroup>

@@ -141,10 +141,6 @@ export class CustomerUpdate extends Component {
                         </Dropdown>
     */
 
-
-
-
-
     render() {
         function updateCustomer(e) {
             // for (var key in this.state.customers) {
@@ -175,10 +171,10 @@ export class CustomerUpdate extends Component {
                     address: this.state.customer.address,
                     phoneNumber: this.state.customer.phoneNumber,
                     discount: this.state.customer.discount,
-                    customerType: this.state.customer.customerType,
+                    customerType: this.state.customer.customerType
                     //creditCardNum: this.state.customer.creditCardNum,
-                   // expDate: this.state.customer.expDate,
-                   // securityCode: this.state.customer.securityCode
+                    // expDate: this.state.customer.expDate,
+                    // securityCode: this.state.customer.securityCode
                 };
                 axios
                     .post(apiLinks.CUSTOMERS, newCustomer)
@@ -264,17 +260,13 @@ export class CustomerUpdate extends Component {
                             }
                         />
                     </FormGroup>
-                   <Button  block bssize="large" type="submit">
-                       {this.props.isNew
-                           ? 'Create Customer'
-                           : 'Update Customer'}
-
-                   </Button>
+                    <Button block bssize="large" type="submit">
+                        {this.props.isNew
+                            ? 'Create Customer'
+                            : 'Update Customer'}
+                    </Button>
                 </form>
-
             </Form>
-
-
         );
     }
 }

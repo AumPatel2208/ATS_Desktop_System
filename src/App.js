@@ -41,9 +41,10 @@ import Customers from './Pages/Customers';
 import { CustomerUpdate } from './Components/CustomerUpdate';
 import { Authenticate } from './Authenticate';
 import BackupRestore from './Pages/BackupRestore';
-import ExRates from "./Pages/ExRates";
-import Sale from "./Pages/Sale";
-import {Assignment} from "./Components/Assignment";
+import ExRates from './Pages/ExRates';
+import Sale from './Pages/Sale';
+import { Assignment } from './Components/Assignment';
+import TableOfAdvisors from './Components/TableOfAdvisors';
 
 const apiLinks = require('./api/config.json');
 /* CODE TO LOCK A PAGE
@@ -104,7 +105,7 @@ class App extends React.Component {
                         path="/customers"
                         render={() => (
                             <div className="App">
-<Customers/>
+                                <Customers staff={this.state.staff} />
                             </div>
                         )}
                     ></Route>
@@ -122,6 +123,17 @@ class App extends React.Component {
                     />
                     <Route
                         exact={true}
+                        path="/advisors"
+                        render={() => (
+                            <div className="App">
+                                <TableOfAdvisors
+                                    staff={this.state.staff}
+                                ></TableOfAdvisors>
+                            </div>
+                        )}
+                    ></Route>
+                    <Route
+                        exact={true}
                         path="/login"
                         render={() => (
                             <div className="App">
@@ -134,8 +146,20 @@ class App extends React.Component {
                         path="/registerStaff"
                         render={() => (
                             <div className="App">
-                                <RegisterStaff />
+                                <RegisterStaff
+                                    staff={this.state.staff}
+                                    isNew={true}
+                                />
                             </div>
+                        )}
+                    />
+                    <Route
+                        path="/staff/:id"
+                        render={props => (
+                            <RegisterStaff
+                                {...props}
+                                isNew={false}
+                            ></RegisterStaff>
                         )}
                     />
                     <Route
@@ -153,22 +177,22 @@ class App extends React.Component {
                         path="/blanks"
                         render={() => (
                             <div className="App">
-                                <Blanks />
+                                <Blanks staff={this.state.staff} />
                             </div>
                         )}
                     />
                     <Route
                         path="/blanks/:id"
-                        render={props => (
-                            <Assignment {...props}  />
-                        )}
+                        render={props => <Assignment {...props} />}
                     />
                     <Route
                         exact={true}
                         path="/backup-restore"
                         render={() => (
                             <div className="App">
-                                <BackupRestore></BackupRestore>
+                                <BackupRestore
+                                    staff={this.state.staff}
+                                ></BackupRestore>
                             </div>
                         )}
                     />

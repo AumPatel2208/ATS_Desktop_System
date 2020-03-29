@@ -15,31 +15,32 @@ const _ = require('lodash'); //Library to Change Cases of things
 
 export class CommissionUpdate extends Component {
     state = {
-        staff: ""
-
+        staff: ''
     };
-/*
+
     componentDidMount() {
         const st = this.state.staff.advisorCode;
-            axios.get(apiLinks.STAFFMEMBERS + '/commission', {params:{st}}).then(res => {
+        axios
+            .get(apiLinks.STAFFMEMBERS + '/commission', { params: { st } })
+            .then(res => {
                 const staff = res.data;
-                this.setState({staff});
+                this.setState({ staff });
             });
     }
-    */
 
-     updateCommission(e) {
+    updateCommission(e) {
         e.preventDefault();
-         const st = this.state.staff.advisorCode;
-        axios.put(apiLinks.STAFFMEMBERS + '/commission' ,
-            this.state.staff.commissionRate,{params:{st}}
-        )
+        const st = this.state.staff.advisorCode;
+        axios
+            .put(
+                apiLinks.STAFFMEMBERS + '/commission',
+                this.state.staff.commissionRate,
+                { params: { st } }
+            )
             .then(res => {
                 console.log(res);
             });
     }
-
-
 
     render() {
         return (
@@ -66,36 +67,33 @@ export class CommissionUpdate extends Component {
                         />
                     </FormGroup>
 
-
                     <FormGroup controlId="commissionRate" bssize="large">
-                    <FormLabel>Enter New Commission Rate</FormLabel>
-                    <FormControl
-                        autoFocus
-                        type="String"
-                        value={this.state.staff.commissionRate}
-                        onChange={e =>
-                            this.setState({
-                                staff: {
-                                    ...this.state.staff,
-                                    commissionRate: e.target.value
-                                }
-                            })
-                        }
-                    />
-                </FormGroup>
+                        <FormLabel>Enter New Commission Rate</FormLabel>
+                        <FormControl
+                            autoFocus
+                            type="String"
+                            value={this.state.staff.commissionRate}
+                            onChange={e =>
+                                this.setState({
+                                    staff: {
+                                        ...this.state.staff,
+                                        commissionRate: e.target.value
+                                    }
+                                })
+                            }
+                        />
+                    </FormGroup>
                     <Button
                         block
                         bssize="large"
                         type="submit"
                         onClick={e => {
-                            console.log("hit");
-                            this.updateCommission(e)
+                            console.log('hit');
+                            this.updateCommission(e);
                         }}
                     >
                         Update Rate
                     </Button>
-
-
                 </form>
             </Container>
         );
