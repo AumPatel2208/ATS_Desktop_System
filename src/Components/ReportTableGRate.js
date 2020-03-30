@@ -87,6 +87,7 @@ export default class ReportTableGRate extends Component {
             if (k == this.state.summedValues.length ) {
                 this.state.dict = {
                     USDExchangeRate: this.state.sales[x].USDExchangeRate,
+                    currency: "",
                     cash: 0,
                     credit: 0,
                     saleNum: 0,
@@ -94,13 +95,14 @@ export default class ReportTableGRate extends Component {
                 };
                 y = this.state.summedValues.push(this.state.dict) - 1;
             }
-            if (this.state.sales[x].paymentMethod === "creditCard") {
+            if (this.state.sales[x].paymentMethod === "CreditCard") {
                 this.state.summedValues[y].credit += this.state.sales[x].fare;
-            } else if (this.state.sales[x].paymentMethod === "cash") {
+            } else if (this.state.sales[x].paymentMethod === "Cash") {
                 this.state.summedValues[y].cash += this.state.sales[x].fare;
             }
             this.state.summedValues[y].saleNum += 1;
             this.state.summedValues[y].total += (this.state.sales[x].fare * this.state.sales[x].USDExchangeRate);
+            this.state.summedValues[y].currency = this.state.sales[x].currency;
 
         }
     }
@@ -205,6 +207,7 @@ export default class ReportTableGRate extends Component {
                     <thead>
                     <tr>
                         <th>Exchange Rate</th>
+                        <th>Currency</th>
                         <th>Sales</th>
                         <th>Credit</th>
                         <th>Cash</th>
@@ -215,6 +218,7 @@ export default class ReportTableGRate extends Component {
                     {this.state.summedValues.map(
                         ({
                              USDExchangeRate,
+                            currency,
                              saleNum,
                              credit,
                              cash,
@@ -225,6 +229,7 @@ export default class ReportTableGRate extends Component {
                                 {row(
 
                                     USDExchangeRate,
+                                    currency,
                                     saleNum,
                                     credit,
                                     cash,

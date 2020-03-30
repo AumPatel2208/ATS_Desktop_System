@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 
 router.post('/', (q, a) => {
     //console.log(q.body.ticketNumber);
-
+console.log(q.body.currency, q.body.USDExchangeRate)
     newSale = {
         ticketNumber: q.body.ticketNumber,
         fare: q.body.fare,

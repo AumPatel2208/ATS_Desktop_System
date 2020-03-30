@@ -44,7 +44,7 @@ constructor(props) {
             USDExchange: ''
         },
         exch: [],
-        cCode: "",
+        cCode: "USD",
         myId: "",
         blanks: []
 
@@ -174,12 +174,14 @@ constructor(props) {
             this.setState({adCode: GetUSer.advisorCode});
             this.setState({commissionRate: GetUSer.commissionRate});
 
-            if (String(this.state.saleType) == "Interline"){
-
+            if (this.state.cCode === undefined){
+                this.setState({cCode : "USD" })
+            }
+            if (this.state.cCode != "USD"){
                 this.setState({USDExchangeRate: this.state.exch[0].toUSDRate});
             }
-            else {
-                this.setState({currency: "USD"});
+            if (this.state.cCode == "USD"){
+                //this.setState({cCode: "USD"});
                 this.setState({USDExchangeRate: 1});
             }
 

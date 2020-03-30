@@ -24,9 +24,9 @@ export default class ReportTableI extends Component {
     };
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
-        let start = this.state.startDate;
-        let end = this.state.endDate;
-        axios.get(apiLinks.SALES +'/byDate',{params:{start, end}}).then(res => {
+     //   let start = this.state.startDate;
+        //let end = this.state.endDate;
+        axios.get(apiLinks.SALES ).then(res => {
             const sales = res.data;
             this.setState({sales});
         });
