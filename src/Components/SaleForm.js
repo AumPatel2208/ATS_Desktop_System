@@ -76,7 +76,7 @@ constructor(props) {
         });
 
         //filtering by ID
-        const bl = this.state.blanks.filter(i => String(i._id )=== this.state.myId)
+        //const bl = this.state.blanks.filter(i => String(i._id )=== this.state.myId)
 
     }
 
@@ -162,9 +162,11 @@ constructor(props) {
 
         function submitSale(event) {
 
+            const bl = this.state.blanks.filter(i => String(i._id )=== this.state.myId)
 
-let dt = new Date(Date.now());
-dt.setHours(0,0,0,0);
+
+            let dt = new Date(Date.now());
+            dt.setHours(0,0,0,0);
 
             event.preventDefault();
 
@@ -172,12 +174,13 @@ dt.setHours(0,0,0,0);
             this.setState({adCode: GetUSer.advisorCode});
             this.setState({commissionRate: GetUSer.commissionRate});
 
-            if (this.state.saleType == "Domestic"){
-                this.setState({currency: "USD"});
-                this.setState({USDExchangeRate: 1});
+            if (String(this.state.saleType) == "Interline"){
+
+                this.setState({USDExchangeRate: this.state.exch[0].toUSDRate});
             }
             else {
-                this.setState({USDExchangeRate: this.state.exch[0].toUSDRate});
+                this.setState({currency: "USD"});
+                this.setState({USDExchangeRate: 1});
             }
 
            const newSale = {
@@ -193,7 +196,8 @@ dt.setHours(0,0,0,0);
                 securityCode: this.state.secCode,
                 commissionRate: this.state.rate,
                 custName: this.state.custName,
-                advisorCode: this.props.staff.advisorCode,
+                //advisorCode: this.props.staff.advisorCode,
+               advisorCode: 380,
                 saleDate: dt,
                 notes: this.state.notes,
                 USDExchangeRate: this.state.USDExchangeRate
@@ -246,6 +250,7 @@ dt.setHours(0,0,0,0);
 
         return (
             <Container>
+                <h2>Make a Sale</h2>
                 <Form onSubmit={submitSale.bind(this)}>
 
                     <Dropdown onSelect={key => {
@@ -267,6 +272,7 @@ dt.setHours(0,0,0,0);
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
+                    <br/>
                     <Dropdown
                         onSelect={key => {
                             this.setState({method: key});
@@ -288,7 +294,7 @@ dt.setHours(0,0,0,0);
                         </Dropdown.Menu>
                     </Dropdown>
 
-
+<br/>
 
                     <FormLabel>Ticket Number</FormLabel>
                     <FormControl

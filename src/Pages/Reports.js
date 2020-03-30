@@ -79,9 +79,9 @@ function reportHandler() {
                                 setTableCode(temp.toString());
                                 if (key === 'Individual') {
                                     setTableCode('A' );
-                                } else if (key === 'GlobalA') {
+                                } else if (key === 'Global by Advisor') {
                                     setTableCode('B' );
-                                } else if (key === 'GlobalR') {
+                                } else if (key === 'Global by Rate') {
                                     setTableCode('C');
                                 }else if (key === 'Ticket Turnover') {
                                     setTableCode('D');
@@ -100,10 +100,10 @@ function reportHandler() {
                                 <Dropdown.Item eventKey="Individual">
                                     Individual
                                 </Dropdown.Item>
-                                <Dropdown.Item eventKey="GlobalA">
+                                <Dropdown.Item eventKey="Global by Advisor">
                                     Global By Advisor
                                 </Dropdown.Item>
-                                <Dropdown.Item eventKey="GlobalR">
+                                <Dropdown.Item eventKey="Global by Rate">
                                     Global By Rate
                                 </Dropdown.Item>
                                 <Dropdown.Item eventKey="Ticket Turnover">
