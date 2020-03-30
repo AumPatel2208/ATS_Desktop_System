@@ -11,7 +11,6 @@ import {
 } from 'react-bootstrap';
 import { CustomerUpdate } from './CustomerUpdate';
 import { Lightbox } from './Lightbox';
-
 const _ = require('lodash'); //Library to Change Cases of things
 
 let apiLinks = require('../api/config.json');

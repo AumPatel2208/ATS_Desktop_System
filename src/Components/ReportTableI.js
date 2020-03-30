@@ -9,6 +9,8 @@ import {
     FormLabel
 } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
+import ReactToPrint from 'react-to-print'
+
 
 const _ = require('lodash'); //Library to Change Cases of things
 
@@ -79,6 +81,9 @@ export default class ReportTableI extends Component {
         );
 
         return (
+
+
+
             <Container>
                 <Form>
                     <FormGroup controlId="saleT" bssize="large">
@@ -243,6 +248,10 @@ export default class ReportTableI extends Component {
                     </tbody>
                 </Table>
             </Container>
+
+
+
+
         );
     }
 }
