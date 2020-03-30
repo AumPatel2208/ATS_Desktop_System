@@ -101,7 +101,7 @@ router.get('/byDate',(q,a)=>{
 
     //console.log(q.url);
     Blank.find({date:{$lte:ed, $gte:sd}})
-        .then(blanks => a.json(blanks));
+        .then(item => a.json(item));
 
 });
 

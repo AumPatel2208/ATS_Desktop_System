@@ -26,6 +26,7 @@ export default class ReportTableI extends Component {
     };
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
+<<<<<<< HEAD
         let start = this.state.startDate;
         let end = this.state.endDate;
         axios
@@ -35,6 +36,14 @@ export default class ReportTableI extends Component {
                 this.setState({ sales });
             })
             .catch(err => console.log('Error code: ', err));
+=======
+     //   let start = this.state.startDate;
+        //let end = this.state.endDate;
+        axios.get(apiLinks.SALES ).then(res => {
+            const sales = res.data;
+            this.setState({sales});
+        });
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
     }
 
     onOpenClick(e, _id) {
@@ -43,12 +52,12 @@ export default class ReportTableI extends Component {
     render() {
         const row = (
             _id,
+            advisorCode,
             ticketNumber,
             fare,
             currency,
             USDExchangeRate,
             paymentMethod,
-            advisorCode,
             commissionRate,
             creditCardNum,
             expDate,
@@ -59,11 +68,12 @@ export default class ReportTableI extends Component {
         ) => (
             <Fragment>
                 <tr key={_id}>
+                    <td>{advisorCode}</td>
                     <td>{ticketNumber}</td>
                     <td>{fare}</td>
                     <td>{currency}</td>
                     <td>{USDExchangeRate}</td>
-                    <td>{advisorCode}</td>
+                    <td>{paymentMethod}</td>
                     <td>{saleDate}</td>
                     <td>{commissionRate}</td>
                     <td>{creditCardNum}</td>
@@ -196,6 +206,7 @@ export default class ReportTableI extends Component {
                 </Form>
                 <Table className="mt-4">
                     <thead>
+<<<<<<< HEAD
                         <tr>
                             <th>Ticket Number</th>
                             <th>Fare</th>
@@ -247,6 +258,59 @@ export default class ReportTableI extends Component {
                                 </Fragment>
                             )
                         )}
+=======
+                    <tr>
+                        <th>Advisor Code</th>
+                        <th>Ticket Number</th>
+                        <th>Fare</th>
+                        <th>Currency</th>
+                        <th>Payment Method</th>
+                        <th>USD Exchange Rate</th>
+                        <th>Commission Rate</th>
+                        <th>Card Number</th>
+                        <th>Expiration Date</th>
+                        <th>Security Code</th>
+                        <th>Sale Date</th>
+                        <th>Notes</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {this.state.sales.map(
+                        ({
+                             _id,
+                             advisorCode,
+                             ticketNumber,
+                             fare,
+                             currency,
+                             paymentMethod,
+                             USDExchangeRate,
+                             commissionRate,
+                             creditCardNum,
+                             expDate,
+                             securityCode,
+                             saleDate,
+                             notes
+                         }) => (
+                            <Fragment key={_id}>
+                                {row(
+                                    _id,
+                                    advisorCode,
+                                    ticketNumber,
+                                    fare,
+                                    currency,
+                                    paymentMethod,
+                                    USDExchangeRate,
+                                    commissionRate,
+                                    creditCardNum,
+                                    expDate,
+                                    securityCode,
+                                    saleDate,
+                                    notes
+                                )}
+                            </Fragment>
+                        )
+                    )}
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
                     </tbody>
                 </Table>
             </Container>

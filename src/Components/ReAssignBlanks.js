@@ -1,59 +1,38 @@
-import { Container, Table } from 'reactstrap';
-import {
-    Button,
-    Dropdown,
-    Form,
-    FormControl,
-    FormGroup,
-    FormLabel
-} from 'react-bootstrap';
-import DatePicker from 'react-datepicker';
-import React, { Component, Fragment } from 'react';
-import axios from 'axios';
+import {Container, Table} from "reactstrap";
+import {Button, Dropdown, Form, FormControl, FormGroup, FormLabel} from "react-bootstrap";
+import DatePicker from "react-datepicker";
+import React, {Component, Fragment} from "react";
+import axios from "axios";
 
 let apiLinks = require('../api/config.json');
 
-export class Assignment extends Component {
+export class ReAssignBlanks extends Component{
     state = {
-        batchValues: '',
+        batchValues: "",
         date: new Date(),
-        code: '',
-        oG: '',
+        code: "",
+        oG: "",
         i: 0,
-        blanks: [],
-        blank: [
-            {
-                _id: '',
-                batchValues: '',
-                batchStart: '',
-                batchEnd: '',
-                date: '',
-                batchType: '',
-                amount: '800',
-                remaining: []
-            }
-        ],
+        blanks :[],
         myId: '',
         myIndex: '',
-        assignedBatch: ''
+        assignedBatch: ""
     };
 
     //runs when component mounts, use to gets the data from db
 
     componentDidMount() {
         let empty = [];
-        this.setState({ blanks: empty });
+        this.setState({blanks: empty});
 
-        axios
-            .get(apiLinks.BLANKS)
-            .then(res => {
-                const blanks = res.data;
-                this.setState({ blanks });
-            })
-            .catch(err => console.log('Error code: ', err));
+        axios.get( apiLinks.ASSIGN ).then(res => {
+            const  blanks = res.data;
+            this.setState({blanks});
+        });
 
-        this.filterStuff();
+        this.filterStuff()
     }
+
 
     onOpenClick(_id) {
         console.log(_id);
@@ -62,194 +41,157 @@ export class Assignment extends Component {
         console.log(_id);
     }
 
-    filterStuff() {
-        const {
-            match: { params }
-        } = this.props;
-        const id = params.id.split('-');
+
+    filterStuff(){
+        const {match:{params}} = this.props;
+        const id = params.id.split("-");
         const id1 = id[0];
 
-        this.setState({ myId: id1 });
-        this.setState({ myIndex: id[1] });
-        const bl = this.state.blanks.filter(i => String(i._id) === id1);
+        this.setState({myId: id1});
+        this.setState({assignedBatch: id[1]});
+        const bl = this.state.blanks.filter(i => String(i._id )=== id1);
         console.log(bl);
         //this.setState({
         //    blanks: bla
         // })
+
     }
 
-    assignBlanks(e) {
+
+    updateRemaining(){
+
+//ADDS IN A NEW ASSIGNMENT UNDER NEW ADVISOR
         let d = new Date(Date.now());
-        d.setHours(0, 0, 0, 0);
+        d.setHours(0,0,0,0);
 
         const newAssignment = {
             date: d,
             batchValues: this.state.assignedBatch,
             advisorCode: this.state.code,
             batchId: this.state.myId
+
         };
 
-        e.preventDefault();
         console.log('hello');
 
-        axios
-            .post(apiLinks.ASSIGN, newAssignment)
-            .then(response => {
-                console.log(response);
+        axios.post(apiLinks.ASSIGN, newAssignment).then(response => {
+            console.log(response);
 
-                this.updateRemaining();
-            })
-            .catch(err => console.log('Error code: ', err));
-    }
+            this.updateRemaining()
+        });
 
-    updateRemaining() {
-        let x = this.state.blanks[0].remaining;
-        let y = this.state.myIndex;
 
-        let z = parseInt(this.state.assignedBatch.split('-')[0]);
-        let z2 = parseInt(this.state.assignedBatch.split('-')[1]);
-        console.log(x[y].start);
 
-        let st = parseInt(x[y].start);
-        let en = parseInt(x[y].end);
+        //UPDATING ASSIGNMENT - REMOVING FROM ASSIGNED LIST
+        let z = this.state.blanks[0].remaining;
 
-        //x.push({start: (x[y].start-1), end: (x[y].end+1) })
-        if (z != st) {
-            if (z - 1 == st) {
-                x.push({ start: st, end: st });
-            } else {
-                x.push({ start: st, end: z - 1 });
-            }
-        }
+        let  y= z.findIndex( k => k==this.state.assignedBatch);
 
-        if (z2 != en) {
-            if (z2 + 1 == en) {
-                x.push({ start: en, end: en });
-            } else {
-                x.push({ start: z2 + 1, end: en });
-            }
-        }
+        z.splice(y);
 
-        x.splice(this.state.myIndex, 1);
 
-        const updatedBlank = {
+        const updatedBlank ={
             _id: this.state.blanks._id,
             batchValues: this.state.blanks.batchValues,
             batchStart: this.state.blanks.batchStart,
             batchEnd: this.state.blanks.batchEnd,
             date: this.state.blanks.date,
             batchType: this.state.blanks.batchType,
+            advisorCode: this.state.code,
             amount: this.state.blanks.amount,
-            remaining: x
+            batchId: this.state.myId,
+            remaining: z
         };
 
-        axios
-            .put(apiLinks.BLANKS + '/' + this.state.myId, updatedBlank)
-            .catch(err => console.log('Error code: ', err));
+
+        axios.put(apiLinks.ASSIGN +"/" + this.state.myId, updatedBlank)
+
     }
 
+
     render() {
-        /**
-         * Will return a Fragment to be used when mapping in the render function.
-         * Allows to break down the data into rows and TD.
-         * @param {The MongoDB ID of the object in the collection} _id
-         */
-        const row = (_id, start, end, i) => (
-            <Fragment>
-                <tr key={_id}>
-                    <td>{start}</td>
-                    <td>{end}</td>
-                    <td>{i}</td>
-                    <td>
-                        {/* <Assignment id={_id} index={i}></Assignment> */}
-                        <Button
-                            className="open-btn"
-                            color="primary"
-                            size="lg"
-                            onClick={this.onOpenClick.bind(this, _id)}
-                            href={'./blanks/' + _id + '-' + i}
-                        >
-                            Assign from Batch
-                        </Button>
-                        <Button
-                            className="open-btn"
-                            color="red"
-                            size="lg"
-                            onClick={this.onDeleteClick.bind(this, _id)}
-                        >
-                            Delete !
-                        </Button>
-                    </td>
-                </tr>
-            </Fragment>
-        );
 
         return (
             <Container>
+<h2>Re-Assign Blank </h2>
                 <Table className="mt-4">
                     <thead>
-                        <tr>
-                            <th>Batch Start</th>
-                            <th>Batch End</th>
-                        </tr>
+                    <tr>
+                        <th>Batch Start</th>
+                        <th>Batch End</th>
+
+                    </tr>
                     </thead>
                     <tbody>
-                        {this.state.blanks.map(({ _id, remaining }) => {
+
+                    {this.state.blanks.map(
+                        ({_id, remaining}) => {
                             if (_id == this.state.myId) {
                                 return (
-                                    <tr key={_id}>
-                                        {remaining.map((sub, i) => {
-                                            return (
-                                                <tr key={i}>
-                                                    <td>{_id}</td>
-                                                    <td> {sub.start}</td>
-                                                    <td>{sub.end}</td>
-                                                    <td>
-                                                        {/*<Assignment id={_id} index={i}></Assignment> */}
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
+                                    <tr key={_id}>{
+                                            remaining.map((sub, i) => {
+                                                    return(
+                                                        <tr key = {i}>
+                                                            <td>{_id}</td>
+                                                            <td> {sub}</td>
+                                                        </tr>
+                                                    )})}
                                     </tr>
-                                );
-                            }
-                        })}
+                                )}})}
                     </tbody>
                 </Table>
 
                 <FormGroup controlId="username" bssize="large">
-                    <FormLabel>
-                        Batch Values {this.state.assignedBatch}
-                    </FormLabel>
+
+                    <FormLabel>Batch Values </FormLabel>
                     <FormControl
                         autoFocus
                         type="batchValues"
                         value={this.state.assignedBatch}
-                        onChange={e =>
-                            this.setState({ assignedBatch: e.target.value })
-                        }
+                        onChange={e => this.setState({assignedBatch: e.target.value})}
                     />
                 </FormGroup>
                 <FormGroup controlId="date" bssize="large">
                     <FormLabel>Advisor Code</FormLabel>
                     <FormControl
-                        selected={this.state.code}
-                        onChange={e => this.setState({ code: e.target.value })}
+                        selected = {this.state.code}
+                        onChange={ e=>
+                            this.setState({code: e.target.value})
+                        }
+
                     />
                 </FormGroup>
                 <Button
                     onClick={e => {
-                        console.log('hit');
-                        this.assignBlanks(e);
-                        this.updateRemaining();
+                        console.log("hit");
+                        this.updateRemaining()
                     }}
-                    href={"./blanks"}
                 >
                     Assign Blanks
                 </Button>
+
             </Container>
         );
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /*
     axios.get( apiLinks.BLANKS ).then(res => {

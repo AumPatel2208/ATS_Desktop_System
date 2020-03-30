@@ -8,7 +8,7 @@ import AdvisorBlanks from "../Components/AdvisorBlanks";
 export default function Sale()  {
     return (
         <Container>
-            <h1>SELL SHIT</h1>
+            <h2>Select a Blank to Sell</h2>
             <AdvisorBlanks></AdvisorBlanks>
         </Container>
     );

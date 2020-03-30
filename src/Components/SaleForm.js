@@ -15,7 +15,20 @@ import { GetUSer } from '../store/User';
 
 let apiLinks = require('../api/config.json');
 
+<<<<<<< HEAD
 export class SaleForm extends Component {
+=======
+
+export  class SaleForm extends Component{
+constructor(props) {
+    super(props);
+    this.state={
+        isOpen: false,
+        stats:{}
+    }
+}
+
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
     state = {
         sales: [],
         rates: [],
@@ -41,8 +54,13 @@ export class SaleForm extends Component {
             USDExchange: ''
         },
         exch: [],
+<<<<<<< HEAD
         cCode: '',
         myId: '',
+=======
+        cCode: "USD",
+        myId: "",
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
         blanks: []
     };
 
@@ -79,9 +97,14 @@ export class SaleForm extends Component {
             .catch(err => console.log('Error code: ', err));
 
         //filtering by ID
+<<<<<<< HEAD
         const bl = this.state.blanks.filter(
             i => String(i._id) === this.state.myId
         );
+=======
+        //const bl = this.state.blanks.filter(i => String(i._id )=== this.state.myId)
+
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
     }
 
     creditHandler() {
@@ -159,15 +182,42 @@ export class SaleForm extends Component {
 
     render() {
         function submitSale(event) {
+<<<<<<< HEAD
             let dt = new Date(Date.now());
             dt.setHours(0, 0, 0, 0);
+=======
+
+            const bl = this.state.blanks.filter(i => String(i._id )=== this.state.myId)
+
+
+            let dt = new Date(Date.now());
+            dt.setHours(0,0,0,0);
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
 
             event.preventDefault();
 
             this.setState({ adCode: GetUSer.advisorCode });
             this.setState({ commissionRate: GetUSer.commissionRate });
 
+<<<<<<< HEAD
             const newSale = {
+=======
+            this.setState({adCode: GetUSer.advisorCode});
+            this.setState({commissionRate: GetUSer.commissionRate});
+
+            if (this.state.cCode === undefined){
+                this.setState({cCode : "USD" })
+            }
+            if (this.state.cCode != "USD"){
+                this.setState({USDExchangeRate: this.state.exch[0].toUSDRate});
+            }
+            if (this.state.cCode == "USD"){
+                //this.setState({cCode: "USD"});
+                this.setState({USDExchangeRate: 1});
+            }
+
+           const newSale = {
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
                 ticketNumber: this.state.tickNum,
                 saleType: this.state.saleType,
                 fare: this.state.fare,
@@ -180,10 +230,15 @@ export class SaleForm extends Component {
                 securityCode: this.state.secCode,
                 commissionRate: this.state.rate,
                 custName: this.state.custName,
-                advisorCode: this.state.adCode,
+                //advisorCode: this.props.staff.advisorCode,
+               advisorCode: 380,
                 saleDate: dt,
                 notes: this.state.notes,
+<<<<<<< HEAD
                 USDExchangeRate: this.state.exch[0].toUSDRate
+=======
+                USDExchangeRate: this.state.USDExchangeRate
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
             };
             axios
                 .post(apiLinks.SALES, newSale)
@@ -205,6 +260,7 @@ export class SaleForm extends Component {
                 batchId: this.state.myId
             };
 
+<<<<<<< HEAD
             axios
                 .post(apiLinks.USED, newUsed)
                 .then(response => {
@@ -226,6 +282,31 @@ export class SaleForm extends Component {
                 amount: this.state.blanks.amount,
                 remaining: x
             };
+=======
+            axios.post(apiLinks.USED, newUsed).then(response => {
+                console.log(response);
+            });
+                //UPDATING ASSIGNMENT - REMOVING FROM ASSIGNED LIST
+                let x = this.state.blanks[0].remaining;
+                let  y= x.findIndex( k => k===this.state.tickNum);
+                x.splice(y);
+
+
+                const updatedBlank ={
+                    _id: this.state.blanks._id,
+                    batchValues: this.state.blanks.batchValues,
+                    batchStart: this.state.blanks.batchStart,
+                    batchEnd: this.state.blanks.batchEnd,
+                    date: this.state.blanks.date,
+                    batchType: this.state.blanks.batchType,
+                    amount: this.state.blanks.amount,
+                    remaining: x
+                };
+
+
+                axios.put(apiLinks.ASSIGN +"/" + this.state.myId, updatedBlank)
+
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
 
             axios
                 .put(apiLinks.ASSIGN + '/' + this.state.myId, updatedBlank)
@@ -234,6 +315,7 @@ export class SaleForm extends Component {
 
         return (
             <Container>
+                <h2>Make a Sale</h2>
                 <Form onSubmit={submitSale.bind(this)}>
                     <Dropdown
                         onSelect={key => {
@@ -252,6 +334,7 @@ export class SaleForm extends Component {
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
+                    <br/>
                     <Dropdown
                         onSelect={key => {
                             this.setState({ method: key });
@@ -268,6 +351,11 @@ export class SaleForm extends Component {
                         </Dropdown.Menu>
                     </Dropdown>
 
+<<<<<<< HEAD
+=======
+<br/>
+
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
                     <FormLabel>Ticket Number</FormLabel>
                     <FormControl
                         autoFocus

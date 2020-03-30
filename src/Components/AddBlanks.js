@@ -27,8 +27,15 @@ export default class AddBlanks extends Component {
     handleSubmit(event) {
         event.preventDefault();
         console.log('hello');
+<<<<<<< HEAD
         let dt = new Date(this.state.enteredDate);
         dt.setHours(0, 0, 0, 0);
+=======
+
+let dt = new Date(this.state.enteredDate);
+dt.setHours(0,0,0,0)
+
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
         const newblanks = {
             batchValues: this.state.batchValues,
             date: dt
@@ -43,6 +50,7 @@ export default class AddBlanks extends Component {
 
     render() {
         return (
+<<<<<<< HEAD
             <Container>
                 <h3>Add New Blanks</h3>
                 <FormGroup controlId="username" bssize="large">
@@ -79,3 +87,41 @@ export default class AddBlanks extends Component {
         );
     }
 }
+=======
+
+
+<Container>
+    <h3>Add New Blanks</h3>
+        <FormGroup controlId="username" bssize="large">
+            <FormLabel>Batch</FormLabel>
+            <FormControl
+                autoFocus
+                type="batchValues"
+                value={this.state.batchValues}
+                onChange={e => this.setState({batchValues: e.target.value})}
+            />
+        </FormGroup>
+        <FormGroup controlId="date" bssize="large">
+            <FormLabel>Receipt Date:</FormLabel>
+            <DatePicker
+                selected={this.state.enteredDate}
+                onChange = {date => {
+                    this.setState({
+                        enteredDate: date
+                    })}}
+            />
+            <br/>
+        </FormGroup>
+        <Button
+            onClick={e => {
+                this.handleSubmit(e)
+            }}
+            href={"./blanks"}
+        >
+            Add Blanks
+        </Button>
+</Container>
+
+        )
+    }}
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a

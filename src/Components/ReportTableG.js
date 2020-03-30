@@ -29,6 +29,7 @@ export default class ReportTableG extends Component {
 
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
+<<<<<<< HEAD
         let start = this.state.startDate;
         let end = this.state.endDate;
 
@@ -39,6 +40,12 @@ export default class ReportTableG extends Component {
                 this.setState({ sales });
             })
             .catch(err => console.log('Error code: ', err));
+=======
+        axios.get( apiLinks.SALES).then(res => {
+            const sales = res.data;
+            this.setState({sales});
+        });
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
     }
 
     onOpenClick(e, _id) {
@@ -46,8 +53,25 @@ export default class ReportTableG extends Component {
     }
 
     aggregateSales() {
+<<<<<<< HEAD
         var x = 0,
             y = 0;
+=======
+
+        let start = new Date(this.state.startDate);
+        let end =new  Date(this.state.endDate);
+        start.setHours(0,0,0,0);
+        end.setHours(0,0,0,0);
+/*
+        const fl = this.state.sales.filter(i => (Date.parse(i.date)>= Date.parse(start)));
+        this.setState({sales: fl});
+        const tl = this.state.sales.filter(i => (Date.parse(i.date)<= Date.parse(end)));
+        this.setState({sales: tl});
+        */
+
+
+        var x =0, y=0;
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
         for (x = 0; x < this.state.sales.length; x++) {
             var k = 0;
             for (k = 0; k < this.state.summedValues.length; k++) {
@@ -69,11 +93,17 @@ export default class ReportTableG extends Component {
                 };
                 y = this.state.summedValues.push(this.state.dict) - 1;
             }
+<<<<<<< HEAD
             if (this.state.sales[x].paymentMethod === 'creditCard') {
                 this.state.summedValues[y].credit += this.state.sales[x].fare;
             } else if (this.state.sales[x].paymentMethod === 'cheque') {
                 this.state.summedValues[y].cheque += this.state.sales[x].fare;
             } else if (this.state.sales[x].paymentMethod === 'cash') {
+=======
+            if (this.state.sales[x].paymentMethod === "CreditCard") {
+                this.state.summedValues[y].credit += this.state.sales[x].fare;
+            } else if (this.state.sales[x].paymentMethod === "Cash") {
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
                 this.state.summedValues[y].cash += this.state.sales[x].fare;
             }
             this.state.summedValues[y].saleNum += 1;
@@ -107,14 +137,6 @@ export default class ReportTableG extends Component {
                     <td>{cheque}</td>
                     <td>{total}</td>
                     <td>
-                        <Button
-                            className="open-btn"
-                            color="primary"
-                            size="sm"
-                            onClick={this.onOpenClick.bind(this, advisorCode)}
-                        >
-                            open
-                        </Button>
                     </td>
                 </tr>
             </Fragment>
@@ -122,6 +144,7 @@ export default class ReportTableG extends Component {
 
         return (
             <Container>
+<<<<<<< HEAD
                 <Dropdown
                     onSelect={key => {
                         this.setState({ saleTypeValue: key });
@@ -157,6 +180,8 @@ export default class ReportTableG extends Component {
                         </Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
+=======
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
                 <br></br>
 
                 <FormLabel>From: </FormLabel>
@@ -184,6 +209,7 @@ export default class ReportTableG extends Component {
                         <Button
                             bssize="medium"
                             variant="outline-danger"
+<<<<<<< HEAD
                             onClick={() => {
                                 let start = new Date(this.state.startDate);
                                 let end = new Date(this.state.endDate);
@@ -195,11 +221,31 @@ export default class ReportTableG extends Component {
                                         params: { start, end }
                                     })
                                     .then(res => {
+=======
+
+                                onClick={() =>{
+                                    /*
+                                    let start = new Date(this.state.startDate);
+                                    let end =new  Date(this.state.endDate);
+                                    start.setHours(0,0,0,0);
+                                    end.setHours(0,0,0,0);
+/*
+                                    axios.get( apiLinks.SALES +'/byDate',{params:{start, end}}).then(res => {
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
                                         const sales = res.data;
                                         this.setState({ sales });
                                     });
 
+<<<<<<< HEAD
                                 this.setState({
+=======
+                                    const fl = this.state.sales.filter(i => (Date.parse(i.date)>= Date.parse(start)));
+                                    this.setState({sales: fl});
+                                    const tl = this.state.sales.filter(i => (Date.parse(i.date)<= Date.parse(end)));
+                                    this.setState({sales: tl});
+                                */
+                                    this.setState({
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
                                     sales: this.aggregateSales()
                                 });
                             }}

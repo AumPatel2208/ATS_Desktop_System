@@ -47,6 +47,7 @@ import { Assignment } from './Components/Assignment';
 import TableOfAdvisors from './Components/TableOfAdvisors';
 import AdvisorBlanks from './Components/AdvisorBlanks';
 import { SaleForm } from './Components/SaleForm';
+import {ReAssignBlanks} from "./Components/ReAssignBlanks";
 
 const apiLinks = require('./api/config.json');
 /* CODE TO LOCK A PAGE
@@ -226,6 +227,10 @@ class App extends React.Component {
                     <Route
                         path="/blanks/:id"
                         render={props => <Assignment {...props} />}
+                    />
+                    <Route
+                        path="/blankAssigned/:id"
+                        render={props => <ReAssignBlanks {...props} />}
                     />
                     <Route
                         exact={true}

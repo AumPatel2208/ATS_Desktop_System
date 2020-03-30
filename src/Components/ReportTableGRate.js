@@ -29,9 +29,15 @@ export default class ReportTableGRate extends Component {
 
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
-        let start = this.state.startDate;
-        let end = this.state.endDate;
 
+        /*
+        let start = new Date(this.state.startDate);
+        start.setHours(0,0,0,0);
+        let end = new Date(this.state.endDate);
+        end.setHours(0,0,0,0);
+
+
+<<<<<<< HEAD
         axios
             .get(apiLinks.SALES + '/byDate', { params: { start, end } })
             .then(res => {
@@ -39,6 +45,26 @@ export default class ReportTableGRate extends Component {
                 this.setState({ sales });
             })
             .catch(err => console.log('Error code: ', err));
+=======
+        axios.get( apiLinks.SALES +'/byDate',{params:{start, end}}).then(res => {
+            const sales = res.data;
+            this.setState({sales});
+        });
+
+
+         */
+
+
+
+        axios.get( apiLinks.SALES).then(res => {
+            const sales = res.data;
+            this.setState({sales});
+        });
+
+
+
+
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
     }
 
     onOpenClick(e, _id) {
@@ -46,8 +72,28 @@ export default class ReportTableGRate extends Component {
     }
 
     aggregateSales() {
+<<<<<<< HEAD
         var x = 0,
             y = 0;
+=======
+
+        let start = new Date(this.state.startDate);
+        start.setHours(0,0,0,0);
+        let end = new Date(this.state.endDate);
+        end.setHours(0,0,0,0);
+
+
+        const fl = this.state.sales.filter(i => (Date.parse(i.date)>= Date.parse(start)));
+        this.setState({sales: fl});
+        const tl = this.state.sales.filter(i => (Date.parse(i.date)<= Date.parse(end)));
+        this.setState({sales: tl});
+
+
+
+
+
+        var x =0, y=0;
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
         for (x = 0; x < this.state.sales.length; x++) {
             var k = 0;
             for (k = 0; k < this.state.summedValues.length; k++) {
@@ -61,14 +107,15 @@ export default class ReportTableGRate extends Component {
             if (k == this.state.summedValues.length) {
                 this.state.dict = {
                     USDExchangeRate: this.state.sales[x].USDExchangeRate,
+                    currency: "",
                     cash: 0,
                     credit: 0,
-                    cheque: 0,
                     saleNum: 0,
                     total: 0
                 };
                 y = this.state.summedValues.push(this.state.dict) - 1;
             }
+<<<<<<< HEAD
             if (this.state.sales[x].paymentMethod === 'creditCard') {
                 this.state.summedValues[y].credit += this.state.sales[x].fare;
             } else if (this.state.sales[x].paymentMethod === 'cheque') {
@@ -78,6 +125,17 @@ export default class ReportTableGRate extends Component {
             }
             this.state.summedValues[y].saleNum += 1;
             this.state.summedValues[y].total += this.state.sales[x].fare;
+=======
+            if (this.state.sales[x].paymentMethod === "CreditCard") {
+                this.state.summedValues[y].credit += this.state.sales[x].fare;
+            } else if (this.state.sales[x].paymentMethod === "Cash") {
+                this.state.summedValues[y].cash += this.state.sales[x].fare;
+            }
+            this.state.summedValues[y].saleNum += 1;
+            this.state.summedValues[y].total += (this.state.sales[x].fare * this.state.sales[x].USDExchangeRate);
+            this.state.summedValues[y].currency = this.state.sales[x].currency;
+
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
         }
     }
 
@@ -122,6 +180,7 @@ export default class ReportTableGRate extends Component {
 
         return (
             <Container>
+<<<<<<< HEAD
                 <Dropdown
                     onSelect={key => {
                         this.setState({ saleTypeValue: key });
@@ -157,6 +216,8 @@ export default class ReportTableGRate extends Component {
                         </Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
+=======
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
                 <br></br>
 
                 <FormLabel>From: </FormLabel>
@@ -211,6 +272,7 @@ export default class ReportTableGRate extends Component {
                 </Form>
                 <Table className="mt-4">
                     <thead>
+<<<<<<< HEAD
                         <tr>
                             <th>Exchange Rate</th>
                             <th>Sales</th>
@@ -242,6 +304,41 @@ export default class ReportTableGRate extends Component {
                                 </Fragment>
                             )
                         )}
+=======
+                    <tr>
+                        <th>Exchange Rate</th>
+                        <th>Currency</th>
+                        <th>Sales</th>
+                        <th>Credit</th>
+                        <th>Cash</th>
+                        <th>USD Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {this.state.summedValues.map(
+                        ({
+                             USDExchangeRate,
+                            currency,
+                             saleNum,
+                             credit,
+                             cash,
+                             total
+
+                         }) => (
+                            <Fragment >
+                                {row(
+
+                                    USDExchangeRate,
+                                    currency,
+                                    saleNum,
+                                    credit,
+                                    cash,
+                                    total
+                                )}
+                            </Fragment>
+                        )
+                    )}
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
                     </tbody>
                 </Table>
             </Container>

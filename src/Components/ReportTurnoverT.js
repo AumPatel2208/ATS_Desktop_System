@@ -31,7 +31,20 @@ export default class ReportTurnoverT extends Component {
     };
     //runs when component mounts, use to gets the data from db
 
+<<<<<<< HEAD
     componentDidMount() {}
+=======
+    componentDidMount() {
+        axios.get( apiLinks.BLANKS ).then(res => {
+            const blanks = res.data;
+            this.setState({blanks});
+        });
+
+    }
+
+
+
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
 
     /*
 
@@ -100,6 +113,7 @@ export default class ReportTurnoverT extends Component {
                     variant="outline-danger"
                     onClick={async () => {
                         let start = new Date(this.state.startDate);
+<<<<<<< HEAD
                         let end = new Date(this.state.endDate);
                         start.setHours(0, 0, 0, 0);
                         end.setHours(0, 0, 0, 0);
@@ -133,6 +147,52 @@ export default class ReportTurnoverT extends Component {
                                 this.setState({ uBlanks });
                             })
                             .catch(err => console.log('Error code: ', err));
+=======
+                        let end =new  Date(this.state.endDate);
+                        start.setHours(0,0,0,0);
+                        end.setHours(0,0,0,0);
+
+                        /*
+                        axios.get( apiLinks.BLANKS +'/byDate',{params:{start, end}}).then(res => {
+                            const blanks = res.data;
+                            this.setState({blanks});
+                        });
+
+                         */
+
+                        //this.state.blanks.filter(i => (i._id == "5e7fad407ac973c76d5f797e"));
+
+                        const fl = this.state.blanks.filter(i => (Date.parse(i.date)>= Date.parse(start)));
+                        this.setState({blanks: fl});
+                      //  const bl = this.state.blanks.filter(i => (i.date-start >0));
+                        const tl = this.state.blanks.filter(i => (Date.parse(i.date)<= Date.parse(end)));
+                        this.setState({blanks: tl});
+                       // const bl2 = this.state.blanks.filter(i => String(i.date )<= end);
+
+                        /*this.setState({
+                            blanks: this.state.blanks.filter(
+                                blank => (blank[this.state.date]) >
+                                    start)})
+
+
+                        axios.get( apiLinks.BLANKS +'/byDate',{params:{start, end}}).then(res => {
+                            const Blanks = res.data;
+                            this.setState({Blanks});
+                        });
+
+                         */
+
+                        axios.get( apiLinks.ASSIGN +'/byDate',{params:{start, end}}).then(res => {
+                            const aBlanks = res.data;
+                            this.setState({aBlanks});
+                        });
+
+                        axios.get( apiLinks.USED +'/byDate',{params:{start, end}}).then(res => {
+                            const uBlanks = res.data;
+                            this.setState({uBlanks});
+                        });
+
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
                     }}
                 >
                     Enter Dates
@@ -150,6 +210,7 @@ export default class ReportTurnoverT extends Component {
                         </tr>
                     </thead>
                     <tbody>
+<<<<<<< HEAD
                         {this.state.blanks.map(
                             ({ batchValues, date, amount }) => (
                                 <Fragment>
@@ -157,6 +218,26 @@ export default class ReportTurnoverT extends Component {
                                 </Fragment>
                             )
                         )}
+=======
+                    {this.state.blanks.map(
+                        ({
+
+                            batchValues,
+                            date,
+                            amount,
+
+                         }) => (
+                            <Fragment >
+                                {row(
+                                    batchValues,
+                                    date.substring(0,10),
+                                    amount,
+                                )}
+                            </Fragment>
+
+                        )
+                    )}
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
                     </tbody>
                 </Table>
 
@@ -223,6 +304,7 @@ export default class ReportTurnoverT extends Component {
                         </tr>
                     </thead>
                     <tbody>
+<<<<<<< HEAD
                         {this.state.blanks.map(({ _id, remaining }) => {
                             if (_id == this.state.myId) {
                                 return (
@@ -240,6 +322,24 @@ export default class ReportTurnoverT extends Component {
                                 );
                             }
                         })}
+=======
+                    {this.state.blanks.map(
+                        ({_id, remaining}) => {
+                                return (
+                                    <tr key={_id}>
+                                        {remaining.map((sub, i) => {
+                                                    return(
+                                                        <Fragment>
+                                                            {row(
+                                                                sub.start+"-"+sub.end,
+                                                                sub.end- sub.start
+                                                            )}
+                                                        </Fragment>
+
+                                                    )})}
+                                    </tr>
+                                )})}
+>>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
                     </tbody>
                 </Table>
 

@@ -8,6 +8,7 @@ router.post('/', (q, a) => {
     //Blank.create(q.body).then(item => a.json(item));
     //console.log(q.body);
     const f = String(q.body.batchValues);
+    console.log(f)
     //console.log(f);
    // console.log(q.param.batchValues);
     var x = f.split("-");
@@ -17,10 +18,16 @@ router.post('/', (q, a) => {
     //console.log(d);
     let amount = d-c;
     let remain = [];
+   h= f.indexOf("-");
 
-    for (i=0; i<= d-c; i++){
-        remain.push(parseInt(c)+i)
+if ( h== -1){
+    remain.push(q.body.batchValues);
+    amount = 1;
+}else {
+    for (i = 0; i <= amount; i++) {
+        remain.push(parseInt(c) + i)
     }
+}
 
     console.log(remain);
       //  {start: c, end:d}];
@@ -70,7 +77,10 @@ router.get('/byDate',(q,a)=>{
 //find and update one blank
 router.put('/:id', (q, a) => {
     BlankAssigned.findByIdAndUpdate(q.params.id, q.body).then(item => a.json(item));
+    console.log(q.body.remaining)
 });
+
+
 //Delete one blank
 router.delete('/:id', (q, a) => {
     BlankAssigned.findById(q.params.id)
