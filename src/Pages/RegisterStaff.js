@@ -138,19 +138,19 @@ export default function RegisterStaff(props) {
                   .post(apiLinks.STAFFMEMBERS, tempStaffMember)
                   .then(response => {
                       console.log(response);
+                      alert('User Created');
                   })
             : axios
                   .put(getLink, tempStaffMember)
                   .then(res => {
                       console.log(res);
+                      alert('User Updated');
                   })
                   .catch(err => console.log('Error code: ', err));
     }
 
     return (
         <Container>
-            {/* <CommissionUpdate></CommissionUpdate> */}
-
             <div className="RegisterStaff">
                 <form onSubmit={handleSubmit}>
                     <FormGroup controlId="username" bssize="large">
@@ -265,36 +265,8 @@ export default function RegisterStaff(props) {
                     >
                         {props.isNew ? 'Register' : 'Update'}
                     </Button>
-                    {/* <Button
-                        onClick={e => {
-                            e.preventDefault();
-                            console.log(staffMembers);
-                        }}
-                    >
-                        LOG CURRENT USERS
-                    </Button>
-                    <Button
-                        onClick={e => {
-                            e.preventDefault();
-                            axios.post(
-                                'http://localhost:5000/api/staffMembers/',
-                                {
-                                    firstName: 's',
-                                    lastName: 'B',
-                                    address: '34 Center',
-                                    username: 'tutu1',
-                                    staffType: 'TravelAdvisor',
-                                    password: '12',
-                                    advisorCode: '13345678'
-                                }
-                            );
-                        }}
-                    >
-                        ADD MA BOI
-                    </Button> */}
                 </form>
             </div>
-            {/* <CheckStore></CheckStore> */}
         </Container>
     );
 }
