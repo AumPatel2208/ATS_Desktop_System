@@ -1,136 +1,146 @@
-import {Button, Container, Table} from "reactstrap";
-import React, {Component, Fragment} from "react";
-import {Dropdown, Form, FormControl, FormGroup, FormLabel} from "react-bootstrap";
-import DatePicker from "react-datepicker";
-import axios from "axios";
-import {useStoreState} from "pullstate";
-import {UserStore} from "../store/UserStore";
-import {GetUSer} from "../store/User";
+import { Button, Container, Table } from 'reactstrap';
+import React, { Component, Fragment } from 'react';
+import {
+    Dropdown,
+    Form,
+    FormControl,
+    FormGroup,
+    FormLabel
+} from 'react-bootstrap';
+import DatePicker from 'react-datepicker';
+import axios from 'axios';
+import { useStoreState } from 'pullstate';
+import { UserStore } from '../store/UserStore';
+import { GetUSer } from '../store/User';
 
 let apiLinks = require('../api/config.json');
 
-
-export  class SaleForm extends Component{
-
+export class SaleForm extends Component {
     state = {
         sales: [],
         rates: [],
         date: new Date(),
-        code: "",
-        custName:"",
-        saleType: "Select Sale Type",
-        tickNum: "",
-        fare: "",
-        Tlocal: "",
-        Tother: "",
-        method: "Payment Method",
-        creditNum: "-",
-        expDate: "-",
-        secCode: "-",
-        rate: "",
-        adCode:"",
-        notes:"",
-        USDExchangeRate: "",
+        code: '',
+        custName: '',
+        saleType: 'Select Sale Type',
+        tickNum: '',
+        fare: '',
+        Tlocal: '',
+        Tother: '',
+        method: 'Payment Method',
+        creditNum: '-',
+        expDate: '-',
+        secCode: '-',
+        rate: '',
+        adCode: '',
+        notes: '',
+        USDExchangeRate: '',
         eRate: {
             eDate: Date,
             currency: '',
             USDExchange: ''
         },
         exch: [],
-        cCode: "",
-        myId: "",
+        cCode: '',
+        myId: '',
         blanks: []
-
     };
 
-    componentDidMount() {
-
-        const {match:{params}} = this.props;
+    async componentDidMount() {
+        const {
+            match: { params }
+        } = this.props;
         const l = params.id.split('-');
 
-        this.setState({tickNum: l[1]});
-        this.setState({myId: l[0]});
+        this.setState({ tickNum: l[1] });
+        this.setState({ myId: l[0] });
 
-//getting the day's exchange rate for the given currency
+        //getting the day's exchange rate for the given currency
         const getLink = apiLinks.EXCHANGERATES + '/sale';
-        axios.get(getLink).then(res => {
-            const exchData = res.data;
-            this.setState({
-                ...this.state.exch,
-                exch: exchData}
-            )
-            console.log(this.state.exch)
-        })
+        await axios
+            .get(getLink)
+            .then(res => {
+                const exchData = res.data;
+                this.setState({
+                    ...this.state.exch,
+                    exch: exchData
+                });
+                console.log(this.state.exch);
+            })
+            .catch(err => console.log('Error code: ', err));
 
         //getting the originally assigned amount to remove the sold ticket
-        axios.get( apiLinks.ASSIGN ).then(res => {
-            const blanks = res.data;
-            this.setState({blanks});
-        });
+        await axios
+            .get(apiLinks.ASSIGN)
+            .then(res => {
+                const blanks = res.data;
+                this.setState({ blanks });
+            })
+            .catch(err => console.log('Error code: ', err));
 
         //filtering by ID
-        const bl = this.state.blanks.filter(i => String(i._id )=== this.state.myId)
-
+        const bl = this.state.blanks.filter(
+            i => String(i._id) === this.state.myId
+        );
     }
 
-    creditHandler(){
-        if (this.state.method === "CreditCard"){
-            return <Fragment>
-
-
-                <FormLabel>Credit Card Number</FormLabel>
-                <FormControl
-                    autoFocus
-                    type="string"
-                    value={this.state.creditNum}
-                    onChange={e => {
-                        this.setState({
-                            creditNum: e.target.value
-                        });
-                    }}
-                />
-                <FormLabel>Expiration Date</FormLabel>
-                <FormControl
-                    autoFocus
-                    type="string"
-                    value={this.state.expDate}
-                    onChange={e => {
-                        this.setState({
-                            expDate: e.target.value
-                        });
-                    }}
-                />
-                <FormLabel>Security Code</FormLabel>
-                <FormControl
-                    autoFocus
-                    type="string"
-                    value={this.state.secCode}
-                    onChange={e => {
-                        this.setState({
-                            secCode: e.target.value
-                        });
-                    }}
-                />
-
-            </Fragment>
+    creditHandler() {
+        if (this.state.method === 'CreditCard') {
+            return (
+                <Fragment>
+                    <FormLabel>Credit Card Number</FormLabel>
+                    <FormControl
+                        autoFocus
+                        type="string"
+                        value={this.state.creditNum}
+                        onChange={e => {
+                            this.setState({
+                                creditNum: e.target.value
+                            });
+                        }}
+                    />
+                    <FormLabel>Expiration Date</FormLabel>
+                    <FormControl
+                        autoFocus
+                        type="string"
+                        value={this.state.expDate}
+                        onChange={e => {
+                            this.setState({
+                                expDate: e.target.value
+                            });
+                        }}
+                    />
+                    <FormLabel>Security Code</FormLabel>
+                    <FormControl
+                        autoFocus
+                        type="string"
+                        value={this.state.secCode}
+                        onChange={e => {
+                            this.setState({
+                                secCode: e.target.value
+                            });
+                        }}
+                    />
+                </Fragment>
+            );
         }
-
     }
 
-    taxHandler(){
-        if(this.state.saleType === "Interline"){
-            return <Fragment>
-                <FormLabel>Local Tax</FormLabel>
-                <FormControl
-                    autoFocus
-                    type="string"
-                    value={this.state.Tlocal}
-                    onChange={e => {
-                        this.setState({
-                            Tlocal: e.target.value
-                        });
-                    }}
-                />
+    taxHandler() {
+        if (this.state.saleType === 'Interline') {
+            return (
+                <Fragment>
+                    <FormLabel>Local Tax</FormLabel>
+                    <FormControl
+                        autoFocus
+                        type="string"
+                        value={this.state.Tlocal}
+                        onChange={e => {
+                            this.setState({
+                                Tlocal: e.target.value
+                            });
+                        }}
+                    />
                     <FormLabel>Currency Code</FormLabel>
                     <FormControl
                         autoFocus
@@ -143,35 +153,27 @@ export  class SaleForm extends Component{
                         }}
                     />
                 </Fragment>
-
+            );
         }
     }
 
-
-
-
-
     render() {
-
         function submitSale(event) {
-
-
-let dt = new Date(Date.now());
-dt.setHours(0,0,0,0);
+            let dt = new Date(Date.now());
+            dt.setHours(0, 0, 0, 0);
 
             event.preventDefault();
 
+            this.setState({ adCode: GetUSer.advisorCode });
+            this.setState({ commissionRate: GetUSer.commissionRate });
 
-            this.setState({adCode: GetUSer.advisorCode});
-            this.setState({commissionRate: GetUSer.commissionRate});
-
-           const newSale = {
+            const newSale = {
                 ticketNumber: this.state.tickNum,
                 saleType: this.state.saleType,
-                fare:this.state.fare,
+                fare: this.state.fare,
                 currency: this.state.cCode,
                 localTax: this.state.Tlocal,
-                otherTax:this.state.Tother,
+                otherTax: this.state.Tother,
                 paymentMethod: this.state.method,
                 creditCardNum: this.state.creditNum,
                 expDate: this.state.expDate,
@@ -181,66 +183,64 @@ dt.setHours(0,0,0,0);
                 advisorCode: this.state.adCode,
                 saleDate: dt,
                 notes: this.state.notes,
-                USDExchangeRate: this.state.exch[0].toUSDRate,
+                USDExchangeRate: this.state.exch[0].toUSDRate
             };
-            axios.post(apiLinks.SALES, newSale )
-                 .then(response => {
-                       console.log(response);
-                       console.log(this.state.exch)
-                 })
+            axios
+                .post(apiLinks.SALES, newSale)
+                .then(response => {
+                    console.log(response);
+                    console.log(this.state.exch);
+                })
                 .catch(res => console.log(res));
 
             //USING THE BLANK/ADDING TO THE USED DATABASE SECTION
 
             let d = new Date(Date.now());
-            d.setHours(0,0,0,0);
+            d.setHours(0, 0, 0, 0);
 
-            const newUsed= {
+            const newUsed = {
                 date: d,
                 batchValues: this.state.tickNum,
                 advisorCode: this.state.adCode,
                 batchId: this.state.myId
-
             };
 
-            axios.post(apiLinks.USED, newUsed).then(response => {
-                console.log(response);
-            })
-                //UPDATING ASSIGNMENT - REMOVING FROM ASSIGNED LIST
-                let x = this.state.blanks[0].remaining;
-                let  y= x.findIndex( k => k===this.state.tickNum);
-                x.splice(y);
+            axios
+                .post(apiLinks.USED, newUsed)
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(err => console.log('Error code: ', err));
+            //UPDATING ASSIGNMENT - REMOVING FROM ASSIGNED LIST
+            let x = this.state.blanks[0].remaining;
+            let y = x.findIndex(k => k === this.state.tickNum);
+            x.splice(y);
 
+            const updatedBlank = {
+                _id: this.state.blanks._id,
+                batchValues: this.state.blanks.batchValues,
+                batchStart: this.state.blanks.batchStart,
+                batchEnd: this.state.blanks.batchEnd,
+                date: this.state.blanks.date,
+                batchType: this.state.blanks.batchType,
+                amount: this.state.blanks.amount,
+                remaining: x
+            };
 
-                const updatedBlank ={
-                    _id: this.state.blanks._id,
-                    batchValues: this.state.blanks.batchValues,
-                    batchStart: this.state.blanks.batchStart,
-                    batchEnd: this.state.blanks.batchEnd,
-                    date: this.state.blanks.date,
-                    batchType: this.state.blanks.batchType,
-                    amount: this.state.blanks.amount,
-                    remaining: x
-                };
-
-
-                axios.put(apiLinks.ASSIGN +"/" + this.state.myId, updatedBlank)
-
-
-            }
+            axios
+                .put(apiLinks.ASSIGN + '/' + this.state.myId, updatedBlank)
+                .catch(err => console.log('Error code: ', err));
+        }
 
         return (
             <Container>
                 <Form onSubmit={submitSale.bind(this)}>
-
-                    <Dropdown onSelect={key => {
-                            this.setState({saleType: key});
+                    <Dropdown
+                        onSelect={key => {
+                            this.setState({ saleType: key });
                         }}
                     >
-                        <Dropdown.Toggle
-                            variant="success"
-                            id="dropdown-basic"
-                        >
+                        <Dropdown.Toggle variant="success" id="dropdown-basic">
                             {this.state.saleType}
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
@@ -254,26 +254,19 @@ dt.setHours(0,0,0,0);
                     </Dropdown>
                     <Dropdown
                         onSelect={key => {
-                            this.setState({method: key});
+                            this.setState({ method: key });
                         }}
                     >
-                        <Dropdown.Toggle
-                            variant="success"
-                            id="dropdown-basic"
-                        >
+                        <Dropdown.Toggle variant="success" id="dropdown-basic">
                             {this.state.method}
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item eventKey="Cash">
-                                Cash
-                            </Dropdown.Item>
+                            <Dropdown.Item eventKey="Cash">Cash</Dropdown.Item>
                             <Dropdown.Item eventKey="CreditCard">
                                 Credit card
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-
-
 
                     <FormLabel>Ticket Number</FormLabel>
                     <FormControl
@@ -301,14 +294,13 @@ dt.setHours(0,0,0,0);
                     <Fragment>{this.creditHandler()}</Fragment>
                     <Fragment>{this.taxHandler()}</Fragment>
 
-
                     <FormLabel>Other Tax</FormLabel>
                     <FormControl
                         autoFocus
                         type="string"
                         value={this.state.Tother}
                         onChange={e => {
-                            this.setState({Tother: e.target.value});
+                            this.setState({ Tother: e.target.value });
                         }}
                     />
 
@@ -335,10 +327,7 @@ dt.setHours(0,0,0,0);
                         }}
                     />
 
-                    <Button
-                        bssize="medium"
-                        type="submit"
-                    >
+                    <Button bssize="medium" type="submit">
                         Sell Ticket
                     </Button>
                 </Form>

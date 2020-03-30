@@ -29,19 +29,22 @@ export class CustomerUpdate extends Component {
         }
     };
 
-    componentDidMount() {
+    async componentDidMount() {
         const getLink =
             apiLinks.STAFFMEMBERS + '/' + this.props.match.params.id;
         if (!this.props.isNew)
-            axios.get(getLink).then(res => {
-                const tempStaff = res.data;
-                // console.log(res);
+            await axios
+                .get(getLink)
+                .then(res => {
+                    const tempStaff = res.data;
+                    // console.log(res);
 
-                this.setState({
-                    ...this.state.staff,
-                    staff: tempStaff
-                });
-            });
+                    this.setState({
+                        ...this.state.staff,
+                        staff: tempStaff
+                    });
+                })
+                .catch(err => console.log('Error code: ', err));
     }
 
     render() {

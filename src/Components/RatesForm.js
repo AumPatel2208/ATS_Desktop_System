@@ -1,18 +1,23 @@
-import {Button, Container, Table} from "reactstrap";
-import React, {Component, Fragment} from "react";
-import {Dropdown, Form, FormControl, FormGroup, FormLabel} from "react-bootstrap";
-import DatePicker from "react-datepicker";
-import axios from "axios";
+import { Button, Container, Table } from 'reactstrap';
+import React, { Component, Fragment } from 'react';
+import {
+    Dropdown,
+    Form,
+    FormControl,
+    FormGroup,
+    FormLabel
+} from 'react-bootstrap';
+import DatePicker from 'react-datepicker';
+import axios from 'axios';
 
 let apiLinks = require('../api/config.json');
 
-
-export default class RatesForm extends Component{
+export default class RatesForm extends Component {
     state = {
         rates: [],
         dateE: new Date(),
-        eRate: "",
-        code: ""
+        eRate: '',
+        code: ''
     };
 
     handleSubmit(event) {
@@ -25,20 +30,16 @@ export default class RatesForm extends Component{
         event.preventDefault();
         console.log('hello');
 
-        axios.post(apiLinks.EXCHANGERATES, newRate ).then(response => {
-            console.log(response);
-        });
-
+        axios
+            .post(apiLinks.EXCHANGERATES, newRate)
+            .then(response => {
+                console.log(response);
+            })
+            .catch(err => console.log('Error code: ', err));
     }
 
     render() {
-
-        const row = (
-            currencyCode,
-            date,
-            toUSDRate
-
-        ) => (
+        const row = (currencyCode, date, toUSDRate) => (
             <Fragment>
                 <tr>
                     <td>{currencyCode}</td>
@@ -49,7 +50,7 @@ export default class RatesForm extends Component{
                             className="open-btn"
                             color="primary"
                             size="sm"
-                          //  onClick={this.onOpenClick.bind(this)}
+                            //  onClick={this.onOpenClick.bind(this)}
                         >
                             open
                         </Button>
@@ -61,7 +62,6 @@ export default class RatesForm extends Component{
         return (
             <Container>
                 <Form>
-
                     <FormLabel>Enter Rate</FormLabel>
                     <FormControl
                         autoFocus
@@ -88,79 +88,69 @@ export default class RatesForm extends Component{
                         bssize="medium"
                         variant="outline-danger"
                         onClick={e => {
-                            this.handleSubmit(e)
+                            this.handleSubmit(e);
                         }}
                         block
                     >
                         Save Rate
                     </Button>
 
-
-
                     <br></br>
 
-
-                        <FormLabel>Search For Rates By Date  </FormLabel>
-                        <DatePicker
-                            //selected = {this.state.date}
-                          //  onSelect= { e=> this.setState({date: e.target.value})}
-                            //onChange={ e=> this.setState({date: e.target.value})}
-                            selected={this.state.dateE}
-                            onChange = {date => {
+                    <FormLabel>Search For Rates By Date </FormLabel>
+                    <DatePicker
+                        //selected = {this.state.date}
+                        //  onSelect= { e=> this.setState({date: e.target.value})}
+                        //onChange={ e=> this.setState({date: e.target.value})}
+                        selected={this.state.dateE}
+                        onChange={date => {
                             this.setState({
                                 dateE: date
-                            })}}
+                            });
+                        }}
+                    ></DatePicker>
 
-></DatePicker>
-
-                        <Button
-                            bssize="medium"
-                            variant="outline-danger"
-                            onClick={() => {
-                                let start = this.state.dateE;
-                                //(apiLinks.EXCHANGERATES + '/byDate', {params: {start}})
-                                axios.get(apiLinks.EXCHANGERATES + '/byDate', {params: {start}}).then(res => {
+                    <Button
+                        bssize="medium"
+                        variant="outline-danger"
+                        onClick={() => {
+                            let start = this.state.dateE;
+                            //(apiLinks.EXCHANGERATES + '/byDate', {params: {start}})
+                            axios
+                                .get(apiLinks.EXCHANGERATES + '/byDate', {
+                                    params: { start }
+                                })
+                                .then(res => {
                                     const rates = res.data;
-                                    this.setState({rates});
-                                    console.log(rates)
+                                    this.setState({ rates });
+                                    console.log(rates);
                                 });
+                        }}
+                        block
+                    >
+                        Search
+                    </Button>
 
-                            }}
-                            block
-                        >
-                            Search
-                        </Button>
-
-
-                <Table className="mt-4">
-                    <thead>
-                    <tr>
-                        <th>Currency</th>
-                        <th>Date</th>
-                        <th>To USD Rate</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {this.state.rates.map(
-                        ({
-                             currencyCode,
-                            date,
-                            toUSDRate
-                         }) => (
-                            <Fragment >
-                                {row(
-                                    currencyCode,
-                                    date,
-                                    toUSDRate
-                                )}
-                            </Fragment>
-                        )
-                    )}
-                    </tbody>
-                </Table>
+                    <Table className="mt-4">
+                        <thead>
+                            <tr>
+                                <th>Currency</th>
+                                <th>Date</th>
+                                <th>To USD Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.rates.map(
+                                ({ currencyCode, date, toUSDRate }) => (
+                                    <Fragment>
+                                        {row(currencyCode, date, toUSDRate)}
+                                    </Fragment>
+                                )
+                            )}
+                        </tbody>
+                    </Table>
                 </Form>
             </Container>
         );
     }
 }
-

@@ -1,12 +1,14 @@
-import React, { Component, Fragment, } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Container, Table, Button } from 'reactstrap';
 import axios from 'axios';
 import {
     Form,
     FormGroup,
-    Dropdown, FormControl, FormLabel
+    Dropdown,
+    FormControl,
+    FormLabel
 } from 'react-bootstrap';
-import DatePicker from "react-datepicker";
+import DatePicker from 'react-datepicker';
 
 const _ = require('lodash'); //Library to Change Cases of things
 
@@ -26,10 +28,13 @@ export default class ReportTableI extends Component {
     componentDidMount() {
         let start = this.state.startDate;
         let end = this.state.endDate;
-        axios.get(apiLinks.SALES +'/byDate',{params:{start, end}}).then(res => {
-            const sales = res.data;
-            this.setState({sales});
-        });
+        axios
+            .get(apiLinks.SALES + '/byDate', { params: { start, end } })
+            .then(res => {
+                const sales = res.data;
+                this.setState({ sales });
+            })
+            .catch(err => console.log('Error code: ', err));
     }
 
     onOpenClick(e, _id) {
@@ -84,28 +89,30 @@ export default class ReportTableI extends Component {
             <Container>
                 <Form>
                     <FormGroup controlId="saleT" bssize="large">
-
                         <Dropdown
                             onSelect={key => {
-                                this.setState({saleTypeValue: key});
+                                this.setState({ saleTypeValue: key });
 
-                                if (key === "Interline") {
+                                if (key === 'Interline') {
                                     this.setState({
                                         sales: this.state.sales.filter(
                                             sale =>
-                                                String(sale[this.state.saleT]) ===
-                                                "Interline")
+                                                String(
+                                                    sale[this.state.saleT]
+                                                ) === 'Interline'
+                                        )
                                     });
                                 } else {
                                     this.setState({
                                         sales: this.state.sales.filter(
                                             sale =>
-                                                String(sale[this.state.saleT]) ===
-                                                "Domestic")
+                                                String(
+                                                    sale[this.state.saleT]
+                                                ) === 'Domestic'
+                                        )
                                     });
                                 }
                             }}
-
                         >
                             <Dropdown.Toggle
                                 variant="success"
@@ -116,33 +123,32 @@ export default class ReportTableI extends Component {
 
                             <Dropdown.Menu>
                                 <Dropdown.Item eventKey="Domestic">
-                                     Domestic
+                                    Domestic
                                 </Dropdown.Item>
                                 <Dropdown.Item eventKey="Interline">
-                                     Interline
+                                    Interline
                                 </Dropdown.Item>
-
                             </Dropdown.Menu>
                         </Dropdown>
                         <br></br>
-                        <FormLabel>From:  </FormLabel>
+                        <FormLabel>From: </FormLabel>
                         <DatePicker
                             selected={this.state.startDate}
-                            onChange = {date => {
+                            onChange={date => {
                                 this.setState({
                                     startDate: date
-                                })}}
-
+                                });
+                            }}
                         />
-                        <br/>
-                        <FormLabel>To:  </FormLabel>
+                        <br />
+                        <FormLabel>To: </FormLabel>
                         <DatePicker
                             selected={this.state.endDate}
-                            onChange = {date => {
+                            onChange={date => {
                                 this.setState({
                                     endDate: date
-                                })}}
-
+                                });
+                            }}
                         />
                         <br></br>
                         <FormLabel>Enter Advisor Code</FormLabel>
@@ -161,86 +167,89 @@ export default class ReportTableI extends Component {
                             variant="outline-danger"
                             onClick={() => {
                                 let start = new Date(this.state.startDate);
-                                let end =new  Date(this.state.endDate);
-                                start.setHours(0,0,0,0);
-                                end.setHours(0,0,0,0);
+                                let end = new Date(this.state.endDate);
+                                start.setHours(0, 0, 0, 0);
+                                end.setHours(0, 0, 0, 0);
 
-                                axios.get( apiLinks.BLANKS +'/byDate',{params:{start, end}}).then(res => {
-                                    const sales = res.data;
-                                    this.setState({sales});
-                                });
+                                axios
+                                    .get(apiLinks.BLANKS + '/byDate', {
+                                        params: { start, end }
+                                    })
+                                    .then(res => {
+                                        const sales = res.data;
+                                        this.setState({ sales });
+                                    });
 
                                 this.setState({
-                                sales: this.state.sales.filter(
-                                    sale =>
+                                    sales: this.state.sales.filter(
+                                        sale =>
                                             String(sale[this.state.code]) ===
-                                         String(this.state.inputCode))
-
-                            })}}
+                                            String(this.state.inputCode)
+                                    )
+                                });
+                            }}
                             block
                         >
                             Generate Report
                         </Button>
                     </FormGroup>
-
                 </Form>
                 <Table className="mt-4">
                     <thead>
-                    <tr>
-                        <th>Ticket Number</th>
-                        <th>Fare</th>
-                        <th>Currency</th>
-                        <th>Payment Method</th>
-                        <th>Advisor Code</th>
-                        <th>USD Exchange Rate</th>
-                        <th>Commission Rate</th>
-                        <th>Card Number</th>
-                        <th>Expiration Date</th>
-                        <th>Security Code</th>
-                        <th>Sale Date</th>
-                        <th>Notes</th>
-                    </tr>
+                        <tr>
+                            <th>Ticket Number</th>
+                            <th>Fare</th>
+                            <th>Currency</th>
+                            <th>Payment Method</th>
+                            <th>Advisor Code</th>
+                            <th>USD Exchange Rate</th>
+                            <th>Commission Rate</th>
+                            <th>Card Number</th>
+                            <th>Expiration Date</th>
+                            <th>Security Code</th>
+                            <th>Sale Date</th>
+                            <th>Notes</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {this.state.sales.map(
-                        ({
-                             _id,
-                             ticketNumber,
-                             fare,
-                             currency,
-                             paymentMethod,
-                             advisorCode,
-                             USDExchangeRate,
-                             commissionRate,
-                             creditCardNum,
-                             expDate,
-                             securityCode,
-                             saleDate,
-                             notes
-                         }) => (
-                            <Fragment key={_id}>
-                                {row(
-                                    _id,
-                                    ticketNumber,
-                                    fare,
-                                    currency,
-                                    paymentMethod,
-                                    commissionRate,
-                                    creditCardNum,
-                                    expDate,
-                                    securityCode,
-                                    advisorCode,
-                                    USDExchangeRate,
-                                    saleDate,
-                                    notes
-                                )}
-                            </Fragment>
-                        )
-                    )}
+                        {this.state.sales.map(
+                            ({
+                                _id,
+                                ticketNumber,
+                                fare,
+                                currency,
+                                paymentMethod,
+                                advisorCode,
+                                USDExchangeRate,
+                                commissionRate,
+                                creditCardNum,
+                                expDate,
+                                securityCode,
+                                saleDate,
+                                notes
+                            }) => (
+                                <Fragment key={_id}>
+                                    {row(
+                                        _id,
+                                        ticketNumber,
+                                        fare,
+                                        currency,
+                                        paymentMethod,
+                                        commissionRate,
+                                        creditCardNum,
+                                        expDate,
+                                        securityCode,
+                                        advisorCode,
+                                        USDExchangeRate,
+                                        saleDate,
+                                        notes
+                                    )}
+                                </Fragment>
+                            )
+                        )}
                     </tbody>
                 </Table>
             </Container>
         );
     }
 }
-

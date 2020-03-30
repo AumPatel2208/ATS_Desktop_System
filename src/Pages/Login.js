@@ -28,12 +28,15 @@ export default function Login(props) {
     useEffect(() => {
         let mounted = true;
 
-        axios.get(apiLinks.STAFFMEMBERS).then(async res => {
-            if (mounted) {
-                const tempStaffMemebers = await res.data;
-                setStaffMembers(tempStaffMemebers);
-            }
-        });
+        axios
+            .get(apiLinks.STAFFMEMBERS)
+            .then(async res => {
+                if (mounted) {
+                    const tempStaffMemebers = await res.data;
+                    setStaffMembers(tempStaffMemebers);
+                }
+            })
+            .catch(err => console.log('Error code: ', err));
         return () => (mounted = false);
     }, []);
 

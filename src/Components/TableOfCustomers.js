@@ -26,15 +26,18 @@ export default class TableOfCustomers extends Component {
     };
 
     //runs when component mounts, use to gets the data from db
-    componentDidMount() {
+    async componentDidMount() {
         this.mounted = true;
 
-        axios.get(apiLinks.CUSTOMERS).then(res => {
-            if (this.mounted) {
-                const customers = res.data;
-                this.setState({ customers });
-            }
-        });
+        await axios
+            .get(apiLinks.CUSTOMERS)
+            .then(res => {
+                if (this.mounted) {
+                    const customers = res.data;
+                    this.setState({ customers });
+                }
+            })
+            .catch(err => console.log('Error code: ', err));
         // const temp = []
         //     .concat(this.state.customers)
         //     .sort((a, b) => a.firstName > b.firstName);
@@ -62,10 +65,13 @@ export default class TableOfCustomers extends Component {
         }
     }
     reset() {
-        axios.get(apiLinks.CUSTOMERS).then(res => {
-            const customers = res.data;
-            this.setState({ customers });
-        });
+        axios
+            .get(apiLinks.CUSTOMERS)
+            .then(res => {
+                const customers = res.data;
+                this.setState({ customers });
+            })
+            .catch(err => console.log('Error code: ', err));
     }
     sortList(key) {
         this.setState({

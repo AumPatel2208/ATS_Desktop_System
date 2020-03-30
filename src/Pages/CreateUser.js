@@ -38,12 +38,15 @@ export default function CreateUser() {
     //Do get request when functional component is mounted/updated
     useEffect(() => {
         let mounted = true;
-        axios.get(apiLinks.STAFFMEMBERS).then(res => {
-            if (mounted) {
-                const tempStaffMembers = res.data;
-                setStaffMembers(tempStaffMembers);
-            }
-        });
+        axios
+            .get(apiLinks.STAFFMEMBERS)
+            .then(res => {
+                if (mounted) {
+                    const tempStaffMembers = res.data;
+                    setStaffMembers(tempStaffMembers);
+                }
+            })
+            .catch(err => console.log('Error code: ', err));
         return () => (mounted = false);
     });
 
@@ -68,9 +71,12 @@ export default function CreateUser() {
         //         console.log(error);
         //     });
         // http://localhost:5000/api/staffMembers/
-        axios.post(apiLinks.STAFFMEMBERS, tempStaffMember).then(response => {
-            console.log(response);
-        });
+        axios
+            .post(apiLinks.STAFFMEMBERS, tempStaffMember)
+            .then(response => {
+                console.log(response);
+            })
+            .catch(err => console.log('Error code: ', err));
     }
 
     return (
@@ -187,18 +193,20 @@ export default function CreateUser() {
                     <Button
                         onClick={e => {
                             e.preventDefault();
-                            axios.post(
-                                'http://localhost:5000/api/staffMembers/',
-                                {
-                                    firstName: 's',
-                                    lastName: 'B',
-                                    address: '34 Center',
-                                    username: 'tutu1',
-                                    customerType: 'TravelAdvisor',
-                                    password: '12',
-                                    advisorCode: '13345678'
-                                }
-                            );
+                            axios
+                                .post(
+                                    'http://localhost:5000/api/staffMembers/',
+                                    {
+                                        firstName: 's',
+                                        lastName: 'B',
+                                        address: '34 Center',
+                                        username: 'tutu1',
+                                        customerType: 'TravelAdvisor',
+                                        password: '12',
+                                        advisorCode: '13345678'
+                                    }
+                                )
+                                .catch(err => console.log('Error code: ', err));
                         }}
                     >
                         ADD MA BOI

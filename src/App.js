@@ -73,26 +73,37 @@ class App extends React.Component {
 
     async componentDidMount() {
         //Loading User
-        await axios.get('api/secure/staff').then((res, err) => {
-            if (err) {
-                console.log('Not Logged In!');
-            } else {
+        await axios
+            .get('api/secure/staff')
+            .then(res => {
                 this.setState({ ...this.state, userID: res.data });
-            }
-        });
-        await axios.get('api/staffMembers/' + this.state.userID).then(res => {
-            this.setState({
-                ...this.state,
-                staff: res.data,
-                isAuthenticated: true
+            })
+            .catch(err => {
+                console.log('Not Logged In!');
             });
-        });
+        if (this.state.userID !== '')
+            await axios
+                .get('api/staffMembers/' + this.state.userID)
+                .then((res, err) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        this.setState({
+                            ...this.state,
+                            staff: res.data,
+                            isAuthenticated: true
+                        });
+                    }
+                });
     }
 
     logout() {
-        axios.post('api/secure/logout').then(res => {
-            alert(res.data.msg);
-        });
+        axios
+            .post('api/secure/logout')
+            .then(res => {
+                alert(res.data.msg);
+            })
+            .catch(err => console.log('Logout Failed, error code: ', err));
         this.setState({
             ...this.state,
             staff: undefined,

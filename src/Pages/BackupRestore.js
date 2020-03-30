@@ -23,11 +23,14 @@ function BackupRestore() {
             }
         };
 
-        axios.post(apiLinks.BACKUP, { name: name }, headersConfig).then(res => {
-            if (res.status === 200) alert('Backup Successful');
-            else alert('Backup Failed!');
-            window.location.reload(false);
-        });
+        axios
+            .post(apiLinks.BACKUP, { name: name }, headersConfig)
+            .then(res => {
+                if (res.status === 200) alert('Backup Successful');
+                else alert('Backup Failed!');
+                window.location.reload(false);
+            })
+            .catch(err => console.log('Error code: ', err));
     }
     function handleRestore(e) {
         e.preventDefault();

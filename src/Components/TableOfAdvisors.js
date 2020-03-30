@@ -29,12 +29,17 @@ export default class TableOfAdvisors extends Component {
     async componentDidMount() {
         this.mounted = true;
 
-        await axios.get(apiLinks.STAFFMEMBERS).then(async res => {
-            if (this.mounted) {
-                const advisors = await res.data;
-                this.setState({ advisors });
-            }
-        });
+        await axios
+            .get(apiLinks.STAFFMEMBERS)
+            .then(async res => {
+                if (this.mounted) {
+                    const advisors = await res.data;
+                    this.setState({ advisors });
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
         this.filterAdvisors();
     }
 
@@ -67,16 +72,19 @@ export default class TableOfAdvisors extends Component {
         }
     }
     async reset() {
-        await axios.get(apiLinks.STAFFMEMBERS).then(async res => {
-            const advisors = await res.data;
-            this.setState({ advisors });
-        });
+        await axios
+            .get(apiLinks.STAFFMEMBERS)
+            .then(async res => {
+                const advisors = await res.data;
+                this.setState({ advisors });
+            })
+            .catch(err => console.log('Error code: ', err));
         this.filterAdvisors();
     }
     sortList(key) {
         this.setState({
-            customers: []
-                .concat(this.state.customers)
+            advisors: []
+                .concat(this.state.advisors)
                 .sort((a, b) => (a[`${key}`] > b[`${key}`] ? 1 : -1))
         });
     }

@@ -29,21 +29,45 @@ export class CustomerUpdate extends Component {
             securityCode: ''
         }
     };
-
+    validateForm() {
+        return (
+            this.state.customer.firstName.length > 0 &&
+            this.state.customer.lastName.length > 0 &&
+            this.state.customer.address.length > 0 &&
+            this.state.customer.phoneNumber.length > 0
+        );
+        // return props.isNew
+        //     ? username.length > 0 &&
+        //           password.length > 0 &&
+        //           confirmPassword === password &&
+        //           firstName.length > 0 &&
+        //           lastName.length > 0 &&
+        //           address.length > 0 &&
+        //           commissionRate.length > 0 &&
+        //           staffType !== 'Choose'
+        //     : username.length > 0 &&
+        //           firstName.length > 0 &&
+        //           lastName.length > 0 &&
+        //           commissionRate > 0 &&
+        //           staffType !== 'Choose';
+    }
     componentDidMount() {
         // console.log(this.props.match.params);
         // const getLink = apiLinks.CUSTOMERS + '/' + this.props.match.params.id;
         const getLink = apiLinks.CUSTOMERS + '/' + this.props.match.params.id;
         if (!this.props.isNew)
-            axios.get(getLink).then(res => {
-                const tempCustomer = res.data;
-                // console.log(res);
+            axios
+                .get(getLink)
+                .then(res => {
+                    const tempCustomer = res.data;
+                    // console.log(res);
 
-                this.setState({
-                    ...this.state.customer,
-                    customer: tempCustomer
-                });
-            });
+                    this.setState({
+                        ...this.state.customer,
+                        customer: tempCustomer
+                    });
+                })
+                .catch(err => console.log('Error code: ', err));
     }
 
     /*
@@ -143,15 +167,6 @@ export class CustomerUpdate extends Component {
 
     render() {
         function updateCustomer(e) {
-            // for (var key in this.state.customers) {
-            //     if (this.state.customers[key] === '') {
-            //         console.log(key, ' ', this.state.customers[key]);
-            //     }
-            // }
-            // console.log(this.state.customer);
-            // axios.put(apiLinks.CUSTOMERS, this.state.customers).then(res => {
-            //     console.log(res);
-            // });
             e.preventDefault();
 
             if (!this.props.isNew) {
@@ -260,7 +275,12 @@ export class CustomerUpdate extends Component {
                             }
                         />
                     </FormGroup>
-                    <Button block bssize="large" type="submit">
+                    <Button
+                        block
+                        bssize="large"
+                        disabled={!this.validateForm()}
+                        type="submit"
+                    >
                         {this.props.isNew
                             ? 'Create Customer'
                             : 'Update Customer'}

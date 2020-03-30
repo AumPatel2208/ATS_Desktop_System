@@ -1,48 +1,59 @@
-import {Container, Table} from "reactstrap";
-import {Button, Dropdown, Form, FormControl, FormGroup, FormLabel} from "react-bootstrap";
-import DatePicker from "react-datepicker";
-import React, {Component, Fragment} from "react";
-import axios from "axios";
+import { Container, Table } from 'reactstrap';
+import {
+    Button,
+    Dropdown,
+    Form,
+    FormControl,
+    FormGroup,
+    FormLabel
+} from 'react-bootstrap';
+import DatePicker from 'react-datepicker';
+import React, { Component, Fragment } from 'react';
+import axios from 'axios';
 
 let apiLinks = require('../api/config.json');
 
-export class Assignment extends Component{
+export class Assignment extends Component {
     state = {
-        batchValues: "",
+        batchValues: '',
         date: new Date(),
-        code: "",
-        oG: "",
+        code: '',
+        oG: '',
         i: 0,
-        blanks :[],
-        blank: [{
-            _id: '',
-            batchValues: "",
-            batchStart: "",
-            batchEnd:"",
-            date: "",
-            batchType: "",
-            amount: "800",
-            remaining: []
-        }],
+        blanks: [],
+        blank: [
+            {
+                _id: '',
+                batchValues: '',
+                batchStart: '',
+                batchEnd: '',
+                date: '',
+                batchType: '',
+                amount: '800',
+                remaining: []
+            }
+        ],
         myId: '',
         myIndex: '',
-        assignedBatch: ""
+        assignedBatch: ''
     };
 
     //runs when component mounts, use to gets the data from db
 
     componentDidMount() {
         let empty = [];
-        this.setState({blanks: empty});
+        this.setState({ blanks: empty });
 
-        axios.get( apiLinks.BLANKS ).then(res => {
-            const blanks = res.data;
-            this.setState({blanks});
-        });
+        axios
+            .get(apiLinks.BLANKS)
+            .then(res => {
+                const blanks = res.data;
+                this.setState({ blanks });
+            })
+            .catch(err => console.log('Error code: ', err));
 
-        this.filterStuff()
+        this.filterStuff();
     }
-
 
     onOpenClick(_id) {
         console.log(_id);
@@ -51,78 +62,77 @@ export class Assignment extends Component{
         console.log(_id);
     }
 
+    filterStuff() {
+        const {
+            match: { params }
+        } = this.props;
+        const id = params.id.split('-');
+        const id1 = id[0];
 
-filterStuff(){
-    const {match:{params}} = this.props;
-    const id = params.id.split("-");
-    const id1 = id[0];
-
-    this.setState({myId: id1});
-    this.setState({myIndex: id[1]});
-    const bl = this.state.blanks.filter(i => String(i._id )=== id1)
-    console.log(bl);
-    //this.setState({
-    //    blanks: bla
-   // })
-
-}
-
+        this.setState({ myId: id1 });
+        this.setState({ myIndex: id[1] });
+        const bl = this.state.blanks.filter(i => String(i._id) === id1);
+        console.log(bl);
+        //this.setState({
+        //    blanks: bla
+        // })
+    }
 
     assignBlanks(e) {
         let d = new Date(Date.now());
-        d.setHours(0,0,0,0);
+        d.setHours(0, 0, 0, 0);
 
         const newAssignment = {
             date: d,
             batchValues: this.state.assignedBatch,
             advisorCode: this.state.code,
             batchId: this.state.myId
-
         };
 
         e.preventDefault();
         console.log('hello');
 
-        axios.post(apiLinks.ASSIGN, newAssignment).then(response => {
-            console.log(response);
+        axios
+            .post(apiLinks.ASSIGN, newAssignment)
+            .then(response => {
+                console.log(response);
 
-            this.updateRemaining()
-        });
+                this.updateRemaining();
+            })
+            .catch(err => console.log('Error code: ', err));
     }
 
-
-    updateRemaining(){
+    updateRemaining() {
         let x = this.state.blanks[0].remaining;
         let y = this.state.myIndex;
 
-        let z = parseInt(this.state.assignedBatch.split("-")[0]);
-        let z2 = parseInt(this.state.assignedBatch.split("-")[1]);
-console.log(x[y].start)
+        let z = parseInt(this.state.assignedBatch.split('-')[0]);
+        let z2 = parseInt(this.state.assignedBatch.split('-')[1]);
+        console.log(x[y].start);
 
         let st = parseInt(x[y].start);
         let en = parseInt(x[y].end);
 
-//x.push({start: (x[y].start-1), end: (x[y].end+1) })
+        //x.push({start: (x[y].start-1), end: (x[y].end+1) })
         if (z != st) {
             if (z - 1 == st) {
-                x.push({start: st, end: st});
+                x.push({ start: st, end: st });
             } else {
-                x.push({start: st, end: z - 1});
+                x.push({ start: st, end: z - 1 });
             }
         }
 
-        if (z2 != en){
-            if (z2 +1 == en){
-                x.push({start: en, end: en});
-            }
-            else{
-                x.push({start: z2+1, end: en});
+        if (z2 != en) {
+            if (z2 + 1 == en) {
+                x.push({ start: en, end: en });
+            } else {
+                x.push({ start: z2 + 1, end: en });
             }
         }
 
-        x.splice(this.state.myIndex,1);
+        x.splice(this.state.myIndex, 1);
 
-        const updatedBlank ={
+        const updatedBlank = {
             _id: this.state.blanks._id,
             batchValues: this.state.blanks.batchValues,
             batchStart: this.state.blanks.batchStart,
@@ -133,10 +143,10 @@ console.log(x[y].start)
             remaining: x
         };
 
-
-        axios.put(apiLinks.BLANKS +"/" + this.state.myId, updatedBlank)
+        axios
+            .put(apiLinks.BLANKS + '/' + this.state.myId, updatedBlank)
+            .catch(err => console.log('Error code: ', err));
     }
-
 
     render() {
         /**
@@ -144,12 +154,7 @@ console.log(x[y].start)
          * Allows to break down the data into rows and TD.
          * @param {The MongoDB ID of the object in the collection} _id
          */
-        const row = (
-            _id,
-            start,
-            end,
-            i
-        ) => (
+        const row = (_id, start, end, i) => (
             <Fragment>
                 <tr key={_id}>
                     <td>{start}</td>
@@ -162,7 +167,7 @@ console.log(x[y].start)
                             color="primary"
                             size="lg"
                             onClick={this.onOpenClick.bind(this, _id)}
-                            href={'./blanks/' + _id +"-"+ i}
+                            href={'./blanks/' + _id + '-' + i}
                         >
                             Assign from Batch
                         </Button>
@@ -181,102 +186,69 @@ console.log(x[y].start)
 
         return (
             <Container>
-
                 <Table className="mt-4">
                     <thead>
-                    <tr>
-                        <th>Batch Start</th>
-                        <th>Batch End</th>
-
-                    </tr>
+                        <tr>
+                            <th>Batch Start</th>
+                            <th>Batch End</th>
+                        </tr>
                     </thead>
                     <tbody>
-
-                    {this.state.blanks.map(
-                        ({_id, remaining}) => {
+                        {this.state.blanks.map(({ _id, remaining }) => {
                             if (_id == this.state.myId) {
                                 return (
-                                <tr key={_id}>
-                                    {
-                                        remaining.map((sub, i) => {
-                                                return(
-
-
-
-
-                                                    <tr key = {i}>
-                                                        <td>{_id}</td>
-                                                        <td> {sub.start}</td>
-                                                        <td>{sub.end}</td>
-                                                        <td>
-                                                            { /*<Assignment id={_id} index={i}></Assignment> */}
-
-                                                        </td>
-                                                    </tr>
-
-                                                )
-                                            }
-                                        )
-                                    }
-                                </tr>
-                            )}
-                        }
-                    )}
+                                    <tr key={_id}>
+                                        {remaining.map((sub, i) => {
+                                            return (
+                                                <tr key={i}>
+                                                    <td>{_id}</td>
+                                                    <td> {sub.start}</td>
+                                                    <td>{sub.end}</td>
+                                                    <td>
+                                                        {/*<Assignment id={_id} index={i}></Assignment> */}
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tr>
+                                );
+                            }
+                        })}
                     </tbody>
                 </Table>
 
                 <FormGroup controlId="username" bssize="large">
-
-                    <FormLabel>Batch Values {this.state.assignedBatch}</FormLabel>
+                    <FormLabel>
+                        Batch Values {this.state.assignedBatch}
+                    </FormLabel>
                     <FormControl
                         autoFocus
                         type="batchValues"
                         value={this.state.assignedBatch}
-                        onChange={e => this.setState({assignedBatch: e.target.value})}
+                        onChange={e =>
+                            this.setState({ assignedBatch: e.target.value })
+                        }
                     />
                 </FormGroup>
                 <FormGroup controlId="date" bssize="large">
                     <FormLabel>Advisor Code</FormLabel>
                     <FormControl
-                        selected = {this.state.code}
-                        onChange={ e=>
-                            this.setState({code: e.target.value})
-                        }
-
+                        selected={this.state.code}
+                        onChange={e => this.setState({ code: e.target.value })}
                     />
                 </FormGroup>
                 <Button
                     onClick={e => {
-                        console.log("hit");
+                        console.log('hit');
                         this.assignBlanks(e);
-                        this.updateRemaining()
+                        this.updateRemaining();
                     }}
                 >
                     Assign Blanks
                 </Button>
-
             </Container>
         );
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /*
     axios.get( apiLinks.BLANKS ).then(res => {

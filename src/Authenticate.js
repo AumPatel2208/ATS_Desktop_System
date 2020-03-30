@@ -18,17 +18,23 @@ export const Authenticate = () => {
         fetchData();
     });
     async function fetchData() {
-        await axios.get('api/secure/staff').then(res => {
-            // if (mounted) {
-            setUserID(res.data);
-            // }
-        });
-        await axios.get(apiLinks + '/' + userID).then(res => {
-            UserStore.update(s => {
-                s.User = res.data;
-                s.IsAuthenticated = true; // need to move later after jwtAuthentication
-            });
-        });
+        await axios
+            .get('api/secure/staff')
+            .then(res => {
+                // if (mounted) {
+                setUserID(res.data);
+                // }
+            })
+            .catch(err => console.log('Error code: ', err));
+        await axios
+            .get(apiLinks + '/' + userID)
+            .then(res => {
+                UserStore.update(s => {
+                    s.User = res.data;
+                    s.IsAuthenticated = true; // need to move later after jwtAuthentication
+                });
+            })
+            .catch(err => console.log('Error code: ', err));
     }
     return (
         <>

@@ -1,12 +1,14 @@
-import React, { Component, Fragment, } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Container, Table, Button } from 'reactstrap';
 import axios from 'axios';
 import {
     Form,
     FormGroup,
-    Dropdown, FormControl, FormLabel
+    Dropdown,
+    FormControl,
+    FormLabel
 } from 'react-bootstrap';
-import DatePicker from "react-datepicker";
+import DatePicker from 'react-datepicker';
 
 const _ = require('lodash'); //Library to Change Cases of things
 
@@ -30,10 +32,13 @@ export default class ReportTableG extends Component {
         let start = this.state.startDate;
         let end = this.state.endDate;
 
-        axios.get( apiLinks.SALES +'/byDate',{params:{start, end}}).then(res => {
-            const sales = res.data;
-            this.setState({sales});
-        });
+        axios
+            .get(apiLinks.SALES + '/byDate', { params: { start, end } })
+            .then(res => {
+                const sales = res.data;
+                this.setState({ sales });
+            })
+            .catch(err => console.log('Error code: ', err));
     }
 
     onOpenClick(e, _id) {
@@ -41,16 +46,20 @@ export default class ReportTableG extends Component {
     }
 
     aggregateSales() {
-        var x =0, y=0;
+        var x = 0,
+            y = 0;
         for (x = 0; x < this.state.sales.length; x++) {
-            var k=0;
-            for (k=0;k<this.state.summedValues.length;k++) {
-                if (this.state.summedValues[k].advisorCode == this.state.sales[x].advisorCode)
+            var k = 0;
+            for (k = 0; k < this.state.summedValues.length; k++) {
+                if (
+                    this.state.summedValues[k].advisorCode ==
+                    this.state.sales[x].advisorCode
+                )
                     break;
             }
             y = k;
-            if (k == this.state.summedValues.length ) {
-                    this.state.dict = {
+            if (k == this.state.summedValues.length) {
+                this.state.dict = {
                     advisorCode: this.state.sales[x].advisorCode,
                     cash: 0,
                     credit: 0,
@@ -60,16 +69,15 @@ export default class ReportTableG extends Component {
                 };
                 y = this.state.summedValues.push(this.state.dict) - 1;
             }
-            if (this.state.sales[x].paymentMethod === "creditCard") {
+            if (this.state.sales[x].paymentMethod === 'creditCard') {
                 this.state.summedValues[y].credit += this.state.sales[x].fare;
-            } else if (this.state.sales[x].paymentMethod === "cheque") {
+            } else if (this.state.sales[x].paymentMethod === 'cheque') {
                 this.state.summedValues[y].cheque += this.state.sales[x].fare;
-            } else if (this.state.sales[x].paymentMethod === "cash") {
+            } else if (this.state.sales[x].paymentMethod === 'cash') {
                 this.state.summedValues[y].cash += this.state.sales[x].fare;
             }
             this.state.summedValues[y].saleNum += 1;
             this.state.summedValues[y].total += this.state.sales[x].fare;
-
         }
     }
 
@@ -87,7 +95,7 @@ export default class ReportTableG extends Component {
             total
         ) => (
             <Fragment>
-                <tr key = {advisorCode}>
+                <tr key={advisorCode}>
                     <td>{advisorCode}</td>
                     <td>{saleNum}</td>
                     <td>{currency}</td>
@@ -113,33 +121,30 @@ export default class ReportTableG extends Component {
         );
 
         return (
-
             <Container>
                 <Dropdown
                     onSelect={key => {
-                        this.setState({saleTypeValue: key});
-                        if (key === "Interline") {
+                        this.setState({ saleTypeValue: key });
+                        if (key === 'Interline') {
                             this.setState({
                                 sales: this.state.sales.filter(
                                     sale =>
                                         String(sale[this.state.saleT]) ===
-                                        "Interline")
+                                        'Interline'
+                                )
                             });
                         } else {
                             this.setState({
                                 sales: this.state.sales.filter(
                                     sale =>
                                         String(sale[this.state.saleT]) ===
-                                        "Domestic")
+                                        'Domestic'
+                                )
                             });
                         }
                     }}
-
                 >
-                    <Dropdown.Toggle
-                        variant="success"
-                        id="dropdown-basic"
-                    >
+                    <Dropdown.Toggle variant="success" id="dropdown-basic">
                         {_.startCase(this.state.saleTypeValue)}
                     </Dropdown.Toggle>
 
@@ -150,102 +155,96 @@ export default class ReportTableG extends Component {
                         <Dropdown.Item eventKey="Interline">
                             Interline
                         </Dropdown.Item>
-
                     </Dropdown.Menu>
                 </Dropdown>
                 <br></br>
 
-                <FormLabel>From:  </FormLabel>
+                <FormLabel>From: </FormLabel>
                 <DatePicker
                     selected={this.state.startDate}
-                    onChange = {date => {
+                    onChange={date => {
                         this.setState({
                             startDate: date
-                        })}}
-
+                        });
+                    }}
                 />
-                <br/>
-                <FormLabel>To:  </FormLabel>
+                <br />
+                <FormLabel>To: </FormLabel>
                 <DatePicker
-
                     selected={this.state.endDate}
-                    onChange = {date => {
+                    onChange={date => {
                         this.setState({
                             endDate: date
-                        })}}
-
-
+                        });
+                    }}
                 />
-                <br/>
+                <br />
                 <Form>
                     <FormGroup>
                         <Button
                             bssize="medium"
                             variant="outline-danger"
+                            onClick={() => {
+                                let start = new Date(this.state.startDate);
+                                let end = new Date(this.state.endDate);
+                                start.setHours(0, 0, 0, 0);
+                                end.setHours(0, 0, 0, 0);
 
-                                onClick={() =>{
-                                    let start = new Date(this.state.startDate);
-                                    let end =new  Date(this.state.endDate);
-                                    start.setHours(0,0,0,0);
-                                    end.setHours(0,0,0,0);
-
-                                    axios.get( apiLinks.SALES +'/byDate',{params:{start, end}}).then(res => {
+                                axios
+                                    .get(apiLinks.SALES + '/byDate', {
+                                        params: { start, end }
+                                    })
+                                    .then(res => {
                                         const sales = res.data;
-                                        this.setState({sales});
+                                        this.setState({ sales });
                                     });
 
-
-                                    this.setState({
+                                this.setState({
                                     sales: this.aggregateSales()
-                                })
+                                });
                             }}
                         >
-
                             Generate Report
-                        </Button>{''}
+                        </Button>
+                        {''}
                     </FormGroup>
-
                 </Form>
                 <Table className="mt-4">
-
                     <thead>
-                    <tr>
-                        <th>Advisor Code</th>
-                        <th>Sales</th>
-                        <th>Credit</th>
-                        <th>Cash</th>
-                        <th>Cheque</th>
-                        <th>USD Total</th>
-                    </tr>
+                        <tr>
+                            <th>Advisor Code</th>
+                            <th>Sales</th>
+                            <th>Credit</th>
+                            <th>Cash</th>
+                            <th>Cheque</th>
+                            <th>USD Total</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {this.state.summedValues.map(
-                        ({
-                             advisorCode,
-                            saleNum,
-                            credit,
-                            cash,
-                            cheque,
-                            total
-
-                         }) => (
-                            <Fragment key={advisorCode} >
-                                {row(
-
-                                    advisorCode,
-                                    saleNum,
-                                    credit,
-                                    cash,
-                                    cheque,
-                                    total
-                                )}
-                            </Fragment>
-                        )
-                    )}
+                        {this.state.summedValues.map(
+                            ({
+                                advisorCode,
+                                saleNum,
+                                credit,
+                                cash,
+                                cheque,
+                                total
+                            }) => (
+                                <Fragment key={advisorCode}>
+                                    {row(
+                                        advisorCode,
+                                        saleNum,
+                                        credit,
+                                        cash,
+                                        cheque,
+                                        total
+                                    )}
+                                </Fragment>
+                            )
+                        )}
                     </tbody>
                 </Table>
             </Container>
         );
     }
 }
-

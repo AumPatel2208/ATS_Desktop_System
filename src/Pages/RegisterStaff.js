@@ -50,24 +50,30 @@ export default function RegisterStaff(props) {
     useEffect(() => {
         let mounted = true;
         if (props.isNew) {
-            axios.get(apiLinks.STAFFMEMBERS).then(async res => {
-                if (mounted) {
-                    const tempStaffMembers = await res.data;
-                    setStaffMembers(tempStaffMembers);
-                }
-            });
+            axios
+                .get(apiLinks.STAFFMEMBERS)
+                .then(async res => {
+                    if (mounted) {
+                        const tempStaffMembers = await res.data;
+                        setStaffMembers(tempStaffMembers);
+                    }
+                })
+                .catch(err => console.log('Error code: ', err));
         } else {
             const getLink = apiLinks.STAFFMEMBERS + '/' + props.match.params.id;
-            axios.get(getLink).then(async res => {
-                const tempStaffMember = await res.data;
-                setUsername(tempStaffMember.username);
-                setFirstName(tempStaffMember.firstName);
-                setLastName(tempStaffMember.lastName);
-                setStaffType(tempStaffMember.staffType);
-                setAddress(tempStaffMember.address);
-                setAdvisorCode(tempStaffMember.advisorCode);
-                setCommissionRate(tempStaffMember.commissionRate);
-            });
+            axios
+                .get(getLink)
+                .then(async res => {
+                    const tempStaffMember = await res.data;
+                    setUsername(tempStaffMember.username);
+                    setFirstName(tempStaffMember.firstName);
+                    setLastName(tempStaffMember.lastName);
+                    setStaffType(tempStaffMember.staffType);
+                    setAddress(tempStaffMember.address);
+                    setAdvisorCode(tempStaffMember.advisorCode);
+                    setCommissionRate(tempStaffMember.commissionRate);
+                })
+                .catch(err => console.log('Error code: ', err));
         }
         return () => (mounted = false);
     }, []);
@@ -133,9 +139,12 @@ export default function RegisterStaff(props) {
                   .then(response => {
                       console.log(response);
                   })
-            : axios.put(getLink, tempStaffMember).then(res => {
-                  console.log(res);
-              });
+            : axios
+                  .put(getLink, tempStaffMember)
+                  .then(res => {
+                      console.log(res);
+                  })
+                  .catch(err => console.log('Error code: ', err));
     }
 
     return (
