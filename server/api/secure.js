@@ -18,7 +18,7 @@ router.post('/', (q, a) => {
     }
 
     Staff.findOne({ username }).then(staff => {
-        console.log(staff);
+        // console.log(staff);
         if (!staff)
             return a.status(400).json({ message: 'No such user exists' });
 
@@ -56,17 +56,18 @@ router.post('/logout', (q, a) => {
 // @desc    Get User Data
 // @access  Private
 router.get('/staff', (q, a) => {
-    // console.log('q: ', q);
-    // console.log('a: ', a);
-    jwt.verify(q.cookies.token, config.jwt, (err, decoded) => {
-        if (err) {
-            a.json({ err: err });
-        }
-        // console.log('Secure: ', decoded.id);
+    if (q.cookies.token !== undefined) {
+        // console.log('q: ', q);
+        // console.log('a: ', a);
+        jwt.verify(q.cookies.token, config.jwt, (err, decoded) => {
+            if (err) {
+                a.json({ err: err });
+            }
+            // console.log('Secure: ', decoded.id);
 
-        a.json(decoded.id);
-    });
-
+            a.json(decoded.id);
+        });
+    }
     // a.json(q.cookie.token);
 });
 
