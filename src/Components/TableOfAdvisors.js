@@ -201,10 +201,10 @@ export default class TableOfAdvisors extends Component {
                     <Button
                         bssize="large"
                         variant="info"
-                        href="/customer/create"
+                        href="/registerStaff"
                         block
                     >
-                        Create New Customer
+                        Create New Staff
                     </Button>
                 </Form>
                 <br></br>
