@@ -15,20 +15,15 @@ import { GetUSer } from '../store/User';
 
 let apiLinks = require('../api/config.json');
 
-<<<<<<< HEAD
 export class SaleForm extends Component {
-=======
-
-export  class SaleForm extends Component{
-constructor(props) {
-    super(props);
-    this.state={
-        isOpen: false,
-        stats:{}
+    constructor(props) {
+        super(props);
+        this.state = {
+            isOpen: false,
+            stats: {}
+        };
     }
-}
 
->>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
     state = {
         sales: [],
         rates: [],
@@ -54,13 +49,8 @@ constructor(props) {
             USDExchange: ''
         },
         exch: [],
-<<<<<<< HEAD
-        cCode: '',
+        cCode: 'USD',
         myId: '',
-=======
-        cCode: "USD",
-        myId: "",
->>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
         blanks: []
     };
 
@@ -97,14 +87,7 @@ constructor(props) {
             .catch(err => console.log('Error code: ', err));
 
         //filtering by ID
-<<<<<<< HEAD
-        const bl = this.state.blanks.filter(
-            i => String(i._id) === this.state.myId
-        );
-=======
         //const bl = this.state.blanks.filter(i => String(i._id )=== this.state.myId)
-
->>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
     }
 
     creditHandler() {
@@ -182,42 +165,35 @@ constructor(props) {
 
     render() {
         function submitSale(event) {
-<<<<<<< HEAD
+            const bl = this.state.blanks.filter(
+                i => String(i._id) === this.state.myId
+            );
+
             let dt = new Date(Date.now());
             dt.setHours(0, 0, 0, 0);
-=======
-
-            const bl = this.state.blanks.filter(i => String(i._id )=== this.state.myId)
-
-
-            let dt = new Date(Date.now());
-            dt.setHours(0,0,0,0);
->>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
 
             event.preventDefault();
 
             this.setState({ adCode: GetUSer.advisorCode });
             this.setState({ commissionRate: GetUSer.commissionRate });
 
-<<<<<<< HEAD
-            const newSale = {
-=======
-            this.setState({adCode: GetUSer.advisorCode});
-            this.setState({commissionRate: GetUSer.commissionRate});
+            this.setState({ adCode: GetUSer.advisorCode });
+            this.setState({ commissionRate: GetUSer.commissionRate });
 
-            if (this.state.cCode === undefined){
-                this.setState({cCode : "USD" })
+            if (this.state.cCode === undefined) {
+                this.setState({ cCode: 'USD' });
             }
-            if (this.state.cCode != "USD"){
-                this.setState({USDExchangeRate: this.state.exch[0].toUSDRate});
+            if (this.state.cCode != 'USD') {
+                this.setState({
+                    USDExchangeRate: this.state.exch[0].toUSDRate
+                });
             }
-            if (this.state.cCode == "USD"){
+            if (this.state.cCode == 'USD') {
                 //this.setState({cCode: "USD"});
-                this.setState({USDExchangeRate: 1});
+                this.setState({ USDExchangeRate: 1 });
             }
 
-           const newSale = {
->>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
+            const newSale = {
                 ticketNumber: this.state.tickNum,
                 saleType: this.state.saleType,
                 fare: this.state.fare,
@@ -231,14 +207,10 @@ constructor(props) {
                 commissionRate: this.state.rate,
                 custName: this.state.custName,
                 //advisorCode: this.props.staff.advisorCode,
-               advisorCode: 380,
+                advisorCode: 380,
                 saleDate: dt,
                 notes: this.state.notes,
-<<<<<<< HEAD
-                USDExchangeRate: this.state.exch[0].toUSDRate
-=======
                 USDExchangeRate: this.state.USDExchangeRate
->>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
             };
             axios
                 .post(apiLinks.SALES, newSale)
@@ -260,7 +232,6 @@ constructor(props) {
                 batchId: this.state.myId
             };
 
-<<<<<<< HEAD
             axios
                 .post(apiLinks.USED, newUsed)
                 .then(response => {
@@ -282,31 +253,10 @@ constructor(props) {
                 amount: this.state.blanks.amount,
                 remaining: x
             };
-=======
-            axios.post(apiLinks.USED, newUsed).then(response => {
-                console.log(response);
-            });
-                //UPDATING ASSIGNMENT - REMOVING FROM ASSIGNED LIST
-                let x = this.state.blanks[0].remaining;
-                let  y= x.findIndex( k => k===this.state.tickNum);
-                x.splice(y);
 
-
-                const updatedBlank ={
-                    _id: this.state.blanks._id,
-                    batchValues: this.state.blanks.batchValues,
-                    batchStart: this.state.blanks.batchStart,
-                    batchEnd: this.state.blanks.batchEnd,
-                    date: this.state.blanks.date,
-                    batchType: this.state.blanks.batchType,
-                    amount: this.state.blanks.amount,
-                    remaining: x
-                };
-
-
-                axios.put(apiLinks.ASSIGN +"/" + this.state.myId, updatedBlank)
-
->>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
+            axios
+                .put(apiLinks.ASSIGN + '/' + this.state.myId, updatedBlank)
+                .catch(err => console.log('Error code: ', err));
 
             axios
                 .put(apiLinks.ASSIGN + '/' + this.state.myId, updatedBlank)
@@ -334,7 +284,7 @@ constructor(props) {
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-                    <br/>
+                    <br />
                     <Dropdown
                         onSelect={key => {
                             this.setState({ method: key });
@@ -351,11 +301,8 @@ constructor(props) {
                         </Dropdown.Menu>
                     </Dropdown>
 
-<<<<<<< HEAD
-=======
-<br/>
+                    <br />
 
->>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
                     <FormLabel>Ticket Number</FormLabel>
                     <FormControl
                         autoFocus

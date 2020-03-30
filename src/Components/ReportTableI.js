@@ -26,24 +26,15 @@ export default class ReportTableI extends Component {
     };
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
-<<<<<<< HEAD
-        let start = this.state.startDate;
-        let end = this.state.endDate;
+        //   let start = this.state.startDate;
+        //let end = this.state.endDate;
         axios
-            .get(apiLinks.SALES + '/byDate', { params: { start, end } })
+            .get(apiLinks.SALES)
             .then(res => {
                 const sales = res.data;
                 this.setState({ sales });
             })
             .catch(err => console.log('Error code: ', err));
-=======
-     //   let start = this.state.startDate;
-        //let end = this.state.endDate;
-        axios.get(apiLinks.SALES ).then(res => {
-            const sales = res.data;
-            this.setState({sales});
-        });
->>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
     }
 
     onOpenClick(e, _id) {
@@ -206,13 +197,12 @@ export default class ReportTableI extends Component {
                 </Form>
                 <Table className="mt-4">
                     <thead>
-<<<<<<< HEAD
                         <tr>
+                            <th>Advisor Code</th>
                             <th>Ticket Number</th>
                             <th>Fare</th>
                             <th>Currency</th>
                             <th>Payment Method</th>
-                            <th>Advisor Code</th>
                             <th>USD Exchange Rate</th>
                             <th>Commission Rate</th>
                             <th>Card Number</th>
@@ -226,11 +216,11 @@ export default class ReportTableI extends Component {
                         {this.state.sales.map(
                             ({
                                 _id,
+                                advisorCode,
                                 ticketNumber,
                                 fare,
                                 currency,
                                 paymentMethod,
-                                advisorCode,
                                 USDExchangeRate,
                                 commissionRate,
                                 creditCardNum,
@@ -242,75 +232,22 @@ export default class ReportTableI extends Component {
                                 <Fragment key={_id}>
                                     {row(
                                         _id,
+                                        advisorCode,
                                         ticketNumber,
                                         fare,
                                         currency,
                                         paymentMethod,
+                                        USDExchangeRate,
                                         commissionRate,
                                         creditCardNum,
                                         expDate,
                                         securityCode,
-                                        advisorCode,
-                                        USDExchangeRate,
                                         saleDate,
                                         notes
                                     )}
                                 </Fragment>
                             )
                         )}
-=======
-                    <tr>
-                        <th>Advisor Code</th>
-                        <th>Ticket Number</th>
-                        <th>Fare</th>
-                        <th>Currency</th>
-                        <th>Payment Method</th>
-                        <th>USD Exchange Rate</th>
-                        <th>Commission Rate</th>
-                        <th>Card Number</th>
-                        <th>Expiration Date</th>
-                        <th>Security Code</th>
-                        <th>Sale Date</th>
-                        <th>Notes</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {this.state.sales.map(
-                        ({
-                             _id,
-                             advisorCode,
-                             ticketNumber,
-                             fare,
-                             currency,
-                             paymentMethod,
-                             USDExchangeRate,
-                             commissionRate,
-                             creditCardNum,
-                             expDate,
-                             securityCode,
-                             saleDate,
-                             notes
-                         }) => (
-                            <Fragment key={_id}>
-                                {row(
-                                    _id,
-                                    advisorCode,
-                                    ticketNumber,
-                                    fare,
-                                    currency,
-                                    paymentMethod,
-                                    USDExchangeRate,
-                                    commissionRate,
-                                    creditCardNum,
-                                    expDate,
-                                    securityCode,
-                                    saleDate,
-                                    notes
-                                )}
-                            </Fragment>
-                        )
-                    )}
->>>>>>> d16001e8203dcc11ce12eda7b299bd69cd13498a
                     </tbody>
                 </Table>
             </Container>
