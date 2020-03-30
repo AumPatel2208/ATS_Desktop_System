@@ -73,14 +73,6 @@ export default class ReportTableI extends Component {
                     <td>{notes}</td>
                     <td>{saleType}</td>
                     <td>
-                        <Button
-                            className="open-btn"
-                            color="primary"
-                            size="sm"
-                            onClick={this.onOpenClick.bind(this, _id)}
-                        >
-                            open
-                        </Button>
                     </td>
                 </tr>
             </Fragment>

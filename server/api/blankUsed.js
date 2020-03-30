@@ -6,11 +6,10 @@ router.post('/', (q, a) => {
     // const { blankNumber, assigned, used, batch } = q.body;
     //Blank.create(q.body).then(item => a.json(item));
 
-    let batchTp = "red";
+
     usedBlanks = {
         batchValues: q.body.batchValues,
         date: q.body.date,
-        batchType: batchTp,
         advisorCode: q.body.advisorCode,
         bacthId: q.body.batchId
 

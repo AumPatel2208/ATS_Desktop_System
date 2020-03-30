@@ -6,11 +6,22 @@ const bodyParser = require('body-parser');
 router.post('/', (q, a) => {
     //console.log(q.body.ticketNumber);
 console.log(q.body.currency, q.body.USDExchangeRate)
+
+    let x = q.body.currency;
+let y = q.body.USDExchangeRate;
+
+
+    if (q.body.saleType === "Domestic"){
+        x = "USD";
+        y = 1;
+    }
+
+
     newSale = {
         ticketNumber: q.body.ticketNumber,
         fare: q.body.fare,
-        currency: q.body.currency,
-        USDExchangeRate: q.body.USDExchangeRate,
+        currency: x,
+        USDExchangeRate: y,
         paymentMethod: q.body.paymentMethod,
         creditCardNum: q.body.creditCardNum,
         expDate: q.body.expDate,

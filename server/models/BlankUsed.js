@@ -10,10 +10,6 @@ const BlankUsedSchema = new Schema({
         type: Date,
 
     },
-    batchType:{
-        type: String,
-
-    },
     advisorCode: {
         type: Number
     },

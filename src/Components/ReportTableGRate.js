@@ -133,14 +133,6 @@ export default class ReportTableGRate extends Component {
                     <td>{cheque}</td>
                     <td>{total}</td>
                     <td>
-                        <Button
-                            className="open-btn"
-                            color="primary"
-                            size="sm"
-                            onClick={this.onOpenClick.bind(this, advisorCode)}
-                        >
-                            open
-                        </Button>
                     </td>
                 </tr>
             </Fragment>

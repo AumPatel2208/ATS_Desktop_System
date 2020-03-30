@@ -180,18 +180,6 @@ export class SaleForm extends Component {
             this.setState({ adCode: GetUSer.advisorCode });
             this.setState({ commissionRate: GetUSer.commissionRate });
 
-            if (this.state.cCode === undefined) {
-                this.setState({ cCode: 'USD' });
-            }
-            if (this.state.cCode != 'USD') {
-                this.setState({
-                    USDExchangeRate: this.state.exch[0].toUSDRate
-                });
-            }
-            if (this.state.cCode == 'USD') {
-                //this.setState({cCode: "USD"});
-                this.setState({ USDExchangeRate: 1 });
-            }
 
             const newSale = {
                 ticketNumber: this.state.tickNum,
@@ -210,7 +198,7 @@ export class SaleForm extends Component {
                 advisorCode: 380,
                 saleDate: dt,
                 notes: this.state.notes,
-                USDExchangeRate: this.state.USDExchangeRate
+                USDExchangeRate: this.state.exch[0].toUSDRate
             };
             axios
                 .post(apiLinks.SALES, newSale)
