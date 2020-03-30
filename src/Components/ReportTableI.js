@@ -38,12 +38,12 @@ export default class ReportTableI extends Component {
     render() {
         const row = (
             _id,
+            advisorCode,
             ticketNumber,
             fare,
             currency,
             USDExchangeRate,
             paymentMethod,
-            advisorCode,
             commissionRate,
             creditCardNum,
             expDate,
@@ -54,11 +54,12 @@ export default class ReportTableI extends Component {
         ) => (
             <Fragment>
                 <tr key={_id}>
+                    <td>{advisorCode}</td>
                     <td>{ticketNumber}</td>
                     <td>{fare}</td>
                     <td>{currency}</td>
                     <td>{USDExchangeRate}</td>
-                    <td>{advisorCode}</td>
+                    <td>{paymentMethod}</td>
                     <td>{saleDate}</td>
                     <td>{commissionRate}</td>
                     <td>{creditCardNum}</td>
@@ -187,11 +188,11 @@ export default class ReportTableI extends Component {
                 <Table className="mt-4">
                     <thead>
                     <tr>
+                        <th>Advisor Code</th>
                         <th>Ticket Number</th>
                         <th>Fare</th>
                         <th>Currency</th>
                         <th>Payment Method</th>
-                        <th>Advisor Code</th>
                         <th>USD Exchange Rate</th>
                         <th>Commission Rate</th>
                         <th>Card Number</th>
@@ -205,11 +206,11 @@ export default class ReportTableI extends Component {
                     {this.state.sales.map(
                         ({
                              _id,
+                             advisorCode,
                              ticketNumber,
                              fare,
                              currency,
                              paymentMethod,
-                             advisorCode,
                              USDExchangeRate,
                              commissionRate,
                              creditCardNum,
@@ -221,16 +222,16 @@ export default class ReportTableI extends Component {
                             <Fragment key={_id}>
                                 {row(
                                     _id,
+                                    advisorCode,
                                     ticketNumber,
                                     fare,
                                     currency,
                                     paymentMethod,
+                                    USDExchangeRate,
                                     commissionRate,
                                     creditCardNum,
                                     expDate,
                                     securityCode,
-                                    advisorCode,
-                                    USDExchangeRate,
                                     saleDate,
                                     notes
                                 )}
