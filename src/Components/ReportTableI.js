@@ -53,53 +53,22 @@ export default class ReportTableI extends Component {
     //to get the document into a pdf
     toPDF(){
         var pdf = new jsPDF('p','pt','letter');
-        var source = ('#HTMLtoPDF')[0];
+        var source = document.getElementById("export");
         var elementHandler = {
             '#bypassme':function (element, renderer) {
                 return true
-
             }
         };
-
-        var margins = {
-            top: 50,
-            left : 60,
-            width : 545
-        };
+        var margins = {top: 50, left : 60, width : 545};
 
         pdf.fromHTML(
-            source,
-            margins.left,
-            margins.top,
+            source, margins.left, margins.top,
             {'width': margins.width, 'elementHandlers':elementHandler},
             function (dispose) {
                 pdf.save('test.pdf')
 
             }
         )
-
-
-
-        /*
-        const data = document.getElementById('divToPrint');
-        html2canvas(data).then((canvas) => {
-            const img = canvas.toDataURL('image/png');
-            const pdf = new jsPDF();
-            pdf.addImage(img, 'JPEG', 0,0);
-            pdf.save("download.pdf");
-*/
-            /*
-              <div id="divToPrint" className="mt4"{...CSS({
-                    backgroundColor :'#f5f6f5',
-                    width: '210mm',
-                    minHeight: '297mm',
-                    marginLeft: 'auto',
-                    marginRight: 'auto'
-                })}></div>
-             */
-
-
-       // });
     }
 
     onOpenClick(e, _id) {
@@ -147,9 +116,8 @@ export default class ReportTableI extends Component {
             <Container>
 
                 <div>
-                    <div id="HTMLtoPDF">
-                            <h2>HTML to PDF</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing </p>
+                    <div id="export">
+                           <h2> test values</h2>
                     </div>
                     <button onClick={this.toPDF}>Download PDF</button>
                 </div>
