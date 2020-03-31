@@ -1,0 +1,2 @@
+Refund Ticket Number 440 
+JSON: {"saleDate":"Wed Feb 26 2020 00:00:00 GMT+0000 (Greenwich Mean Time)","_id":"5e6d04034d2a3bf2607ddd63","ticketNumber":"440","fare":907,"currency":"CNY","USDExchangeRate":1.1,"paymentMethod":"cash","creditCardNum":"3530161906267698","expDate":"Thu Feb 27 2020 00:00:00 GMT+0000 (Greenwich Mean Time)","securityCode":"90","commissionRate":18,"advisorCode":78,"__v":0,"isRefunded":true,"custName":"Empty.","localTax":"Empty.","notes":"Empty.","otherTax":"Empty.","saleType":"Empty."}

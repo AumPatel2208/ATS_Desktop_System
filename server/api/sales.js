@@ -94,7 +94,7 @@ router.put('/:id', (q, a) => {
 router.put('/refund/:id', (q, a) => {
     q.body.isRefunded = true;
     fs.writeFile(
-        './REFUND_LOG/log.txt',
+        `./REFUND_LOG/TicketNumber_${q.body.ticketNumber}.txt`,
         `Refund Ticket Number ${q.body.ticketNumber} \nJSON: ${JSON.stringify(
             q.body
         )}`,
