@@ -10,9 +10,6 @@ import '../Styles/Login.css';
 import Container from 'reactstrap/lib/Container';
 import axios from 'axios';
 
-import CheckStore from '../store/CheckStore';
-import { CommissionUpdate } from '../Components/CommissionUpdate';
-
 let apiLinks = require('../api/config.json');
 // "proxy": "http://localhost:5000"
 
