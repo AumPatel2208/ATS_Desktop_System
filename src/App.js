@@ -80,7 +80,7 @@ class App extends React.Component {
                 this.setState({ ...this.state, userID: res.data });
             })
             .catch(err => {
-                console.log('Not Logged In!');
+                console.log('Not Logged In! Error: ', err);
             });
         if (this.state.userID !== '')
             await axios
@@ -101,8 +101,8 @@ class App extends React.Component {
                 });
     }
 
-    logout() {
-        axios
+    async logout() {
+        await axios
             .post('api/secure/logout')
             .then(res => {
                 alert(res.data.msg);
