@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Sale = require('../models/Sale');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 
 router.post('/', (q, a) => {
     //console.log(q.body.ticketNumber);
@@ -92,7 +93,18 @@ router.put('/:id', (q, a) => {
 //find and update one sale by id
 router.put('/refund/:id', (q, a) => {
     q.body.isRefunded = true;
-
+    fs.writeFile(
+        './REFUND_LOG/log.txt',
+        `Refund Ticket Number ${q.body.ticketNumber} \nJSON: ${JSON.stringify(
+            q.body
+        )}`,
+        err => {
+            if (err) {
+                return console.log(err);
+            }
+            console.log('The file was saved!');
+        }
+    );
     Sale.findByIdAndUpdate(q.params.id, q.body).then(sale => a.json(sale));
 });
 

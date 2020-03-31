@@ -1,14 +1,7 @@
 import { Container, Table } from 'reactstrap';
-import {
-    Button,
-    Dropdown,
-    Form,
-    FormControl,
-    FormGroup,
-    FormLabel
-} from 'react-bootstrap';
-import DatePicker from 'react-datepicker';
-import React, { Component, Fragment } from 'react';
+import { Button, FormControl, FormGroup, FormLabel } from 'react-bootstrap';
+// import DatePicker from 'react-datepicker';
+import React, { Component } from 'react';
 import axios from 'axios';
 
 let apiLinks = require('../api/config.json');
@@ -132,7 +125,7 @@ export class ReAssignBlanks extends Component {
                                         })}
                                     </tr>
                                 );
-                            }
+                            } else return null;
                         })}
                     </tbody>
                 </Table>

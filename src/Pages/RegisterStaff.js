@@ -73,7 +73,7 @@ export default function RegisterStaff(props) {
                 .catch(err => console.log('Error code: ', err));
         }
         return () => (mounted = false);
-    }, []);
+    }, [props]);
 
     function handleSubmit(event) {
         event.preventDefault();

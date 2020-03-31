@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
     Container,
     Button,
@@ -13,7 +13,7 @@ const apiLinks = require('../api/config.json');
 function BackupRestore() {
     const [name, setName] = useState('');
     const [file, setFile] = useState('');
-    const [backupFiles, setBackupFiles] = useState({});
+    // const [backupFiles, setBackupFiles] = useState({});
     function handleBackup(e) {
         e.preventDefault();
         // Headers

@@ -87,11 +87,19 @@ export default class TableOfSales extends Component {
         this.filterSales();
     }
 
-    onOpenClick(_id) {
+    async onOpenClick(_id) {
         console.log(_id);
-        axios
-            .put('/api/sales/refund/' + _id)
-            .then(res => {})
+        const index = this.state.sales.findIndex(sale => sale._id === _id);
+        var tempSales = this.state.sales;
+        tempSales[index].isRefunded = true;
+
+        await axios
+            .put('/api/sales/refund/' + _id, tempSales[index])
+            .then(res => {
+                alert('Refund Logged. Response: ', res);
+                tempSales[index].isRefunded = 'Yes';
+                this.setState({ sales: tempSales });
+            })
             .catch(err => console.log('Refund Failed. Error Code: ', err));
     }
 

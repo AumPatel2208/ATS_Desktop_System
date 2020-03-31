@@ -1,5 +1,5 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import { Button, FormGroup, Dropdown, Form } from 'react-bootstrap';
+import React, { useState, Fragment } from 'react';
+import { FormGroup, Dropdown, Form } from 'react-bootstrap';
 import '../Styles/Login.css';
 import Container from 'reactstrap/lib/Container';
 import ReportTableI from '../Components/ReportTableI';
@@ -7,7 +7,7 @@ import ReportTurnoverT from '../Components/ReportTurnoverT';
 import ReportTableG from '../Components/ReportTableG';
 import ReportTableGRate from '../Components/ReportTableGRate';
 
-let apiLinks = require('../api/config.json');
+// let apiLinks = require('../api/config.json');
 
 export default function Reports() {
     const [tableType, setTableType] = useState('Select Report Type');

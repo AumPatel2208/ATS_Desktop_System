@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { NavItem, NavLink } from 'reactstrap';
-import { useStoreState } from 'pullstate';
-import { UserStore } from '../store/UserStore';
+// import { useStoreState } from 'pullstate';
+// import { UserStore } from '../store/UserStore';
 import { Link } from 'react-router-dom';
 
 export default function NavItemsAuth(props) {

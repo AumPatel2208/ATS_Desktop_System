@@ -1,16 +1,9 @@
-import { Button, Container, Table } from 'reactstrap';
+import { Button, Container } from 'reactstrap';
 import React, { Component, Fragment } from 'react';
-import {
-    Dropdown,
-    Form,
-    FormControl,
-    FormGroup,
-    FormLabel
-} from 'react-bootstrap';
+import { Dropdown, Form, FormControl, FormLabel } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import axios from 'axios';
-import { useStoreState } from 'pullstate';
-import { UserStore } from '../store/UserStore';
+
 import { GetUSer } from '../store/User';
 
 let apiLinks = require('../api/config.json');
@@ -179,7 +172,6 @@ export class SaleForm extends Component {
 
             this.setState({ adCode: GetUSer.advisorCode });
             this.setState({ commissionRate: GetUSer.commissionRate });
-
 
             const newSale = {
                 ticketNumber: this.state.tickNum,

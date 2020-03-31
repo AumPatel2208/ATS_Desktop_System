@@ -1,18 +1,15 @@
-import React, { Component, Fragment } from 'react';
-import { PopupboxManager, PopupboxContainer } from 'react-popupbox';
+import React, { Component } from 'react';
 import axios from 'axios';
 import {
     Button,
-    Dropdown,
     FormGroup,
     FormLabel,
     FormControl,
-    Container,
     Form
 } from 'react-bootstrap';
 
 let apiLinks = require('../api/config.json');
-const _ = require('lodash'); //Library to Change Cases of things
+// const _ = require('lodash'); //Library to Change Cases of things
 
 export class CustomerUpdate extends Component {
     state = {
