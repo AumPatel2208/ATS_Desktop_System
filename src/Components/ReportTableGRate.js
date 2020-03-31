@@ -9,6 +9,7 @@ import {
     FormLabel
 } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
+import jsPDF from "jspdf";
 
 const _ = require('lodash'); //Library to Change Cases of things
 
@@ -51,6 +52,13 @@ export default class ReportTableGRate extends Component {
                 this.setState({ sales });
             })
             .catch(err => console.log('Error code: ', err));
+    }
+
+    toPDF() {
+        var pdf = new jsPDF('l', 'pt', 'A4');
+        var source = document.getElementById("export");
+        pdf.autoTable({html: '#export'});
+        pdf.save("GlobalRate.pdf")
     }
 
     onOpenClick(e, _id) {
@@ -187,12 +195,18 @@ export default class ReportTableGRate extends Component {
                                 });
                             }}
                         >
-                            Generate Report
+                            Filter Report
                         </Button>
                         {''}
+                        <button  bssize="medium"
+                                 variant="outline-danger"
+                                 onClick={this.toPDF}>
+                            Download PDF
+                        </button>
+
                     </FormGroup>
                 </Form>
-                <Table className="mt-4">
+                <Table id="export" className="mt-4">
                     <thead>
                         <tr>
                             <th>Exchange Rate</th>

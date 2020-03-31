@@ -10,6 +10,7 @@ import {
     FormControl,
     FormLabel
 } from 'react-bootstrap';
+import jsPDF from "jspdf";
 
 const _ = require('lodash'); //Library to Change Cases of things
 
@@ -39,6 +40,16 @@ export default class ReportTurnoverT extends Component {
                 this.setState({ blanks });
             })
             .catch(err => console.log('Error code: ', err));
+    }
+
+    toPDF() {
+        var pdf = new jsPDF('l', 'pt', 'A4');
+        var source = document.getElementById("1");
+        pdf.autoTable({html: '#1'});
+       // pdf.autoTable({html: '#2'});
+      //  pdf.autoTable({html: '#3'});
+      //  pdf.autoTable({html: '#4'});
+        pdf.save("TurnoverReport.pdf")
     }
 
     /*
@@ -170,8 +181,11 @@ export default class ReportTurnoverT extends Component {
                 <br></br>
                 <br></br>
 
+                <button onClick={this.toPDF}>Download PDF</button>
+
+
                 <h4>Received Blanks</h4>
-                <Table className="mt-4">
+                <Table id = "1" className="mt-4">
                     <thead>
                         <tr>
                             <th>Batch</th>
@@ -195,7 +209,7 @@ export default class ReportTurnoverT extends Component {
                 </Table>
 
                 <h4>Assigned Received Blanks</h4>
-                <Table className="mt-4">
+                <Table id ="2" className="mt-4">
                     <thead>
                         <tr>
                             <th>New Blanks Assigned</th>
@@ -234,7 +248,7 @@ export default class ReportTurnoverT extends Component {
                 </Table>
 
                 <h4>Used Blanks</h4>
-                <Table className="mt-4">
+                <Table id = "3" className="mt-4">
                     <thead>
                         <tr>
                             <th>Used Blanks</th>
@@ -277,7 +291,7 @@ export default class ReportTurnoverT extends Component {
                 </Table>
 
                 <h4>All Assigned Blanks </h4>
-                <Table className="mt-4">
+                <Table id ="4" className="mt-4">
                     <thead>
                         <tr>
                             <th>Advisor Code</th>
@@ -295,6 +309,7 @@ export default class ReportTurnoverT extends Component {
                         )}
                     </tbody>
                 </Table>
+
             </Container>
         );
     }

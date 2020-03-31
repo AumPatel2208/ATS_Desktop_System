@@ -59,7 +59,7 @@ export default class ReportTableI extends Component {
         pdf.save("individualReport.pdf")
 
         /*
-        var margins = {top: 50, left : 50, width : 545};
+        var margins = {top: 50, left : 5, width : 545};
         pdf.fromHTML(
             source, margins.left, margins.top,
             {'width': margins.width},
@@ -236,7 +236,7 @@ export default class ReportTableI extends Component {
                             <th>Fare</th>
                             <th>Currency</th>
                             <th>Payment Method</th>
-                            <th>USD Exchange Rate</th>
+                            <th>Exchange Rate</th>
                             <th>Commission Rate</th>
                             <th>Card Number</th>
                             <th>Expiration Date</th>
@@ -275,7 +275,7 @@ export default class ReportTableI extends Component {
                                         creditCardNum,
                                         expDate,
                                         securityCode,
-                                        saleDate,
+                                        saleDate.substring(0,10),
                                         notes
                                     )}
                                 </Fragment>

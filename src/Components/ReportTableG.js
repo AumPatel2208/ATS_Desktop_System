@@ -9,6 +9,7 @@ import {
     FormLabel
 } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
+import jsPDF from "jspdf";
 
 const _ = require('lodash'); //Library to Change Cases of things
 
@@ -41,6 +42,14 @@ export default class ReportTableG extends Component {
     onOpenClick(e, _id) {
         console.log(e, _id);
     }
+
+    toPDF() {
+        var pdf = new jsPDF('l', 'pt', 'A4');
+        var source = document.getElementById("export");
+        pdf.autoTable({html: '#export'});
+        pdf.save("GlobalAdvisor.pdf")
+    }
+
 
     aggregateSales() {
         let start = new Date(this.state.startDate);
@@ -171,9 +180,12 @@ export default class ReportTableG extends Component {
                             Generate Report
                         </Button>
                         {''}
+
+                        <button onClick={this.toPDF}>Download PDF</button>
+
                     </FormGroup>
                 </Form>
-                <Table className="mt-4">
+                <Table striped id = "export" className="mt-4">
                     <thead>
                         <tr>
                             <th>Advisor Code</th>
