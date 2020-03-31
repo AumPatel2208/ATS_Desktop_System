@@ -44,7 +44,9 @@ export class SaleForm extends Component {
         exch: [],
         cCode: 'USD',
         myId: '',
-        blanks: []
+        blanks: [],
+        customers: [],
+        discounts: []
     };
 
     async componentDidMount() {
@@ -79,8 +81,26 @@ export class SaleForm extends Component {
             })
             .catch(err => console.log('Error code: ', err));
 
-        //filtering by ID
-        //const bl = this.state.blanks.filter(i => String(i._id )=== this.state.myId)
+//getting the customer in order to apply discount
+        await axios
+            .get(apiLinks.CUSTOMERS)
+            .then(res => {
+                const customers = res.data;
+                this.setState({ customers });
+            })
+            .catch(err => console.log('Error code: ', err));
+
+
+//getting discount to apply to the fare
+        await axios
+            .get(apiLinks.DISCOUNT)
+            .then(res => {
+                const discounts = res.data;
+                this.setState({ discounts });
+            })
+            .catch(err => console.log('Error code: ', err));
+
+
     }
 
     creditHandler() {
@@ -170,8 +190,45 @@ export class SaleForm extends Component {
             this.setState({ adCode: GetUSer.advisorCode });
             this.setState({ commissionRate: GetUSer.commissionRate });
 
-            this.setState({ adCode: GetUSer.advisorCode });
-            this.setState({ commissionRate: GetUSer.commissionRate });
+            //getting the correct customer and applying the discount to the fare
+            const f = this.state.custName.split(" ");
+            //filtering first name
+            const c = this.state.customers.filter(
+                i => String(i.firstName) === f[0]
+            );
+            this.setState({customers :c});
+            //filtering last name
+            const cl = this.state.customers.filter(
+                i => String(i.firstName) === f[1]
+            );
+            this.setState({customers :cl});
+
+            const dl = this.state.discounts.filter(
+                i => String(i.name) === this.state.customers[0].discountName
+            );
+            this.setState({discounts :dl});
+
+            //assigning correct discount to the fare
+if (this.state.customers[0].discountType === "Fixed"){
+    let x = this.state.discounts[0].fixed;
+    let y = this.state.fare;
+    let z = (y - (y*(x/100)));
+    this.setState({fare:z});
+} else if (this.state.customers[0].discountType === "Flexible"){
+    let z;
+    let x = this.state.customers[0].paidThisMonth;
+    if (x< this.state.discounts[0].flexibleBand1){
+        z = this.state.fare - (this.state.fare*(this.state.discounts[0].band1Value/100));
+    }else if (x< this.state.discounts[0].flexibleBand2){
+        z = this.state.fare - (this.state.fare*(this.state.discounts[0].band2Value/100));
+    }else if (x< this.state.discounts[0].flexibleBand3){
+        z = this.state.fare - (this.state.fare*(this.state.discounts[0].band3Value/100));
+    }
+    this.setState({fare:z})
+}
+
+
+//storing the sale in the database
 
             const newSale = {
                 ticketNumber: this.state.tickNum,
@@ -200,8 +257,9 @@ export class SaleForm extends Component {
                 })
                 .catch(res => console.log(res));
 
-            //USING THE BLANK/ADDING TO THE USED DATABASE SECTION
 
+
+            //USING THE BLANK/ADDING TO THE USED DATABASE SECTION
             let d = new Date(Date.now());
             d.setHours(0, 0, 0, 0);
 
@@ -218,6 +276,8 @@ export class SaleForm extends Component {
                     console.log(response);
                 })
                 .catch(err => console.log('Error code: ', err));
+
+
             //UPDATING ASSIGNMENT - REMOVING FROM ASSIGNED LIST
             let x = this.state.blanks[0].remaining;
             let y = x.findIndex(k => k === this.state.tickNum);
@@ -233,14 +293,29 @@ export class SaleForm extends Component {
                 amount: this.state.blanks.amount,
                 remaining: x
             };
-
             axios
                 .put(apiLinks.ASSIGN + '/' + this.state.myId, updatedBlank)
                 .catch(err => console.log('Error code: ', err));
 
+
+            // updating customer account to reflect fare
+            const updatedCustomer = {
+                _id: this.state.customers[0]._id,
+                firstName: this.state.customers[0].firstName,
+                lastName: this.state.customers[0].lastName,
+                address: this.state.customers[0].address,
+                phoneNumber: this.state.customers[0].phoneNumber,
+                discount: this.state.customers[0].discount,
+                customerType: this.state.customers[0].customerType,
+                discountName: this.state.customers[0].discountName,
+                discountType:this.state.customers[0].discountType,
+                paidThisMonth: (this.state.customers[0].paidThisMonth + this.state.fare)
+            };
+
             axios
-                .put(apiLinks.ASSIGN + '/' + this.state.myId, updatedBlank)
+                .put(apiLinks.CUSTOMERS + '/' + this.state.customers[0]._id, updatedCustomer)
                 .catch(err => console.log('Error code: ', err));
+
         }
 
         return (

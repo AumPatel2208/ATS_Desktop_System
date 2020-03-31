@@ -59,12 +59,12 @@ export default class ReportTableI extends Component {
                 return true
             }
         };
-        var margins = {top: 50, left : 60, width : 545};
-
+        var margins = {top: 50, left : 50, width : 545};
         pdf.fromHTML(
             source, margins.left, margins.top,
             {'width': margins.width, 'elementHandlers':elementHandler},
             function (dispose) {
+
                 pdf.save('test.pdf')
 
             }
@@ -226,7 +226,7 @@ export default class ReportTableI extends Component {
 
 
 
-                <Table className="mt-4" id="export">
+                <Table striped className="mt-4" id="export">
                     <thead>
                         <tr>
                             <th>Advisor Code</th>

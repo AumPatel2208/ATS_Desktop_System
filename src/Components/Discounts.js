@@ -55,6 +55,14 @@ export default class Discounts extends Component {
                 this.setState({ discounts });
             })
             .catch(err => console.log('Error code: ', err));
+
+        axios
+            .get(apiLinks.CUSTOMERS)
+            .then(res => {
+                const customers = res.data;
+                this.setState({ customers });
+            })
+            .catch(err => console.log('Error code: ', err));
     }
 
     createDiscount(e) {

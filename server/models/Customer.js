@@ -26,6 +26,9 @@ const CustomerSchema = new Schema({
     },
     discountType:{
         type: String
+    },
+    paidThisMonth:{
+        type: Number
     }
 });
 // eslint-disable-next-line no-undef
