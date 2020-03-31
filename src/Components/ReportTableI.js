@@ -114,14 +114,6 @@ export default class ReportTableI extends Component {
 
         return (
             <Container>
-
-                <div>
-                    <div id="export">
-                           <h2> test values</h2>
-                    </div>
-                    <button onClick={this.toPDF}>Download PDF</button>
-                </div>
-
                 <Form>
                     <FormGroup controlId="saleT" bssize="large">
                         <Dropdown
@@ -228,17 +220,13 @@ export default class ReportTableI extends Component {
                             Filter Report
                         </Button>
 
-
-
-
-                        <div className="mb5">
-                            <button onClick={this.toPDF}>Export Report to PDF</button>
-                        </div>
-
-
                     </FormGroup>
                 </Form>
-                <Table className="mt-4">
+                <button onClick={this.toPDF}>Download PDF</button>
+
+
+
+                <Table className="mt-4" id="export">
                     <thead>
                         <tr>
                             <th>Advisor Code</th>
@@ -293,6 +281,10 @@ export default class ReportTableI extends Component {
                         )}
                     </tbody>
                 </Table>
+
+
+
+
             </Container>
 
 
