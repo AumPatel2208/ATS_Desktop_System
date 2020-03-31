@@ -9,8 +9,12 @@ import {
     Dropdown,
     Button
 } from 'react-bootstrap';
+<<<<<<< HEAD
+
+=======
 import { CustomerUpdate } from './CustomerUpdate';
 import { Lightbox } from './Lightbox';
+>>>>>>> 2127facdc3b58a20188bcb55ab8464d105c26674
 const _ = require('lodash'); //Library to Change Cases of things
 
 let apiLinks = require('../api/config.json');

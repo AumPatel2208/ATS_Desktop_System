@@ -2,19 +2,19 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const SaleSchema = new Schema({
     ticketNumber: {
-        type: String,
+        type: String
     },
     fare: {
-        type: Number,
+        type: Number
     },
     currency: {
-        type: String,
+        type: String
     },
     USDExchangeRate: {
-        type: Number,
+        type: Number
     },
     paymentMethod: {
-        type: String,
+        type: String
     },
     creditCardNum: {
         type: String
@@ -26,10 +26,10 @@ const SaleSchema = new Schema({
         type: String
     },
     commissionRate: {
-        type: Number,
+        type: Number
     },
     advisorCode: {
-        type: Number,
+        type: Number
     },
     saleDate: {
         type: String,
@@ -49,6 +49,9 @@ const SaleSchema = new Schema({
     },
     custName: {
         type: String
+    },
+    isRefunded: {
+        type: Boolean
     }
 });
 // eslint-disable-next-line no-undef

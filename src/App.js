@@ -39,12 +39,12 @@ import Reports from './Pages/Reports';
 import Blanks from './Pages/Blanks';
 import Customers from './Pages/Customers';
 import { CustomerUpdate } from './Components/CustomerUpdate';
-import { Authenticate } from './Authenticate';
 import BackupRestore from './Pages/BackupRestore';
 import ExRates from './Pages/ExRates';
 import Sale from './Pages/Sale';
 import { Assignment } from './Components/Assignment';
 import TableOfAdvisors from './Components/TableOfAdvisors';
+import TableOfSales from './Components/TableOfSales';
 import AdvisorBlanks from './Components/AdvisorBlanks';
 import { SaleForm } from './Components/SaleForm';
 import { ReAssignBlanks } from './Components/ReAssignBlanks';
@@ -80,7 +80,7 @@ class App extends React.Component {
                 this.setState({ ...this.state, userID: res.data });
             })
             .catch(err => {
-                console.log('Not Logged In! Error: ', err);
+                console.log('Not Logged In! Error: ', err.request);
             });
         if (this.state.userID !== '')
             await axios
@@ -139,6 +139,15 @@ class App extends React.Component {
                         render={() => (
                             <div className="App">
                                 <Customers staff={this.state.staff} />
+                            </div>
+                        )}
+                    ></Route>
+                    <Route
+                        exact={true}
+                        path="/sales"
+                        render={() => (
+                            <div className="App">
+                                <TableOfSales staff={this.state.staff} />
                             </div>
                         )}
                     ></Route>

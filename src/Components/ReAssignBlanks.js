@@ -1,38 +1,44 @@
-import {Container, Table} from "reactstrap";
-import {Button, Dropdown, Form, FormControl, FormGroup, FormLabel} from "react-bootstrap";
-import DatePicker from "react-datepicker";
-import React, {Component, Fragment} from "react";
-import axios from "axios";
+import { Container, Table } from 'reactstrap';
+import {
+    Button,
+    Dropdown,
+    Form,
+    FormControl,
+    FormGroup,
+    FormLabel
+} from 'react-bootstrap';
+import DatePicker from 'react-datepicker';
+import React, { Component, Fragment } from 'react';
+import axios from 'axios';
 
 let apiLinks = require('../api/config.json');
 
-export class ReAssignBlanks extends Component{
+export class ReAssignBlanks extends Component {
     state = {
-        batchValues: "",
+        batchValues: '',
         date: new Date(),
-        code: "",
-        oG: "",
+        code: '',
+        oG: '',
         i: 0,
-        blanks :[],
+        blanks: [],
         myId: '',
         myIndex: '',
-        assignedBatch: ""
+        assignedBatch: ''
     };
 
     //runs when component mounts, use to gets the data from db
 
     componentDidMount() {
         let empty = [];
-        this.setState({blanks: empty});
+        this.setState({ blanks: empty });
 
-        axios.get( apiLinks.ASSIGN ).then(res => {
-            const  blanks = res.data;
-            this.setState({blanks});
+        axios.get(apiLinks.ASSIGN).then(res => {
+            const blanks = res.data;
+            this.setState({ blanks });
         });
 
-        this.filterStuff()
+        this.filterStuff();
     }
-
 
     onOpenClick(_id) {
         console.log(_id);
@@ -41,35 +47,32 @@ export class ReAssignBlanks extends Component{
         console.log(_id);
     }
 
-
-    filterStuff(){
-        const {match:{params}} = this.props;
-        const id = params.id.split("-");
+    filterStuff() {
+        const {
+            match: { params }
+        } = this.props;
+        const id = params.id.split('-');
         const id1 = id[0];
 
-        this.setState({myId: id1});
-        this.setState({assignedBatch: id[1]});
-        const bl = this.state.blanks.filter(i => String(i._id )=== id1);
+        this.setState({ myId: id1 });
+        this.setState({ assignedBatch: id[1] });
+        const bl = this.state.blanks.filter(i => String(i._id) === id1);
         console.log(bl);
         //this.setState({
         //    blanks: bla
         // })
-
     }
 
-
-    updateRemaining(){
-
-//ADDS IN A NEW ASSIGNMENT UNDER NEW ADVISOR
+    updateRemaining() {
+        //ADDS IN A NEW ASSIGNMENT UNDER NEW ADVISOR
         let d = new Date(Date.now());
-        d.setHours(0,0,0,0);
+        d.setHours(0, 0, 0, 0);
 
         const newAssignment = {
             date: d,
             batchValues: this.state.assignedBatch,
             advisorCode: this.state.code,
             batchId: this.state.myId
-
         };
 
         console.log('hello');
@@ -77,20 +80,17 @@ export class ReAssignBlanks extends Component{
         axios.post(apiLinks.ASSIGN, newAssignment).then(response => {
             console.log(response);
 
-            this.updateRemaining()
+            this.updateRemaining();
         });
-
-
 
         //UPDATING ASSIGNMENT - REMOVING FROM ASSIGNED LIST
         let z = this.state.blanks[0].remaining;
 
-        let  y= z.findIndex( k => k==this.state.assignedBatch);
+        let y = z.findIndex(k => k === this.state.assignedBatch);
 
         z.splice(y);
 
-
-        const updatedBlank ={
+        const updatedBlank = {
             _id: this.state.blanks._id,
             batchValues: this.state.blanks.batchValues,
             batchStart: this.state.blanks.batchStart,
@@ -103,95 +103,69 @@ export class ReAssignBlanks extends Component{
             remaining: z
         };
 
-
-        axios.put(apiLinks.ASSIGN +"/" + this.state.myId, updatedBlank)
-
+        axios.put(apiLinks.ASSIGN + '/' + this.state.myId, updatedBlank);
     }
 
-
     render() {
-
         return (
             <Container>
-<h2>Re-Assign Blank </h2>
+                <h2>Re-Assign Blank </h2>
                 <Table className="mt-4">
                     <thead>
-                    <tr>
-                        <th>Batch Start</th>
-                        <th>Batch End</th>
-
-                    </tr>
+                        <tr>
+                            <th>Batch Start</th>
+                            <th>Batch End</th>
+                        </tr>
                     </thead>
                     <tbody>
-
-                    {this.state.blanks.map(
-                        ({_id, remaining}) => {
-                            if (_id == this.state.myId) {
+                        {this.state.blanks.map(({ _id, remaining }) => {
+                            if (_id === this.state.myId) {
                                 return (
-                                    <tr key={_id}>{
-                                            remaining.map((sub, i) => {
-                                                    return(
-                                                        <tr key = {i}>
-                                                            <td>{_id}</td>
-                                                            <td> {sub}</td>
-                                                        </tr>
-                                                    )})}
+                                    <tr key={_id}>
+                                        {remaining.map((sub, i) => {
+                                            return (
+                                                <tr key={i}>
+                                                    <td>{_id}</td>
+                                                    <td> {sub}</td>
+                                                </tr>
+                                            );
+                                        })}
                                     </tr>
-                                )}})}
+                                );
+                            }
+                        })}
                     </tbody>
                 </Table>
 
                 <FormGroup controlId="username" bssize="large">
-
                     <FormLabel>Batch Values </FormLabel>
                     <FormControl
                         autoFocus
                         type="batchValues"
                         value={this.state.assignedBatch}
-                        onChange={e => this.setState({assignedBatch: e.target.value})}
+                        onChange={e =>
+                            this.setState({ assignedBatch: e.target.value })
+                        }
                     />
                 </FormGroup>
                 <FormGroup controlId="date" bssize="large">
                     <FormLabel>Advisor Code</FormLabel>
                     <FormControl
-                        selected = {this.state.code}
-                        onChange={ e=>
-                            this.setState({code: e.target.value})
-                        }
-
+                        selected={this.state.code}
+                        onChange={e => this.setState({ code: e.target.value })}
                     />
                 </FormGroup>
                 <Button
                     onClick={e => {
-                        console.log("hit");
-                        this.updateRemaining()
+                        console.log('hit');
+                        this.updateRemaining();
                     }}
                 >
                     Assign Blanks
                 </Button>
-
             </Container>
         );
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /*
     axios.get( apiLinks.BLANKS ).then(res => {
