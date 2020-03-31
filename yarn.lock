@@ -4926,7 +4926,7 @@ file-loader@4.3.0:
     loader-utils "^1.2.3"
     schema-utils "^2.5.0"
 
-file-saver@eligrey/FileSaver.js#1.3.8:
+"file-saver@github:eligrey/FileSaver.js#1.3.8":
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
@@ -7033,6 +7033,11 @@ jsonify@~0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
   integrity sha1-LHS27kHZPKUbe1qu6PUDYx0lKnM=
+
+jspdf-autotable@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/jspdf-autotable/-/jspdf-autotable-3.3.1.tgz#cf7939dd6de6a044b6c36e438ddad6b0e9761b2b"
+  integrity sha512-DR36ewoYHI9aogg6eHtUtnLBwGSpfXnT9qZCbqZu4dL7bnzovmpdUCQwrFJ15T8dPMtQZ09A7HoraeS71J49dg==
 
 jspdf@^1.5.3:
   version "1.5.3"

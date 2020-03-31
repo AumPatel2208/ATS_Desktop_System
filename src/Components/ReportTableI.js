@@ -4,6 +4,7 @@ import axios from 'axios';
 //import {html2canvas, jsPDF} from  'app/ext'
 import html2canvas from "html2canvas";
 import jsPDF from 'jspdf';
+import 'jspdf-autotable'
 
 import {
     Form,
@@ -51,24 +52,25 @@ export default class ReportTableI extends Component {
 
 
     //to get the document into a pdf
-    toPDF(){
-        var pdf = new jsPDF('p','pt','letter');
+    toPDF() {
+        var pdf = new jsPDF('l', 'pt', 'A4');
         var source = document.getElementById("export");
-        var elementHandler = {
-            '#bypassme':function (element, renderer) {
-                return true
-            }
-        };
+        pdf.autoTable({html: '#export'});
+        pdf.save("individualReport.pdf")
+
+        /*
         var margins = {top: 50, left : 50, width : 545};
         pdf.fromHTML(
             source, margins.left, margins.top,
-            {'width': margins.width, 'elementHandlers':elementHandler},
-            function (dispose) {
-
+            {'width': margins.width},
+            function () {
+                pdf.autoTable({html: '#export'});
                 pdf.save('test.pdf')
-
             }
         )
+    }
+
+         */
     }
 
     onOpenClick(e, _id) {
@@ -226,7 +228,7 @@ export default class ReportTableI extends Component {
 
 
 
-                <Table striped className="mt-4" id="export">
+                <Table grid className="mt-4" id="export">
                     <thead>
                         <tr>
                             <th>Advisor Code</th>
@@ -281,8 +283,6 @@ export default class ReportTableI extends Component {
                         )}
                     </tbody>
                 </Table>
-
-
 
 
             </Container>
