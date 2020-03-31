@@ -21,6 +21,7 @@ export default class ReportTableI extends Component {
 
     constructor(props) {
         super(props);
+        this.toPDF =this.toPDF.bind(this);
     }
 
     //Set the state to an empty list of objects that will be taken from the database
@@ -51,25 +52,23 @@ export default class ReportTableI extends Component {
 
     //to get the document into a pdf
     toPDF(){
-        const data = document.getElementById('divToPrint');
-        html2canvas(data).then((canvas) => {
-            const img = canvas.toDataURL('image/png');
-            const pdf = new jsPDF();
-            pdf.addImage(img, 'JPEG', 0,0);
-            pdf.save("download.pdf");
+        var pdf = new jsPDF('p','pt','letter');
+        var source = document.getElementById("export");
+        var elementHandler = {
+            '#bypassme':function (element, renderer) {
+                return true
+            }
+        };
+        var margins = {top: 50, left : 60, width : 545};
 
-            /*
-              <div id="divToPrint" className="mt4"{...CSS({
-                    backgroundColor :'#f5f6f5',
-                    width: '210mm',
-                    minHeight: '297mm',
-                    marginLeft: 'auto',
-                    marginRight: 'auto'
-                })}></div>
-             */
+        pdf.fromHTML(
+            source, margins.left, margins.top,
+            {'width': margins.width, 'elementHandlers':elementHandler},
+            function (dispose) {
+                pdf.save('test.pdf')
 
-
-        });
+            }
+        )
     }
 
     onOpenClick(e, _id) {
@@ -221,17 +220,13 @@ export default class ReportTableI extends Component {
                             Filter Report
                         </Button>
 
-
-
-
-                        <div className="mb5">
-                            <button onClick={this.toPDF}>Export Report to PDF</button>
-                        </div>
-
-
                     </FormGroup>
                 </Form>
-                <Table className="mt-4">
+                <button onClick={this.toPDF}>Download PDF</button>
+
+
+
+                <Table className="mt-4" id="export">
                     <thead>
                         <tr>
                             <th>Advisor Code</th>
@@ -286,6 +281,10 @@ export default class ReportTableI extends Component {
                         )}
                     </tbody>
                 </Table>
+
+
+
+
             </Container>
 
 
