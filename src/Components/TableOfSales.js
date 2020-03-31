@@ -19,7 +19,6 @@ export default class TableOfSales extends Component {
     //Set the state to an empty list of objects that will be taken from the database
     state = {
         salesTemp: [{}],
-        bumda: [{}],
         sales: [{}],
         filterString: '',
         filterCondition: 'Please Select',
@@ -119,7 +118,7 @@ export default class TableOfSales extends Component {
             )
         ) {
             this.setState({
-                salesTemp: this.state.salesTemp.filter(
+                sales: this.state.sales.filter(
                     advisor =>
                         String(advisor[this.state.filterCondition]) ===
                         String(this.state.filterString)
@@ -132,19 +131,21 @@ export default class TableOfSales extends Component {
             .get('http://localhost:5000/api/sales')
             .then(async res => {
                 const salesTemp = await res.data;
-                this.setState({ salesTemp });
+                this.setState({ sales: salesTemp });
             })
             .catch(err => console.log('Error code: ', err));
         this.filterSales();
     }
     sortList(key) {
         this.setState({
-            salesTemp: []
-                .concat(this.state.salesTemp)
+            sales: []
+                .concat(this.state.sales)
                 .sort((a, b) => (a[`${key}`] > b[`${key}`] ? 1 : -1))
         });
     }
-
+    onFakeSubmit(e) {
+        e.preventDefault();
+    }
     render() {
         /**
          * Will return a Fragment to be used when mapping in the render function.
@@ -208,7 +209,7 @@ export default class TableOfSales extends Component {
 
         return (
             <Container>
-                <Form>
+                <Form onSubmit={this.onFakeSubmit}>
                     <FormGroup controlId="filterCondition" bssize="large">
                         <FormLabel>Filter Condition</FormLabel>
                         <Dropdown
@@ -296,7 +297,7 @@ export default class TableOfSales extends Component {
                     <Button
                         bssize="large"
                         variant="outline-primary"
-                        // onClick={() => this.filter()}
+                        onClick={() => this.filter()}
                         block
                     >
                         Filter
@@ -304,7 +305,7 @@ export default class TableOfSales extends Component {
                     <Button
                         bssize="large"
                         variant="outline-danger"
-                        // onClick={() => this.reset()}
+                        onClick={() => this.reset()}
                         block
                     >
                         Reset
@@ -326,7 +327,7 @@ export default class TableOfSales extends Component {
                         <Dropdown
                             onSelect={key => {
                                 this.setState({ sort: key });
-                                // this.sortList(key);
+                                this.sortList(key);
                             }}
                         >
                             <Dropdown.Toggle
