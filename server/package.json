@@ -8,6 +8,8 @@
     "license": "MIT",
     "private": false,
     "dependencies": {
+        "@mikecousins/react-pdf": "^5.5.1",
+        "app": "^0.1.0",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.19.0",
         "cookie-parser": "^1.4.5",

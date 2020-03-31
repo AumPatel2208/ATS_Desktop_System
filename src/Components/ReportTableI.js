@@ -1,6 +1,10 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment, ReactPropTypes } from 'react';
 import { Container, Table, Button } from 'reactstrap';
 import axios from 'axios';
+//import {html2canvas, jsPDF} from  'app/ext'
+import html2canvas from "html2canvas";
+import jsPDF from 'jspdf';
+
 import {
     Form,
     FormGroup,
@@ -9,13 +13,16 @@ import {
     FormLabel
 } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
-import ReactToPrint from 'react-to-print'
-
 
 const _ = require('lodash'); //Library to Change Cases of things
 
 let apiLinks = require('../api/config.json');
 export default class ReportTableI extends Component {
+
+    constructor(props) {
+        super(props);
+    }
+
     //Set the state to an empty list of objects that will be taken from the database
     state = {
         sales: [],
@@ -26,6 +33,8 @@ export default class ReportTableI extends Component {
         startDate: new Date(),
         endDate: new Date()
     };
+
+
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
         //   let start = this.state.startDate;
@@ -37,6 +46,30 @@ export default class ReportTableI extends Component {
                 this.setState({ sales });
             })
             .catch(err => console.log('Error code: ', err));
+    }
+
+
+    //to get the document into a pdf
+    toPDF(){
+        const data = document.getElementById('divToPrint');
+        html2canvas(data).then((canvas) => {
+            const img = canvas.toDataURL('image/png');
+            const pdf = new jsPDF();
+            pdf.addImage(img, 'JPEG', 0,0);
+            pdf.save("download.pdf");
+
+            /*
+              <div id="divToPrint" className="mt4"{...CSS({
+                    backgroundColor :'#f5f6f5',
+                    width: '210mm',
+                    minHeight: '297mm',
+                    marginLeft: 'auto',
+                    marginRight: 'auto'
+                })}></div>
+             */
+
+
+        });
     }
 
     onOpenClick(e, _id) {
@@ -81,9 +114,6 @@ export default class ReportTableI extends Component {
         );
 
         return (
-
-
-
             <Container>
                 <Form>
                     <FormGroup controlId="saleT" bssize="large">
@@ -188,8 +218,17 @@ export default class ReportTableI extends Component {
                             }}
                             block
                         >
-                            Generate Report
+                            Filter Report
                         </Button>
+
+
+
+
+                        <div className="mb5">
+                            <button onClick={this.toPDF}>Export Report to PDF</button>
+                        </div>
+
+
                     </FormGroup>
                 </Form>
                 <Table className="mt-4">
