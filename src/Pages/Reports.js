@@ -6,50 +6,20 @@ import ReportTableI from '../Components/ReportTableI';
 import ReportTurnoverT from '../Components/ReportTurnoverT';
 import ReportTableG from '../Components/ReportTableG';
 import ReportTableGRate from '../Components/ReportTableGRate';
+import {NavItem} from "reactstrap";
 
 // let apiLinks = require('../api/config.json');
 
-export default function Reports() {
+export default function Reports(props) {
     const [tableType, setTableType] = useState('Select Report Type');
     const [tableCode, setTableCode] = useState('');
 
-    const globalA = (
-        <Container>
-            <ReportTableG></ReportTableG>
-        </Container>
-    );
-    const globalR = (
-        <Container>
-            <ReportTableGRate></ReportTableGRate>
-        </Container>
-    );
-    const individual = (
-        <Container>
-            <ReportTableI></ReportTableI>
-        </Container>
-    );
-    const blanks = (
-        <Container>
-            <ReportTurnoverT></ReportTurnoverT>
-        </Container>
+
+    const advisor = (
+        <Container><ReportTableI></ReportTableI></Container>
     );
 
-    function reportHandler() {
-        if (tableCode === 'A') {
-            return <Fragment>{individual}</Fragment>;
-        } else if (tableCode === 'B') {
-            return <Fragment>{globalA}</Fragment>;
-        } else if (tableCode === 'C') {
-            return <Fragment>{globalR}</Fragment>;
-        } else if (tableCode === 'D') {
-            return <Fragment>{blanks}</Fragment>;
-        } else {
-            return 'Please Select A Report Type';
-        }
-    }
-
-    //add in handling here to determine the form that shows up
-    return (
+    const officeManager = (
         <Container>
             <h2>Generate Reports</h2>
             <br></br>
@@ -99,5 +69,64 @@ export default function Reports() {
                 <Fragment>{reportHandler()}</Fragment>
             </Form>
         </Container>
+
     );
+
+
+    const globalA = (
+        <Container>
+            <ReportTableG></ReportTableG>
+        </Container>
+    );
+    const globalR = (
+        <Container>
+            <ReportTableGRate></ReportTableGRate>
+        </Container>
+    );
+    const individual = (
+        <Container>
+            <ReportTableI></ReportTableI>
+        </Container>
+    );
+    const blanks = (
+        <Container>
+            <ReportTurnoverT></ReportTurnoverT>
+        </Container>
+    );
+
+    function reportHandler() {
+        if (tableCode === 'A') {
+            return <Fragment>{individual}</Fragment>;
+        } else if (tableCode === 'B') {
+            return <Fragment>{globalA}</Fragment>;
+        } else if (tableCode === 'C') {
+            return <Fragment>{globalR}</Fragment>;
+        } else if (tableCode === 'D') {
+            return <Fragment>{blanks}</Fragment>;
+        } else {
+            return 'Please Select A Report Type';
+        }
+    }
+
+    function displayHandler() {
+        var role;
+        {props.staff !== undefined
+                ? role = `${props.staff.staffType}`
+                : role = "blue"
+        }
+        if (String(role) === "OfficeManager") {
+            return <Fragment>{officeManager}</Fragment>
+        } else {
+            return <Fragment>{props.staff}</Fragment>
+        }
+    }
+
+
+    //add in handling here to determine the form that shows up
+    return (
+        <Container>
+            <Fragment>{displayHandler()}</Fragment>
+        </Container>
+    );
+
 }

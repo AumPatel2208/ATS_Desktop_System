@@ -72,6 +72,7 @@ export class Assignment extends Component {
         this.setState({ myId: id1 });
         this.setState({ myIndex: id[1] });
         const bl = this.state.blanks.filter(i => String(i._id) === id1);
+        this.setState({blanks:bl});
         console.log(bl);
         //this.setState({
         //    blanks: bla
@@ -96,10 +97,10 @@ export class Assignment extends Component {
             .post(apiLinks.ASSIGN, newAssignment)
             .then(response => {
                 console.log(response);
-
-                this.updateRemaining();
             })
             .catch(err => console.log('Error code: ', err));
+
+        this.updateRemaining();
     }
 
     updateRemaining() {
@@ -114,22 +115,22 @@ export class Assignment extends Component {
         let en = parseInt(x[y].end);
 
         //x.push({start: (x[y].start-1), end: (x[y].end+1) })
-        if (z != st) {
-            if (z - 1 == st) {
+        if (z !== st) {
+            if (z - 1 === st) {
                 x.push({ start: st, end: st });
             } else {
                 x.push({ start: st, end: z - 1 });
             }
         }
-
-        if (z2 != en) {
-            if (z2 + 1 == en) {
+/*
+        if (z2 !== en) {
+            if (z2 + 1 === en) {
                 x.push({ start: en, end: en });
             } else {
                 x.push({ start: z2 + 1, end: en });
             }
         }
-
+*/
         x.splice(this.state.myIndex, 1);
 
         const updatedBlank = {

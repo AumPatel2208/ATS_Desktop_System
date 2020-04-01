@@ -65,7 +65,7 @@ class Navigation extends Component {
                                 Register Staff
                             </NavLink>
                         </NavItem>
-                        <NavItem>
+                        <NavItem staff={this.props.staff}>
                             <NavLink tag={Link} to="/reports">
                                 Reports
                             </NavLink>
