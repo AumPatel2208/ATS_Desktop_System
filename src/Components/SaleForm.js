@@ -203,31 +203,35 @@ export class SaleForm extends Component {
             );
             this.setState({customers :cl});
 
+
+            if (this.state.customers[0] != undefined) {
             const dl = this.state.discounts.filter(
                 i => String(i.name) === this.state.customers[0].discountName
             );
             this.setState({discounts :dl});
 
             //assigning correct discount to the fare
-if (this.state.customers[0].discountType === "Fixed"){
-    let x = this.state.discounts[0].fixed;
-    let y = this.state.fare;
-    let z = (y - (y*(x/100)));
-    this.setState({fare:z});
-} else if (this.state.customers[0].discountType === "Flexible"){
-    let z;
-    let x = this.state.customers[0].paidThisMonth;
-    if (x< this.state.discounts[0].flexibleBand1){
-        z = this.state.fare - (this.state.fare*(this.state.discounts[0].band1Value/100));
-    }else if (x< this.state.discounts[0].flexibleBand2){
-        z = this.state.fare - (this.state.fare*(this.state.discounts[0].band2Value/100));
-    }else if (x< this.state.discounts[0].flexibleBand3){
-        z = this.state.fare - (this.state.fare*(this.state.discounts[0].band3Value/100));
-    }
-    this.setState({fare:z})
-}
 
 
+                if (this.state.customers[0].discountType === "Fixed") {
+                    let x = this.state.discounts[0].fixed;
+                    let y = this.state.fare;
+                    let z = (y - (y * (x / 100)));
+                    this.setState({fare: z});
+                } else if (this.state.customers[0].discountType === "Flexible") {
+                    let z;
+                    let x = this.state.customers[0].paidThisMonth;
+                    if (x < this.state.discounts[0].flexibleBand1) {
+                        z = this.state.fare - (this.state.fare * (this.state.discounts[0].band1Value / 100));
+                    } else if (x < this.state.discounts[0].flexibleBand2) {
+                        z = this.state.fare - (this.state.fare * (this.state.discounts[0].band2Value / 100));
+                    } else if (x < this.state.discounts[0].flexibleBand3) {
+                        z = this.state.fare - (this.state.fare * (this.state.discounts[0].band3Value / 100));
+                    }
+                    this.setState({fare: z})
+                }
+
+            }
 //storing the sale in the database
 
             const newSale = {
@@ -299,22 +303,24 @@ if (this.state.customers[0].discountType === "Fixed"){
 
 
             // updating customer account to reflect fare
-            const updatedCustomer = {
-                _id: this.state.customers[0]._id,
-                firstName: this.state.customers[0].firstName,
-                lastName: this.state.customers[0].lastName,
-                address: this.state.customers[0].address,
-                phoneNumber: this.state.customers[0].phoneNumber,
-                discount: this.state.customers[0].discount,
-                customerType: this.state.customers[0].customerType,
-                discountName: this.state.customers[0].discountName,
-                discountType:this.state.customers[0].discountType,
-                paidThisMonth: (this.state.customers[0].paidThisMonth + this.state.fare)
-            };
+            if (this.state.customers[0] != undefined) {
+                const updatedCustomer = {
+                    _id: this.state.customers[0]._id,
+                    firstName: this.state.customers[0].firstName,
+                    lastName: this.state.customers[0].lastName,
+                    address: this.state.customers[0].address,
+                    phoneNumber: this.state.customers[0].phoneNumber,
+                    discount: this.state.customers[0].discount,
+                    customerType: this.state.customers[0].customerType,
+                    discountName: this.state.customers[0].discountName,
+                    discountType: this.state.customers[0].discountType,
+                    paidThisMonth: (this.state.customers[0].paidThisMonth + this.state.fare)
+                };
 
-            axios
-                .put(apiLinks.CUSTOMERS + '/' + this.state.customers[0]._id, updatedCustomer)
-                .catch(err => console.log('Error code: ', err));
+                axios
+                    .put(apiLinks.CUSTOMERS + '/' + this.state.customers[0]._id, updatedCustomer)
+                    .catch(err => console.log('Error code: ', err));
+            }
 
         }
 

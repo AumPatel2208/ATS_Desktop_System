@@ -28,7 +28,7 @@ const CustomerSchema = new Schema({
         type: String
     },
     paidThisMonth:{
-        type: Number
+        type: String
     }
 });
 // eslint-disable-next-line no-undef

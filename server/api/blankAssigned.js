@@ -18,7 +18,7 @@ router.post('/', (q, a) => {
     //console.log(d);
     let amount = d-c;
     let remain = [];
-   h= f.indexOf("-");
+  var h= f.indexOf("-");
 
 if ( h== -1){
     remain.push(q.body.batchValues);
@@ -28,8 +28,8 @@ if ( h== -1){
         remain.push(parseInt(c) + i)
     }
 }
-
-    console.log(remain);
+console.log(h);
+    console.log("assigned" +remain);
       //  {start: c, end:d}];
 
 
