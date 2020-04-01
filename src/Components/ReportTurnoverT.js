@@ -44,24 +44,24 @@ export default class ReportTurnoverT extends Component {
 
     toPDF() {
         var pdf = new jsPDF('l', 'pt', 'A4');
-        var source = document.getElementById("1");
-        pdf.autoTable({html: '#1'});
-       // pdf.autoTable({html: '#2'});
+        //var source = document.getElementById("1");
+        pdf.autoTable({html: '#recieved'});
+        let page = pdf.internal.getNumberOfPages();
+
+        pdf.setPage(page);
+        pdf.autoTable({html: '#assignedR', startY: pdf.autoTable.previous.finalY +10, pageBreak: 'avoid'});
+        //pdf.text("Used Blanks");
+        pdf.autoTable({html: '#used', startY: pdf.autoTable.previous.finalY +10, pageBreak: 'avoid'});
+        pdf.autoTable({html: '#available', startY: pdf.autoTable.previous.finalY +10, pageBreak: 'avoid'});
+        pdf.autoTable({html: '#assignedA', startY: pdf.autoTable.previous.finalY +10, pageBreak: 'avoid'});
+
+
+        // pdf.autoTable({html: '#2'});
       //  pdf.autoTable({html: '#3'});
       //  pdf.autoTable({html: '#4'});
         pdf.save("TurnoverReport.pdf")
     }
 
-    /*
-
-
-
-
-    onOpenClick(e, _id) {
-        console.log(e, _id);
-    }
-
- */
 
     render() {
         const row = (_id, batchValues, date, amount, advisorCode) => (
@@ -123,16 +123,6 @@ export default class ReportTurnoverT extends Component {
                         start.setHours(0, 0, 0, 0);
                         end.setHours(0, 0, 0, 0);
 
-                        /*
-                        axios.get( apiLinks.BLANKS +'/byDate',{params:{start, end}}).then(res => {
-                            const blanks = res.data;
-                            this.setState({blanks});
-                        });
-
-                         */
-
-                        //this.state.blanks.filter(i => (i._id == "5e7fad407ac973c76d5f797e"));
-
                         const fl = this.state.blanks.filter(
                             i => Date.parse(i.date) >= Date.parse(start)
                         );
@@ -142,20 +132,6 @@ export default class ReportTurnoverT extends Component {
                             i => Date.parse(i.date) <= Date.parse(end)
                         );
                         this.setState({ blanks: tl });
-                        // const bl2 = this.state.blanks.filter(i => String(i.date )<= end);
-
-                        /*this.setState({
-                            blanks: this.state.blanks.filter(
-                                blank => (blank[this.state.date]) >
-                                    start)})
-
-
-                        axios.get( apiLinks.BLANKS +'/byDate',{params:{start, end}}).then(res => {
-                            const Blanks = res.data;
-                            this.setState({Blanks});
-                        });
-
-                         */
 
                         axios
                             .get(apiLinks.ASSIGN + '/byDate', {
@@ -185,7 +161,7 @@ export default class ReportTurnoverT extends Component {
 
 
                 <h4>Received Blanks</h4>
-                <Table id = "1" className="mt-4">
+                <Table striped id = "recieved" className="mt-4">
                     <thead>
                         <tr>
                             <th>Batch</th>
@@ -209,7 +185,7 @@ export default class ReportTurnoverT extends Component {
                 </Table>
 
                 <h4>Assigned Received Blanks</h4>
-                <Table id ="2" className="mt-4">
+                <Table id ="assignedR" className="mt-4">
                     <thead>
                         <tr>
                             <th>New Blanks Assigned</th>
@@ -248,7 +224,7 @@ export default class ReportTurnoverT extends Component {
                 </Table>
 
                 <h4>Used Blanks</h4>
-                <Table id = "3" className="mt-4">
+                <Table id = "used" className="mt-4">
                     <thead>
                         <tr>
                             <th>Used Blanks</th>
@@ -263,7 +239,7 @@ export default class ReportTurnoverT extends Component {
                 </Table>
 
                 <h4>All Available Blanks</h4>
-                <Table className="mt-4">
+                <Table id ="available" className="mt-4">
                     <thead>
                         <tr>
                             <th>Available Batches of Blanks </th>
@@ -291,7 +267,7 @@ export default class ReportTurnoverT extends Component {
                 </Table>
 
                 <h4>All Assigned Blanks </h4>
-                <Table id ="4" className="mt-4">
+                <Table id ="assignedA" className="mt-4">
                     <thead>
                         <tr>
                             <th>Advisor Code</th>

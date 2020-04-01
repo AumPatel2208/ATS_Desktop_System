@@ -54,6 +54,7 @@ export default class ReportTableI extends Component {
     //to get the document into a pdf
     toPDF() {
         var pdf = new jsPDF('l', 'pt', 'A4');
+        pdf.setFontSize(10);
         var source = document.getElementById("export");
         pdf.autoTable({html: '#export'});
         pdf.save("individualReport.pdf")
