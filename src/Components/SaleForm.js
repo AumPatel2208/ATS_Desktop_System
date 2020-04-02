@@ -181,6 +181,7 @@ export class SaleForm extends Component {
             const bl = this.state.blanks.filter(
                 i => String(i._id) === this.state.myId
             );
+            this.setState({blanks :bl});
 
             let dt = new Date(Date.now());
             dt.setHours(0, 0, 0, 0);
@@ -288,15 +289,15 @@ export class SaleForm extends Component {
             x.splice(y);
 
             const updatedBlank = {
-                _id: this.state.blanks._id,
-                batchValues: this.state.blanks.batchValues,
-                batchStart: this.state.blanks.batchStart,
-                batchEnd: this.state.blanks.batchEnd,
-                date: this.state.blanks.date,
-                batchType: this.state.blanks.batchType,
-                amount: this.state.blanks.amount,
+                batchValues: this.state.blanks[0].batchValues,
+                batchStart: this.state.blanks[0].batchStart,
+                batchEnd: this.state.blanks[0].batchEnd,
+                date: this.state.blanks[0].date,
+                batchType: this.state.blanks[0].batchType,
+                amount: this.state.blanks[0].amount,
                 remaining: x
             };
+
             axios
                 .put(apiLinks.ASSIGN + '/' + this.state.myId, updatedBlank)
                 .catch(err => console.log('Error code: ', err));

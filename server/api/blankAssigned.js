@@ -77,7 +77,7 @@ router.get('/byDate',(q,a)=>{
 //find and update one blank
 router.put('/:id', (q, a) => {
     BlankAssigned.findByIdAndUpdate(q.params.id, q.body).then(item => a.json(item));
-    console.log(q.body.remaining)
+    console.log("assigned" +q.body.remaining)
 });
 
 

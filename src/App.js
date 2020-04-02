@@ -233,7 +233,9 @@ class App extends React.Component {
                         render={() => (
                             <div className="App">
                                 {/* <Nav /> */}
-                                <Reports />
+                                <Reports
+                                    staff={this.state.staff}
+                                />
                             </div>
                         )}
                     />
