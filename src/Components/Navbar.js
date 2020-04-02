@@ -13,6 +13,7 @@ import {
 // import { UserStore } from "../store/UserStore.js";
 import NavItemsAuth from './NavItemsAuth';
 import '../Styles/Nav.css';
+import Reports from "../Pages/Reports";
 // import logo from '../assets/img/Uni-Verse Logo Straight.png';
 // const User = useStoreState(UserStore, s => s.UserType);
 // const IsAuthenticated = useStoreState(UserStore, s => s.IsAuthenticated);
@@ -65,7 +66,9 @@ class Navigation extends Component {
                                 Register Staff
                             </NavLink>
                         </NavItem>
-                        <NavItem staff={this.props.staff}>
+                        <NavItem
+
+                        >
                             <NavLink tag={Link} to="/reports">
                                 Reports
                             </NavLink>

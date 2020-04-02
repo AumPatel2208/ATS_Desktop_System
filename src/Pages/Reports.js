@@ -107,9 +107,30 @@ export default function Reports(props) {
             return 'Please Select A Report Type';
         }
     }
+/*
+    const check =({props})=>{
+        if (props.staff.staffType === "OfficeManager") {
+            return true;
+        }
+    };
 
+*/
     function displayHandler() {
         var role;
+        {props.staff !== undefined
+            ? role =`${props.staff.staffType}`
+            : role = props.staff}
+if(role === "OfficeManager") {
+    return <Fragment>{officeManager}</Fragment>
+}
+else {
+    return <Fragment>{advisor}</Fragment>
+}
+      //  }
+
+
+
+        /*
         {props.staff !== undefined
                 ? role = `${props.staff.staffType}`
                 : role = "blue"
@@ -119,14 +140,14 @@ export default function Reports(props) {
         } else {
             return <Fragment>{props.staff}</Fragment>
         }
+
+         */
     }
 
 
     //add in handling here to determine the form that shows up
     return (
-        <Container>
             <Fragment>{displayHandler()}</Fragment>
-        </Container>
     );
 
 }
