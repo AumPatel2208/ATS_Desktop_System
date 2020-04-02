@@ -188,8 +188,22 @@ export class SaleForm extends Component {
 
             event.preventDefault();
 
-            this.setState({ adCode: GetUSer.advisorCode });
-            this.setState({ commissionRate: GetUSer.commissionRate });
+          //  this.setState({ adCode: GetUSer.advisorCode });
+           // this.setState({ commissionRate: GetUSer.commissionRate });
+            var ad;
+            {this.props.staff !== undefined
+                ? ad =`${this.props.staff.advisorCode}`
+                : ad = "undefined"}
+
+            var cd;
+            {this.props.staff !== undefined
+                ? cd =`${this.props.staff.commissionRate}`
+                : cd = "undefined"}
+
+
+
+            this.setState({ rate: cd });
+            this.setState({ adCode:ad });
 
             //getting the correct customer and applying the discount to the fare
             const f = this.state.custName.split(" ");
@@ -248,8 +262,7 @@ export class SaleForm extends Component {
                 securityCode: this.state.secCode,
                 commissionRate: this.state.rate,
                 custName: this.state.custName,
-                //advisorCode: this.props.staff.advisorCode,
-                advisorCode: 380,
+                advisorCode: this.state.adCode,
                 saleDate: dt,
                 notes: this.state.notes,
                 USDExchangeRate: this.state.exch[0].toUSDRate
@@ -285,8 +298,20 @@ export class SaleForm extends Component {
 
             //UPDATING ASSIGNMENT - REMOVING FROM ASSIGNED LIST
             let x = this.state.blanks[0].remaining;
-            let y = x.findIndex(k => k === this.state.tickNum);
-            x.splice(y);
+
+            let i = 0;
+            for (i=0; i < x.length; i++) {
+                if (x[i] == this.state.tickNum) break;
+            }
+            if (i < x.length) {
+                x.splice(i, 1);
+            } else {
+                    return;
+            }
+           // let y = x.findIndex(x => x ===this.state.tickNum);
+           // let z = this.state.tickNum;
+            //let y = x.indexOf(z);
+           // x.splice(this.state.tickNum, 1);
 
             const updatedBlank = {
                 batchValues: this.state.blanks[0].batchValues,

@@ -126,22 +126,6 @@ if(role === "OfficeManager") {
 else {
     return <Fragment>{advisor}</Fragment>
 }
-      //  }
-
-
-
-        /*
-        {props.staff !== undefined
-                ? role = `${props.staff.staffType}`
-                : role = "blue"
-        }
-        if (String(role) === "OfficeManager") {
-            return <Fragment>{officeManager}</Fragment>
-        } else {
-            return <Fragment>{props.staff}</Fragment>
-        }
-
-         */
     }
 
 

@@ -23,10 +23,10 @@ export default class ReportTableI extends Component {
     constructor(props) {
         super(props);
         this.toPDF =this.toPDF.bind(this);
-    }
+
 
     //Set the state to an empty list of objects that will be taken from the database
-    state = {
+    this.state = {
         sales: [],
         saleT: 'saleType',
         code: 'advisorCode',
@@ -35,7 +35,7 @@ export default class ReportTableI extends Component {
         startDate: new Date(),
         endDate: new Date()
     };
-
+}
 
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
@@ -50,6 +50,36 @@ export default class ReportTableI extends Component {
             .catch(err => console.log('Error code: ', err));
     }
 
+    roleHandler(){
+       var ad;
+        {this.props.staff !== undefined
+            ? ad =`${this.props.staff.staffType}`
+            : ad = "undefined"}
+        if (ad === "TravelAdvisor") {
+            //this.setState({inputCode:`${this.props.staff.advisorCode}`});
+            return <Fragment>
+                <h3>Showing Sales For Advisor {`${this.props.staff.advisorCode}`} </h3>
+            </Fragment>
+            // this.setState({inputCode: 380 })
+        }
+        else {
+            return <Fragment>
+                <FormLabel>Enter Advisor Code</FormLabel>
+                <FormControl
+                    autoFocus
+                    type="string"
+                    value={this.state.sales.inputCode}
+                    onChange={e => {
+                        this.setState({
+                            inputCode: e.target.value
+                        });
+                    }}
+                />
+            </Fragment>
+
+        }
+    }
+
 
     //to get the document into a pdf
     toPDF() {
@@ -58,20 +88,6 @@ export default class ReportTableI extends Component {
         var source = document.getElementById("export");
         pdf.autoTable({html: '#export'});
         pdf.save("individualReport.pdf")
-
-        /*
-        var margins = {top: 50, left : 5, width : 545};
-        pdf.fromHTML(
-            source, margins.left, margins.top,
-            {'width': margins.width},
-            function () {
-                pdf.autoTable({html: '#export'});
-                pdf.save('test.pdf')
-            }
-        )
-    }
-
-         */
     }
 
     onOpenClick(e, _id) {
@@ -181,17 +197,12 @@ export default class ReportTableI extends Component {
                             }}
                         />
                         <br></br>
-                        <FormLabel>Enter Advisor Code</FormLabel>
-                        <FormControl
-                            autoFocus
-                            type="string"
-                            value={this.state.sales.inputCode}
-                            onChange={e => {
-                                this.setState({
-                                    inputCode: e.target.value
-                                });
-                            }}
-                        />
+
+
+                        <Fragment>{this.roleHandler()}</Fragment>
+
+
+
                         <Button
                             bssize="medium"
                             variant="outline-danger"
@@ -284,12 +295,7 @@ export default class ReportTableI extends Component {
                         )}
                     </tbody>
                 </Table>
-
-
             </Container>
-
-
-
 
         );
     }
