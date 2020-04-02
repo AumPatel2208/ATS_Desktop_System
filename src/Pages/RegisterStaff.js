@@ -215,23 +215,39 @@ export default function RegisterStaff(props) {
                             onChange={e => setCommissionRate(e.target.value)}
                         />
                     </FormGroup>
+
+                    <FormGroup controlId="advisorCode" bssize="large">
+                        <FormLabel>Advisor Code</FormLabel>
+                        <FormControl
+                            value={advisorCode}
+                            onChange={e => setAdvisorCode(e.target.value)}
+                        />
+                    </FormGroup>
+
                     <FormGroup controlId="staffType" bssize="large">
                         <FormLabel>Staff Type</FormLabel>
                         <Dropdown
                             onSelect={key => {
                                 setStaffType(key);
-                                console.log(key);
-                                var temp = Math.floor(
-                                    Math.random() * 9999999 + 1000000
-                                );
-                                setAdvisorCode(temp.toString());
-                                if (key === 'SystemAdministrator') {
-                                    setAdvisorCode('1' + advisorCode);
-                                } else if (key === 'OfficeManager') {
-                                    setAdvisorCode('2' + advisorCode);
-                                } else if (key === 'TravelAdvisor') {
-                                    setAdvisorCode('3' + advisorCode);
-                                }
+                                // console.log(key);
+                                // var temp = Math.floor(
+                                //     Math.random() * 9999999 + 1000000
+                                // );
+                                // setAdvisorCode(temp.toString());
+                                // if (key === 'SystemAdministrator') {
+                                //     setAdvisorCode('1' + temp);
+                                // } else if (key === 'OfficeManager') {
+                                //     setAdvisorCode('2' + temp);
+                                // } else if (key === 'TravelAdvisor') {
+                                //     setAdvisorCode('3' + temp);
+                                // }
+                                // if (key === 'SystemAdministrator') {
+                                //     setAdvisorCode('1' + advisorCode);
+                                // } else if (key === 'OfficeManager') {
+                                //     setAdvisorCode('2' + advisorCode);
+                                // } else if (key === 'TravelAdvisor') {
+                                //     setAdvisorCode('3' + advisorCode);
+                                // }
                             }}
                         >
                             <Dropdown.Toggle

@@ -35,6 +35,9 @@ const SaleSchema = new Schema({
         type: String,
         default: Date.now()
     },
+    paymentDate: {
+        type: String
+    },
     notes: {
         type: String
     },
@@ -49,6 +52,9 @@ const SaleSchema = new Schema({
     },
     custName: {
         type: String
+    },
+    hasPayed: {
+        type: Boolean
     },
     isRefunded: {
         type: Boolean

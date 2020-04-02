@@ -85,6 +85,15 @@ router.get('/', (q, a) => {
         .sort({ advisorCode: -1 })
         .then(sales => a.json(sales));
 });
+router.get('/:id', (q, a) => {
+    Sale.findById(q.params.id)
+        .then(sale => {
+            a.json(sale);
+        })
+        .catch(err => {
+            a.json(err);
+        });
+});
 
 //find and update one sale by id
 router.put('/:id', (q, a) => {
@@ -95,9 +104,9 @@ router.put('/refund/:id', (q, a) => {
     q.body.isRefunded = true;
     fs.writeFile(
         `./REFUND_LOG/TicketNumber_${q.body.ticketNumber}.txt`,
-        `Refund Ticket Number ${q.body.ticketNumber} \nJSON: ${JSON.stringify(
-            q.body
-        )}`,
+        `Refund Ticket Number ${
+            q.body.ticketNumber
+        }\nDate: ${Date.now()} \nJSON: ${JSON.stringify(q.body)}`,
         err => {
             if (err) {
                 return console.log(err);
@@ -105,6 +114,13 @@ router.put('/refund/:id', (q, a) => {
             console.log('The file was saved!');
         }
     );
+    Sale.findByIdAndUpdate(q.params.id, q.body).then(sale => a.json(sale));
+});
+
+//find and update one sale by id
+router.put('/pay/:id', (q, a) => {
+    q.body.hasPayed = true;
+    // q.body.paymentDate = Date.now();
     Sale.findByIdAndUpdate(q.params.id, q.body).then(sale => a.json(sale));
 });
 

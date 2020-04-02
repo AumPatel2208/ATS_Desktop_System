@@ -90,6 +90,11 @@ class Navigation extends Component {
                                 Sell Ticket
                             </NavLink>
                         </NavItem>
+                        <NavItem>
+                            <NavLink tag={Link} to="/sales">
+                                Sales
+                            </NavLink>
+                        </NavItem>
                         {/* <NavItem>
               <NavLink tag={Link} to="/login">
                 Login

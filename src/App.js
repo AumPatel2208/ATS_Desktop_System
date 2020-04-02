@@ -48,6 +48,7 @@ import TableOfSales from './Components/TableOfSales';
 import AdvisorBlanks from './Components/AdvisorBlanks';
 import { SaleForm } from './Components/SaleForm';
 import { ReAssignBlanks } from './Components/ReAssignBlanks';
+import SaleEditor from './Components/SaleEditor';
 
 const apiLinks = require('./api/config.json');
 /* CODE TO LOCK A PAGE
@@ -148,6 +149,15 @@ class App extends React.Component {
                         render={() => (
                             <div className="App">
                                 <TableOfSales staff={this.state.staff} />
+                            </div>
+                        )}
+                    ></Route>
+                    <Route
+                        exact={true}
+                        path="/sale_edit/:id"
+                        render={props => (
+                            <div className="App">
+                                <SaleEditor {...props}></SaleEditor>
                             </div>
                         )}
                     ></Route>

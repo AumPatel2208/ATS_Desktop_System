@@ -1,0 +1,3 @@
+Refund Ticket Number 420
+Date: 1585834047557 
+JSON: {"saleDate":"Fri Oct 18 2019 00:00:00 GMT+0100 (British Summer Time)","paymentDate":"1585829921486","_id":"5e6d04034d2a3bf2607ddd65","ticketNumber":"420","fare":982,"currency":"BRL","USDExchangeRate":1.1,"paymentMethod":"credit","creditCardNum":"374288980127319","expDate":"Tue Apr 23 2019 00:00:00 GMT+0100 (British Summer Time)","securityCode":"5","commissionRate":91,"advisorCode":65,"__v":0,"isRefunded":true}

@@ -9,6 +9,7 @@ import {
     Dropdown,
     Button
 } from 'react-bootstrap';
+import SaleEditor from './SaleEditor';
 
 const _ = require('lodash'); //Library to Change Cases of things
 
@@ -58,6 +59,8 @@ export default class TableOfSales extends Component {
                             sale.advisorCode = 'Empty.';
                         if (sale.saleDate === undefined)
                             sale.saleDate = 'Empty.';
+                        if (sale.paymentDate === undefined)
+                            sale.paymentDate = 'Empty.';
                         if (sale.notes === undefined) sale.notes = 'Empty.';
                         if (sale.saleType === undefined)
                             sale.saleType = 'Empty.';
@@ -73,6 +76,12 @@ export default class TableOfSales extends Component {
                         )
                             sale.isRefunded = 'No';
                         if (sale.isRefunded === true) sale.isRefunded = 'Yes';
+                        if (
+                            sale.hasPayed === undefined ||
+                            sale.hasPayed === false
+                        )
+                            sale.hasPayed = 'No';
+                        if (sale.hasPayed === true) sale.hasPayed = 'Yes';
                         return sale;
                     });
                     console.log(changedSales);
@@ -86,7 +95,7 @@ export default class TableOfSales extends Component {
         this.filterSales();
     }
 
-    async onOpenClick(_id) {
+    async onRefundClick(_id) {
         console.log(_id);
         const index = this.state.sales.findIndex(sale => sale._id === _id);
         var tempSales = this.state.sales;
@@ -165,16 +174,18 @@ export default class TableOfSales extends Component {
             commissionRate,
             advisorCode,
             saleDate,
+            paymentDate,
             notes,
             saleType,
             localTax,
             otherTax,
             custName,
+            hasPayed,
             isRefunded
         ) => (
             <Fragment key={_id}>
                 <tr key={_id}>
-                    <td>{_id}</td>
+                    {/* <td>{_id}</td> */}
                     <td>{ticketNumber}</td>
                     <td>{fare}</td>
                     <td>{currency}</td>
@@ -186,21 +197,33 @@ export default class TableOfSales extends Component {
                     <td>{commissionRate}</td>
                     <td>{advisorCode}</td>
                     <td>{saleDate}</td>
+                    <td>{paymentDate}</td>
                     <td>{notes}</td>
                     <td>{saleType}</td>
                     <td>{localTax}</td>
                     <td>{otherTax}</td>
                     <td>{custName}</td>
+                    <td>{hasPayed}</td>
                     <td>{isRefunded}</td>
                     <td>
                         <Button
                             className="open-btn"
-                            color="primary"
+                            variant="outline-warning"
                             size="lg"
-                            onClick={this.onOpenClick.bind(this, _id)}
-                            // href={'./staff/' + _id}
+                            onClick={this.onRefundClick.bind(this, _id)}
                         >
                             REFUND
+                        </Button>
+                        <p></p>
+                        <p></p>
+                        <Button
+                            className="open-btn"
+                            variant="outline-warning"
+                            size="lg"
+                            href={`/sale_edit/${_id}`}
+                            // onClick={this.onPaymentClick.bind(this, _id)}
+                        >
+                            PAY
                         </Button>
                     </td>
                 </tr>
@@ -260,6 +283,9 @@ export default class TableOfSales extends Component {
                                 <Dropdown.Item eventKey="saleDate">
                                     Sale Date
                                 </Dropdown.Item>
+                                <Dropdown.Item eventKey="paymentDate">
+                                    Payment Date
+                                </Dropdown.Item>
                                 <Dropdown.Item eventKey="notes">
                                     Notes
                                 </Dropdown.Item>
@@ -274,6 +300,9 @@ export default class TableOfSales extends Component {
                                 </Dropdown.Item>
                                 <Dropdown.Item eventKey="custName">
                                     Customer Name
+                                </Dropdown.Item>
+                                <Dropdown.Item eventKey="hasPayed">
+                                    Has Payed
                                 </Dropdown.Item>
                                 <Dropdown.Item eventKey="isRefunded">
                                     Is Refunded
@@ -371,6 +400,9 @@ export default class TableOfSales extends Component {
                                 <Dropdown.Item eventKey="saleDate">
                                     Sale Date
                                 </Dropdown.Item>
+                                <Dropdown.Item eventKey="paymentDate">
+                                    Payment Date
+                                </Dropdown.Item>
                                 <Dropdown.Item eventKey="notes">
                                     Notes
                                 </Dropdown.Item>
@@ -386,6 +418,9 @@ export default class TableOfSales extends Component {
                                 <Dropdown.Item eventKey="custName">
                                     Customer Name
                                 </Dropdown.Item>
+                                <Dropdown.Item eventKey="hasPayed">
+                                    Has Payed
+                                </Dropdown.Item>
                                 <Dropdown.Item eventKey="isRefunded">
                                     Is Refunded
                                 </Dropdown.Item>
@@ -396,7 +431,7 @@ export default class TableOfSales extends Component {
                 <Table className="mt-4">
                     <thead>
                         <tr>
-                            <th>_id</th>
+                            {/* <th>_id</th> */}
                             <th>Ticket Number</th>
                             <th>Fare</th>
                             <th>Currency</th>
@@ -408,14 +443,17 @@ export default class TableOfSales extends Component {
                             <th>Commission Rate</th>
                             <th>Advisor Code</th>
                             <th>Sale Date</th>
+                            <th>Payment Date</th>
                             <th>Notes</th>
                             <th>Sale Type</th>
                             <th>Local Tax</th>
                             <th>Other Tax</th>
                             <th>Customer Name</th>
+                            <th>Has Payed</th>
                             <th>Is Refunded</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         {this.state.sales.map(sale => (
                             <Fragment key={sale._id}>
@@ -432,11 +470,13 @@ export default class TableOfSales extends Component {
                                     sale.commissionRate,
                                     sale.advisorCode,
                                     sale.saleDate,
+                                    sale.paymentDate,
                                     sale.notes,
                                     sale.saleType,
                                     sale.localTax,
                                     sale.otherTax,
                                     sale.custName,
+                                    sale.hasPayed,
                                     sale.isRefunded
                                 )}
                             </Fragment>
