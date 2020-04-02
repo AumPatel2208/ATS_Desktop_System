@@ -60,15 +60,6 @@ class App extends Component {
                                     }}
                                 >
                                     <img src={fourOhFour} alt="oops" />
-                                    {/* <img
-                                        src={astrodude}
-                                        className="res-astrodude"
-                                        alt="oops"
-                                        style={{
-                                            paddingTop: this.state.astrotop,
-                                            paddingRight: this.state.astroright
-                                        }}
-                                    /> */}
                                 </div>
                             )}
                         </CSSTransition>
