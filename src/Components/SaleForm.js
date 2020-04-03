@@ -202,15 +202,9 @@ export class SaleForm extends Component {
             this.setState({ adCode: ad });
 
             //getting the correct customer and applying the discount to the fare
-            const f = this.state.custName.split(' ');
-            //filtering first name
-            const c = this.state.customers.filter(
-                i => String(i.firstName) === f[0]
-            );
-            this.setState({ customers: c });
-            //filtering last name
+            //filtering by ID
             const cl = this.state.customers.filter(
-                i => String(i.firstName) === f[1]
+                i => String(i._id) === this.state.custName
             );
             this.setState({ customers: cl });
 
@@ -308,10 +302,7 @@ export class SaleForm extends Component {
             } else {
                 return;
             }
-            // let y = x.findIndex(x => x ===this.state.tickNum);
-            // let z = this.state.tickNum;
-            //let y = x.indexOf(z);
-            // x.splice(this.state.tickNum, 1);
+
 
             const updatedBlank = {
                 batchValues: this.state.blanks[0].batchValues,
@@ -452,8 +443,8 @@ export class SaleForm extends Component {
                             option.firstName +
                             ' ' +
                             option.lastName +
-                            ' Address: ' +
-                            option.address
+                            ' ID: ' +
+                            option._id
                         }
                         style={{ width: 300 }}
                         renderInput={params => (
@@ -463,12 +454,23 @@ export class SaleForm extends Component {
                                 variant="outlined"
                             />
                         )}
+
                         onChange={(event, value) => {
                             this.setState({
                                 ...this.state,
-                                custName: value
+                                custName: value._id
                             });
                         }}
+
+                         /*
+                        onChange={option => {
+                            this.setState({
+                                custName: option.target.value._id
+                            });
+                        }}
+
+                          */
+
                     />
 
                     <FormLabel>Notes</FormLabel>

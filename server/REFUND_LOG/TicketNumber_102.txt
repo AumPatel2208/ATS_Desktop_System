@@ -1,0 +1,3 @@
+Refund Ticket Number 102
+Date: 1585943997541 
+JSON: {"saleDate":"2020-03-29T23:00:00.000Z","_id":"5e81f10675474a1c04528468","ticketNumber":"102","fare":78,"currency":"red","paymentMethod":"Cash","advisorCode":380,"saleType":"Interline","localTax":"4567","otherTax":"45678","custName":"tt","__v":0,"USDExchangeRate":"Empty.","creditCardNum":"Empty.","expDate":"Empty.","securityCode":"Empty.","commissionRate":"Empty.","paymentDate":"Empty.","notes":"Empty.","isRefunded":true,"hasPayed":"No"}
