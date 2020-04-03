@@ -1,6 +1,6 @@
 // create page with table that contains all the people who havent payed, with the table sorted in terms of days left.
 // just show total amount to pay, and contact details for the customer.
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Container, Table } from 'react-bootstrap';
 import axios from 'axios';
 
