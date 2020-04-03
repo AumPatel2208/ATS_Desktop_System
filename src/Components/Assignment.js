@@ -72,7 +72,7 @@ export class Assignment extends Component {
         this.setState({ myId: id1 });
         this.setState({ myIndex: id[1] });
         const bl = this.state.blanks.filter(i => String(i._id) === id1);
-        this.setState({blanks:bl});
+        this.setState({ blanks: bl });
         console.log(bl);
         //this.setState({
         //    blanks: bla
@@ -122,7 +122,7 @@ export class Assignment extends Component {
                 x.push({ start: st, end: z - 1 });
             }
         }
-/*
+        /*
         if (z2 !== en) {
             if (z2 + 1 === en) {
                 x.push({ start: en, end: en });
@@ -168,7 +168,7 @@ export class Assignment extends Component {
                             color="primary"
                             size="lg"
                             onClick={this.onOpenClick.bind(this, _id)}
-                            href={'./blanks/' + _id + '-' + i}
+                            href={'/blanks/' + _id + '-' + i}
                         >
                             Assign from Batch
                         </Button>
@@ -244,7 +244,7 @@ export class Assignment extends Component {
                         this.assignBlanks(e);
                         this.updateRemaining();
                     }}
-                    href={"./blanks"}
+                    href={'./blanks'}
                 >
                     Assign Blanks
                 </Button>
