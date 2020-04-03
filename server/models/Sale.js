@@ -58,6 +58,9 @@ const SaleSchema = new Schema({
     },
     isRefunded: {
         type: Boolean
+    },
+    customerID: {
+        type: String
     }
 });
 // eslint-disable-next-line no-undef
