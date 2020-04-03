@@ -48,6 +48,9 @@ import TableOfSales from './Components/TableOfSales';
 import AdvisorBlanks from './Components/AdvisorBlanks';
 import { SaleForm } from './Components/SaleForm';
 import { ReAssignBlanks } from './Components/ReAssignBlanks';
+
+import ReportTableI from "./Components/ReportTableI";
+
 import SaleEditor from './Components/SaleEditor';
 
 const apiLinks = require('./api/config.json');
@@ -233,9 +236,8 @@ class App extends React.Component {
                         render={() => (
                             <div className="App">
                                 {/* <Nav /> */}
-                                <Reports
-                                    staff={this.state.staff}
-                                />
+                                <Reports staff={this.state.staff}/>
+                                <ReportTableI staff={this.state.staff}/>
                             </div>
                         )}
                     />
@@ -287,7 +289,7 @@ class App extends React.Component {
                     />
                     <Route
                         path="/sales/:id"
-                        render={props => <SaleForm {...props} />}
+                        render={props => <SaleForm {...props} staff={this.state.staff} />}
                     />
                     <Route
                         render={() => (

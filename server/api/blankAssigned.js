@@ -8,7 +8,7 @@ router.post('/', (q, a) => {
     //Blank.create(q.body).then(item => a.json(item));
     //console.log(q.body);
     const f = String(q.body.batchValues);
-    console.log(f)
+    console.log(f);
     //console.log(f);
    // console.log(q.param.batchValues);
     var x = f.split("-");
@@ -20,7 +20,7 @@ router.post('/', (q, a) => {
     let remain = [];
   var h= f.indexOf("-");
 
-if ( h== -1){
+if ( h=== -1){
     remain.push(q.body.batchValues);
     amount = 1;
 }else {
@@ -77,7 +77,8 @@ router.get('/byDate',(q,a)=>{
 //find and update one blank
 router.put('/:id', (q, a) => {
     BlankAssigned.findByIdAndUpdate(q.params.id, q.body).then(item => a.json(item));
-    console.log("assigned" +q.body.remaining)
+    console.log("remaining" +q.body.remaining);
+    console.log("amount" +q.body.amount)
 });
 
 

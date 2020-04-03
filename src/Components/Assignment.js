@@ -107,14 +107,18 @@ export class Assignment extends Component {
         let x = this.state.blanks[0].remaining;
         let y = this.state.myIndex;
 
-        let z = parseInt(this.state.assignedBatch.split('-')[0]);
-        let z2 = parseInt(this.state.assignedBatch.split('-')[1]);
+        let zzz = (this.state.assignedBatch.split('-'));
+
+        let z = parseInt(zzz[0]);
+        let z2 =parseInt(zzz[1]);
         console.log(x[y].start);
 
         let st = parseInt(x[y].start);
         let en = parseInt(x[y].end);
 
-        //x.push({start: (x[y].start-1), end: (x[y].end+1) })
+        if (z < st || z > en || z2 > en || z2 < st)
+            return;
+
         if (z !== st) {
             if (z - 1 === st) {
                 x.push({ start: st, end: st });
@@ -122,7 +126,11 @@ export class Assignment extends Component {
                 x.push({ start: st, end: z - 1 });
             }
         }
+<<<<<<< HEAD
         /*
+=======
+
+>>>>>>> fec414150a0b26e3b6d585dd8172f8dcbf7a505a
         if (z2 !== en) {
             if (z2 + 1 === en) {
                 x.push({ start: en, end: en });
@@ -130,8 +138,8 @@ export class Assignment extends Component {
                 x.push({ start: z2 + 1, end: en });
             }
         }
-*/
-        x.splice(this.state.myIndex, 1);
+
+        x.splice(y, 1);
 
         const updatedBlank = {
             _id: this.state.blanks._id,
@@ -220,7 +228,7 @@ export class Assignment extends Component {
 
                 <FormGroup controlId="username" bssize="large">
                     <FormLabel>
-                        Batch Values {this.state.assignedBatch}
+                        Batch Values
                     </FormLabel>
                     <FormControl
                         autoFocus
