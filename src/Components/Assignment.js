@@ -1,3 +1,4 @@
+import React, { Component, Fragment } from 'react';
 import { Container, Table } from 'reactstrap';
 import {
     Button,
@@ -8,7 +9,6 @@ import {
     FormLabel
 } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
-import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import { withRouter } from 'react-router';
 

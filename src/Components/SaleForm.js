@@ -46,7 +46,8 @@ export class SaleForm extends Component {
         myId: '',
         blanks: [],
         customers: [],
-        discounts: []
+        discounts: [],
+        customerID: ''
     };
 
     async componentDidMount() {
@@ -81,7 +82,7 @@ export class SaleForm extends Component {
             })
             .catch(err => console.log('Error code: ', err));
 
-//getting the customer in order to apply discount
+        //getting the customer in order to apply discount
         await axios
             .get(apiLinks.CUSTOMERS)
             .then(res => {
@@ -90,8 +91,7 @@ export class SaleForm extends Component {
             })
             .catch(err => console.log('Error code: ', err));
 
-
-//getting discount to apply to the fare
+        //getting discount to apply to the fare
         await axios
             .get(apiLinks.DISCOUNT)
             .then(res => {
@@ -99,8 +99,6 @@ export class SaleForm extends Component {
                 this.setState({ discounts });
             })
             .catch(err => console.log('Error code: ', err));
-
-
     }
 
     creditHandler() {
@@ -181,73 +179,83 @@ export class SaleForm extends Component {
             const bl = this.state.blanks.filter(
                 i => String(i._id) === this.state.myId
             );
-            this.setState({blanks :bl});
+            this.setState({ blanks: bl });
 
             let dt = new Date(Date.now());
             dt.setHours(0, 0, 0, 0);
 
             event.preventDefault();
 
-          //  this.setState({ adCode: GetUSer.advisorCode });
-           // this.setState({ commissionRate: GetUSer.commissionRate });
+            //  this.setState({ adCode: GetUSer.advisorCode });
+            // this.setState({ commissionRate: GetUSer.commissionRate });
             var ad;
-            {this.props.staff !== undefined
-                ? ad =`${this.props.staff.advisorCode}`
-                : ad = "undefined"}
+            {
+                this.props.staff !== undefined
+                    ? (ad = `${this.props.staff.advisorCode}`)
+                    : (ad = 'undefined');
+            }
 
             var cd;
-            {this.props.staff !== undefined
-                ? cd =`${this.props.staff.commissionRate}`
-                : cd = "undefined"}
-
-
+            {
+                this.props.staff !== undefined
+                    ? (cd = `${this.props.staff.commissionRate}`)
+                    : (cd = 'undefined');
+            }
 
             this.setState({ rate: cd });
-            this.setState({ adCode:ad });
+            this.setState({ adCode: ad });
 
             //getting the correct customer and applying the discount to the fare
-            const f = this.state.custName.split(" ");
+            const f = this.state.custName.split(' ');
             //filtering first name
             const c = this.state.customers.filter(
                 i => String(i.firstName) === f[0]
             );
-            this.setState({customers :c});
+            this.setState({ customers: c });
             //filtering last name
             const cl = this.state.customers.filter(
                 i => String(i.firstName) === f[1]
             );
-            this.setState({customers :cl});
-
+            this.setState({ customers: cl });
 
             if (this.state.customers[0] != undefined) {
-            const dl = this.state.discounts.filter(
-                i => String(i.name) === this.state.customers[0].discountName
-            );
-            this.setState({discounts :dl});
+                const dl = this.state.discounts.filter(
+                    i => String(i.name) === this.state.customers[0].discountName
+                );
+                this.setState({ discounts: dl });
 
-            //assigning correct discount to the fare
+                //assigning correct discount to the fare
 
-
-                if (this.state.customers[0].discountType === "Fixed") {
+                if (this.state.customers[0].discountType === 'Fixed') {
                     let x = this.state.discounts[0].fixed;
                     let y = this.state.fare;
-                    let z = (y - (y * (x / 100)));
-                    this.setState({fare: z});
-                } else if (this.state.customers[0].discountType === "Flexible") {
+                    let z = y - y * (x / 100);
+                    this.setState({ fare: z });
+                } else if (
+                    this.state.customers[0].discountType === 'Flexible'
+                ) {
                     let z;
                     let x = this.state.customers[0].paidThisMonth;
                     if (x < this.state.discounts[0].flexibleBand1) {
-                        z = this.state.fare - (this.state.fare * (this.state.discounts[0].band1Value / 100));
+                        z =
+                            this.state.fare -
+                            this.state.fare *
+                                (this.state.discounts[0].band1Value / 100);
                     } else if (x < this.state.discounts[0].flexibleBand2) {
-                        z = this.state.fare - (this.state.fare * (this.state.discounts[0].band2Value / 100));
+                        z =
+                            this.state.fare -
+                            this.state.fare *
+                                (this.state.discounts[0].band2Value / 100);
                     } else if (x < this.state.discounts[0].flexibleBand3) {
-                        z = this.state.fare - (this.state.fare * (this.state.discounts[0].band3Value / 100));
+                        z =
+                            this.state.fare -
+                            this.state.fare *
+                                (this.state.discounts[0].band3Value / 100);
                     }
-                    this.setState({fare: z})
+                    this.setState({ fare: z });
                 }
-
             }
-//storing the sale in the database
+            //storing the sale in the database
 
             const newSale = {
                 ticketNumber: this.state.tickNum,
@@ -275,8 +283,6 @@ export class SaleForm extends Component {
                 })
                 .catch(res => console.log(res));
 
-
-
             //USING THE BLANK/ADDING TO THE USED DATABASE SECTION
             let d = new Date(Date.now());
             d.setHours(0, 0, 0, 0);
@@ -295,23 +301,22 @@ export class SaleForm extends Component {
                 })
                 .catch(err => console.log('Error code: ', err));
 
-
             //UPDATING ASSIGNMENT - REMOVING FROM ASSIGNED LIST
             let x = this.state.blanks[0].remaining;
 
             let i = 0;
-            for (i=0; i < x.length; i++) {
+            for (i = 0; i < x.length; i++) {
                 if (x[i] == this.state.tickNum) break;
             }
             if (i < x.length) {
                 x.splice(i, 1);
             } else {
-                    return;
+                return;
             }
-           // let y = x.findIndex(x => x ===this.state.tickNum);
-           // let z = this.state.tickNum;
+            // let y = x.findIndex(x => x ===this.state.tickNum);
+            // let z = this.state.tickNum;
             //let y = x.indexOf(z);
-           // x.splice(this.state.tickNum, 1);
+            // x.splice(this.state.tickNum, 1);
 
             const updatedBlank = {
                 batchValues: this.state.blanks[0].batchValues,
@@ -327,14 +332,14 @@ export class SaleForm extends Component {
                 .put(apiLinks.ASSIGN + '/' + this.state.myId, updatedBlank)
                 .catch(err => console.log('Error code: ', err));
 
-
             // updating customer account to reflect fare
             if (this.state.customers[0] != undefined) {
                 let x;
-                if (this.state.customers[0].paidThisMonth != undefined){
+                if (this.state.customers[0].paidThisMonth != undefined) {
                     x = this.state.customers[0].paidThisMonth;
+                } else {
+                    x = 0;
                 }
-                else{x=0}
 
                 const updatedCustomer = {
                     _id: this.state.customers[0]._id,
@@ -346,14 +351,16 @@ export class SaleForm extends Component {
                     customerType: this.state.customers[0].customerType,
                     discountName: this.state.customers[0].discountName,
                     discountType: this.state.customers[0].discountType,
-                    paidThisMonth: ( parseFloat(x) + parseFloat(this.state.fare))
+                    paidThisMonth: parseFloat(x) + parseFloat(this.state.fare)
                 };
 
                 axios
-                    .put(apiLinks.CUSTOMERS + '/' + this.state.customers[0]._id, updatedCustomer)
+                    .put(
+                        apiLinks.CUSTOMERS + '/' + this.state.customers[0]._id,
+                        updatedCustomer
+                    )
                     .catch(err => console.log('Error code: ', err));
             }
-
         }
 
         return (
