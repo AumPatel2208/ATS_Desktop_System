@@ -3,6 +3,8 @@ import React, { Component, Fragment } from 'react';
 import { Dropdown, Form, FormControl, FormLabel } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import axios from 'axios';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import { GetUSer } from '../store/User';
 
@@ -440,7 +442,7 @@ export class SaleForm extends Component {
                     />
 
                     <FormLabel>Customer Name</FormLabel>
-                    <FormControl
+                    {/* <FormControl
                         autoFocus
                         type="string"
                         value={this.state.custName}
@@ -449,7 +451,33 @@ export class SaleForm extends Component {
                                 custName: e.target.value
                             });
                         }}
+                    /> */}
+                    <Autocomplete
+                        id="combo-box-customers"
+                        options={this.state.customers}
+                        getOptionLabel={option =>
+                            option.firstName +
+                            ' ' +
+                            option.lastName +
+                            ' Address: ' +
+                            option.address
+                        }
+                        style={{ width: 300 }}
+                        renderInput={params => (
+                            <TextField
+                                {...params}
+                                label="Customers"
+                                variant="outlined"
+                            />
+                        )}
+                        onChange={(event, value) => {
+                            this.setState({
+                                ...this.state,
+                                customer: value
+                            });
+                        }}
                     />
+
                     <FormLabel>Notes</FormLabel>
                     <FormControl
                         autoFocus
