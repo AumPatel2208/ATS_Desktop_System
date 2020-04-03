@@ -468,7 +468,7 @@ export class SaleForm extends Component {
                         onChange={(event, value) => {
                             this.setState({
                                 ...this.state,
-                                customer: value
+                                custName: value
                             });
                         }}
                     />
