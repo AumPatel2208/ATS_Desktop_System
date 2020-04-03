@@ -11,10 +11,11 @@ import DatePicker from 'react-datepicker';
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import { Assignment } from './Assignment';
+import { withRouter } from 'react-router';
 
 let apiLinks = require('../api/config.json');
 
-export default class AssignBlanks extends Component {
+class AssignBlanks extends Component {
     state = {
         batchValues: '',
         date: new Date(),
@@ -38,8 +39,9 @@ export default class AssignBlanks extends Component {
             this.setState({ aBlanks });
         });
     }
-    onOpenClick(_id) {
+    onOpenClick(_id, i) {
         console.log(_id);
+        this.props.history.push('./blanks/' + _id + '-' + i);
     }
 
     render() {
@@ -55,13 +57,11 @@ export default class AssignBlanks extends Component {
                     <td>{end}</td>
                     <td>{i}</td>
                     <td>
-                        {/* <Assignment id={_id} index={i}></Assignment> */}
                         <Button
                             className="open-btn"
                             color="primary"
                             size="lg"
-                            onClick={this.onOpenClick.bind(this, _id)}
-                            href={'./blanks/' + _id + '-' + i}
+                            onClick={this.onOpenClick.bind(this, _id, i)}
                         >
                             Assign from Batch
                         </Button>
@@ -91,21 +91,15 @@ export default class AssignBlanks extends Component {
                                                 <td> {sub.start}</td>
                                                 <td>{sub.end}</td>
                                                 <td>
-                                                    {/*<Assignment id={_id} index={i}></Assignment> */}
                                                     <Button
                                                         className="open-btn"
                                                         color="primary"
                                                         size="lg"
                                                         onClick={this.onOpenClick.bind(
                                                             this,
-                                                            _id
-                                                        )}
-                                                        href={
-                                                            './blanks/' +
-                                                            _id +
-                                                            '-' +
+                                                            _id,
                                                             i
-                                                        }
+                                                        )}
                                                     >
                                                         Assign from Batch
                                                     </Button>
@@ -145,14 +139,9 @@ export default class AssignBlanks extends Component {
                                                         size="lg"
                                                         onClick={this.onOpenClick.bind(
                                                             this,
-                                                            _id
-                                                        )}
-                                                        href={
-                                                            './blankAssigned/' +
-                                                            _id +
-                                                            '-' +
+                                                            _id,
                                                             sub
-                                                        }
+                                                        )}
                                                     >
                                                         Re-Assign Blank
                                                     </Button>
@@ -169,3 +158,4 @@ export default class AssignBlanks extends Component {
         );
     }
 }
+export default withRouter(AssignBlanks);

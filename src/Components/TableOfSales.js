@@ -220,8 +220,10 @@ export default class TableOfSales extends Component {
                             className="open-btn"
                             variant="outline-warning"
                             size="lg"
-                            href={`/sale_edit/${_id}`}
-                            // onClick={this.onPaymentClick.bind(this, _id)}
+                            // href={}
+                            onClick={() => {
+                                this.props.history.push(`/sale_edit/${_id}`);
+                            }}
                         >
                             PAY
                         </Button>
@@ -342,7 +344,10 @@ export default class TableOfSales extends Component {
                     <Button
                         bssize="large"
                         variant="info"
-                        href="/registerStaff"
+                        // href="/registerStaff"
+                        onClick={() => {
+                            this.props.history.push('./registerStaff');
+                        }}
                         block
                     >
                         Create New Staff

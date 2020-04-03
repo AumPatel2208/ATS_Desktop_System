@@ -42,14 +42,14 @@ import { CustomerUpdate } from './Components/CustomerUpdate';
 import BackupRestore from './Pages/BackupRestore';
 import ExRates from './Pages/ExRates';
 import Sale from './Pages/Sale';
-import { Assignment } from './Components/Assignment';
+import Assignment from './Components/Assignment';
 import TableOfAdvisors from './Components/TableOfAdvisors';
 import TableOfSales from './Components/TableOfSales';
 import AdvisorBlanks from './Components/AdvisorBlanks';
 import { SaleForm } from './Components/SaleForm';
 import { ReAssignBlanks } from './Components/ReAssignBlanks';
 
-import ReportTableI from "./Components/ReportTableI";
+import ReportTableI from './Components/ReportTableI';
 
 import SaleEditor from './Components/SaleEditor';
 
@@ -236,8 +236,8 @@ class App extends React.Component {
                         render={() => (
                             <div className="App">
                                 {/* <Nav /> */}
-                                <Reports staff={this.state.staff}/>
-                                <ReportTableI staff={this.state.staff}/>
+                                <Reports staff={this.state.staff} />
+                                <ReportTableI staff={this.state.staff} />
                             </div>
                         )}
                     />
@@ -289,7 +289,9 @@ class App extends React.Component {
                     />
                     <Route
                         path="/sales/:id"
-                        render={props => <SaleForm {...props} staff={this.state.staff} />}
+                        render={props => (
+                            <SaleForm {...props} staff={this.state.staff} />
+                        )}
                     />
                     <Route
                         render={() => (

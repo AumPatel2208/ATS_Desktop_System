@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Container, Table } from 'reactstrap';
+import { withRouter } from 'react-router';
 import axios from 'axios';
 import {
     Form,
@@ -12,7 +13,7 @@ import {
 const _ = require('lodash'); //Library to Change Cases of things
 
 let apiLinks = require('../api/config.json');
-export default class TableOfAdvisors extends Component {
+class TableOfAdvisors extends Component {
     mounted = false; //to make sure server process is stopped
     //Set the state to an empty list of objects that will be taken from the database
     state = {
@@ -41,6 +42,7 @@ export default class TableOfAdvisors extends Component {
     }
 
     onOpenClick(_id) {
+        this.props.history.push('./staff/' + _id);
         console.log(_id);
     }
 
@@ -116,7 +118,6 @@ export default class TableOfAdvisors extends Component {
                             color="primary"
                             size="lg"
                             onClick={this.onOpenClick.bind(this, _id)}
-                            href={'./staff/' + _id}
                         >
                             EDIT
                         </Button>
@@ -198,7 +199,9 @@ export default class TableOfAdvisors extends Component {
                     <Button
                         bssize="large"
                         variant="info"
-                        href="/registerStaff"
+                        onClick={() => {
+                            this.props.history.push('./registerStaff');
+                        }}
                         block
                     >
                         Create New Staff
@@ -285,3 +288,4 @@ export default class TableOfAdvisors extends Component {
         );
     }
 }
+export default withRouter(TableOfAdvisors);

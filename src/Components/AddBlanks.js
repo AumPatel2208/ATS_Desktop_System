@@ -3,10 +3,11 @@ import { Button, FormControl, FormGroup, FormLabel } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
+import { withRouter } from 'react-router';
 
 let apiLinks = require('../api/config.json');
 
-export default class AddBlanks extends Component {
+class AddBlanks extends Component {
     state = {
         batchValues: '',
         enteredDate: new Date()
@@ -24,7 +25,7 @@ export default class AddBlanks extends Component {
 
      */
 
-    handleSubmit(event) {
+    async handleSubmit(event) {
         event.preventDefault();
         console.log('hello');
 
@@ -35,12 +36,13 @@ export default class AddBlanks extends Component {
             batchValues: this.state.batchValues,
             date: dt
         };
-        axios
+        await axios
             .post(apiLinks.BLANKS, newblanks)
             .then(response => {
                 console.log(response);
             })
             .catch(err => console.log('Error code: ', err));
+        this.props.history.push('./blanks');
     }
 
     render() {
@@ -74,7 +76,6 @@ export default class AddBlanks extends Component {
                     onClick={e => {
                         this.handleSubmit(e);
                     }}
-                    href={'./blanks'}
                 >
                     Add Blanks
                 </Button>
@@ -82,3 +83,5 @@ export default class AddBlanks extends Component {
         );
     }
 }
+
+export default withRouter(AddBlanks);

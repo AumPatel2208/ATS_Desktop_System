@@ -11,10 +11,11 @@ import DatePicker from 'react-datepicker';
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import { Assignment } from './Assignment';
+import { withRouter } from 'react-router';
 
 let apiLinks = require('../api/config.json');
 
-export default class AdvisorBlanks extends Component {
+class AdvisorBlanks extends Component {
     state = {
         batchValues: '',
         date: new Date(),
@@ -36,8 +37,9 @@ export default class AdvisorBlanks extends Component {
             })
             .catch(err => console.log('Error code: ', err));
     }
-    onOpenClick(_id) {
+    onOpenClick(_id, i) {
         console.log(_id);
+        this.props.history.push('./blanks/' + _id + '-' + i);
     }
 
     render() {
@@ -58,8 +60,7 @@ export default class AdvisorBlanks extends Component {
                             className="open-btn"
                             color="primary"
                             size="lg"
-                            onClick={this.onOpenClick.bind(this, _id)}
-                            href={'./blanks/' + _id + '-' + i}
+                            onClick={this.onOpenClick.bind(this, _id, i)}
                         >
                             Sell Blank
                         </Button>
@@ -93,16 +94,14 @@ export default class AdvisorBlanks extends Component {
                                                         className="open-btn"
                                                         color="primary"
                                                         size="lg"
-                                                        onClick={this.onOpenClick.bind(
-                                                            this,
-                                                            _id
-                                                        )}
-                                                        href={
-                                                            './sales/' +
-                                                            _id +
-                                                            '-' +
-                                                            sub
-                                                        }
+                                                        onClick={() => {
+                                                            this.props.history.push(
+                                                                './sales/' +
+                                                                    _id +
+                                                                    '-' +
+                                                                    sub
+                                                            );
+                                                        }}
                                                     >
                                                         Sell Blank
                                                     </Button>
@@ -119,3 +118,4 @@ export default class AdvisorBlanks extends Component {
         );
     }
 }
+export default withRouter(AdvisorBlanks);

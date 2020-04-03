@@ -9,11 +9,12 @@ import {
     Dropdown,
     Button
 } from 'react-bootstrap';
+import { withRouter } from 'react-router';
 
 const _ = require('lodash'); //Library to Change Cases of things
 
 let apiLinks = require('../api/config.json');
-export default class TableOfCustomers extends Component {
+class TableOfCustomers extends Component {
     mounted = false; //to make sure server process is stopped
     //Set the state to an empty list of objects that will be taken from the database
     state = {
@@ -42,6 +43,7 @@ export default class TableOfCustomers extends Component {
     }
 
     onOpenClick(_id) {
+        this.props.history.push('./customers/' + _id);
         console.log(_id);
     }
 
@@ -107,7 +109,6 @@ export default class TableOfCustomers extends Component {
                             color="primary"
                             size="lg"
                             onClick={this.onOpenClick.bind(this, _id)}
-                            href={'./customers/' + _id}
                         >
                             EDIT
                         </Button>
@@ -186,7 +187,9 @@ export default class TableOfCustomers extends Component {
                     <Button
                         bssize="large"
                         variant="info"
-                        href="/customer/create"
+                        onClick={() => {
+                            this.props.history.push('./customer/create');
+                        }}
                         block
                     >
                         Create New Customer
@@ -271,6 +274,7 @@ export default class TableOfCustomers extends Component {
         );
     }
 }
+export default withRouter(TableOfCustomers);
 
 /* 
     //calculations.map is used to map all the data from calculations (contains the collection from mongo) into seperate elments

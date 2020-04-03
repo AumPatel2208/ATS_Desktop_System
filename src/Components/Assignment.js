@@ -10,10 +10,11 @@ import {
 import DatePicker from 'react-datepicker';
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
+import { withRouter } from 'react-router';
 
 let apiLinks = require('../api/config.json');
 
-export class Assignment extends Component {
+class Assignment extends Component {
     state = {
         batchValues: '',
         date: new Date(),
@@ -55,7 +56,8 @@ export class Assignment extends Component {
         this.filterStuff();
     }
 
-    onOpenClick(_id) {
+    onOpenClick(_id, i) {
+        this.props.history.push('/blanks/' + _id + '-' + i);
         console.log(_id);
     }
     onDeleteClick(_id) {
@@ -107,17 +109,16 @@ export class Assignment extends Component {
         let x = this.state.blanks[0].remaining;
         let y = this.state.myIndex;
 
-        let zzz = (this.state.assignedBatch.split('-'));
+        let zzz = this.state.assignedBatch.split('-');
 
         let z = parseInt(zzz[0]);
-        let z2 =parseInt(zzz[1]);
+        let z2 = parseInt(zzz[1]);
         console.log(x[y].start);
 
         let st = parseInt(x[y].start);
         let en = parseInt(x[y].end);
 
-        if (z < st || z > en || z2 > en || z2 < st)
-            return;
+        if (z < st || z > en || z2 > en || z2 < st) return;
 
         if (z !== st) {
             if (z - 1 === st) {
@@ -126,11 +127,6 @@ export class Assignment extends Component {
                 x.push({ start: st, end: z - 1 });
             }
         }
-<<<<<<< HEAD
-        /*
-=======
-
->>>>>>> fec414150a0b26e3b6d585dd8172f8dcbf7a505a
         if (z2 !== en) {
             if (z2 + 1 === en) {
                 x.push({ start: en, end: en });
@@ -175,8 +171,7 @@ export class Assignment extends Component {
                             className="open-btn"
                             color="primary"
                             size="lg"
-                            onClick={this.onOpenClick.bind(this, _id)}
-                            href={'/blanks/' + _id + '-' + i}
+                            onClick={this.onOpenClick.bind(this, _id, i)}
                         >
                             Assign from Batch
                         </Button>
@@ -227,9 +222,7 @@ export class Assignment extends Component {
                 </Table>
 
                 <FormGroup controlId="username" bssize="large">
-                    <FormLabel>
-                        Batch Values
-                    </FormLabel>
+                    <FormLabel>Batch Values</FormLabel>
                     <FormControl
                         autoFocus
                         type="batchValues"
@@ -251,41 +244,16 @@ export class Assignment extends Component {
                         console.log('hit');
                         this.assignBlanks(e);
                         this.updateRemaining();
+                        this.props.history.push('./blanks');
                     }}
-                    href={'./blanks'}
                 >
                     Assign Blanks
                 </Button>
             </Container>
         );
     }
-
-    /*
-    axios.get( apiLinks.BLANKS ).then(res => {
-        const blanks = res.data;
-        this.setState({blanks});
-    });
-
-
-    var y = String(this.state.batchValues).split("-");
-
-    var start = y[0];
-    var end = y[1];
-    axios.get(apiLinks.BLANKS + '/assign', {params: {start, end}})
-        .then(function(response) {
-            return response
-        });
-
-            //response => {console.log(response.data);
-       // const oG = a.data;
-       // this.setState({oG});
-
-   // })
-    console.log(this.state.oG)
-//})
-
-     */
 }
+export default withRouter(Assignment);
 
 /*
 updateInitBatch(e){

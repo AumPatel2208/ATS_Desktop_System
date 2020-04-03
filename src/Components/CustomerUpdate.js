@@ -173,6 +173,7 @@ export class CustomerUpdate extends Component {
                         this.state.customer
                     )
                     .then(res => {
+                        alert('Customer Updated!');
                         console.log(res);
                     });
             } else {
@@ -191,6 +192,7 @@ export class CustomerUpdate extends Component {
                 axios
                     .post(apiLinks.CUSTOMERS, newCustomer)
                     .then(response => {
+                        alert('Customer Created!');
                         console.log(response);
                     })
                     .catch(res => console.log(res));
