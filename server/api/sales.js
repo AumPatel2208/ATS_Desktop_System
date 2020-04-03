@@ -6,7 +6,9 @@ const fs = require('fs');
 
 router.post('/', (q, a) => {
     //console.log(q.body.ticketNumber);
-    console.log(q.body.currency, q.body.USDExchangeRate);
+    //console.log(q.body.currency, q.body.USDExchangeRate);
+    console.log("ad code" + q.body.advisorCode);
+    console.log("commission" + q.body.commissionRate);
 
     let x = q.body.currency;
     let y = q.body.USDExchangeRate;

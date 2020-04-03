@@ -330,6 +330,12 @@ export class SaleForm extends Component {
 
             // updating customer account to reflect fare
             if (this.state.customers[0] != undefined) {
+                let x;
+                if (this.state.customers[0].paidThisMonth != undefined){
+                    x = this.state.customers[0].paidThisMonth;
+                }
+                else{x=0}
+
                 const updatedCustomer = {
                     _id: this.state.customers[0]._id,
                     firstName: this.state.customers[0].firstName,
@@ -340,7 +346,7 @@ export class SaleForm extends Component {
                     customerType: this.state.customers[0].customerType,
                     discountName: this.state.customers[0].discountName,
                     discountType: this.state.customers[0].discountType,
-                    paidThisMonth: (this.state.customers[0].paidThisMonth + this.state.fare)
+                    paidThisMonth: ( parseFloat(x) + parseFloat(this.state.fare))
                 };
 
                 axios
