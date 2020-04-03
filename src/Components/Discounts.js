@@ -152,14 +152,6 @@ export default class Discounts extends Component {
                     <td>{flexibleBand3}</td>
                     <td>{band3Value}</td>
                     <td>
-                        <Button
-                            className="open-btn"
-                            color="primary"
-                            size="lg"
-                            onClick={this.onOpenClick.bind(this)}
-                        >
-                            EDIT
-                        </Button>
                     </td>
                 </tr>
             </Fragment>

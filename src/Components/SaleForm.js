@@ -11,43 +11,42 @@ let apiLinks = require('../api/config.json');
 export class SaleForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            isOpen: false,
-            stats: {}
+
+       this.state = {
+            sales: [],
+            rates: [],
+            date: new Date(),
+            code: '',
+            custName: '',
+            saleType: 'Select Sale Type',
+            tickNum: '',
+            fare: '',
+            Tlocal: '',
+            Tother: '',
+            method: 'Payment Method',
+            creditNum: '-',
+            expDate: '-',
+            secCode: '-',
+            rate: '',
+            adCode: '',
+            notes: '',
+            USDExchangeRate: '',
+            eRate: {
+                eDate: Date,
+                currency: '',
+                USDExchange: ''
+            },
+            exch: [],
+            cCode: 'USD',
+            myId: '',
+            blanks: [],
+            customers: [],
+            discounts: []
         };
+
     }
 
-    state = {
-        sales: [],
-        rates: [],
-        date: new Date(),
-        code: '',
-        custName: '',
-        saleType: 'Select Sale Type',
-        tickNum: '',
-        fare: '',
-        Tlocal: '',
-        Tother: '',
-        method: 'Payment Method',
-        creditNum: '-',
-        expDate: '-',
-        secCode: '-',
-        rate: '',
-        adCode: '',
-        notes: '',
-        USDExchangeRate: '',
-        eRate: {
-            eDate: Date,
-            currency: '',
-            USDExchange: ''
-        },
-        exch: [],
-        cCode: 'USD',
-        myId: '',
-        blanks: [],
-        customers: [],
-        discounts: []
-    };
+
 
     async componentDidMount() {
         const {
@@ -227,15 +226,14 @@ export class SaleForm extends Component {
 
             //assigning correct discount to the fare
 
-
                 if (this.state.customers[0].discountType === "Fixed") {
-                    let x = this.state.discounts[0].fixed;
+                    let x = parseFloat(this.state.discounts[0].fixed);
                     let y = this.state.fare;
                     let z = (y - (y * (x / 100)));
                     this.setState({fare: z});
                 } else if (this.state.customers[0].discountType === "Flexible") {
                     let z;
-                    let x = this.state.customers[0].paidThisMonth;
+                    let x = parseFloat(this.state.customers[0].paidThisMonth);
                     if (x < this.state.discounts[0].flexibleBand1) {
                         z = this.state.fare - (this.state.fare * (this.state.discounts[0].band1Value / 100));
                     } else if (x < this.state.discounts[0].flexibleBand2) {
