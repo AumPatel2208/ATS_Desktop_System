@@ -6,7 +6,7 @@ import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
-import { GetUSer } from '../store/User';
+import { GetUser } from '../store/User';
 
 let apiLinks = require('../api/config.json');
 
@@ -49,7 +49,8 @@ export class SaleForm extends Component {
         blanks: [],
         customers: [],
         discounts: [],
-        customerID: ''
+        customerID: '',
+        customer: {}
     };
 
     async componentDidMount() {
@@ -188,8 +189,8 @@ export class SaleForm extends Component {
 
             event.preventDefault();
 
-            //  this.setState({ adCode: GetUSer.advisorCode });
-            // this.setState({ commissionRate: GetUSer.commissionRate });
+            //  this.setState({ adCode: GetUser.advisorCode });
+            // this.setState({ commissionRate: GetUser.commissionRate });
             var ad;
             {
                 this.props.staff !== undefined
