@@ -16,26 +16,50 @@ import { withRouter } from 'react-router';
 let apiLinks = require('../api/config.json');
 
 class AdvisorBlanks extends Component {
-    state = {
-        batchValues: '',
-        date: new Date(),
-        code: '',
-        oG: '',
-        i: 0,
-        blanks: [],
-        num: ''
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            batchValues: '',
+            date: new Date(),
+            code: '',
+            oG: '',
+            i: 0,
+            blanks: [],
+            num: ''
+        };
+    }
+
+
 
     //runs when component mounts, use to gets the data from db
 
     componentDidMount() {
+        var cd;
+        {
+            this.props.staff !== undefined
+                ? (cd = `${this.props.staff.advisorCode}`)
+                : (cd = 'undefined');
+        }
+
+
         axios
             .get(apiLinks.ASSIGN)
             .then(res => {
                 const blanks = res.data;
                 this.setState({ blanks });
+                const cl = this.state.blanks.filter(
+                    i => i.advisorCode == cd
+                );
+                this.setState({ blanks: cl });
+
             })
             .catch(err => console.log('Error code: ', err));
+
+
+
+
+
     }
     onOpenClick(_id, i) {
         console.log(_id);

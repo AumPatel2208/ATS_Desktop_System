@@ -283,7 +283,7 @@ class App extends React.Component {
                         path="/sale"
                         render={() => (
                             <div className="App">
-                                <Sale></Sale>
+                                <AdvisorBlanks staff={this.state.staff}/>
                             </div>
                         )}
                     />
