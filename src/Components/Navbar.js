@@ -100,70 +100,71 @@ class Navigation extends Component {
                     ></NavItemsAuth>
                 </Nav>
             );
-        } else if (ad === 'OfficeManager') {
-            return (
-                <Nav>
-                    <NavItem>
-                        <NavLink tag={Link} to="/">
-                            Home
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink tag={Link} to="/customers">
-                            Customers
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink tag={Link} to="/advisors">
-                            Advisors
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink tag={Link} to="/registerStaff">
-                            Register Staff
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink tag={Link} to="/reports">
-                            Reports
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink tag={Link} to="/blanks">
-                            Blanks
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink tag={Link} to="/exchange-rates">
-                            Exchange Rates
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink tag={Link} to="/sale">
-                            Sell Ticket
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink tag={Link} to="/sales">
-                            Sales
-                        </NavLink>
-                    </NavItem>
-                    <NavItemsAuth
-                        isAuthenticated={this.props.isAuthenticated}
-                        staff={this.props.staff}
-                    ></NavItemsAuth>
-                </Nav>
-            );
-        } else {
-            return (
-                <Nav>
-                    <NavItemsAuth
-                        isAuthenticated={this.props.isAuthenticated}
-                        staff={this.props.staff}
-                    ></NavItemsAuth>
-                </Nav>
-            );
+        }  else if (ad === "OfficeManager"){
+            return <Nav>
+
+                <NavItem>
+                    <NavLink tag={Link} to="/">
+                        Home
+                    </NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} to="/customers">
+                        Customers
+                    </NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} to="/advisors">
+                        Advisors
+                    </NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} to="/registerStaff">
+                        Register Staff
+                    </NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} to="/reports">
+                        Reports
+                    </NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} to="/blanks">
+                        Blanks
+                    </NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} to="/exchange-rates">
+                        Exchange Rates
+                    </NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} to="/sales">
+                        Sales
+                    </NavLink>
+                </NavItem>
+
+                <NavItemsAuth
+                    isAuthenticated={this.props.isAuthenticated}
+                    staff={this.props.staff}
+                ></NavItemsAuth>
+            </Nav>
+
         }
+        else{
+           return <Nav>
+            <NavItemsAuth
+                isAuthenticated={this.props.isAuthenticated}
+                staff={this.props.staff}
+            ></NavItemsAuth>
+            </Nav>
+        }
+<<<<<<< HEAD
+=======
+       
+
+
+>>>>>>> 164e9cfe2eb1623adb15d010a148d2d6657a920b
     }
 
     render() {

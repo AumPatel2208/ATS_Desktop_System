@@ -18,9 +18,7 @@ import { useStoreState } from 'pullstate';
 import { UserStore } from '../store/UserStore';
 let apiLinks = require('../api/config.json');
 
-export default function Blanks() {
-    const User = useStoreState(UserStore, s => s.User);
-    const type = String(User.staffType);
+export default function Blanks(props) {
     const manager = (
         <Container>
             <AssignBlanks></AssignBlanks>
@@ -35,18 +33,22 @@ export default function Blanks() {
     );
 
     function displayHandler() {
-        if (type === 'SystemAdministrator') {
+
+        var ad;
+        {props.staff !== undefined
+            ? ad =`${props.staff.staffType}`
+            : ad = "undefined"}
+
+        if (ad === 'SystemAdministrator') {
             return <Fragment>{admin}</Fragment>;
-        } else if (type === 'OfficeManager') {
+        } else if (ad === 'OfficeManager') {
             return <Fragment>{manager}</Fragment>;
         }
     }
 
     return (
         <Container>
-            <Fragment>{manager}</Fragment>
-            <Fragment>{admin}</Fragment>
-            <br />
+            <Fragment>{displayHandler()}</Fragment>
         </Container>
     );
 }
