@@ -236,7 +236,7 @@ class App extends React.Component {
                         render={() => (
                             <div className="App">
                                 {/* <Nav /> */}
-                                <Reports staff={this.state.staff} />
+
                                 <ReportTableI staff={this.state.staff} />
                             </div>
                         )}
@@ -263,9 +263,7 @@ class App extends React.Component {
                         path="/backup-restore"
                         render={() => (
                             <div className="App">
-                                <BackupRestore
-                                    staff={this.state.staff}
-                                ></BackupRestore>
+                                <BackupRestore staff={this.state.staff}/>
                             </div>
                         )}
                     />
@@ -293,7 +291,6 @@ class App extends React.Component {
                             <div className="App">
                                 <SaleForm {...props} staff={this.state.staff}/>
                             </div>
-                           // <SaleForm {...props} staff={this.state.staff} />
 
                         )}
                     />

@@ -41,11 +41,21 @@ export default class ReportTableI extends Component {
     componentDidMount() {
         //   let start = this.state.startDate;
         //let end = this.state.endDate;
+        var a;
+        {this.props.staff !== undefined
+            ? a =`${this.props.staff.advisorCode}`
+            : a = ""}
+
         axios
             .get(apiLinks.SALES)
             .then(res => {
                 const sales = res.data;
                 this.setState({ sales });
+
+                const dl = this.state.sales.filter(
+                    i => i.advisorCode == a);
+                this.setState({ sales: dl });
+
             })
             .catch(err => console.log('Error code: ', err));
     }
@@ -56,11 +66,19 @@ export default class ReportTableI extends Component {
             ? ad =`${this.props.staff.staffType}`
             : ad = "undefined"}
         if (ad === "TravelAdvisor") {
-            //this.setState({inputCode:`${this.props.staff.advisorCode}`});
+
+           let code =  `${this.props.staff.advisorCode}`;
+/*
+            this.setState({sales: this.state.sales.filter(
+                    sale =>
+                        String(sale[this.state.code]) == code)});
+
+ */
+
+
             return <Fragment>
-                <h3>Showing Sales For Advisor {`${this.props.staff.advisorCode}`} </h3>
+                <h3>Showing Sales For Advisor {code} </h3>
             </Fragment>
-            // this.setState({inputCode: 380 })
         }
         else {
             return <Fragment>
