@@ -22,4 +22,6 @@ router.post('/', (q, a) => {
     //     :
 });
 
+router.get('/', (q, a) => {});
+
 module.exports = router;

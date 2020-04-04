@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Container,
     Button,
@@ -8,13 +8,25 @@ import {
     Dropdown
 } from 'react-bootstrap';
 import axios from 'axios';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 const apiLinks = require('../api/config.json');
 
 function BackupRestore() {
     const [name, setName] = useState('');
     const [file, setFile] = useState('');
-    // const [backupFiles, setBackupFiles] = useState({});
-    function handleBackup(e) {
+    const [backupFiles, setBackupFiles] = useState([]);
+
+    useEffect(() => {
+        axios
+            .get(apiLinks.RESTORE)
+            .then(async res => {
+                setBackupFiles(await res.data.listOfFiles);
+            })
+            .catch(err => console.log('Error code: ', err));
+    }, [backupFiles]);
+
+    async function handleBackup(e) {
         e.preventDefault();
         // Headers
         const headersConfig = {
@@ -23,12 +35,19 @@ function BackupRestore() {
             }
         };
 
-        axios
+        await axios
             .post(apiLinks.BACKUP, { name: name }, headersConfig)
             .then(res => {
                 if (res.status === 200) alert('Backup Successful');
                 else alert('Backup Failed!');
                 window.location.reload(false);
+            })
+            .catch(err => console.log('Error code: ', err));
+
+        await axios
+            .get(apiLinks.RESTORE)
+            .then(async res => {
+                setBackupFiles(await res.data.listOfFiles);
             })
             .catch(err => console.log('Error code: ', err));
     }
@@ -67,7 +86,7 @@ function BackupRestore() {
             <h1>Restore</h1>
 
             <form onSubmit={handleRestore}>
-                <FormGroup controlId="Restore_Name">
+                {/* <FormGroup controlId="Restore_Name">
                     <FormControl
                         autoFocus
                         type="string"
@@ -76,9 +95,25 @@ function BackupRestore() {
                             setFile(e.target.value);
                         }}
                     ></FormControl>
-                </FormGroup>
+                </FormGroup> */}
+                <Autocomplete
+                    id="combo-box-customers"
+                    options={backupFiles}
+                    getOptionLabel={option => option}
+                    style={{ width: 300 }}
+                    renderInput={params => (
+                        <TextField
+                            {...params}
+                            label="Backups"
+                            variant="outlined"
+                        />
+                    )}
+                    onChange={(event, value) => {
+                        setFile(value);
+                    }}
+                />
                 <Button block bssize="large" type="submit" color="primary">
-                    Backup
+                    Restore
                 </Button>
             </form>
         </Container>

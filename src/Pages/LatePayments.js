@@ -49,7 +49,7 @@ export default class LatePayments extends Component {
                     <tbody>
                         {this.state.advisors.map(
                             ({
-                                _id,
+                                ticketNumber,
                                 firstName,
                                 lastName,
                                 address,
