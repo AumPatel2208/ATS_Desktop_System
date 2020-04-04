@@ -143,15 +143,11 @@ class Navigation extends Component {
                     </NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink tag={Link} to="/sale">
-                        Sell Ticket
-                    </NavLink>
-                </NavItem>
-                <NavItem>
                     <NavLink tag={Link} to="/sales">
                         Sales
                     </NavLink>
                 </NavItem>
+
                 <NavItemsAuth
                     isAuthenticated={this.props.isAuthenticated}
                     staff={this.props.staff}

@@ -19,7 +19,7 @@ router.post('/', (q, a) => {
     var d = (x[1]);
     console.log(c);
     console.log(d);
-    let amount = d-c;
+    let amount = (d-c)+1;
     let remain = [{start: c, end:d}];
     let batchTp = "";
     if (f.substring(0-2)==="201"){
