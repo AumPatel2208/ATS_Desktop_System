@@ -109,6 +109,7 @@ router.get('/byDate',(q,a)=>{
 router.put('/:id', (q, a) => {
     //Blank.findByIdAndUpdate(q.params.id, q.body).then(a.json(post));
     Blank.findByIdAndUpdate(q.params.id, q.body).then(item => a.json(item));
+    console.log("put" + q.body.remaining)
 });
 
 

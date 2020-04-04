@@ -24,27 +24,52 @@ class AddBlanks extends Component {
             const blanks = res.data;
             this.setState({blanks});
 
-
-
-
         });
     }
 
 
     async handleDelete(e) {
-        let x = this.state.blanks[0].remaining;
-        let y = this.state.myIndex;
-
         let zzz = this.state.toDelete.split('-');
+        let z, z2;
 
-        let z = parseInt(zzz[0]);
-        let z2 = parseInt(zzz[1]);
-        console.log(x[y].start);
+        if (zzz !== undefined) {
+             z = parseInt(zzz[0]);
+             z2 = parseInt(zzz[1]);
 
-        let st = parseInt(x[y].start);
-        let en = parseInt(x[y].end);
 
-        if (z < st || z > en || z2 > en || z2 < st) return;
+            const bl = this.state.blanks.filter(
+                i => i.batchStart <= z
+            );
+            this.setState({blanks: bl});
+
+            const l = this.state.blanks.filter(
+                i => i.batchEnd >= z2
+            );
+            this.setState({blanks: l});
+        }
+        else {
+             z = parseInt(this.state.toDelete);
+             z2 = parseInt(this.state.toDelete)
+
+        }
+
+        let myID = this.state.blanks[0]._id;
+
+        let x = this.state.blanks[0].remaining;
+        for (var i=0; i< this.state.blanks[0].remaining.length; i++){
+            if (this.state.blanks[0].remaining[i].start <= z && this.state.blanks[0].remaining[i].end >= z2)
+            {break;}
+        }
+
+        if (x[i] === undefined){
+            alert("This value does not exist in available blanks and cannot be deleted");
+            return;
+        }
+
+        let st = parseInt(x[i].start);
+        let en = parseInt(x[i].end);
+
+      //  if (z < st || z > en || z2 > en || z2 < st) return;
 
         if (z !== st) {
             if (z - 1 === st) {
@@ -61,22 +86,22 @@ class AddBlanks extends Component {
             }
         }
 
-        x.splice(y, 1);
+        x.splice(i, 1);
 
         const updatedBlank = {
-            _id: this.state.blanks._id,
-            batchValues: this.state.blanks.batchValues,
-            batchStart: this.state.blanks.batchStart,
-            batchEnd: this.state.blanks.batchEnd,
-            date: this.state.blanks.date,
-            batchType: this.state.blanks.batchType,
-            amount: this.state.blanks.amount,
+            _id: this.state.blanks[0]._id,
+            batchValues: this.state.blanks[0].batchValues,
+            batchStart: this.state.blanks[0].batchStart,
+            batchEnd: this.state.blanks[0].batchEnd,
+            date: this.state.blanks[0].date,
+            batchType: this.state.blanks[0].batchType,
+            amount: this.state.blanks[0].amount,
             remaining: x
         };
 
         axios
-            .put(apiLinks.BLANKS + '/' + this.state.myId, updatedBlank)
-            .catch(err => console.log('Error code: ', err));
+            .put(apiLinks.BLANKS + '/' + myID, updatedBlank)
+            .catch(err => alert('Error code: '+ err));
     }
 
 

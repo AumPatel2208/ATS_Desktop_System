@@ -160,6 +160,18 @@ class Navigation extends Component {
                 </Nav>
             );
         }
+<<<<<<< HEAD
+=======
+        else{
+           return <Nav>
+            <NavItemsAuth
+                isAuthenticated={this.props.isAuthenticated}
+                staff={this.props.staff}
+            ></NavItemsAuth>
+            </Nav>
+        }
+
+>>>>>>> 3fc27f25e5627d70671af5ec25c21cfacc389fd7
     }
 
     render() {
