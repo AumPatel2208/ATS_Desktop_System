@@ -181,9 +181,15 @@ class App extends React.Component {
                         path="/advisors"
                         render={() => (
                             <div className="App">
-                                <TableOfAdvisors
-                                    staff={this.state.staff}
-                                ></TableOfAdvisors>
+                                {this.state.isAuthenticated &&
+                                this.state.staff.staffType ===
+                                    'OfficeManager' ? (
+                                    <TableOfAdvisors
+                                        staff={this.state.staff}
+                                    ></TableOfAdvisors>
+                                ) : (
+                                    <Restricted></Restricted>
+                                )}
                             </div>
                         )}
                     ></Route>

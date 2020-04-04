@@ -35,142 +35,136 @@ class Navigation extends Component {
         });
     };
 
-    roleHandler(){
+    roleHandler() {
         var ad;
-        {this.props.staff !== undefined
-            ? ad =`${this.props.staff.staffType}`
-            : ad = "undefined"}
-        if (ad === "TravelAdvisor") {
-           return <Nav>
-
-               <NavItem>
-                   <NavLink tag={Link} to="/customers">
-                       Customers
-                   </NavLink>
-               </NavItem>
-               <NavItem>
-                   <NavLink tag={Link} to="/reports">
-                       Reports
-                   </NavLink>
-               </NavItem>
-               <NavItem>
-                   <NavLink tag={Link} to="/exchange-rates">
-                       Exchange Rates
-                   </NavLink>
-               </NavItem>
-               <NavItem>
-                   <NavLink tag={Link} to="/sale">
-                       Sell Ticket
-                   </NavLink>
-               </NavItem>
-               <NavItem>
-                   <NavLink tag={Link} to="/sales">
-                       Sales
-                   </NavLink>
-               </NavItem>
-               <NavItemsAuth
-                   isAuthenticated={this.props.isAuthenticated}
-                   staff={this.props.staff}
-               ></NavItemsAuth>
-            </Nav>
-
-
-
+        {
+            this.props.staff !== undefined
+                ? (ad = `${this.props.staff.staffType}`)
+                : (ad = 'undefined');
         }
-        else if (ad === "SystemAdministrator"){
-            return <Nav>
-
-                <NavItem>
-                    <NavLink tag={Link} to="/reports">
-                        Reports
-                    </NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} to="/blanks">
-                        Blanks
-                    </NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} to="/backup-restore">
-                        Backup-Restore
-                    </NavLink>
-                </NavItem>
-                <NavItemsAuth
-                    isAuthenticated={this.props.isAuthenticated}
-                    staff={this.props.staff}
-                ></NavItemsAuth>
-            </Nav>
-
-
-
+        if (ad === 'TravelAdvisor') {
+            return (
+                <Nav>
+                    <NavItem>
+                        <NavLink tag={Link} to="/customers">
+                            Customers
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} to="/reports">
+                            Reports
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} to="/exchange-rates">
+                            Exchange Rates
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} to="/sale">
+                            Sell Ticket
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} to="/sales">
+                            Sales
+                        </NavLink>
+                    </NavItem>
+                    <NavItemsAuth
+                        isAuthenticated={this.props.isAuthenticated}
+                        staff={this.props.staff}
+                    ></NavItemsAuth>
+                </Nav>
+            );
+        } else if (ad === 'SystemAdministrator') {
+            return (
+                <Nav>
+                    <NavItem>
+                        <NavLink tag={Link} to="/reports">
+                            Reports
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} to="/blanks">
+                            Blanks
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} to="/backup-restore">
+                            Backup-Restore
+                        </NavLink>
+                    </NavItem>
+                    <NavItemsAuth
+                        isAuthenticated={this.props.isAuthenticated}
+                        staff={this.props.staff}
+                    ></NavItemsAuth>
+                </Nav>
+            );
+        } else if (ad === 'OfficeManager') {
+            return (
+                <Nav>
+                    <NavItem>
+                        <NavLink tag={Link} to="/">
+                            Home
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} to="/customers">
+                            Customers
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} to="/advisors">
+                            Advisors
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} to="/registerStaff">
+                            Register Staff
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} to="/reports">
+                            Reports
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} to="/blanks">
+                            Blanks
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} to="/exchange-rates">
+                            Exchange Rates
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} to="/sale">
+                            Sell Ticket
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} to="/sales">
+                            Sales
+                        </NavLink>
+                    </NavItem>
+                    <NavItemsAuth
+                        isAuthenticated={this.props.isAuthenticated}
+                        staff={this.props.staff}
+                    ></NavItemsAuth>
+                </Nav>
+            );
+        } else {
+            return (
+                <Nav>
+                    <NavItemsAuth
+                        isAuthenticated={this.props.isAuthenticated}
+                        staff={this.props.staff}
+                    ></NavItemsAuth>
+                </Nav>
+            );
         }
-        else if (ad === "OfficeManager"){
-            return <Nav>
-
-                <NavItem>
-                    <NavLink tag={Link} to="/">
-                        Home
-                    </NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} to="/customers">
-                        Customers
-                    </NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} to="/advisors">
-                        Advisors
-                    </NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} to="/registerStaff">
-                        Register Staff
-                    </NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} to="/reports">
-                        Reports
-                    </NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} to="/blanks">
-                        Blanks
-                    </NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} to="/exchange-rates">
-                        Exchange Rates
-                    </NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} to="/sale">
-                        Sell Ticket
-                    </NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} to="/sales">
-                        Sales
-                    </NavLink>
-                </NavItem>
-                <NavItemsAuth
-                    isAuthenticated={this.props.isAuthenticated}
-                    staff={this.props.staff}
-                ></NavItemsAuth>
-            </Nav>
-
-        }
-        else{
-           return <Nav>
-            <NavItemsAuth
-                isAuthenticated={this.props.isAuthenticated}
-                staff={this.props.staff}
-            ></NavItemsAuth>
-            </Nav>
-        }
-
-
     }
-
 
     render() {
         return (
@@ -183,71 +177,9 @@ class Navigation extends Component {
 
                 <Collapse isOpen={this.state.isOpen} navbar>
                     <Nav className="ml-auto" navbar>
-<<<<<<< HEAD
-                        <NavItem>
-                            <NavLink tag={Link} to="/">
-                                Home
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink tag={Link} to="/customers">
-                                Customers
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink tag={Link} to="/advisors">
-                                Advisors
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink tag={Link} to="/registerStaff">
-                                Register Staff
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink tag={Link} to="/reports">
-                                Reports
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink tag={Link} to="/blanks">
-                                Blanks
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink tag={Link} to="/backup-restore">
-                                Backup-Restore
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink tag={Link} to="/exchange-rates">
-                                Exchange Rates
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink tag={Link} to="/sale">
-                                Sell Ticket
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink tag={Link} to="/sales">
-                                Sales
-                            </NavLink>
-                        </NavItem>
-                        {/* <NavItem>
-              <NavLink tag={Link} to="/login">
-                Login
-              </NavLink>
-            </NavItem> */}
-                        <NavItemsAuth
-                            isAuthenticated={this.props.isAuthenticated}
-                            staff={this.props.staff}
-                        ></NavItemsAuth>
-=======
                         {}
                         {}
                         {this.roleHandler()}
->>>>>>> 0eb0d6824ef1f5603faeec3ada3c5b7b4ef93072
                     </Nav>
                 </Collapse>
             </Navbar>

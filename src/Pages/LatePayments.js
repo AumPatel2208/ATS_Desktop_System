@@ -6,13 +6,19 @@ import axios from 'axios';
 
 export default class LatePayments extends Component {
     state = {
-        sales: [{}]
+        sales: [{}],
+        customers: [{}],
+        toDisplay: [{}]
     };
 
     filterSales() {
         this.setState({
             sales: this.state.advisors.filter(sale => !sale.hasPayed)
         });
+    }
+    numberOfDaysSinceSale(date) {
+        var diff = Math.abs(new Date().getTime() - date.getTime());
+        return diff / (1000 * 60 * 60 * 24);
     }
 
     async componentDidMount() {
@@ -30,6 +36,21 @@ export default class LatePayments extends Component {
                 console.log(err);
             });
         this.filterSales();
+        //get customers and match using customerID on the data
+
+        //mapping into data to display
+        var tempToDisplay = [];
+        this.sales.map(sale => {
+            tempToDisplay.push({
+                ticketNumber: sale.ticketNumber,
+                amountDue:
+                    Number(sale.fare) +
+                    Number(sale.localTax) +
+                    Number(sale.otherTax),
+                saleDate: sale.saleDate,
+                daysLeft: 30 - this.numberOfDaysSinceSale(sale.saleDate)
+            });
+        });
     }
     render() {
         return (
@@ -41,7 +62,6 @@ export default class LatePayments extends Component {
                             <th>Amount due</th>
                             <th>Sale Date</th>
                             <th>Days Left</th>
-                            <th>Advisor Code</th>
                             <th>Customer</th>
                             <th>Actions</th>
                         </tr>
