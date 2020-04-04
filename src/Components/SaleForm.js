@@ -13,46 +13,39 @@ let apiLinks = require('../api/config.json');
 export class SaleForm extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
-            isOpen: false,
-            stats: {}
+            sales: [],
+            rates: [],
+            date: new Date(),
+            code: '',
+            custName: '',
+            saleType: 'Select Sale Type',
+            tickNum: '',
+            fare: '',
+            Tlocal: '',
+            Tother: '',
+            method: 'Payment Method',
+            creditNum: '-',
+            expDate: '-',
+            secCode: '-',
+            rate: '',
+            adCode: '',
+            notes: '',
+            USDExchangeRate: '',
+            eRate: {
+                eDate: Date,
+                currency: '',
+                USDExchange: ''
+            },
+            exch: [],
+            cCode: 'USD',
+            myId: '',
+            blanks: [],
+            customers: [],
+            discounts: []
         };
     }
-
-    state = {
-        sales: [],
-        rates: [],
-        date: new Date(),
-        code: '',
-        custName: '',
-        saleType: 'Select Sale Type',
-        tickNum: '',
-        fare: '',
-        Tlocal: '',
-        Tother: '',
-        method: 'Payment Method',
-        creditNum: '-',
-        expDate: '-',
-        secCode: '-',
-        rate: '',
-        adCode: '',
-        notes: '',
-        USDExchangeRate: '',
-        eRate: {
-            eDate: Date,
-            currency: '',
-            USDExchange: ''
-        },
-        exch: [],
-        cCode: 'USD',
-        myId: '',
-        blanks: [],
-        customers: [],
-        discounts: [],
-        customerID: '',
-        customer: {}
-    };
-
     async componentDidMount() {
         const {
             match: { params }
@@ -195,29 +188,23 @@ export class SaleForm extends Component {
             {
                 this.props.staff !== undefined
                     ? (ad = `${this.props.staff.advisorCode}`)
-                    : (ad = 'undefined');
+                    : (ad = '-');
             }
 
             var cd;
             {
                 this.props.staff !== undefined
                     ? (cd = `${this.props.staff.commissionRate}`)
-                    : (cd = 'undefined');
+                    : (cd = '-');
             }
 
-            this.setState({ rate: cd });
-            this.setState({ adCode: ad });
+            //this.setState({ rate: cd });
+            //this.setState({ adCode: ad });
 
             //getting the correct customer and applying the discount to the fare
-            const f = this.state.custName.split(' ');
-            //filtering first name
-            const c = this.state.customers.filter(
-                i => String(i.firstName) === f[0]
-            );
-            this.setState({ customers: c });
-            //filtering last name
+            //filtering by ID
             const cl = this.state.customers.filter(
-                i => String(i.firstName) === f[1]
+                i => String(i._id) === this.state.custName
             );
             this.setState({ customers: cl });
 
@@ -227,10 +214,9 @@ export class SaleForm extends Component {
                 );
                 this.setState({ discounts: dl });
 
+                if (this.state.customers[0].discountType === "Fixed") {
+                    let x = parseFloat(this.state.discounts[0].fixed);
                 //assigning correct discount to the fare
-
-                if (this.state.customers[0].discountType === 'Fixed') {
-                    let x = this.state.discounts[0].fixed;
                     let y = this.state.fare;
                     let z = y - y * (x / 100);
                     this.setState({ fare: z });
@@ -238,7 +224,7 @@ export class SaleForm extends Component {
                     this.state.customers[0].discountType === 'Flexible'
                 ) {
                     let z;
-                    let x = this.state.customers[0].paidThisMonth;
+                    let x = parseFloat(this.state.customers[0].paidThisMonth);
                     if (x < this.state.discounts[0].flexibleBand1) {
                         z =
                             this.state.fare -
@@ -271,9 +257,9 @@ export class SaleForm extends Component {
                 creditCardNum: this.state.creditNum,
                 expDate: this.state.expDate,
                 securityCode: this.state.secCode,
-                commissionRate: this.state.rate,
+                commissionRate: cd,
                 custName: this.state.custName,
-                advisorCode: this.state.adCode,
+                advisorCode: ad,
                 saleDate: dt,
                 notes: this.state.notes,
                 USDExchangeRate: this.state.exch[0].toUSDRate
@@ -316,10 +302,7 @@ export class SaleForm extends Component {
             } else {
                 return;
             }
-            // let y = x.findIndex(x => x ===this.state.tickNum);
-            // let z = this.state.tickNum;
-            //let y = x.indexOf(z);
-            // x.splice(this.state.tickNum, 1);
+
 
             const updatedBlank = {
                 batchValues: this.state.blanks[0].batchValues,
@@ -460,8 +443,8 @@ export class SaleForm extends Component {
                             option.firstName +
                             ' ' +
                             option.lastName +
-                            ' Address: ' +
-                            option.address
+                            ' ID: ' +
+                            option._id
                         }
                         style={{ width: 300 }}
                         renderInput={params => (
@@ -471,12 +454,23 @@ export class SaleForm extends Component {
                                 variant="outlined"
                             />
                         )}
+
                         onChange={(event, value) => {
                             this.setState({
                                 ...this.state,
-                                customer: value
+                                custName: value._id
                             });
                         }}
+
+                         /*
+                        onChange={option => {
+                            this.setState({
+                                custName: option.target.value._id
+                            });
+                        }}
+
+                          */
+
                     />
 
                     <FormLabel>Notes</FormLabel>
