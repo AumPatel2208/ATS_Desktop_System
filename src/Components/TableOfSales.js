@@ -10,12 +10,13 @@ import {
     Button
 } from 'react-bootstrap';
 import SaleEditor from './SaleEditor';
+import { withRouter } from 'react-router';
 
 const _ = require('lodash'); //Library to Change Cases of things
 
 let apiLinks = require('../api/config.json');
 
-export default class TableOfSales extends Component {
+class TableOfSales extends Component {
     mounted = false; //to make sure server process is stopped
     //Set the state to an empty list of objects that will be taken from the database
     state = {
@@ -344,13 +345,12 @@ export default class TableOfSales extends Component {
                     <Button
                         bssize="large"
                         variant="info"
-                        // href="/registerStaff"
                         onClick={() => {
-                            this.props.history.push('./registerStaff');
+                            this.props.history.push('./sale');
                         }}
                         block
                     >
-                        Create New Staff
+                        Sell Ticket
                     </Button>
                 </Form>
                 <br></br>
@@ -492,3 +492,4 @@ export default class TableOfSales extends Component {
         );
     }
 }
+export default withRouter(TableOfSales);

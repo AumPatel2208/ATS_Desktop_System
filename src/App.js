@@ -235,8 +235,6 @@ class App extends React.Component {
                         path="/reports"
                         render={() => (
                             <div className="App">
-                                {/* <Nav /> */}
-
                                 <ReportTableI staff={this.state.staff} />
                             </div>
                         )}
@@ -263,7 +261,7 @@ class App extends React.Component {
                         path="/backup-restore"
                         render={() => (
                             <div className="App">
-                                <BackupRestore staff={this.state.staff}/>
+                                <BackupRestore staff={this.state.staff} />
                             </div>
                         )}
                     />
@@ -281,7 +279,7 @@ class App extends React.Component {
                         path="/sale"
                         render={() => (
                             <div className="App">
-                                <AdvisorBlanks staff={this.state.staff}/>
+                                <AdvisorBlanks staff={this.state.staff} />
                             </div>
                         )}
                     />
@@ -289,9 +287,8 @@ class App extends React.Component {
                         path="/sales/:id"
                         render={props => (
                             <div className="App">
-                                <SaleForm {...props} staff={this.state.staff}/>
+                                <SaleForm {...props} staff={this.state.staff} />
                             </div>
-
                         )}
                     />
                     <Route
