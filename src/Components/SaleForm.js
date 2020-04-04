@@ -208,7 +208,9 @@ export class SaleForm extends Component {
             );
             this.setState({ customers: cl });
 
-            if (this.state.customers[0] != undefined) {
+            let z;
+
+            if (this.state.customers[0] !== undefined) {
                 const dl = this.state.discounts.filter(
                     i => String(i.name) === this.state.customers[0].discountName
                 );
@@ -218,12 +220,11 @@ export class SaleForm extends Component {
                     let x = parseFloat(this.state.discounts[0].fixed);
                 //assigning correct discount to the fare
                     let y = this.state.fare;
-                    let z = y - y * (x / 100);
+                     z = y - y * (x / 100);
                     this.setState({ fare: z });
                 } else if (
                     this.state.customers[0].discountType === 'Flexible'
                 ) {
-                    let z;
                     let x = parseFloat(this.state.customers[0].paidThisMonth);
                     if (x < this.state.discounts[0].flexibleBand1) {
                         z =
@@ -241,15 +242,16 @@ export class SaleForm extends Component {
                             this.state.fare *
                                 (this.state.discounts[0].band3Value / 100);
                     }
-                    this.setState({ fare: z });
+                   // this.setState({ fare: z });
                 }
             }
+            else{z = this.state.fare}
             //storing the sale in the database
 
             const newSale = {
                 ticketNumber: this.state.tickNum,
                 saleType: this.state.saleType,
-                fare: this.state.fare,
+                fare: z,
                 currency: this.state.cCode,
                 localTax: this.state.Tlocal,
                 otherTax: this.state.Tother,
@@ -279,7 +281,7 @@ export class SaleForm extends Component {
             const newUsed = {
                 date: d,
                 batchValues: this.state.tickNum,
-                advisorCode: this.state.adCode,
+                advisorCode: ad,
                 batchId: this.state.myId
             };
 
