@@ -30,20 +30,28 @@ class AddBlanks extends Component {
 
     async handleDelete(e) {
         let zzz = this.state.toDelete.split('-');
+        let z, z2;
 
-        let z = parseInt(zzz[0]);
-        let z2 = parseInt(zzz[1]);
+        if (zzz !== undefined) {
+             z = parseInt(zzz[0]);
+             z2 = parseInt(zzz[1]);
 
-        const bl = this.state.blanks.filter(
-            i => i.batchStart <= z
-        );
-        this.setState({ blanks: bl });
 
-        const l = this.state.blanks.filter(
-            i => i.batchEnd >= z2
-        );
-        this.setState({ blanks: l });
+            const bl = this.state.blanks.filter(
+                i => i.batchStart <= z
+            );
+            this.setState({blanks: bl});
 
+            const l = this.state.blanks.filter(
+                i => i.batchEnd >= z2
+            );
+            this.setState({blanks: l});
+        }
+        else {
+             z = parseInt(this.state.toDelete);
+             z2 = parseInt(this.state.toDelete)
+
+        }
 
         let myID = this.state.blanks[0]._id;
 
@@ -53,7 +61,10 @@ class AddBlanks extends Component {
             {break;}
         }
 
-
+        if (x[i] === undefined){
+            alert("This value does not exist in available blanks and cannot be deleted");
+            return;
+        }
 
         let st = parseInt(x[i].start);
         let en = parseInt(x[i].end);
@@ -90,7 +101,7 @@ class AddBlanks extends Component {
 
         axios
             .put(apiLinks.BLANKS + '/' + myID, updatedBlank)
-            .catch(err => console.log('Error code: ', err));
+            .catch(err => alert('Error code: '+ err));
     }
 
 

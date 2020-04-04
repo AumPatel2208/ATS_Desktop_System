@@ -159,12 +159,7 @@ class Navigation extends Component {
             ></NavItemsAuth>
             </Nav>
         }
-<<<<<<< HEAD
-=======
-       
 
-
->>>>>>> 164e9cfe2eb1623adb15d010a148d2d6657a920b
     }
 
     render() {
