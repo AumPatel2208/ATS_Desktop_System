@@ -188,18 +188,18 @@ export class SaleForm extends Component {
             {
                 this.props.staff !== undefined
                     ? (ad = `${this.props.staff.advisorCode}`)
-                    : (ad = 'undefined');
+                    : (ad = '-');
             }
 
             var cd;
             {
                 this.props.staff !== undefined
                     ? (cd = `${this.props.staff.commissionRate}`)
-                    : (cd = 'undefined');
+                    : (cd = '-');
             }
 
-            this.setState({ rate: cd });
-            this.setState({ adCode: ad });
+            //this.setState({ rate: cd });
+            //this.setState({ adCode: ad });
 
             //getting the correct customer and applying the discount to the fare
             //filtering by ID
@@ -257,9 +257,9 @@ export class SaleForm extends Component {
                 creditCardNum: this.state.creditNum,
                 expDate: this.state.expDate,
                 securityCode: this.state.secCode,
-                commissionRate: this.state.rate,
+                commissionRate: cd,
                 custName: this.state.custName,
-                advisorCode: this.state.adCode,
+                advisorCode: ad,
                 saleDate: dt,
                 notes: this.state.notes,
                 USDExchangeRate: this.state.exch[0].toUSDRate

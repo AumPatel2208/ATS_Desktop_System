@@ -290,7 +290,11 @@ class App extends React.Component {
                     <Route
                         path="/sales/:id"
                         render={props => (
-                            <SaleForm {...props} staff={this.state.staff} />
+                            <div className="App">
+                                <SaleForm {...props} staff={this.state.staff}/>
+                            </div>
+                           // <SaleForm {...props} staff={this.state.staff} />
+
                         )}
                     />
                     <Route
