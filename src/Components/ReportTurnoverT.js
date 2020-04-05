@@ -26,9 +26,11 @@ export default class ReportTurnoverT extends Component {
         assign: 'assigned',
         batch: 'batchValues',
         sd: '',
-        startDate: new Date(),
-        endDate: new Date(),
-        ed: ''
+        startDate: new Date(Date.now()),
+        endDate: new Date(Date.now()),
+        ed: '',
+        total1: 0,
+
     };
     //runs when component mounts, use to gets the data from db
 
@@ -43,9 +45,12 @@ export default class ReportTurnoverT extends Component {
     }
 
     toPDF() {
+        //var start =String(this.state.startDate).substring(0,10);
+          //  var end = String(this.state.endDate).substring(0,10);
         var pdf = new jsPDF('l', 'pt', 'A4');
         //var source = document.getElementById("1");
-        pdf.text(50,25, "Received Blanks");
+     //   pdf.text("Ticket Stock Turnover For: "+ start+ "-" + end, 50, 20);
+        pdf.text( "Newly Received Blanks", 50, 20);
         pdf.autoTable({html: '#recieved', columnSpan: 50,columnWidth: 50});
         let page = pdf.internal.getCurrentPageInfo().pageNumber;
 
@@ -158,6 +163,12 @@ export default class ReportTurnoverT extends Component {
                                 const uBlanks = res.data;
                                 this.setState({ uBlanks });
                             });
+
+                        let x=0;
+                        for (let i =0; i<this.state.blanks.length; i++){
+                            x += parseInt(this.state.blanks[i].amount);
+                        }
+                        this.setState({total1:x})
                     }}
                 >
                     Enter Dates
@@ -186,10 +197,13 @@ export default class ReportTurnoverT extends Component {
                                         date.substring(0, 10),
                                         amount
                                     )}
+                                    <td>Total Amount Recieved: {this.state.total1}</td>
                                 </Fragment>
                             )
                         )}
+
                     </tbody>
+
                 </Table>
 
                 <h4>Assigned Received Blanks</h4>
@@ -209,6 +223,8 @@ export default class ReportTurnoverT extends Component {
                             )
                         )}
                     </tbody>
+                    <tfoot >Total Amount Assigned From Received: {this.state.total1}</tfoot>
+
                 </Table>
 
                 <h4>Assigned Blanks</h4>
@@ -229,6 +245,8 @@ export default class ReportTurnoverT extends Component {
                             )
                         )}
                     </tbody>
+                    <tfoot >Total Amount Assigned: {this.state.total1}</tfoot>
+
                 </Table>
 
                 <h4>Used Blanks</h4>
@@ -244,6 +262,8 @@ export default class ReportTurnoverT extends Component {
                             <Fragment>{row(batchValues, amount)}</Fragment>
                         ))}
                     </tbody>
+                    <tfoot >Total Amount Used: {this.state.total1}</tfoot>
+
                 </Table>
 
                 <h4>All Available Blanks</h4>
@@ -272,6 +292,8 @@ export default class ReportTurnoverT extends Component {
                             );
                         })}
                     </tbody>
+                    <tfoot >Total Amount Available: {this.state.total1}</tfoot>
+
                 </Table>
 
                 <h4>All Assigned Blanks </h4>
@@ -292,6 +314,7 @@ export default class ReportTurnoverT extends Component {
                             )
                         )}
                     </tbody>
+                    <tfoot >Total Amount Assigned: {this.state.total1}</tfoot>
                 </Table>
 
             </Container>

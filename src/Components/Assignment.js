@@ -242,9 +242,23 @@ class Assignment extends Component {
                 <Button
                     onClick={e => {
                         console.log('hit');
-                        this.assignBlanks(e);
-                        this.updateRemaining();
-                        this.props.history.push('./blanks');
+                        let x = String(this.state.assignedBatch).split("-")[0];
+                        let y = String(this.state.assignedBatch).split("-")[1];
+
+                        var i;
+                        for (i=0; i< this.state.blanks[0].remaining.length; i++){
+                            if ((this.state.blanks[0].remaining[i].start <= x) &&(this.state.blanks[0].remaining[i].end >= y)){
+                                break
+                            }
+                        }
+                        if (i === this.state.blanks[0].remaining.length){
+                            alert(this.state.assignedBatch + "is not part of this batch and cannot be assigned");
+                            return;
+                        }else {
+                            this.assignBlanks(e);
+                            this.updateRemaining();
+                            this.props.history.push('./blanks');
+                        }
                     }}
                 >
                     Assign Blanks
