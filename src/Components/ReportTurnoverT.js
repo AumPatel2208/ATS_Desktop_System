@@ -45,15 +45,23 @@ export default class ReportTurnoverT extends Component {
     toPDF() {
         var pdf = new jsPDF('l', 'pt', 'A4');
         //var source = document.getElementById("1");
-        pdf.autoTable({html: '#recieved'});
-        let page = pdf.internal.getNumberOfPages();
+        pdf.text(50,25, "Received Blanks");
+        pdf.autoTable({html: '#recieved', columnSpan: 50,columnWidth: 50});
+        let page = pdf.internal.getCurrentPageInfo().pageNumber;
 
         pdf.setPage(page);
-        pdf.autoTable({html: '#assignedR', startY: pdf.autoTable.previous.finalY +10, pageBreak: 'avoid'});
-        //pdf.text("Used Blanks");
-        pdf.autoTable({html: '#used', startY: pdf.autoTable.previous.finalY +10, pageBreak: 'avoid'});
-        pdf.autoTable({html: '#available', startY: pdf.autoTable.previous.finalY +10, pageBreak: 'avoid'});
-        pdf.autoTable({html: '#assignedA', startY: pdf.autoTable.previous.finalY +10, pageBreak: 'avoid'});
+        pdf.text( "Assigned From Newly Received Blanks", 50, pdf.autoTable.previous.finalY +20);
+        pdf.autoTable({html: '#assignedR', startY: pdf.autoTable.previous.finalY +40, pageBreak: 'avoid'});
+        pdf.text( "Assigned During Given Period", 50, pdf.autoTable.previous.finalY +20);
+        pdf.autoTable({html: '#assignedp', startY: pdf.autoTable.previous.finalY +40, pageBreak: 'avoid'});
+
+        pdf.setPage(page);
+        pdf.text( "Used During Given Period", 50, pdf.autoTable.previous.finalY +20);
+        pdf.autoTable({html: '#used', startY: pdf.autoTable.previous.finalY +40, pageBreak: 'avoid', columnWidth :50});
+        pdf.text( "Available At End Of Period", 50, pdf.autoTable.previous.finalY +20);
+        pdf.autoTable({html: '#available', startY: pdf.autoTable.previous.finalY +40, pageBreak: 'avoid'});
+        pdf.text( "Assigned At End Of Period", 50, pdf.autoTable.previous.finalY +20);
+        pdf.autoTable({html: '#assignedA', startY: pdf.autoTable.previous.finalY +40, pageBreak: 'avoid'});
 
 
         // pdf.autoTable({html: '#2'});
@@ -185,7 +193,7 @@ export default class ReportTurnoverT extends Component {
                 </Table>
 
                 <h4>Assigned Received Blanks</h4>
-                <Table id ="assignedR" className="mt-4">
+                <Table striped id ="assignedR" className="mt-4">
                     <thead>
                         <tr>
                             <th>New Blanks Assigned</th>
@@ -204,7 +212,7 @@ export default class ReportTurnoverT extends Component {
                 </Table>
 
                 <h4>Assigned Blanks</h4>
-                <Table>
+                <Table striped id ="assignedp">
                     <thead>
                         <tr>
                             <th>Assigned Blanks</th>
@@ -224,7 +232,7 @@ export default class ReportTurnoverT extends Component {
                 </Table>
 
                 <h4>Used Blanks</h4>
-                <Table id = "used" className="mt-4">
+                <Table striped id = "used" className="mt-4">
                     <thead>
                         <tr>
                             <th>Used Blanks</th>
@@ -239,7 +247,7 @@ export default class ReportTurnoverT extends Component {
                 </Table>
 
                 <h4>All Available Blanks</h4>
-                <Table id ="available" className="mt-4">
+                <Table striped id ="available" className="mt-4">
                     <thead>
                         <tr>
                             <th>Available Batches of Blanks </th>
@@ -267,7 +275,7 @@ export default class ReportTurnoverT extends Component {
                 </Table>
 
                 <h4>All Assigned Blanks </h4>
-                <Table id ="assignedA" className="mt-4">
+                <Table striped id ="assignedA" className="mt-4">
                     <thead>
                         <tr>
                             <th>Advisor Code</th>
