@@ -158,11 +158,11 @@ class AddBlanks extends Component {
                         break;
                     }
                 }
-                if (l === this.state.blanks[0].remaining.length) {
-                    alert(this.state.find + " has been used by " + this.state.blanksu[0].advisorCode + "and sold to" + this.state.blanksu[0].custName)
+                if (l === this.state.blanksa[0].remaining.length) {
+                    alert(this.state.find + " has been used by advisor " + this.state.blanksu[0].advisorCode + " and sold to " + this.state.blanksu[0].custName)
 
                 } else {
-                    alert(this.state.find + " has been assigned to " + this.state.blanksa[0].advisorCode)
+                    alert(this.state.find + " has been assigned to advisor " + this.state.blanksa[0].advisorCode)
                 }
             }
 
