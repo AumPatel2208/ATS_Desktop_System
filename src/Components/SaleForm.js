@@ -278,11 +278,16 @@ export class SaleForm extends Component {
             let d = new Date(Date.now());
             d.setHours(0, 0, 0, 0);
 
+            let w;
+            if (this.state.customers[0] !== undefined) {w =this.state.customers[0].firstName + " "+ this.state.customers[0].lastName}
+            else{w = "a casual customer"}
+
             const newUsed = {
                 date: d,
                 batchValues: this.state.tickNum,
                 advisorCode: ad,
-                batchId: this.state.myId
+                batchId: this.state.myId,
+                custName: w
             };
 
             axios

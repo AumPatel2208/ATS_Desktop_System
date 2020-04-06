@@ -11,7 +11,8 @@ router.post('/', (q, a) => {
         batchValues: q.body.batchValues,
         date: q.body.date,
         advisorCode: q.body.advisorCode,
-        bacthId: q.body.batchId
+        bacthId: q.body.batchId,
+        custName: q.body.custName
 
     };
 

@@ -16,6 +16,9 @@ const BlankUsedSchema = new Schema({
     batchId: {
         type: String
     },
+    custName: {
+        type: String
+    }
 
 });
 
