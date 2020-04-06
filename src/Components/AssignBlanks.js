@@ -37,11 +37,19 @@ class AssignBlanks extends Component {
         axios.get(apiLinks.ASSIGN).then(res => {
             const aBlanks = res.data;
             this.setState({ aBlanks });
+            const t = this.state.aBlanks.filter(
+                i => i.remaining[0] !== undefined
+            );
+            this.setState({ aBlanks: t });
         });
     }
     onOpenClick(_id, i) {
         console.log(_id);
         this.props.history.push('./blanks/' + _id + '-' + i);
+    }
+    onOpenClick2(_id, i) {
+        console.log(_id);
+        this.props.history.push('./blankAssigned/' + _id + '-' + i);
     }
 
     render() {
@@ -50,25 +58,7 @@ class AssignBlanks extends Component {
          * Allows to break down the data into rows and TD.
          * @param {The MongoDB ID of the object in the collection} _id
          */
-        const row = (_id, start, end, i) => (
-            <Fragment>
-                <tr key={_id}>
-                    <td>{start}</td>
-                    <td>{end}</td>
-                    <td>{i}</td>
-                    <td>
-                        <Button
-                            className="open-btn"
-                            color="primary"
-                            size="lg"
-                            onClick={this.onOpenClick.bind(this, _id, i)}
-                        >
-                            Assign from Batch
-                        </Button>
-                    </td>
-                </tr>
-            </Fragment>
-        );
+
 
         return (
             <Container>
@@ -114,44 +104,42 @@ class AssignBlanks extends Component {
                 </Table>
                 <h2>Re-Assign Blanks</h2>
 
-                <Table className="mt-4">
+                <Table className="mt-4" >
                     <thead>
                         <tr>
-                            <th>Batch Start</th>
-                            <th>Batch End</th>
+                            <th>Batch Values</th>
+                            <th>Remaining</th>
+                            <th>Assigned Advisor</th>
+
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.aBlanks.map(({ _id, remaining }) => {
-                            return (
-                                <tr key={_id}>
-                                    {remaining.map((sub, i) => {
-                                        return (
-                                            <tr key={i}>
-                                                <td>{_id}</td>
-                                                <td> {sub}</td>
+                    {this.state.aBlanks.map(({_id, remaining, batchValues, advisorCode}) => {
+                        return (
+                            <tr key={_id}>
 
-                                                <td>
-                                                    {/*<Assignment id={_id} index={i}></Assignment> */}
-                                                    <Button
-                                                        className="open-btn"
-                                                        color="primary"
-                                                        size="lg"
-                                                        onClick={this.onOpenClick.bind(
-                                                            this,
-                                                            _id,
-                                                            sub
-                                                        )}
-                                                    >
-                                                        Re-Assign Blank
-                                                    </Button>
+                                <td>{batchValues}</td>
+                                <td>{remaining + ", "}</td>
+                                <td>{advisorCode}</td>
+
+                                <td>
+                                    {/*<Assignment id={_id} index={i}></Assignment> */}
+                                    <Button
+                                        className="open-btn"
+                                        color="primary"
+                                        size="lg"
+                                        onClick={this.onOpenClick2.bind(
+                                            this,
+                                            _id,
+                                            "re"
+                                        )}
+                                    >
+                                        Re-Assign from batch
+                                    </Button>
                                                 </td>
                                             </tr>
                                         );
                                     })}
-                                </tr>
-                            );
-                        })}
                     </tbody>
                 </Table>
             </Container>
