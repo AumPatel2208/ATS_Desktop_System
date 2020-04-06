@@ -16,7 +16,7 @@ router.post('/', (q, a) => {
     var d = (x[1]);
     //console.log(c);
     //console.log(d);
-    let amount = d-c;
+    let amount = (d-c);
     let remain = [];
   var h= f.indexOf("-");
 
@@ -39,7 +39,7 @@ console.log(h);
         batchValues: q.body.batchValues,
         date: q.body.date,
         batchType: q.body.batchType,
-        amount: amount,
+        amount: amount +1,
         advisorCode: q.body.advisorCode,
         batchId: q.body.batchId,
         remaining: remain

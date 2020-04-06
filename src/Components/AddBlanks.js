@@ -26,6 +26,7 @@ class AddBlanks extends Component {
 
 
     componentDidMount() {
+    this.setState({find: ""});
 
         axios.get(apiLinks.BLANKS).then(res => {
             const blanks = res.data;
@@ -135,7 +136,7 @@ class AddBlanks extends Component {
         this.setState({blanksa: b});
 
         //if it's not in any of the blank batches, it's not in the system
-        if (this.state.blanksf[0].remaining === undefined) {
+        if (this.state.blanksf[0].remaining == undefined) {
             alert("This value does not exist in the system");
             return;
         } else {
@@ -159,6 +160,10 @@ class AddBlanks extends Component {
                     }
                 }
                 if (l === this.state.blanksa[0].remaining.length) {
+                    if (this.state.blanksu[0] == undefined) {
+                        alert("This value does not exist in the system");
+                        return;
+                    }
                     alert(this.state.find + " has been used by advisor " + this.state.blanksu[0].advisorCode + " and sold to " + this.state.blanksu[0].custName)
 
                 } else {
@@ -169,17 +174,6 @@ class AddBlanks extends Component {
         }
 
     }
-
-    async handleDisplay(){
-
-        if (this.state.result !== ""){
-           return <Fragment>
-                <h5>Blank {String(this.state.find)} is {String(this.state.result)} by {String(this.state.findCode)}</h5>
-            </Fragment>
-        }
-    }
-
-
 
 
     async handleSubmit(event) {
