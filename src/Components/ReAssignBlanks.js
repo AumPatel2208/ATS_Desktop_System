@@ -25,12 +25,30 @@ export class ReAssignBlanks extends Component {
         let empty = [];
         this.setState({blanks: empty});
 
+
+        const {
+            match: {params}
+        } = this.props;
+        const id = params.id.split('-');
+        const id1 = id[0];
+
+        this.setState({myId: id1});
+
+
         axios.get(apiLinks.ASSIGN).then(res => {
             const blanks = res.data;
             this.setState({blanks});
+
+            const t = this.state.blanks.filter(
+                i => i.remaining[0] !== undefined);
+            this.setState({blanks:t});
+
+            const bl = this.state.blanks.filter(i => String(i._id) === id1);
+            this.setState({blanks:bl});
+
         });
 
-        this.filterStuff();
+       // this.filterStuff();
     }
 
     onOpenClick(_id) {
@@ -40,7 +58,7 @@ export class ReAssignBlanks extends Component {
     onDeleteClick(_id) {
         console.log(_id);
     }
-
+/*
     filterStuff() {
         const {
             match: {params}
@@ -52,19 +70,31 @@ export class ReAssignBlanks extends Component {
 
         const bl = this.state.blanks.filter(i => String(i._id) === id1);
         console.log(bl);
+
+        const t = this.state.blanks.filter(
+            i => i.remaining[0] !== " "
+        );
+
+        this.setState({blanks:t});
+        console.log(t);
         //this.setState({
         //    blanks: bla
         // })
     }
 
+ */
+
     updateRemaining() {
         //ADDS IN A NEW ASSIGNMENT UNDER NEW ADVISOR
+        let k = this.state.assignedBatch.split(",");
+
+
         let d = new Date(Date.now());
         d.setHours(0, 0, 0, 0);
 
         const newAssignment = {
             date: d,
-            batchValues: this.state.assignedBatch,
+            batchValues: k[0] + "-"+k[(k.length-1)],
             advisorCode: this.state.code,
             batchId: this.state.myId
         };
@@ -78,20 +108,39 @@ export class ReAssignBlanks extends Component {
         });
 
         //UPDATING ASSIGNMENT - REMOVING FROM ASSIGNED LIST
+
+
         let z = this.state.blanks[0].remaining;
 
-        let y = z.findIndex(k => k === this.state.assignedBatch);
+        for (var i2 =0; i2<k.length; i2++) {
+            var i =0;
+            let t= k[i2];
+            while (z[i] != t){
+                i++
+            }
+            z.splice(i,1);
 
-        z.splice(y);
+
+
+            /*
+            for (var i = 0; i < z.length; i++) {
+                if (z[i] == k[i2]) {
+                    z.splice(i, 1);
+                    i2++;
+                    break;
+                }
+            }
+
+             */
+        }
 
         const updatedBlank = {
-            _id: this.state.blanks._id,
             batchValues: this.state.blanks.batchValues,
             batchStart: this.state.blanks.batchStart,
             batchEnd: this.state.blanks.batchEnd,
             date: this.state.blanks.date,
             batchType: this.state.blanks.batchType,
-            advisorCode: this.state.code,
+            advisorCode: this.state.blanks.advisorCode,
             amount: this.state.blanks.amount,
             batchId: this.state.myId,
             remaining: z
@@ -107,8 +156,8 @@ export class ReAssignBlanks extends Component {
                 <Table className="mt-4">
                     <thead>
                     <tr>
-                        <th>{this.state.blanks[0]._id}</th>
-                        <th>Batch End</th>
+                        <th>Selected Batch Values</th>
+                        <th>Remaining in Batch</th>
                     </tr>
                     </thead>
                     <tbody>

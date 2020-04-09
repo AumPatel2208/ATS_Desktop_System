@@ -36,7 +36,7 @@ class Assignment extends Component {
         ],
         myId: '',
         myIndex: '',
-        assignedBatch: ''
+        assignedBatch: '',
     };
 
     //runs when component mounts, use to gets the data from db
@@ -45,11 +45,23 @@ class Assignment extends Component {
         let empty = [];
         this.setState({ blanks: empty });
 
+
+        const {
+            match: { params }
+        } = this.props;
+        const id = params.id.split('-');
+        const id1 = id[0];
+
+        this.setState({ myId: id1 });
+        this.setState({ myIndex: id[1] });
+
         axios
             .get(apiLinks.BLANKS)
             .then(res => {
                 const blanks = res.data;
                 this.setState({ blanks });
+                const bl = this.state.blanks.filter(i => String(i._id) === id1);
+                this.setState({ blanks: bl });
             })
             .catch(err => console.log('Error code: ', err));
 
@@ -65,6 +77,7 @@ class Assignment extends Component {
     }
 
     filterStuff() {
+        /*
         const {
             match: { params }
         } = this.props;
@@ -73,12 +86,14 @@ class Assignment extends Component {
 
         this.setState({ myId: id1 });
         this.setState({ myIndex: id[1] });
+
+
         const bl = this.state.blanks.filter(i => String(i._id) === id1);
         this.setState({ blanks: bl });
         console.log(bl);
         //this.setState({
         //    blanks: bla
-        // })
+        // })   */
     }
 
     assignBlanks(e) {
@@ -89,7 +104,9 @@ class Assignment extends Component {
             date: d,
             batchValues: this.state.assignedBatch,
             advisorCode: this.state.code,
-            batchId: this.state.myId
+            batchId: this.state.myId,
+
+
         };
 
         e.preventDefault();
@@ -252,13 +269,16 @@ class Assignment extends Component {
                             }
                         }
                         if (i === this.state.blanks[0].remaining.length){
-                            alert(this.state.assignedBatch + "is not part of this batch and cannot be assigned");
+                            alert(this.state.assignedBatch + "is not part of this batch and cannot be assigned" + this.state.assignedBatch[0]._id);
+
                             return;
                         }else {
                             this.assignBlanks(e);
                             this.updateRemaining();
                             this.props.history.push('./blanks');
                         }
+
+                        this.setState({blanks: []})
                     }}
                 >
                     Assign Blanks

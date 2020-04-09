@@ -43,7 +43,8 @@ export class SaleForm extends Component {
             myId: '',
             blanks: [],
             customers: [],
-            discounts: []
+            discounts: [],
+            setType: " "
         };
     }
     async componentDidMount() {
@@ -54,6 +55,17 @@ export class SaleForm extends Component {
 
         this.setState({ tickNum: l[1] });
         this.setState({ myId: l[0] });
+
+        if (this.state.tickNum.substring(0,2) === "201"){
+            this.setState({ setType: "Domestic" });
+        }
+        else if (this.state.tickNum.substring(0,2) === "440" || "420"){
+            this.setState({ setType: "Interline" });
+        }
+        else{
+            this.setState({ setType: "Other" });
+        }
+        this.setState({saleType: this.state.setType});
 
         //getting the day's exchange rate for the given currency
         const getLink = apiLinks.EXCHANGERATES + '/sale';
@@ -140,7 +152,7 @@ export class SaleForm extends Component {
     }
 
     taxHandler() {
-        if (this.state.saleType === 'Interline') {
+        if (this.state.setType === 'Interline') {
             return (
                 <Fragment>
                     <FormLabel>Local Tax</FormLabel>
@@ -247,6 +259,10 @@ export class SaleForm extends Component {
             }
             else{z = this.state.fare}
             //storing the sale in the database
+            let w;
+            if (this.state.customers[0] !== undefined) {w =this.state.customers[0].firstName + " "+ this.state.customers[0].lastName}
+            else{w = "a casual customer"}
+
 
             const newSale = {
                 ticketNumber: this.state.tickNum,
@@ -278,9 +294,7 @@ export class SaleForm extends Component {
             let d = new Date(Date.now());
             d.setHours(0, 0, 0, 0);
 
-            let w;
-            if (this.state.customers[0] !== undefined) {w =this.state.customers[0].firstName + " "+ this.state.customers[0].lastName}
-            else{w = "a casual customer"}
+
 
             const newUsed = {
                 date: d,
@@ -360,24 +374,6 @@ export class SaleForm extends Component {
             <Container>
                 <h2>Make a Sale</h2>
                 <Form onSubmit={submitSale.bind(this)}>
-                    <Dropdown
-                        onSelect={key => {
-                            this.setState({ saleType: key });
-                        }}
-                    >
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
-                            {this.state.saleType}
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item eventKey="Domestic">
-                                Domestic
-                            </Dropdown.Item>
-                            <Dropdown.Item eventKey="Interline">
-                                Interline
-                            </Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    <br />
                     <Dropdown
                         onSelect={key => {
                             this.setState({ method: key });

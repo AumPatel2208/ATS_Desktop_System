@@ -24,8 +24,9 @@ class AdvisorBlanks extends Component {
             date: new Date(),
             code: '',
             oG: '',
-            i: 0,
+            i: 1,
             blanks: [],
+            blanksD: [],
             num: ''
         };
     }
@@ -48,10 +49,22 @@ class AdvisorBlanks extends Component {
             .then(res => {
                 const blanks = res.data;
                 this.setState({ blanks });
+
+                //filtering so only assigned to the current advisor
                 const cl = this.state.blanks.filter(
                     i => i.advisorCode == cd
                 );
                 this.setState({ blanks: cl });
+                this.setState({ blanksD: cl });
+
+                const l = this.state.blanks.filter( i => i.batchType === "Interline");
+                this.setState({ blanks: l });
+
+                const c = this.state.blanks.filter(
+                    i => i.batchType === "Domestic"
+                );
+                this.setState({ blanksD: c });
+
 
             })
             .catch(err => console.log('Error code: ', err));
@@ -67,39 +80,12 @@ class AdvisorBlanks extends Component {
     }
 
     render() {
-        /**
-         * Will return a Fragment to be used when mapping in the render function.
-         * Allows to break down the data into rows and TD.
-         * @param {The MongoDB ID of the object in the collection} _id
-         */
-        const row = (_id, start, end, i) => (
-            <Fragment>
-                <tr key={_id}>
-                    <td>{start}</td>
-                    <td>{end}</td>
-                    <td>{i}</td>
-                    <td>
-                        {/* <Assignment id={_id} index={i}></Assignment> */}
-                        <Button
-                            className="open-btn"
-                            color="primary"
-                            size="lg"
-                            onClick={this.onOpenClick.bind(this, _id, i)}
-                        >
-                            Sell Blank
-                        </Button>
-                    </td>
-                </tr>
-            </Fragment>
-        );
-
         return (
             <Container>
                 <Table className="mt-4">
                     <thead>
                         <tr>
-                            <th>Batch Start</th>
-                            <th>Batch End</th>
+                            <th>Available Interline Blanks</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -113,7 +99,6 @@ class AdvisorBlanks extends Component {
                                                 <td> {sub}</td>
                                                 <td>{}</td>
                                                 <td>
-                                                    {/*<Assignment id={_id} index={i}></Assignment> */}
                                                     <Button
                                                         className="open-btn"
                                                         color="primary"
@@ -136,6 +121,50 @@ class AdvisorBlanks extends Component {
                                 </tr>
                             );
                         })}
+                    </tbody>
+                </Table>
+
+
+                <Table className="mt-4">
+                    <thead>
+                    <tr>
+                        <th>Available Domestic Blanks</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {this.state.blanksD.map(({ _id, remaining }) => {
+                        return (
+                            <tr key={_id}>
+                                {remaining.map((sub, i) => {
+                                    return (
+                                        <tr key={i}>
+                                            <td>{i}</td>
+                                            <td> {sub}</td>
+                                            <td>{}</td>
+                                            <td>
+                                                {/*<Assignment id={_id} index={i}></Assignment> */}
+                                                <Button
+                                                    className="open-btn"
+                                                    color="primary"
+                                                    size="lg"
+                                                    onClick={() => {
+                                                        this.props.history.push(
+                                                            './sales/' +
+                                                            _id +
+                                                            '-' +
+                                                            sub
+                                                        );
+                                                    }}
+                                                >
+                                                    Sell Blank
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tr>
+                        );
+                    })}
                     </tbody>
                 </Table>
             </Container>
