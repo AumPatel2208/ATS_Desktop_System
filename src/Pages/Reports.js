@@ -14,7 +14,26 @@ export default function Reports(props) {
     const [tableType, setTableType] = useState('Select Report Type');
     const [tableCode, setTableCode] = useState('');
 
-
+    const globalA = (
+        <Container>
+            <ReportTableG></ReportTableG>
+        </Container>
+    );
+    const globalR = (
+        <Container>
+            <ReportTableGRate></ReportTableGRate>
+        </Container>
+    );
+    const individual = (
+        <Container>
+            <ReportTableI></ReportTableI>
+        </Container>
+    );
+    const blanks = (
+        <Container>
+            <ReportTurnoverT></ReportTurnoverT>
+        </Container>
+    );
     const advisor = (
         <Container><ReportTableI></ReportTableI></Container>
     );
@@ -76,26 +95,10 @@ export default function Reports(props) {
     );
 
 
-    const globalA = (
-        <Container>
-            <ReportTableG></ReportTableG>
-        </Container>
-    );
-    const globalR = (
-        <Container>
-            <ReportTableGRate></ReportTableGRate>
-        </Container>
-    );
-    const individual = (
-        <Container>
-            <ReportTableI></ReportTableI>
-        </Container>
-    );
-    const blanks = (
-        <Container>
-            <ReportTurnoverT></ReportTurnoverT>
-        </Container>
-    );
+
+
+
+
 
     function reportHandler() {
         if (tableCode === 'A') {

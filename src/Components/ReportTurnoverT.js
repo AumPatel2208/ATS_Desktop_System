@@ -58,8 +58,18 @@ export default class ReportTurnoverT extends Component {
             .then(res => {
                 const allABlanks = res.data;
                 this.setState({ allABlanks });
+                const aBlanks = res.data;
+                this.setState({ aBlanks });
             })
             .catch(err => console.log('Error code: ', err));
+
+
+        axios
+            .get(apiLinks.USED )
+            .then(res => {
+                const uBlanks = res.data;
+                this.setState({ uBlanks });
+            });
     }
 
 
@@ -67,11 +77,9 @@ export default class ReportTurnoverT extends Component {
 
 
     toPDF() {
-        //var start =String(this.state.startDate).substring(0,10);
-          //  var end = String(this.state.endDate).substring(0,10);
+
         var pdf = new jsPDF('l', 'pt', 'A4');
-        //var source = document.getElementById("1");
-     //   pdf.text("Ticket Stock Turnover For: "+ start+ "-" + end, 50, 20);
+
         pdf.text( "Newly Received Blanks", 50, 20);
         pdf.autoTable({html: '#recieved', columnSpan: 50,columnWidth: 50});
         let page = pdf.internal.getCurrentPageInfo().pageNumber;
@@ -84,11 +92,11 @@ export default class ReportTurnoverT extends Component {
 
         pdf.setPage(page);
         pdf.text( "Used During Given Period", 50, pdf.autoTable.previous.finalY +20);
-        pdf.autoTable({html: '#used', startY: pdf.autoTable.previous.finalY +40, pageBreak: 'avoid', columnWidth :50});
+        pdf.autoTable({html: '#used', startY: pdf.autoTable.previous.finalY +40,  columnWidth :50});
         pdf.text( "Available At End Of Period", 50, pdf.autoTable.previous.finalY +20);
-        pdf.autoTable({html: '#available', startY: pdf.autoTable.previous.finalY +40, pageBreak: 'avoid'});
+        pdf.autoTable({html: '#available', startY: pdf.autoTable.previous.finalY +40});
         pdf.text( "Assigned At End Of Period", 50, pdf.autoTable.previous.finalY +20);
-        pdf.autoTable({html: '#assignedA', startY: pdf.autoTable.previous.finalY +40, pageBreak: 'avoid'});
+        pdf.autoTable({html: '#assignedA', startY: pdf.autoTable.previous.finalY +40});
 
 
         pdf.save("TurnoverReport.pdf")
@@ -106,7 +114,7 @@ export default class ReportTurnoverT extends Component {
 //newly assigned blanks - new & assigned during block
         x=0;
         for (let i =0; i<this.state.aBlanks.length; i++){
-            x += this.state.aBlanks[i].amount;
+            x += parseInt(this.state.aBlanks[i].amount);
         }
         this.setState({total2:x});
 
@@ -128,10 +136,16 @@ export default class ReportTurnoverT extends Component {
 
 //available blanks at end of period - all available
         x=0;
-        for (let i =0; i<this.state.allBlanks.length; i++){
-            x += parseInt(this.state.allBlanks[i].amount);
+        /*
+        for (let i =0; i< this.state.allBlanks.length; i++){
+            let y = this.state.allABlanks[3];
+            for (let i2 =0; i2< this.state.allABlanks[i].remaining.length; i2++){
+                 x += (y.remaining[i2].end - y.remaining[i2].start);
+            }
+
         }
-        this.setState({total5:x});
+        */
+        this.setState({total5:"fix this one"});
 
 //assigned blanks in period - all assigned
         x=0;
@@ -207,7 +221,6 @@ export default class ReportTurnoverT extends Component {
                             i => Date.parse(i.date) >= Date.parse(start)
                         );
                         this.setState({ blanks: fl });
-                        //  const bl = this.state.blanks.filter(i => (i.date-start >0));
                         const tl = this.state.blanks.filter(
                             i => Date.parse(i.date) <= Date.parse(end)
                         );
@@ -218,15 +231,17 @@ export default class ReportTurnoverT extends Component {
                         );
                         this.setState({ allABlanks: t });
 
+                        /*
                         axios
                             .get(apiLinks.ASSIGN + '/byDate', {
                                 params: { start, end }
                             })
                             .then(res => {
                                 const aBlanks = res.data;
-                                this.setState({ aBlanks });
-                            });
+                                this.set
 
+                         */
+/*
                         axios
                             .get(apiLinks.USED + '/byDate', {
                                 params: { start, end }
@@ -235,6 +250,8 @@ export default class ReportTurnoverT extends Component {
                                 const uBlanks = res.data;
                                 this.setState({ uBlanks });
                             });
+
+ */
 
                         this.generateTotals();
 
@@ -356,7 +373,7 @@ export default class ReportTurnoverT extends Component {
                                             <Fragment>
                                                 {row(
                                                     sub.start + '-' + sub.end,
-                                                    sub.end - sub.start
+                                                    1+(sub.end - sub.start)
                                                 )}
                                             </Fragment>
                                         );

@@ -55,17 +55,11 @@ export class SaleForm extends Component {
 
         this.setState({ tickNum: l[1] });
         this.setState({ myId: l[0] });
-
-        if (this.state.tickNum.substring(0,2) === "201"){
-            this.setState({ setType: "Domestic" });
-        }
-        else if (this.state.tickNum.substring(0,2) === "440" || "420"){
-            this.setState({ setType: "Interline" });
-        }
-        else{
-            this.setState({ setType: "Other" });
-        }
+        this.setState({setType: l[2]});
         this.setState({saleType: this.state.setType});
+
+
+
 
         //getting the day's exchange rate for the given currency
         const getLink = apiLinks.EXCHANGERATES + '/sale';
@@ -465,14 +459,6 @@ export class SaleForm extends Component {
                             });
                         }}
 
-                         /*
-                        onChange={option => {
-                            this.setState({
-                                custName: option.target.value._id
-                            });
-                        }}
-
-                          */
 
                     />
 
