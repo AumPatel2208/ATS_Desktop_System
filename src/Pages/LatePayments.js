@@ -12,12 +12,19 @@ export default class LatePayments extends Component {
     };
 
     filterSales() {
-        this.setState({
-            sales: this.state.advisors.filter(sale => !sale.hasPayed)
-        });
+        // this.setState({
+        //     sales: this.state.advisors.filter(sale => !sale.hasPayed)
+        // });
     }
     numberOfDaysSinceSale(date) {
-        var diff = Math.abs(new Date().getTime() - date.getTime());
+        console.log(date);
+        const saleDate = new Date(date);
+        const todaysDate = new Date();
+
+        // var diff = Math.abs(new Date().getTime() - new Date(date).getTime());
+        var diff = Math.abs(todaysDate.getTime() - saleDate.getTime());
+        // console.log(diff / (1000 * 60 * 60 * 24));
+
         return diff / (1000 * 60 * 60 * 24);
     }
 
@@ -35,22 +42,32 @@ export default class LatePayments extends Component {
             .catch(err => {
                 console.log(err);
             });
-        this.filterSales();
+        // this.filterSales();
         //get customers and match using customerID on the data
 
         //mapping into data to display
         var tempToDisplay = [];
-        this.sales.map(sale => {
+        this.state.sales.map(sale => {
+            var money =
+                Number(sale.fare) +
+                (sale.localTax !== 'Empty.' && sale.localTax !== undefined
+                    ? Number(sale.localTax)
+                    : 0) +
+                (sale.otherTax !== 'Empty.' && sale.otherTax !== undefined
+                    ? Number(sale.otherTax)
+                    : 0);
+
             tempToDisplay.push({
                 ticketNumber: sale.ticketNumber,
-                amountDue:
-                    Number(sale.fare) +
-                    Number(sale.localTax) +
-                    Number(sale.otherTax),
+                amountDue: money,
                 saleDate: sale.saleDate,
-                daysLeft: 30 - this.numberOfDaysSinceSale(sale.saleDate)
+                daysLeft: this.numberOfDaysSinceSale(sale.saleDate) - 30,
+                custName: sale.custName
             });
         });
+        console.log(tempToDisplay);
+
+        this.setState({ toDisplay: tempToDisplay });
     }
     render() {
         return (
@@ -67,7 +84,7 @@ export default class LatePayments extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.advisors.map(
+                        {/*this.state.advisors.map(
                             ({
                                 ticketNumber,
                                 firstName,
@@ -89,7 +106,7 @@ export default class LatePayments extends Component {
                                     )}
                                 </Fragment>
                             )
-                        )}
+                                    )*/}
                     </tbody>
                 </Table>
             </Container>

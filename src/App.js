@@ -52,6 +52,7 @@ import { ReAssignBlanks } from './Components/ReAssignBlanks';
 import ReportTableI from './Components/ReportTableI';
 
 import SaleEditor from './Components/SaleEditor';
+import LatePayments from './Pages/LatePayments';
 
 const apiLinks = require('./api/config.json');
 /* CODE TO LOCK A PAGE
@@ -294,6 +295,15 @@ class App extends React.Component {
                         render={props => (
                             <div className="App">
                                 <SaleForm {...props} staff={this.state.staff} />
+                            </div>
+                        )}
+                    />
+                    <Route
+                        exact={true}
+                        path="/latePayments"
+                        render={() => (
+                            <div className="App">
+                                <LatePayments />
                             </div>
                         )}
                     />
