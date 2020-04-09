@@ -260,7 +260,7 @@ export class SaleForm extends Component {
 
             const newSale = {
                 ticketNumber: this.state.tickNum,
-                saleType: this.state.saleType,
+                saleType: this.state.setType,
                 fare: z,
                 currency: this.state.cCode,
                 localTax: this.state.Tlocal,

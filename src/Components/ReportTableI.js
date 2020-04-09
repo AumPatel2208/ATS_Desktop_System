@@ -51,10 +51,12 @@ export default class ReportTableI extends Component {
             .then(res => {
                 const sales = res.data;
                 this.setState({ sales });
-
+/*
                 const dl = this.state.sales.filter(
                     i => i.advisorCode == a);
                 this.setState({ sales: dl });
+
+ */
 
             })
             .catch(err => console.log('Error code: ', err));

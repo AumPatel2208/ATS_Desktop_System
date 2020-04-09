@@ -55,17 +55,6 @@ import SaleEditor from './Components/SaleEditor';
 import LatePayments from './Pages/LatePayments';
 
 const apiLinks = require('./api/config.json');
-/* CODE TO LOCK A PAGE
-
-
-{this.state.isAuthenticated ? (
-                                    <Customers />
-                                ) : (
-                                    <Restricted></Restricted>
-                                )}
-
-
- */
 
 class App extends React.Component {
     constructor(props) {
