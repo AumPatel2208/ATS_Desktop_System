@@ -242,7 +242,7 @@ class App extends React.Component {
                         path="/reports"
                         render={() => (
                             <div className="App">
-                                <ReportTableI staff={this.state.staff} />
+                                <Reports staff={this.state.staff}/>
                             </div>
                         )}
                     />

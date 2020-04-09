@@ -16,7 +16,7 @@ router.post('/', (q, a) => {
     var d = (x[1]);
     //console.log(c);
     //console.log(d);
-    let amount = d-c;
+    let amount = (d-c);
     let remain = [];
   var h= f.indexOf("-");
 
@@ -31,15 +31,21 @@ if ( h=== -1){
 console.log(h);
     console.log("assigned" +remain);
       //  {start: c, end:d}];
-
+    let batchTp = "";
+    if (f.substring(0,3)==="201"){
+        batchTp = "Domestic";
+    }
+    else if (f.substring(0,3)==="440"||"420"){
+        batchTp = "Interline";
+    }
 
     assignedBlanks = {
         batchStart: c,
         batchEnd: d,
         batchValues: q.body.batchValues,
         date: q.body.date,
-        batchType: q.body.batchType,
-        amount: amount,
+        batchType: batchTp,
+        amount: amount +1,
         advisorCode: q.body.advisorCode,
         batchId: q.body.batchId,
         remaining: remain

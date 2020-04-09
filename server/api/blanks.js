@@ -22,13 +22,13 @@ router.post('/', (q, a) => {
     let amount = (d-c)+1;
     let remain = [{start: c, end:d}];
     let batchTp = "";
-    if (f.substring(0-2)==="201"){
+    if (f.substring(0,3)==="201"){
         batchTp = "Domestic";
     }
-    else if (f.substring(0-2)==="440"||"420"){
+    else if (f.substring(0,3)==="440"||"420"){
         batchTp = "Interline";
     }
-
+console.log("getting type" + f.substring(0,3) +"  "+ batchTp);
         newBlanks = {
             batchValues: q.body.batchValues,
             batchStart: c,
@@ -117,6 +117,7 @@ router.put('/id', (q, a) => {
     let i = q.query.iden;
     Blank.find({id:i})
         .then(blanks => a.json(blanks))
+    console.log("CALLING SNOTHER PUT")
 });
 
 //Delete one blank

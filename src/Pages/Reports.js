@@ -18,6 +18,9 @@ export default function Reports(props) {
     const advisor = (
         <Container><ReportTableI></ReportTableI></Container>
     );
+    const admin = (
+        <Container><ReportTurnoverT></ReportTurnoverT></Container>
+    );
 
     const officeManager = (
         <Container>
@@ -107,25 +110,24 @@ export default function Reports(props) {
             return 'Please Select A Report Type';
         }
     }
-/*
-    const check =({props})=>{
-        if (props.staff.staffType === "OfficeManager") {
-            return true;
-        }
-    };
 
-*/
     function displayHandler() {
         var role;
-        {props.staff !== undefined
-            ? role =`${props.staff.staffType}`
-            : role = props.staff}
-if(role === "OfficeManager") {
-    return <Fragment>{officeManager}</Fragment>
-}
-else {
-    return <Fragment>{advisor}</Fragment>
-}
+        {
+            props.staff !== undefined
+                ? role = `${props.staff.staffType}`
+                : role = "not working"
+        }
+        if (role === "OfficeManager") {
+            return <Fragment>{officeManager}</Fragment>
+        }
+        else if (role === "SystemAdministrator") {
+            return <Fragment>{admin}</Fragment>
+        } else {
+            return <Fragment>
+                {advisor}
+               </Fragment>
+        }
     }
 
 
