@@ -56,15 +56,11 @@ export class SaleForm extends Component {
 
         this.setState({ tickNum: l[1] });
         this.setState({ myId: l[0] });
+        this.setState({setType: l[2]});
+        this.setState({saleType: this.state.setType});
 
-        if (this.state.tickNum.substring(0, 2) === '201') {
-            this.setState({ setType: 'Domestic' });
-        } else if (this.state.tickNum.substring(0, 2) === '440' || '420') {
-            this.setState({ setType: 'Interline' });
-        } else {
-            this.setState({ setType: 'Other' });
-        }
-        this.setState({ saleType: this.state.setType });
+
+
 
         //getting the day's exchange rate for the given currency
         const getLink = apiLinks.EXCHANGERATES + '/sale';
@@ -224,42 +220,9 @@ export class SaleForm extends Component {
             let z;
 
             if (this.state.customers[0] !== undefined) {
-                const dl = this.state.discounts.filter(
-                    (i) =>
-                        String(i.name) === this.state.customers[0].discountName
-                );
-                this.setState({ discounts: dl });
-
-                if (this.state.customers[0].discountType === 'Fixed') {
-                    let x = parseFloat(this.state.discounts[0].fixed);
-                    //assigning correct discount to the fare
-                    let y = this.state.fare;
-                    z = y - y * (x / 100);
-                    this.setState({ fare: z });
-                } else if (
-                    this.state.customers[0].discountType === 'Flexible'
-                ) {
-                    let x = parseFloat(this.state.customers[0].paidThisMonth);
-                    if (x < this.state.discounts[0].flexibleBand1) {
-                        z =
-                            this.state.fare -
-                            this.state.fare *
-                                (this.state.discounts[0].band1Value / 100);
-                    } else if (x < this.state.discounts[0].flexibleBand2) {
-                        z =
-                            this.state.fare -
-                            this.state.fare *
-                                (this.state.discounts[0].band2Value / 100);
-                    } else if (x < this.state.discounts[0].flexibleBand3) {
-                        z =
-                            this.state.fare -
-                            this.state.fare *
-                                (this.state.discounts[0].band3Value / 100);
-                    }
-                    // this.setState({ fare: z });
-                }
-            } else {
-                z = this.state.fare;
+               let z1 = parseInt(this.state.fare);
+               let z2 = parseInt(this.state.customers[0].discountValue);
+               z = (z1 - ((z2/100)*z1));
             }
             //storing the sale in the database
             let w;
@@ -275,7 +238,7 @@ export class SaleForm extends Component {
 
             const newSale = {
                 ticketNumber: this.state.tickNum,
-                saleType: this.state.saleType,
+                saleType: this.state.setType,
                 fare: z,
                 currency: this.state.cCode,
                 localTax: this.state.Tlocal,
@@ -300,10 +263,10 @@ export class SaleForm extends Component {
                 })
                 .catch((res) => console.log(res));
 
+
             //USING THE BLANK/ADDING TO THE USED DATABASE SECTION
             let d = new Date(Date.now());
             d.setHours(0, 0, 0, 0);
-
             const newUsed = {
                 date: d,
                 batchValues: this.state.tickNum,
@@ -318,6 +281,7 @@ export class SaleForm extends Component {
                     console.log(response);
                 })
                 .catch((err) => console.log('Error code: ', err));
+
 
             //UPDATING ASSIGNMENT - REMOVING FROM ASSIGNED LIST
             let x = this.state.blanks[0].remaining;
@@ -346,9 +310,11 @@ export class SaleForm extends Component {
                 .put(apiLinks.ASSIGN + '/' + this.state.myId, updatedBlank)
                 .catch((err) => console.log('Error code: ', err));
 
+
             // updating customer account to reflect fare
             if (this.state.customers[0] != undefined) {
                 let x;
+
                 if (this.state.customers[0].paidThisMonth != undefined) {
                     x = this.state.customers[0].paidThisMonth;
                 } else {
@@ -367,6 +333,7 @@ export class SaleForm extends Component {
                     discountType: this.state.customers[0].discountType,
                     paidThisMonth: parseFloat(x) + parseFloat(this.state.fare),
                 };
+                //TODO - DEAL W INCREASING DISCOUNT BASED ON FARE & LEVEL
 
                 axios
                     .put(
@@ -474,6 +441,7 @@ export class SaleForm extends Component {
                             });
                         }}
 
+<<<<<<< HEAD
                         /*
                         onChange={option => {
                             this.setState({
@@ -482,6 +450,9 @@ export class SaleForm extends Component {
                         }}
 
                           */
+=======
+
+>>>>>>> 5c7649ee299eba414b4194b39e3f02357e00d2b4
                     />
 
                     <FormLabel>Notes</FormLabel>

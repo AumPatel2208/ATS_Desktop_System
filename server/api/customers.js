@@ -34,7 +34,7 @@ router.put('/:id', (q, a) => {
   //  console.log(q.body);
     Customer.findByIdAndUpdate(q.params.id, q.body).then(item => a.json(item));
         //a.json(item));
-    console.log("updated")
+    console.log("updated"+ q.body.discountValue)
 });
 
 

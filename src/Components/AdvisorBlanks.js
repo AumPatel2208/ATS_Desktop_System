@@ -57,12 +57,10 @@ class AdvisorBlanks extends Component {
                 this.setState({ blanks: cl });
                 this.setState({ blanksD: cl });
 
-                const l = this.state.blanks.filter( i => i.batchType === "Interline");
+                const l = this.state.blanks.filter( i => i.batchType == "Interline");
                 this.setState({ blanks: l });
 
-                const c = this.state.blanks.filter(
-                    i => i.batchType === "Domestic"
-                );
+                const c = this.state.blanksD.filter(i => i.batchType == "Domestic");
                 this.setState({ blanksD: c });
 
 
@@ -76,7 +74,7 @@ class AdvisorBlanks extends Component {
     }
     onOpenClick(_id, i) {
         console.log(_id);
-        this.props.history.push('./blanks/' + _id + '-' + i);
+        this.props.history.push('./blanks/' + _id + '-' + i );
     }
 
     render() {
@@ -89,7 +87,7 @@ class AdvisorBlanks extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.blanks.map(({ _id, remaining }) => {
+                        {this.state.blanks.map(({ _id, remaining, batchType }) => {
                             return (
                                 <tr key={_id}>
                                     {remaining.map((sub, i) => {
@@ -108,7 +106,9 @@ class AdvisorBlanks extends Component {
                                                                 './sales/' +
                                                                     _id +
                                                                     '-' +
-                                                                    sub
+                                                                    sub +
+                                                                    '-' + "Interline"
+
                                                             );
                                                         }}
                                                     >
@@ -152,7 +152,8 @@ class AdvisorBlanks extends Component {
                                                             './sales/' +
                                                             _id +
                                                             '-' +
-                                                            sub
+                                                            sub +
+                                                            '-' + "Domestic"
                                                         );
                                                     }}
                                                 >

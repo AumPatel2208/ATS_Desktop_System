@@ -27,6 +27,9 @@ const CustomerSchema = new Schema({
     discountType:{
         type: String
     },
+    discountValue:{
+        type: String
+    },
     paidThisMonth:{
         type: String
     }

@@ -1,15 +1,41 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import Container from 'reactstrap/lib/Container';
 import TableOfCustomers from '../Components/TableOfCustomers';
 import Discount from "../Components/Discounts";
+import AssignDiscount from "../Components/AssignDiscount";
 
-export default function Customers() {
+export default function Customers(props) {
+const officeManager = (
+    <Fragment>
+        <AssignDiscount/>
+        <br/>
+        <br/>
+        <Discount></Discount>
+    </Fragment>
+);
+    function displayHandler() {
+        var role;
+        {
+            props.staff !== undefined
+                ? role = `${props.staff.staffType}`
+                : role = "not working"
+        }
+        if (role === "OfficeManager") {
+            return <Fragment>{officeManager}</Fragment>
+        }
+    }
     return (
         <Container>
-            <Discount></Discount>
-            <br/>
-            <br/>
+            <h2>Customers</h2>
             <TableOfCustomers></TableOfCustomers>
+
+            <br/>
+            <br/>
+            <Fragment>{displayHandler()}</Fragment>
+<br/>
+<br/>
+            <br/>
+            <br/>
         </Container>
     );
 }

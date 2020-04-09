@@ -56,17 +56,6 @@ import LatePayments from './Pages/LatePayments';
 import Notifications from './Components/Notifications';
 
 const apiLinks = require('./api/config.json');
-/* CODE TO LOCK A PAGE
-
-
-{this.state.isAuthenticated ? (
-                                    <Customers />
-                                ) : (
-                                    <Restricted></Restricted>
-                                )}
-
-
- */
 
 class App extends React.Component {
     constructor(props) {

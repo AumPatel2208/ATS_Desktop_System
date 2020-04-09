@@ -13,7 +13,6 @@ console.log(q + "DISCOUNT POST");
         band1Value: q.body.band1Value,
         flexibleBand2: q.body.flexibleBand2,
         band2Value: q.body.band2Value,
-        flexibleBand3: q.body.flexibleBand3,
         band3Value: q.body.band3Value
     };
     Discount.create(newdiscount, (err, newdiscount) => {

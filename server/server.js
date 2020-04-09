@@ -67,7 +67,6 @@ app.use('/api/blankUsed', blankUsed);
 app.use('/api/blankAssigned', blankAssigned);
 app.use('/api/discounts', discounts);
 
-//TODO add in error handling to forward to error page
 
 const port = process.env.PORT || 5000;
 

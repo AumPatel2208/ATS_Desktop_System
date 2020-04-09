@@ -50,6 +50,12 @@ export default class ReportTableGRate extends Component {
             .then(res => {
                 const sales = res.data;
                 this.setState({ sales });
+                const tl = this.state.sales.filter(
+                    i => i.saleType == "Interline"
+                );
+                this.setState({ sales: tl });
+
+
             })
             .catch(err => console.log('Error code: ', err));
     }
