@@ -184,7 +184,7 @@ export class CustomerUpdate extends Component {
                     address: this.state.customer.address,
                     phoneNumber: this.state.customer.phoneNumber,
                     discount: this.state.customer.discount,
-                    customerType: this.state.customer.customerType
+                    customerType: "Casual Customer"
                     //creditCardNum: this.state.customer.creditCardNum,
                     // expDate: this.state.customer.expDate,
                     // securityCode: this.state.customer.securityCode

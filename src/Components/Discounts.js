@@ -17,6 +17,7 @@ let apiLinks = require('../api/config.json');
 export default class Discounts extends Component {
     state = {
         discounts: [],
+        discountGetV: [],
         customers: [],
         name: '',
         fixed: '',
@@ -30,6 +31,7 @@ export default class Discounts extends Component {
         cName: '',
         dName: '',
         dType: 'Select Discount Type',
+        dV:"",
         customer: {
             _id: '',
             firstName: '',
@@ -38,11 +40,9 @@ export default class Discounts extends Component {
             phoneNumber: '',
             discount: 0,
             customerType: null,
-            creditCardNum: 0,
-            expDate: '',
-            securityCode: '',
             discountName: '',
-            discountType: ''
+            discountType: '',
+            discountValue: ""
         }
     };
 
@@ -53,6 +53,14 @@ export default class Discounts extends Component {
             .then(res => {
                 const discounts = res.data;
                 this.setState({ discounts });
+
+                this.setState({discountsGetV: discounts});
+                const fc = this.state.discountGetV.filter(
+                    i => String(i.name) == "Plan1"
+                    //this.state.dName
+                );
+                this.setState({discountGetV :fc});
+
             })
             .catch(err => console.log('Error code: ', err));
 
@@ -76,7 +84,6 @@ export default class Discounts extends Component {
             band1Value: this.state.b1v,
             flexibleBand2: this.state.b2,
             band2Value: this.state.b2v,
-            flexibleBand3: this.state.b3,
             band3Value: this.state.b3v
         };
         console.log(newDiscount);
@@ -92,6 +99,7 @@ export default class Discounts extends Component {
     assignDiscount(e) {
         e.preventDefault();
 
+        //Accessing the correct customer to update
         const st = this.state.cName;
         const f = this.state.cName.split(" ");
         //filtering first name
@@ -105,6 +113,35 @@ export default class Discounts extends Component {
         );
         this.setState({customers :cl});
 
+        //getting the discount to assign the correct value
+        /*
+        const fc = this.state.discountGetV.filter(
+            i => String(i.name) == "Plan1"
+                //this.state.dName
+        );
+        this.setState({discountGetV :fc});
+
+         */
+
+
+        if (this.state.dType === "Fixed"){
+            this.setState({dV: this.state.discountGetV[0].fixed})
+        }
+        else if (this.state.dType === "Flexible") {
+            let z = this.state.customers[0].paidThisMonth;
+            let z2 = this.state.discountGetV[0];
+
+            if (z < z2.flexibleBand1){
+                this.setState({dV: z2.band1Value})
+            } else if ((z >= z2.flexibleBand1) && (z < z2.flexibleBand2 )){
+                this.setState({dV: z2.band2Value})
+            }else if (z >= z2.flexibleBand2){
+                this.setState({dV: z2.band3Value})
+            }
+
+        }
+
+
         const updatedCustomer ={
         _id: this.state.customers[0]._id,
             firstName: this.state.customers[0].firstName,
@@ -114,6 +151,7 @@ export default class Discounts extends Component {
             customerType: this.state.customers[0].customerType,
             discountName: this.state.dName,
             discountType:this.state.dType,
+            discountValue: this.state.dV,
             paidThisMonth: this.state.customers[0].paidThisMonth
         };
         axios
@@ -138,7 +176,6 @@ export default class Discounts extends Component {
             band1Value,
             flexibleBand2,
             band2Value,
-            flexibleBand3,
             band3Value
         ) => (
             <Fragment>
@@ -149,7 +186,6 @@ export default class Discounts extends Component {
                     <td>{band1Value}</td>
                     <td>{flexibleBand2}</td>
                     <td>{band2Value}</td>
-                    <td>{flexibleBand3}</td>
                     <td>{band3Value}</td>
                     <td>
                     </td>
@@ -188,7 +224,7 @@ export default class Discounts extends Component {
                         this.setState({ b1: e.target.value });
                     }}
                 />
-                <FormLabel>Band 1 Discount</FormLabel>
+                <FormLabel>Band 1 Discount(Less than Band 1)</FormLabel>
                 <FormControl
                     autoFocus
                     type="string"
@@ -206,7 +242,7 @@ export default class Discounts extends Component {
                         this.setState({ b2: e.target.value });
                     }}
                 />
-                <FormLabel>Band 2 Discount</FormLabel>
+                <FormLabel>Band 2 Discount(Greater than band 1, less than 2)</FormLabel>
                 <FormControl
                     autoFocus
                     type="string"
@@ -215,16 +251,7 @@ export default class Discounts extends Component {
                         this.setState({ b2v: e.target.value });
                     }}
                 />
-                <FormLabel>Flexible Discount Band 3</FormLabel>
-                <FormControl
-                    autoFocus
-                    type="string"
-                    value={this.state.b3}
-                    onChange={e => {
-                        this.setState({ b3: e.target.value });
-                    }}
-                />
-                <FormLabel>Band 3 Discount</FormLabel>
+                <FormLabel>Band 3 Discount(greater than band 2)</FormLabel>
                 <FormControl
                     autoFocus
                     type="string"
@@ -305,7 +332,6 @@ export default class Discounts extends Component {
                             <th>Band 1 Discount</th>
                             <th>Flexible Band 2</th>
                             <th>Band 2 Discount</th>
-                            <th>Flexible Band 3</th>
                             <th>Band 3 Discount</th>
                         </tr>
                     </thead>
@@ -318,7 +344,6 @@ export default class Discounts extends Component {
                                 band1Value,
                                 flexibleBand2,
                                 band2Value,
-                                flexibleBand3,
                                 band3Value
                             }) => (
                                 <Fragment>
@@ -329,7 +354,6 @@ export default class Discounts extends Component {
                                         band1Value,
                                         flexibleBand2,
                                         band2Value,
-                                        flexibleBand3,
                                         band3Value
                                     )}
                                 </Fragment>

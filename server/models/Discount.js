@@ -20,9 +20,6 @@ const DiscountSchema = new Schema({
     band2Value:{
         type: String
     },
-    flexibleBand3:{
-        type: String
-    },
     band3Value:{
         type: String
     }
