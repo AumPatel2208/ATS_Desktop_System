@@ -254,12 +254,10 @@ export class SaleForm extends Component {
                 })
                 .catch(res => console.log(res));
 
+
             //USING THE BLANK/ADDING TO THE USED DATABASE SECTION
             let d = new Date(Date.now());
             d.setHours(0, 0, 0, 0);
-
-
-
             const newUsed = {
                 date: d,
                 batchValues: this.state.tickNum,
@@ -275,6 +273,7 @@ export class SaleForm extends Component {
                 })
                 .catch(err => console.log('Error code: ', err));
 
+
             //UPDATING ASSIGNMENT - REMOVING FROM ASSIGNED LIST
             let x = this.state.blanks[0].remaining;
 
@@ -287,7 +286,6 @@ export class SaleForm extends Component {
             } else {
                 return;
             }
-
 
             const updatedBlank = {
                 batchValues: this.state.blanks[0].batchValues,
@@ -303,9 +301,11 @@ export class SaleForm extends Component {
                 .put(apiLinks.ASSIGN + '/' + this.state.myId, updatedBlank)
                 .catch(err => console.log('Error code: ', err));
 
+
             // updating customer account to reflect fare
             if (this.state.customers[0] != undefined) {
                 let x;
+
                 if (this.state.customers[0].paidThisMonth != undefined) {
                     x = this.state.customers[0].paidThisMonth;
                 } else {
@@ -324,6 +324,7 @@ export class SaleForm extends Component {
                     discountType: this.state.customers[0].discountType,
                     paidThisMonth: parseFloat(x) + parseFloat(this.state.fare)
                 };
+                //TODO - DEAL W INCREASING DISCOUNT BASED ON FARE & LEVEL
 
                 axios
                     .put(
