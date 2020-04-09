@@ -123,6 +123,7 @@ class AddBlanks extends Component {
             .catch(err => alert('Error code: ' + err));
     }
 
+    /*
     async handleSearch() {
         let x = parseInt(this.state.find);
         const bl = this.state.blanksf.filter(
@@ -174,6 +175,8 @@ class AddBlanks extends Component {
         }
 
     }
+
+     */
 
 
     async handleSubmit(event) {
@@ -257,25 +260,7 @@ class AddBlanks extends Component {
                 </Button>
 <br/>
 <br/>
-                <h3>Find Blank</h3>
-                <FormGroup controlId="username" bssize="large">
-                    <FormLabel>Blank Number</FormLabel>
-                    <FormControl
-                        autoFocus
-                        type="batchValues"
-                        value={this.state.find}
-                        onChange={e =>
-                            this.setState({ find: e.target.value })
-                        }
-                    />
-                </FormGroup>
-                <Button
-                    onClick={e => {
-                        this.handleSearch();
-                    }}
-                >
-                    Find Blank
-                </Button>
+
 
 
 

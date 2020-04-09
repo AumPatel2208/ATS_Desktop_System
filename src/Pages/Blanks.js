@@ -16,6 +16,7 @@ import AddBlanks from '../Components/AddBlanks';
 import AssignBlanks from '../Components/AssignBlanks';
 import { useStoreState } from 'pullstate';
 import { UserStore } from '../store/UserStore';
+import FindBlank from "../Components/FindBlank";
 let apiLinks = require('../api/config.json');
 
 export default function Blanks(props) {
@@ -29,6 +30,7 @@ export default function Blanks(props) {
         <Container>
             <AddBlanks></AddBlanks>
             <br />
+            <FindBlank></FindBlank>
         </Container>
     );
 
