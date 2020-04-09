@@ -7,6 +7,7 @@ import ReportTurnoverT from '../Components/ReportTurnoverT';
 import ReportTableG from '../Components/ReportTableG';
 import ReportTableGRate from '../Components/ReportTableGRate';
 import {NavItem} from "reactstrap";
+import ReportTableGD from "../Components/ReportTableGD";
 
 // let apiLinks = require('../api/config.json');
 
@@ -22,6 +23,11 @@ export default function Reports(props) {
     const globalR = (
         <Container>
             <ReportTableGRate></ReportTableGRate>
+        </Container>
+    );
+    const globalRD = (
+        <Container>
+            <ReportTableGD></ReportTableGD>
         </Container>
     );
     const individual = (
@@ -65,6 +71,9 @@ export default function Reports(props) {
                             } else if (key === 'Ticket Turnover') {
                                 setTableCode('D');
                             }
+                            else if (key === 'Global Domestic') {
+                                setTableCode('E');
+                            }
                             reportHandler();
                         }}
                     >
@@ -81,6 +90,9 @@ export default function Reports(props) {
                             </Dropdown.Item>
                             <Dropdown.Item eventKey="Global by Rate">
                                 Global By Rate
+                            </Dropdown.Item>
+                            <Dropdown.Item eventKey="Global Domestic">
+                                Global Domestic
                             </Dropdown.Item>
                             <Dropdown.Item eventKey="Ticket Turnover">
                                 Ticket Turnover
@@ -109,7 +121,10 @@ export default function Reports(props) {
             return <Fragment>{globalR}</Fragment>;
         } else if (tableCode === 'D') {
             return <Fragment>{blanks}</Fragment>;
-        } else {
+        }else if (tableCode === 'E') {
+            return <Fragment>{globalRD}</Fragment>;
+        }
+        else {
             return 'Please Select A Report Type';
         }
     }
