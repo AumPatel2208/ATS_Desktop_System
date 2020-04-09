@@ -9,7 +9,7 @@ import { withRouter } from 'react-router';
 class Notifications extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props.sales);
+        console.log('bby', props.sales);
     }
     createNotification = (type) => {
         return () => {

@@ -56,11 +56,8 @@ export class SaleForm extends Component {
 
         this.setState({ tickNum: l[1] });
         this.setState({ myId: l[0] });
-        this.setState({setType: l[2]});
-        this.setState({saleType: this.state.setType});
-
-
-
+        this.setState({ setType: l[2] });
+        this.setState({ saleType: this.state.setType });
 
         //getting the day's exchange rate for the given currency
         const getLink = apiLinks.EXCHANGERATES + '/sale';
@@ -220,9 +217,9 @@ export class SaleForm extends Component {
             let z;
 
             if (this.state.customers[0] !== undefined) {
-               let z1 = parseInt(this.state.fare);
-               let z2 = parseInt(this.state.customers[0].discountValue);
-               z = (z1 - ((z2/100)*z1));
+                let z1 = parseInt(this.state.fare);
+                let z2 = parseInt(this.state.customers[0].discountValue);
+                z = z1 - (z2 / 100) * z1;
             }
             //storing the sale in the database
             let w;
@@ -263,7 +260,6 @@ export class SaleForm extends Component {
                 })
                 .catch((res) => console.log(res));
 
-
             //USING THE BLANK/ADDING TO THE USED DATABASE SECTION
             let d = new Date(Date.now());
             d.setHours(0, 0, 0, 0);
@@ -281,7 +277,6 @@ export class SaleForm extends Component {
                     console.log(response);
                 })
                 .catch((err) => console.log('Error code: ', err));
-
 
             //UPDATING ASSIGNMENT - REMOVING FROM ASSIGNED LIST
             let x = this.state.blanks[0].remaining;
@@ -309,7 +304,6 @@ export class SaleForm extends Component {
             axios
                 .put(apiLinks.ASSIGN + '/' + this.state.myId, updatedBlank)
                 .catch((err) => console.log('Error code: ', err));
-
 
             // updating customer account to reflect fare
             if (this.state.customers[0] != undefined) {
@@ -440,19 +434,6 @@ export class SaleForm extends Component {
                                 custName: value._id,
                             });
                         }}
-
-<<<<<<< HEAD
-                        /*
-                        onChange={option => {
-                            this.setState({
-                                custName: option.target.value._id
-                            });
-                        }}
-
-                          */
-=======
-
->>>>>>> 5c7649ee299eba414b4194b39e3f02357e00d2b4
                     />
 
                     <FormLabel>Notes</FormLabel>
