@@ -68,16 +68,6 @@ class App extends React.Component {
         };
     }
 
-    numberOfDaysSinceSale(date) {
-        console.log(date);
-        const saleDate = new Date(date);
-        const todaysDate = new Date();
-
-        var diff = Math.abs(todaysDate.getTime() - saleDate.getTime());
-
-        return diff / (1000 * 60 * 60 * 24);
-    }
-
     async componentDidMount() {
         //Loading User
         await axios
