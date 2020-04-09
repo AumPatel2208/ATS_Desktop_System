@@ -23,7 +23,8 @@ export class CustomerUpdate extends Component {
             customerType: null,
             creditCardNum: 0,
             expDate: '',
-            securityCode: ''
+            securityCode: '',
+            paidThisMonth: 0,
         }
     };
     validateForm() {
@@ -184,7 +185,8 @@ export class CustomerUpdate extends Component {
                     address: this.state.customer.address,
                     phoneNumber: this.state.customer.phoneNumber,
                     discount: this.state.customer.discount,
-                    customerType: "Casual Customer"
+                    customerType: "Casual Customer",
+                    paidThisMonth: 0
                     //creditCardNum: this.state.customer.creditCardNum,
                     // expDate: this.state.customer.expDate,
                     // securityCode: this.state.customer.securityCode

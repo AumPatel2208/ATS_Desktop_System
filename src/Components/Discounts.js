@@ -96,7 +96,7 @@ export default class Discounts extends Component {
             .catch(err => console.log('Error code: ', err));
     }
 
-    assignDiscount(e) {
+    /*assignDiscount(e) {
         e.preventDefault();
 
         //Accessing the correct customer to update
@@ -121,7 +121,7 @@ export default class Discounts extends Component {
         );
         this.setState({discountGetV :fc});
 
-         */
+
 
 
         if (this.state.dType === "Fixed"){
@@ -163,7 +163,7 @@ export default class Discounts extends Component {
                 console.log(res);
             });
     }
-
+*/
     onOpenClick(_id) {
         console.log(_id);
     }
@@ -272,53 +272,6 @@ export default class Discounts extends Component {
                     Create Discount
                 </Button>
                 <br />
-
-                <h2>Assign Discount</h2>
-
-                <FormLabel>Customer Name</FormLabel>
-                <FormControl
-                    autoFocus
-                    type="string"
-                    value={this.state.cName}
-                    onChange={e => {
-                        this.setState({ cName: e.target.value });
-                    }}
-                />
-                <FormLabel>Discount Name</FormLabel>
-                <FormControl
-                    autoFocus
-                    type="string"
-                    value={this.state.dName}
-                    onChange={e => {
-                        this.setState({ dName: e.target.value });
-                    }}
-                />
-                <Dropdown
-                    onSelect={key => {
-                        this.setState({ dType: key });
-                    }}
-                >
-                    <Dropdown.Toggle variant="success" id="dropdown-basic">
-                        {this.state.dType}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item eventKey="Fixed">Fixed</Dropdown.Item>
-                        <Dropdown.Item eventKey="Flexible">
-                            Flexible
-                        </Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
-
-                <Button
-                    bssize="medium"
-                    variant="outline-danger"
-                    onClick={e => {
-                        this.assignDiscount(e);
-                    }}
-                    block
-                >
-                    Assign Discount
-                </Button>
 
                 <br />
 

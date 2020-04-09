@@ -2,10 +2,16 @@ import React, {Fragment} from 'react';
 import Container from 'reactstrap/lib/Container';
 import TableOfCustomers from '../Components/TableOfCustomers';
 import Discount from "../Components/Discounts";
+import AssignDiscount from "../Components/AssignDiscount";
 
 export default function Customers(props) {
 const officeManager = (
-    <Fragment>  <Discount></Discount></Fragment>
+    <Fragment>
+        <AssignDiscount/>
+        <br/>
+        <br/>
+        <Discount></Discount>
+    </Fragment>
 );
     function displayHandler() {
         var role;
@@ -20,6 +26,7 @@ const officeManager = (
     }
     return (
         <Container>
+            <h2>Customers</h2>
             <TableOfCustomers></TableOfCustomers>
 
             <br/>

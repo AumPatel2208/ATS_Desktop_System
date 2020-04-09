@@ -217,39 +217,9 @@ export class SaleForm extends Component {
             let z;
 
             if (this.state.customers[0] !== undefined) {
-                const dl = this.state.discounts.filter(
-                    i => String(i.name) === this.state.customers[0].discountName
-                );
-                this.setState({ discounts: dl });
-
-                if (this.state.customers[0].discountType === "Fixed") {
-                    let x = parseFloat(this.state.discounts[0].fixed);
-                //assigning correct discount to the fare
-                    let y = this.state.fare;
-                     z = y - y * (x / 100);
-                    this.setState({ fare: z });
-                } else if (
-                    this.state.customers[0].discountType === 'Flexible'
-                ) {
-                    let x = parseFloat(this.state.customers[0].paidThisMonth);
-                    if (x < this.state.discounts[0].flexibleBand1) {
-                        z =
-                            this.state.fare -
-                            this.state.fare *
-                                (this.state.discounts[0].band1Value / 100);
-                    } else if (x < this.state.discounts[0].flexibleBand2) {
-                        z =
-                            this.state.fare -
-                            this.state.fare *
-                                (this.state.discounts[0].band2Value / 100);
-                    } else if (x < this.state.discounts[0].flexibleBand3) {
-                        z =
-                            this.state.fare -
-                            this.state.fare *
-                                (this.state.discounts[0].band3Value / 100);
-                    }
-                   // this.setState({ fare: z });
-                }
+               let z1 = parseInt(this.state.fare);
+               let z2 = parseInt(this.state.customers[0].discountValue);
+               z = (z1 - ((z2/100)*z1));
             }
             else{z = this.state.fare}
             //storing the sale in the database
