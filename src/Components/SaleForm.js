@@ -26,6 +26,7 @@ export class SaleForm extends Component {
             Tlocal: '',
             Tother: '',
             method: 'Payment Method',
+            hasPayed: false,
             creditNum: '-',
             expDate: '-',
             secCode: '-',
@@ -36,7 +37,7 @@ export class SaleForm extends Component {
             eRate: {
                 eDate: Date,
                 currency: '',
-                USDExchange: ''
+                USDExchange: '',
             },
             exch: [],
             cCode: 'USD',
@@ -44,69 +45,67 @@ export class SaleForm extends Component {
             blanks: [],
             customers: [],
             discounts: [],
-            setType: " "
+            setType: ' ',
         };
     }
     async componentDidMount() {
         const {
-            match: { params }
+            match: { params },
         } = this.props;
         const l = params.id.split('-');
 
         this.setState({ tickNum: l[1] });
         this.setState({ myId: l[0] });
 
-        if (this.state.tickNum.substring(0,2) === "201"){
-            this.setState({ setType: "Domestic" });
+        if (this.state.tickNum.substring(0, 2) === '201') {
+            this.setState({ setType: 'Domestic' });
+        } else if (this.state.tickNum.substring(0, 2) === '440' || '420') {
+            this.setState({ setType: 'Interline' });
+        } else {
+            this.setState({ setType: 'Other' });
         }
-        else if (this.state.tickNum.substring(0,2) === "440" || "420"){
-            this.setState({ setType: "Interline" });
-        }
-        else{
-            this.setState({ setType: "Other" });
-        }
-        this.setState({saleType: this.state.setType});
+        this.setState({ saleType: this.state.setType });
 
         //getting the day's exchange rate for the given currency
         const getLink = apiLinks.EXCHANGERATES + '/sale';
         await axios
             .get(getLink)
-            .then(res => {
+            .then((res) => {
                 const exchData = res.data;
                 this.setState({
                     ...this.state.exch,
-                    exch: exchData
+                    exch: exchData,
                 });
                 console.log(this.state.exch);
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
 
         //getting the originally assigned amount to remove the sold ticket
         await axios
             .get(apiLinks.ASSIGN)
-            .then(res => {
+            .then((res) => {
                 const blanks = res.data;
                 this.setState({ blanks });
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
 
         //getting the customer in order to apply discount
         await axios
             .get(apiLinks.CUSTOMERS)
-            .then(res => {
+            .then((res) => {
                 const customers = res.data;
                 this.setState({ customers });
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
 
         //getting discount to apply to the fare
         await axios
             .get(apiLinks.DISCOUNT)
-            .then(res => {
+            .then((res) => {
                 const discounts = res.data;
                 this.setState({ discounts });
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
     }
 
     creditHandler() {
@@ -118,9 +117,9 @@ export class SaleForm extends Component {
                         autoFocus
                         type="string"
                         value={this.state.creditNum}
-                        onChange={e => {
+                        onChange={(e) => {
                             this.setState({
-                                creditNum: e.target.value
+                                creditNum: e.target.value,
                             });
                         }}
                     />
@@ -129,9 +128,9 @@ export class SaleForm extends Component {
                         autoFocus
                         type="string"
                         value={this.state.expDate}
-                        onChange={e => {
+                        onChange={(e) => {
                             this.setState({
-                                expDate: e.target.value
+                                expDate: e.target.value,
                             });
                         }}
                     />
@@ -140,9 +139,9 @@ export class SaleForm extends Component {
                         autoFocus
                         type="string"
                         value={this.state.secCode}
-                        onChange={e => {
+                        onChange={(e) => {
                             this.setState({
-                                secCode: e.target.value
+                                secCode: e.target.value,
                             });
                         }}
                     />
@@ -160,9 +159,9 @@ export class SaleForm extends Component {
                         autoFocus
                         type="string"
                         value={this.state.Tlocal}
-                        onChange={e => {
+                        onChange={(e) => {
                             this.setState({
-                                Tlocal: e.target.value
+                                Tlocal: e.target.value,
                             });
                         }}
                     />
@@ -171,9 +170,9 @@ export class SaleForm extends Component {
                         autoFocus
                         type="string"
                         value={this.state.cCode}
-                        onChange={e => {
+                        onChange={(e) => {
                             this.setState({
-                                cCode: e.target.value
+                                cCode: e.target.value,
                             });
                         }}
                     />
@@ -185,7 +184,7 @@ export class SaleForm extends Component {
     render() {
         function submitSale(event) {
             const bl = this.state.blanks.filter(
-                i => String(i._id) === this.state.myId
+                (i) => String(i._id) === this.state.myId
             );
             this.setState({ blanks: bl });
 
@@ -202,12 +201,14 @@ export class SaleForm extends Component {
                     ? (ad = `${this.props.staff.advisorCode}`)
                     : (ad = '-');
             }
-
             var cd;
             {
                 this.props.staff !== undefined
                     ? (cd = `${this.props.staff.commissionRate}`)
                     : (cd = '-');
+            }
+            if (this.state.method !== 'payLater') {
+                this.setState({ hasPayed: true });
             }
 
             //this.setState({ rate: cd });
@@ -216,7 +217,7 @@ export class SaleForm extends Component {
             //getting the correct customer and applying the discount to the fare
             //filtering by ID
             const cl = this.state.customers.filter(
-                i => String(i._id) === this.state.custName
+                (i) => String(i._id) === this.state.custName
             );
             this.setState({ customers: cl });
 
@@ -224,15 +225,16 @@ export class SaleForm extends Component {
 
             if (this.state.customers[0] !== undefined) {
                 const dl = this.state.discounts.filter(
-                    i => String(i.name) === this.state.customers[0].discountName
+                    (i) =>
+                        String(i.name) === this.state.customers[0].discountName
                 );
                 this.setState({ discounts: dl });
 
-                if (this.state.customers[0].discountType === "Fixed") {
+                if (this.state.customers[0].discountType === 'Fixed') {
                     let x = parseFloat(this.state.discounts[0].fixed);
-                //assigning correct discount to the fare
+                    //assigning correct discount to the fare
                     let y = this.state.fare;
-                     z = y - y * (x / 100);
+                    z = y - y * (x / 100);
                     this.setState({ fare: z });
                 } else if (
                     this.state.customers[0].discountType === 'Flexible'
@@ -254,15 +256,22 @@ export class SaleForm extends Component {
                             this.state.fare *
                                 (this.state.discounts[0].band3Value / 100);
                     }
-                   // this.setState({ fare: z });
+                    // this.setState({ fare: z });
                 }
+            } else {
+                z = this.state.fare;
             }
-            else{z = this.state.fare}
             //storing the sale in the database
             let w;
-            if (this.state.customers[0] !== undefined) {w =this.state.customers[0].firstName + " "+ this.state.customers[0].lastName}
-            else{w = "a casual customer"}
-
+            if (this.state.customers[0] !== undefined) {
+                w =
+                    this.state.customers[0].firstName +
+                    ' ' +
+                    this.state.customers[0].lastName;
+            } else {
+                w = 'a casual customer';
+            }
+            console.log(this.state.exch);
 
             const newSale = {
                 ticketNumber: this.state.tickNum,
@@ -280,36 +289,35 @@ export class SaleForm extends Component {
                 advisorCode: ad,
                 saleDate: dt,
                 notes: this.state.notes,
-                USDExchangeRate: this.state.exch[0].toUSDRate
+                hasPayed: this.state.hasPayed,
+                USDExchangeRate: this.state.exch[0].toUSDRate,
             };
             axios
                 .post(apiLinks.SALES, newSale)
-                .then(response => {
+                .then((response) => {
                     console.log(response);
                     console.log(this.state.exch);
                 })
-                .catch(res => console.log(res));
+                .catch((res) => console.log(res));
 
             //USING THE BLANK/ADDING TO THE USED DATABASE SECTION
             let d = new Date(Date.now());
             d.setHours(0, 0, 0, 0);
-
-
 
             const newUsed = {
                 date: d,
                 batchValues: this.state.tickNum,
                 advisorCode: ad,
                 batchId: this.state.myId,
-                custName: w
+                custName: w,
             };
 
             axios
                 .post(apiLinks.USED, newUsed)
-                .then(response => {
+                .then((response) => {
                     console.log(response);
                 })
-                .catch(err => console.log('Error code: ', err));
+                .catch((err) => console.log('Error code: ', err));
 
             //UPDATING ASSIGNMENT - REMOVING FROM ASSIGNED LIST
             let x = this.state.blanks[0].remaining;
@@ -324,7 +332,6 @@ export class SaleForm extends Component {
                 return;
             }
 
-
             const updatedBlank = {
                 batchValues: this.state.blanks[0].batchValues,
                 batchStart: this.state.blanks[0].batchStart,
@@ -332,12 +339,12 @@ export class SaleForm extends Component {
                 date: this.state.blanks[0].date,
                 batchType: this.state.blanks[0].batchType,
                 amount: this.state.blanks[0].amount,
-                remaining: x
+                remaining: x,
             };
 
             axios
                 .put(apiLinks.ASSIGN + '/' + this.state.myId, updatedBlank)
-                .catch(err => console.log('Error code: ', err));
+                .catch((err) => console.log('Error code: ', err));
 
             // updating customer account to reflect fare
             if (this.state.customers[0] != undefined) {
@@ -358,7 +365,7 @@ export class SaleForm extends Component {
                     customerType: this.state.customers[0].customerType,
                     discountName: this.state.customers[0].discountName,
                     discountType: this.state.customers[0].discountType,
-                    paidThisMonth: parseFloat(x) + parseFloat(this.state.fare)
+                    paidThisMonth: parseFloat(x) + parseFloat(this.state.fare),
                 };
 
                 axios
@@ -366,7 +373,7 @@ export class SaleForm extends Component {
                         apiLinks.CUSTOMERS + '/' + this.state.customers[0]._id,
                         updatedCustomer
                     )
-                    .catch(err => console.log('Error code: ', err));
+                    .catch((err) => console.log('Error code: ', err));
             }
         }
 
@@ -375,7 +382,7 @@ export class SaleForm extends Component {
                 <h2>Make a Sale</h2>
                 <Form onSubmit={submitSale.bind(this)}>
                     <Dropdown
-                        onSelect={key => {
+                        onSelect={(key) => {
                             this.setState({ method: key });
                         }}
                     >
@@ -387,6 +394,9 @@ export class SaleForm extends Component {
                             <Dropdown.Item eventKey="CreditCard">
                                 Credit card
                             </Dropdown.Item>
+                            <Dropdown.Item eventKey="payLater">
+                                Pay Later
+                            </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
 
@@ -397,9 +407,9 @@ export class SaleForm extends Component {
                         autoFocus
                         type="string"
                         value={this.state.tickNum}
-                        onChange={e => {
+                        onChange={(e) => {
                             this.setState({
-                                tickNum: e.target.value
+                                tickNum: e.target.value,
                             });
                         }}
                     />
@@ -408,9 +418,9 @@ export class SaleForm extends Component {
                         autoFocus
                         type="string"
                         value={this.state.fare}
-                        onChange={e => {
+                        onChange={(e) => {
                             this.setState({
-                                fare: e.target.value
+                                fare: e.target.value,
                             });
                         }}
                     />
@@ -423,7 +433,7 @@ export class SaleForm extends Component {
                         autoFocus
                         type="string"
                         value={this.state.Tother}
-                        onChange={e => {
+                        onChange={(e) => {
                             this.setState({ Tother: e.target.value });
                         }}
                     />
@@ -442,7 +452,7 @@ export class SaleForm extends Component {
                     <Autocomplete
                         id="combo-box-customers"
                         options={this.state.customers}
-                        getOptionLabel={option =>
+                        getOptionLabel={(option) =>
                             option.firstName +
                             ' ' +
                             option.lastName +
@@ -450,22 +460,21 @@ export class SaleForm extends Component {
                             option._id
                         }
                         style={{ width: 300 }}
-                        renderInput={params => (
+                        renderInput={(params) => (
                             <TextField
                                 {...params}
                                 label="Customers"
                                 variant="outlined"
                             />
                         )}
-
                         onChange={(event, value) => {
                             this.setState({
                                 ...this.state,
-                                custName: value._id
+                                custName: value._id,
                             });
                         }}
 
-                         /*
+                        /*
                         onChange={option => {
                             this.setState({
                                 custName: option.target.value._id
@@ -473,7 +482,6 @@ export class SaleForm extends Component {
                         }}
 
                           */
-
                     />
 
                     <FormLabel>Notes</FormLabel>
@@ -481,9 +489,9 @@ export class SaleForm extends Component {
                         autoFocus
                         type="string"
                         value={this.state.notes}
-                        onChange={e => {
+                        onChange={(e) => {
                             this.setState({
-                                notes: e.target.value
+                                notes: e.target.value,
                             });
                         }}
                     />

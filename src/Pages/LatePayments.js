@@ -1,14 +1,14 @@
 // create page with table that contains all the people who havent payed, with the table sorted in terms of days left.
 // just show total amount to pay, and contact details for the customer.
 import React, { Component, Fragment } from 'react';
-import { Container, Table } from 'react-bootstrap';
+import { Container, Table, Button } from 'react-bootstrap';
 import axios from 'axios';
-
-export default class LatePayments extends Component {
+import { withRouter } from 'react-router';
+class LatePayments extends Component {
     state = {
         sales: [{}],
         customers: [{}],
-        toDisplay: [{}]
+        toDisplay: [{}],
     };
 
     filterSales() {
@@ -33,21 +33,25 @@ export default class LatePayments extends Component {
 
         await axios
             .get('/api/sales')
-            .then(async res => {
+            .then(async (res) => {
                 if (this.mounted) {
                     const sales = await res.data;
                     this.setState({ sales });
                 }
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log(err);
             });
         // this.filterSales();
         //get customers and match using customerID on the data
 
+        await axios.get('/api/customers').then((res) => {
+            this.setState({ customers: res.data });
+        });
+
         //mapping into data to display
         var tempToDisplay = [];
-        this.state.sales.map(sale => {
+        this.state.sales.map((sale) => {
             var money =
                 Number(sale.fare) +
                 (sale.localTax !== 'Empty.' && sale.localTax !== undefined
@@ -56,13 +60,22 @@ export default class LatePayments extends Component {
                 (sale.otherTax !== 'Empty.' && sale.otherTax !== undefined
                     ? Number(sale.otherTax)
                     : 0);
+            var tempCust = this.state.customers.find(
+                (cust) => String(cust._id) === String(sale.custName)
+            );
 
             tempToDisplay.push({
+                saleID: sale._id,
                 ticketNumber: sale.ticketNumber,
                 amountDue: money,
                 saleDate: sale.saleDate,
-                daysLeft: this.numberOfDaysSinceSale(sale.saleDate) - 30,
-                custName: sale.custName
+                daysLeft: Math.floor(
+                    30 - this.numberOfDaysSinceSale(sale.saleDate)
+                ),
+                customer: tempCust,
+                custName:
+                    tempCust.firstName +
+                    tempCust.lastName.toUpperCase().charAt(0),
             });
         });
         console.log(tempToDisplay);
@@ -70,6 +83,38 @@ export default class LatePayments extends Component {
         this.setState({ toDisplay: tempToDisplay });
     }
     render() {
+        function row(
+            saleID,
+            ticketNumber,
+            amountDue,
+            saleDate,
+            daysLeft,
+            custName
+        ) {
+            return (
+                <Fragment>
+                    <tr key={custName}>
+                        <td>{ticketNumber}</td>
+                        <td>{amountDue}</td>
+                        <td>{saleDate}</td>
+                        <td>{daysLeft}</td>
+                        <td>{custName}</td>
+                        <td>
+                            <Button
+                                onClick={() => {
+                                    this.props.history.push(
+                                        './sale_edit/' + saleID
+                                    );
+                                }}
+                                variant="outline-warning"
+                            >
+                                Pay
+                            </Button>
+                        </td>
+                    </tr>
+                </Fragment>
+            );
+        }
         return (
             <Container>
                 <Table className="mt-4">
@@ -84,32 +129,31 @@ export default class LatePayments extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {/*this.state.advisors.map(
+                        {this.state.toDisplay.map(
                             ({
+                                saleID,
                                 ticketNumber,
-                                firstName,
-                                lastName,
-                                address,
-                                username,
-                                advisorCode,
-                                commissionRate
+                                amountDue,
+                                saleDate,
+                                daysLeft,
+                                custName,
                             }) => (
-                                <Fragment key={_id}>
+                                <Fragment key={custName}>
                                     {row(
-                                        _id,
-                                        firstName,
-                                        lastName,
-                                        address,
-                                        username,
-                                        advisorCode,
-                                        commissionRate
+                                        saleID,
+                                        ticketNumber,
+                                        amountDue,
+                                        saleDate,
+                                        daysLeft,
+                                        custName
                                     )}
                                 </Fragment>
                             )
-                                    )*/}
+                        )}
                     </tbody>
                 </Table>
             </Container>
         );
     }
 }
+export default withRouter(LatePayments);

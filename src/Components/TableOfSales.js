@@ -7,7 +7,7 @@ import {
     FormLabel,
     FormControl,
     Dropdown,
-    Button
+    Button,
 } from 'react-bootstrap';
 import SaleEditor from './SaleEditor';
 import { withRouter } from 'react-router';
@@ -20,11 +20,10 @@ class TableOfSales extends Component {
     mounted = false; //to make sure server process is stopped
     //Set the state to an empty list of objects that will be taken from the database
     state = {
-        salesTemp: [{}],
         sales: [{}],
         filterString: '',
         filterCondition: 'Please Select',
-        sort: 'Please Select'
+        sort: 'Please Select',
     };
 
     //runs when component mounts, use to gets the data from db
@@ -33,13 +32,13 @@ class TableOfSales extends Component {
 
         await axios
             .get('/api/sales/')
-            .then(async res => {
+            .then(async (res) => {
                 if (this.mounted) {
                     // console.log(res.data);
                     // const salesTemp = await res.data;
                     this.setState({ ...this.state, sales: await res.data });
 
-                    var changedSales = this.state.sales.map(sale => {
+                    var changedSales = this.state.sales.map((sale) => {
                         if (sale.ticketNumber === undefined)
                             sale.ticketNumber = 'Empty.';
                         if (sale.fare === undefined) sale.fare = 'Empty.';
@@ -90,33 +89,32 @@ class TableOfSales extends Component {
                     // this.setState({ sales: changedSales });
                 }
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log(err);
             });
-        this.filterSales();
     }
 
     async onRefundClick(_id) {
         console.log(_id);
-        const index = this.state.sales.findIndex(sale => sale._id === _id);
+        const index = this.state.sales.findIndex((sale) => sale._id === _id);
         var tempSales = this.state.sales;
         tempSales[index].isRefunded = true;
 
         await axios
             .put('/api/sales/refund/' + _id, tempSales[index])
-            .then(res => {
+            .then((res) => {
                 alert('Refund Logged. Response: ', res);
                 tempSales[index].isRefunded = 'Yes';
                 this.setState({ sales: tempSales });
             })
-            .catch(err => console.log('Refund Failed. Error Code: ', err));
+            .catch((err) => console.log('Refund Failed. Error Code: ', err));
     }
 
-    filterSales() {
+    filterPayed() {
         this.setState({
-            salesTemp: this.state.salesTemp.filter(
-                advisor => advisor.staffType === 'TravelAdvisor'
-            )
+            sales: this.state.sales.filter(
+                (sale) => String(sale.hasPayed) === 'No'
+            ),
         });
     }
 
@@ -129,28 +127,28 @@ class TableOfSales extends Component {
         ) {
             this.setState({
                 sales: this.state.sales.filter(
-                    advisor =>
+                    (advisor) =>
                         String(advisor[this.state.filterCondition]) ===
                         String(this.state.filterString)
-                )
+                ),
             });
         }
     }
     async reset() {
         await axios
             .get('http://localhost:5000/api/sales')
-            .then(async res => {
+            .then(async (res) => {
                 const salesTemp = await res.data;
                 this.setState({ sales: salesTemp });
             })
-            .catch(err => console.log('Error code: ', err));
-        this.filterSales();
+            .catch((err) => console.log('Error code: ', err));
+        // this.filterSales();
     }
     sortList(key) {
         this.setState({
             sales: []
                 .concat(this.state.sales)
-                .sort((a, b) => (a[`${key}`] > b[`${key}`] ? 1 : -1))
+                .sort((a, b) => (a[`${key}`] > b[`${key}`] ? 1 : -1)),
         });
     }
     onFakeSubmit(e) {
@@ -207,27 +205,34 @@ class TableOfSales extends Component {
                     <td>{hasPayed}</td>
                     <td>{isRefunded}</td>
                     <td>
-                        <Button
-                            className="open-btn"
-                            variant="outline-warning"
-                            size="lg"
-                            onClick={this.onRefundClick.bind(this, _id)}
-                        >
-                            REFUND
-                        </Button>
+                        {isRefunded === 'No' || !isRefunded ? (
+                            <Button
+                                className="open-btn"
+                                variant="outline-warning"
+                                size="lg"
+                                onClick={this.onRefundClick.bind(this, _id)}
+                            >
+                                REFUND
+                            </Button>
+                        ) : null}
                         <p></p>
                         <p></p>
-                        <Button
-                            className="open-btn"
-                            variant="outline-warning"
-                            size="lg"
-                            // href={}
-                            onClick={() => {
-                                this.props.history.push(`/sale_edit/${_id}`);
-                            }}
-                        >
-                            PAY
-                        </Button>
+
+                        {hasPayed === 'No' || !hasPayed ? (
+                            <Button
+                                className="open-btn"
+                                variant="outline-warning"
+                                size="lg"
+                                // href={}
+                                onClick={() => {
+                                    this.props.history.push(
+                                        `/sale_edit/${_id}`
+                                    );
+                                }}
+                            >
+                                PAY
+                            </Button>
+                        ) : null}
                     </td>
                 </tr>
             </Fragment>
@@ -239,7 +244,7 @@ class TableOfSales extends Component {
                     <FormGroup controlId="filterCondition" bssize="large">
                         <FormLabel>Filter Condition</FormLabel>
                         <Dropdown
-                            onSelect={key => {
+                            onSelect={(key) => {
                                 this.setState({ filterCondition: key });
 
                                 // console.log(_.startCase(key));
@@ -319,9 +324,9 @@ class TableOfSales extends Component {
                             autoFocus
                             type="string"
                             value={this.state.filterString}
-                            onChange={e => {
+                            onChange={(e) => {
                                 this.setState({
-                                    filterString: e.target.value
+                                    filterString: e.target.value,
                                 });
                             }}
                         />
@@ -359,7 +364,7 @@ class TableOfSales extends Component {
                     <FormGroup controlId="sort" bssize="large">
                         <FormLabel>Sort</FormLabel>
                         <Dropdown
-                            onSelect={key => {
+                            onSelect={(key) => {
                                 this.setState({ sort: key });
                                 this.sortList(key);
                             }}
@@ -460,7 +465,7 @@ class TableOfSales extends Component {
                     </thead>
 
                     <tbody>
-                        {this.state.sales.map(sale => (
+                        {this.state.sales.map((sale) => (
                             <Fragment key={sale._id}>
                                 {row(
                                     sale._id,

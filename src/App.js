@@ -53,6 +53,7 @@ import ReportTableI from './Components/ReportTableI';
 
 import SaleEditor from './Components/SaleEditor';
 import LatePayments from './Pages/LatePayments';
+import Notifications from './Components/Notifications';
 
 const apiLinks = require('./api/config.json');
 /* CODE TO LOCK A PAGE
@@ -73,18 +74,29 @@ class App extends React.Component {
         this.state = {
             userID: '',
             staff: undefined,
-            isAuthenticated: false
+            isAuthenticated: false,
+            sales: [],
         };
+    }
+
+    numberOfDaysSinceSale(date) {
+        console.log(date);
+        const saleDate = new Date(date);
+        const todaysDate = new Date();
+
+        var diff = Math.abs(todaysDate.getTime() - saleDate.getTime());
+
+        return diff / (1000 * 60 * 60 * 24);
     }
 
     async componentDidMount() {
         //Loading User
         await axios
             .get('api/secure/staff')
-            .then(res => {
+            .then((res) => {
                 this.setState({ ...this.state, userID: res.data });
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log('Not Logged In! Error: ', err.request);
             });
         if (this.state.userID !== '')
@@ -97,26 +109,33 @@ class App extends React.Component {
                         this.setState({
                             ...this.state,
                             staff: res.data,
-                            isAuthenticated: true
+                            isAuthenticated: true,
                         });
                     }
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log('Error Code: ', err);
                 });
+        if (this.state.staff) {
+            if (this.state.staff.staffType === 'OfficeManager') {
+                await axios.get('/api/sales').then(async (res) => {
+                    this.setState({ sales: await res.data });
+                });
+            }
+        }
     }
 
     async logout() {
         await axios
             .post('api/secure/logout')
-            .then(res => {
+            .then((res) => {
                 alert(res.data.msg);
             })
-            .catch(err => console.log('Logout Failed, error code: ', err));
+            .catch((err) => console.log('Logout Failed, error code: ', err));
         this.setState({
             ...this.state,
             staff: undefined,
-            isAuthenticated: false
+            isAuthenticated: false,
         });
         window.location.replace('./');
     }
@@ -128,6 +147,10 @@ class App extends React.Component {
                     isAuthenticated={this.state.isAuthenticated}
                     staff={this.state.staff}
                 ></Nav>
+                {this.state.isAuthenticated &&
+                this.state.staff.staffType === 'OfficeManager' ? (
+                    <Notifications sales={this.state.sales} />
+                ) : null}
                 <Switch>
                     <Route
                         exact={true}
@@ -158,8 +181,20 @@ class App extends React.Component {
                     ></Route>
                     <Route
                         exact={true}
+                        path="/sales/latePayments"
+                        render={() => (
+                            <div className="App">
+                                <TableOfSales
+                                    latePayments={true}
+                                    staff={this.state.staff}
+                                />
+                            </div>
+                        )}
+                    ></Route>
+                    <Route
+                        exact={true}
                         path="/sale_edit/:id"
-                        render={props => (
+                        render={(props) => (
                             <div className="App">
                                 <SaleEditor {...props}></SaleEditor>
                             </div>
@@ -167,13 +202,13 @@ class App extends React.Component {
                     ></Route>
                     <Route
                         path="/customers/:id"
-                        render={props => (
+                        render={(props) => (
                             <CustomerUpdate {...props} isNew={false} />
                         )}
                     />
                     <Route
                         path="/customer/create"
-                        render={props => (
+                        render={(props) => (
                             <CustomerUpdate {...props} isNew={true} />
                         )}
                     />
@@ -230,7 +265,7 @@ class App extends React.Component {
                     />
                     <Route
                         path="/staff/:id"
-                        render={props => (
+                        render={(props) => (
                             <RegisterStaff
                                 {...props}
                                 isNew={false}
@@ -242,7 +277,7 @@ class App extends React.Component {
                         path="/reports"
                         render={() => (
                             <div className="App">
-                                <Reports staff={this.state.staff}/>
+                                <Reports staff={this.state.staff} />
                             </div>
                         )}
                     />
@@ -257,11 +292,11 @@ class App extends React.Component {
                     />
                     <Route
                         path="/blanks/:id"
-                        render={props => <Assignment {...props} />}
+                        render={(props) => <Assignment {...props} />}
                     />
                     <Route
                         path="/blankAssigned/:id"
-                        render={props => <ReAssignBlanks {...props} />}
+                        render={(props) => <ReAssignBlanks {...props} />}
                     />
                     <Route
                         exact={true}
@@ -292,7 +327,7 @@ class App extends React.Component {
                     />
                     <Route
                         path="/sales/:id"
-                        render={props => (
+                        render={(props) => (
                             <div className="App">
                                 <SaleForm {...props} staff={this.state.staff} />
                             </div>
