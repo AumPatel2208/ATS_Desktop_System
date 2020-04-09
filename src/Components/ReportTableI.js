@@ -33,7 +33,8 @@ export default class ReportTableI extends Component {
         inputCode: '',
         saleTypeValue: 'Choose Sale Type',
         startDate: new Date(),
-        endDate: new Date()
+        endDate: new Date(),
+        sType:""
     };
 }
 
@@ -41,45 +42,55 @@ export default class ReportTableI extends Component {
     componentDidMount() {
         //   let start = this.state.startDate;
         //let end = this.state.endDate;
-        var a;
-        {this.props.staff !== undefined
-            ? a =`${this.props.staff.advisorCode}`
-            : a = ""}
 
-        axios
-            .get(apiLinks.SALES)
-            .then(res => {
-                const sales = res.data;
-                this.setState({ sales });
-/*
-                const dl = this.state.sales.filter(
-                    i => i.advisorCode == a);
-                this.setState({ sales: dl });
+        var ad;
+        {
+            this.props.staff !== undefined
+                ? ad = `${this.props.staff.staffType}`
+                : ad = "undefined"
+        }
 
- */
+        if (ad !== "OfficeManager") {
 
-            })
-            .catch(err => console.log('Error code: ', err));
+            var a;
+            {
+                this.props.staff !== undefined
+                    ? a = `${this.props.staff.advisorCode}`
+                    : a = ""
+            }
+
+            this.setState( {code : a});
+
+
+            axios
+                .get(apiLinks.SALES)
+                .then(res => {
+                    const sales = res.data;
+                    this.setState({sales});
+
+                    const dl = this.state.sales.filter(
+                        i => i.advisorCode == a);
+                    this.setState({sales: dl});
+
+
+                })
+                .catch(err => console.log('Error code: ', err));
+        } else {
+            axios
+                .get(apiLinks.SALES)
+                .then(res => {
+                    const sales = res.data;
+                    this.setState({sales});
+                })
+                .catch(err => console.log('Error code: ', err));
+            this.setState({sType: "OM"})
+        }
     }
 
     roleHandler(){
-       var ad;
-        {this.props.staff !== undefined
-            ? ad =`${this.props.staff.staffType}`
-            : ad = "undefined"}
-        if (ad === "TravelAdvisor") {
-
-           let code =  `${this.props.staff.advisorCode}`;
-/*
-            this.setState({sales: this.state.sales.filter(
-                    sale =>
-                        String(sale[this.state.code]) == code)});
-
- */
-
-
+      if (this.state.setType !== "OM"){
             return <Fragment>
-                <h3>Showing Sales For Advisor {code} </h3>
+                <h3>Showing Sales For Advisor {this.state.code} </h3>
             </Fragment>
         }
         else {

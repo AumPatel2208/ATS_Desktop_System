@@ -46,8 +46,10 @@ export default class ReportTableG extends Component {
     toPDF() {
         var pdf = new jsPDF('l', 'pt', 'A4');
         var source = document.getElementById("export");
-        pdf.autoTable({html: '#export'});
+        pdf.text( "Global Report By Advisor", 50, 40);
+        pdf.autoTable({html: '#export', startY: 60});
         pdf.save("GlobalAdvisor.pdf")
+
     }
 
 
@@ -151,6 +153,47 @@ export default class ReportTableG extends Component {
                 />
                 <br />
                 <Form>
+                    <Dropdown
+                        onSelect={key => {
+                            this.setState({ saleTypeValue: key });
+
+                            if (key === 'Interline') {
+                                this.setState({
+                                    sales: this.state.sales.filter(
+                                        sale =>
+                                            String(
+                                                sale[this.state.saleT]
+                                            ) === 'Interline'
+                                    )
+                                });
+                            } else {
+                                this.setState({
+                                    sales: this.state.sales.filter(
+                                        sale =>
+                                            String(
+                                                sale[this.state.saleT]
+                                            ) === 'Domestic'
+                                    )
+                                });
+                            }
+                        }}
+                    >
+                        <Dropdown.Toggle
+                            variant="success"
+                            id="dropdown-basic"
+                        >
+                            {_.startCase(this.state.saleTypeValue)}
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu>
+                            <Dropdown.Item eventKey="Domestic">
+                                Domestic
+                            </Dropdown.Item>
+                            <Dropdown.Item eventKey="Interline">
+                                Interline
+                            </Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
                     <FormGroup>
                         <Button
                             bssize="medium"

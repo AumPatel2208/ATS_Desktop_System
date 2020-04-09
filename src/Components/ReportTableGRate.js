@@ -63,8 +63,10 @@ export default class ReportTableGRate extends Component {
     toPDF() {
         var pdf = new jsPDF('l', 'pt', 'A4');
         var source = document.getElementById("export");
-        pdf.autoTable({html: '#export'});
+        pdf.text( "Global Interline Report By Rate", 50, 40);
+        pdf.autoTable({html: '#export', startY: 60});
         pdf.save("GlobalRate.pdf")
+
     }
 
     onOpenClick(e, _id) {

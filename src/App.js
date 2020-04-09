@@ -266,9 +266,16 @@ class App extends React.Component {
                         path="/reports"
                         render={() => (
                             <div className="App">
-                                <Reports staff={this.state.staff} />
+                                {this.state.isAuthenticated &&
+                                this.state.staff.staffType ===
+                                'OfficeManager' ? (
+                                    <Reports staff={this.state.staff} />
+                                ) : (
+                                    <ReportTableI staff={this.state.staff}></ReportTableI>
+                                )}
                             </div>
                         )}
+
                     />
                     <Route
                         exact={true}
