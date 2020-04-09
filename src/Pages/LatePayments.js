@@ -5,6 +5,9 @@ import { Container, Table, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { withRouter } from 'react-router';
 class LatePayments extends Component {
+    constructor(props) {
+        super(props);
+    }
     state = {
         sales: [{}],
         customers: [{}],
@@ -103,7 +106,7 @@ class LatePayments extends Component {
                             <Button
                                 onClick={() => {
                                     this.props.history.push(
-                                        './sale_edit/' + saleID
+                                        `/sale_edit/${saleID}`
                                     );
                                 }}
                                 variant="outline-warning"

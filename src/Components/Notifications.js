@@ -7,10 +7,6 @@ import 'react-notifications/lib/notifications.css';
 import { withRouter } from 'react-router';
 
 class Notifications extends React.Component {
-    constructor(props) {
-        super(props);
-        console.log('bby', props.sales);
-    }
     createNotification = (type) => {
         return () => {
             switch (type) {
@@ -29,6 +25,20 @@ class Notifications extends React.Component {
             }
         };
     };
+    numberOfDaysSinceSale(date) {
+        const saleDate = new Date(date);
+        const todaysDate = new Date();
+
+        var diff = Math.abs(todaysDate.getTime() - saleDate.getTime());
+
+        return diff / (1000 * 60 * 60 * 24);
+    }
+    componentDidUpdate() {
+        this.props.sales.map((sale) => {
+            if (Math.floor(30 - this.numberOfDaysSinceSale(sale.saleDate)) <= 0)
+                this.createNotification('latePayment');
+        });
+    }
 
     render() {
         return (

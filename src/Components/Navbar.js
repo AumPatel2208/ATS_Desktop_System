@@ -7,7 +7,7 @@ import {
     NavbarBrand,
     Nav,
     NavItem,
-    NavLink
+    NavLink,
 } from 'reactstrap';
 // import { useStoreState } from "pullstate";
 // import { UserStore } from "../store/UserStore.js";
@@ -23,7 +23,7 @@ class Navigation extends Component {
 
         this.state = {
             isOpen: false,
-            stats: {}
+            stats: {},
         };
     }
 
@@ -31,7 +31,7 @@ class Navigation extends Component {
 
     toggle = () => {
         this.setState({
-            isOpen: !this.state.isOpen
+            isOpen: !this.state.isOpen,
         });
     };
 
@@ -141,6 +141,11 @@ class Navigation extends Component {
                     <NavItem>
                         <NavLink tag={Link} to="/sales">
                             Sales
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} to="/latePayments">
+                            Late Payments
                         </NavLink>
                     </NavItem>
 
