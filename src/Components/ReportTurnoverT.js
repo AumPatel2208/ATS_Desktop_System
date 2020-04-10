@@ -250,7 +250,7 @@ export default class ReportTurnoverT extends Component {
                 <br />
                 <Button
                     bssize="medium"
-                    variant="outline-danger"
+                    variant="outline-info"
                     onClick={async () => {
                         let start = new Date(this.state.startDate);
                         let end = new Date(this.state.endDate);

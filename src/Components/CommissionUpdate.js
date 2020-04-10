@@ -128,7 +128,7 @@ export class CommissionUpdate extends Component {
                 <br />
                 <Button
                     bssize="medium"
-                    variant="outline-danger"
+                    variant="outline-primary"
                     onClick={(e) => {
                         this.assignDiscount(e);
                     }}

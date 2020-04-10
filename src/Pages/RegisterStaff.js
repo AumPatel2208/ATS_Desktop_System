@@ -6,6 +6,8 @@ import {
     FormLabel,
     Dropdown,
     Form,
+    Tabs,
+    Tab,
 } from 'react-bootstrap';
 import '../Styles/Login.css';
 import Container from 'reactstrap/lib/Container';
@@ -85,31 +87,7 @@ export default function RegisterStaff(props) {
 
     function handleSubmit(event) {
         event.preventDefault();
-        // console.log('hello');
 
-        // const tempStaffMember = props.isNew
-        //     ? [
-        //           {
-        //               firstName,
-        //               lastName,
-        //               address,
-        //               username,
-        //               password,
-        //               staffType,
-        //               advisorCode,
-        //               commissionRate
-        //           }
-        //       ]
-        //     : [
-        //           {
-        //               firstName,
-        //               lastName,
-        //               address,
-        //               username,
-        //               staffType,
-        //               commissionRate
-        //           }
-        //       ];
         const tempStaffMember = [
             {
                 firstName,
@@ -124,16 +102,6 @@ export default function RegisterStaff(props) {
                 commissionRate201,
             },
         ];
-
-        // axios
-        //     .post('http://localhost:5000/api/staffMembers/', tempStaffMember)
-        //     .then(response => {
-        //         console.log(response);
-        //     })
-        //     .catch(function(error) {
-        //         console.log(error);
-        //     });
-        // http://localhost:5000/api/staffMembers/
 
         const getLink = !props.isNew
             ? apiLinks.STAFFMEMBERS + '/' + props.match.params.id
@@ -158,128 +126,152 @@ export default function RegisterStaff(props) {
 
     return (
         <Container>
-            <div className="RegisterStaff">
-                <br />
-                <h1>
-                    <strong>Register Staff</strong>
-                </h1>
-                <br />
-                <form onSubmit={handleSubmit}>
-                    <FormGroup controlId="username" bssize="large">
-                        <FormLabel>Username</FormLabel>
-                        <FormControl
-                            autoFocus
-                            type="username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                    </FormGroup>
-                    <FormGroup controlId="firstName" bssize="large">
-                        <FormLabel>First Name</FormLabel>
-                        <FormControl
-                            autoFocus
-                            type="string"
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
-                        />
-                    </FormGroup>
-                    <FormGroup controlId="lastName" bssize="large">
-                        <FormLabel>Last Name</FormLabel>
-                        <FormControl
-                            autoFocus
-                            type="string"
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
-                        />
-                    </FormGroup>
-                    <FormGroup controlId="address" bssize="large">
-                        <FormLabel>Address</FormLabel>
-                        <FormControl
-                            autoFocus
-                            type="string"
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
-                        />
-                    </FormGroup>
-                    {props.isNew ? (
-                        <FormGroup controlId="password" bssize="large">
-                            <FormLabel>Password</FormLabel>
-                            <FormControl
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                type="password"
-                            />
-                        </FormGroup>
-                    ) : null}
-                    {props.isNew ? (
-                        <FormGroup controlId="confirmPassword" bssize="large">
-                            <FormLabel>Confirm Password</FormLabel>
-                            <FormControl
-                                value={confirmPassword}
-                                onChange={(e) =>
-                                    setConfirmPassword(e.target.value)
-                                }
-                                type="password"
-                            />
-                        </FormGroup>
-                    ) : null}
+            <Tabs
+                defaultActiveKey="registerStaff"
+                transition={false}
+                id="uncontrolled-tab-example"
+            >
+                <Tab eventKey="registerStaff" title="Register Staff">
+                    <div className="RegisterStaff">
+                        <br />
+                        <h1>
+                            <strong>Register Staff</strong>
+                        </h1>
+                        <br />
+                        <form onSubmit={handleSubmit}>
+                            <FormGroup controlId="username" bssize="large">
+                                <FormLabel>Username</FormLabel>
+                                <FormControl
+                                    autoFocus
+                                    type="username"
+                                    value={username}
+                                    onChange={(e) =>
+                                        setUsername(e.target.value)
+                                    }
+                                />
+                            </FormGroup>
+                            <FormGroup controlId="firstName" bssize="large">
+                                <FormLabel>First Name</FormLabel>
+                                <FormControl
+                                    autoFocus
+                                    type="string"
+                                    value={firstName}
+                                    onChange={(e) =>
+                                        setFirstName(e.target.value)
+                                    }
+                                />
+                            </FormGroup>
+                            <FormGroup controlId="lastName" bssize="large">
+                                <FormLabel>Last Name</FormLabel>
+                                <FormControl
+                                    autoFocus
+                                    type="string"
+                                    value={lastName}
+                                    onChange={(e) =>
+                                        setLastName(e.target.value)
+                                    }
+                                />
+                            </FormGroup>
+                            <FormGroup controlId="address" bssize="large">
+                                <FormLabel>Address</FormLabel>
+                                <FormControl
+                                    autoFocus
+                                    type="string"
+                                    value={address}
+                                    onChange={(e) => setAddress(e.target.value)}
+                                />
+                            </FormGroup>
+                            {props.isNew ? (
+                                <FormGroup controlId="password" bssize="large">
+                                    <FormLabel>Password</FormLabel>
+                                    <FormControl
+                                        value={password}
+                                        onChange={(e) =>
+                                            setPassword(e.target.value)
+                                        }
+                                        type="password"
+                                    />
+                                </FormGroup>
+                            ) : null}
+                            {props.isNew ? (
+                                <FormGroup
+                                    controlId="confirmPassword"
+                                    bssize="large"
+                                >
+                                    <FormLabel>Confirm Password</FormLabel>
+                                    <FormControl
+                                        value={confirmPassword}
+                                        onChange={(e) =>
+                                            setConfirmPassword(e.target.value)
+                                        }
+                                        type="password"
+                                    />
+                                </FormGroup>
+                            ) : null}
 
-                    <FormGroup controlId="advisorCode" bssize="large">
-                        <FormLabel>Advisor Code</FormLabel>
-                        <FormControl
-                            value={advisorCode}
-                            onChange={(e) => setAdvisorCode(e.target.value)}
-                        />
-                    </FormGroup>
+                            <FormGroup controlId="advisorCode" bssize="large">
+                                <FormLabel>Advisor Code</FormLabel>
+                                <FormControl
+                                    value={advisorCode}
+                                    onChange={(e) =>
+                                        setAdvisorCode(e.target.value)
+                                    }
+                                />
+                            </FormGroup>
 
-                    <FormGroup controlId="staffType" bssize="large">
-                        <FormLabel>Staff Type</FormLabel>
-                        <Dropdown
-                            onSelect={(key) => {
-                                setStaffType(key);
-                            }}
-                        >
-                            <Dropdown.Toggle
-                                variant="success"
-                                id="dropdown-basic"
+                            <FormGroup controlId="staffType" bssize="large">
+                                <FormLabel>Staff Type</FormLabel>
+                                <Dropdown
+                                    onSelect={(key) => {
+                                        setStaffType(key);
+                                    }}
+                                >
+                                    <Dropdown.Toggle
+                                        variant="success"
+                                        id="dropdown-basic"
+                                    >
+                                        {staffType}
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item eventKey="OfficeManager">
+                                            Office Manager
+                                        </Dropdown.Item>
+                                        <Dropdown.Item eventKey="SystemAdministrator">
+                                            System Administrator
+                                        </Dropdown.Item>
+                                        <Dropdown.Item eventKey="TravelAdvisor">
+                                            Travel Advisor
+                                        </Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </FormGroup>
+                            <Button
+                                block
+                                bssize="large"
+                                disabled={!validateForm()}
+                                type="submit"
                             >
-                                {staffType}
-                            </Dropdown.Toggle>
+                                {props.isNew ? 'Register' : 'Update'}
+                            </Button>
+                        </form>
+                    </div>
+                    <br />
+                </Tab>
+                <Tab eventKey="commissionRates" title="Commission Rates">
+                    <br />
+                    <h1>
+                        <strong>Update Commission Rates</strong>
+                    </h1>
+                    <br />
 
-                            <Dropdown.Menu>
-                                <Dropdown.Item eventKey="OfficeManager">
-                                    Office Manager
-                                </Dropdown.Item>
-                                <Dropdown.Item eventKey="SystemAdministrator">
-                                    System Administrator
-                                </Dropdown.Item>
-                                <Dropdown.Item eventKey="TravelAdvisor">
-                                    Travel Advisor
-                                </Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    </FormGroup>
-                    <Button
-                        block
-                        bssize="large"
-                        disabled={!validateForm()}
-                        type="submit"
-                    >
-                        {props.isNew ? 'Register' : 'Update'}
-                    </Button>
-                </form>
-            </div>
-            <br />
-            <br />
-            <br />
-            <h1>
-                <strong>Update Commission Rates</strong>
-            </h1>
-            <br />
+                    <CommissionRates></CommissionRates>
+                    <br />
+                    <CommissionUpdate></CommissionUpdate>
+                    <br />
+                </Tab>
+            </Tabs>
 
-            <CommissionRates></CommissionRates>
-            <br />
-            <CommissionUpdate></CommissionUpdate>
             <br />
             <br />
         </Container>

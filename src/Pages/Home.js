@@ -53,7 +53,7 @@ class Home extends Component {
                                     }}
                                     block
                                 >
-                                    Register Staff
+                                    Register Staff/Commission
                                 </Button>{' '}
                             </Col>
                         </Row>

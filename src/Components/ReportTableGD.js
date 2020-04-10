@@ -251,7 +251,7 @@ export default class ReportTableGD extends Component {
                     <FormGroup>
                         <Button
                             bssize="medium"
-                            variant="outline-danger"
+                            variant="outline-primary"
                             onClick={() => {
                                 this.setState({
                                     sales: this.aggregateSales(),

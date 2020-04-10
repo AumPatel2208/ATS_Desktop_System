@@ -120,7 +120,7 @@ export default class RatesForm extends Component {
                     ></DatePicker>{' '}
                     <Button
                         bssize="medium"
-                        variant="outline-danger"
+                        variant="outline-primary"
                         onClick={() => {
                             let start = this.state.dateE;
                             //(apiLinks.EXCHANGERATES + '/byDate', {params: {start}})

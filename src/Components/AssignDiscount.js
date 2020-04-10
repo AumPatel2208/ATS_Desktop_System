@@ -168,7 +168,7 @@ export default class Discounts extends Component {
                 <p></p>
                 <Button
                     bssize="medium"
-                    variant="outline-danger"
+                    variant="outline-primary"
                     onClick={(e) => {
                         this.assignDiscount(e);
                     }}

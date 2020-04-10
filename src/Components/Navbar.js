@@ -103,11 +103,11 @@ class Navigation extends Component {
         } else if (ad === 'OfficeManager') {
             return (
                 <Nav>
-                    <NavItem>
+                    {/* <NavItem>
                         <NavLink tag={Link} to="/">
                             Home
                         </NavLink>
-                    </NavItem>
+                    </NavItem> */}
                     <NavItem>
                         <NavLink tag={Link} to="/customers">
                             Customers
@@ -120,7 +120,7 @@ class Navigation extends Component {
                     </NavItem>
                     <NavItem>
                         <NavLink tag={Link} to="/registerStaff">
-                            Register Staff
+                            Register Staff/Commission
                         </NavLink>
                     </NavItem>
                     <NavItem>
