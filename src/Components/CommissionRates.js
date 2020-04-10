@@ -149,6 +149,7 @@ export default class CommissionRates extends Component {
                     variant="outline-danger"
                     onClick={(e) => {
                         this.createCommission(e);
+
                     }}
                     //onClick= {this.createDiscount()}
                     block
