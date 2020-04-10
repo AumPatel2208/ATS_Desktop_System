@@ -35,20 +35,24 @@ class Notifications extends React.Component {
     }
     componentDidUpdate() {
         this.props.sales.map((sale) => {
-            if (Math.floor(30 - this.numberOfDaysSinceSale(sale.saleDate)) <= 0)
+            if (
+                Math.floor(30 - this.numberOfDaysSinceSale(sale.saleDate)) <= 0
+            ) {
                 this.createNotification('latePayment');
+                // console.log();
+            }
         });
     }
 
     render() {
         return (
             <div>
-                {/* <button
+                <button
                     className="btn btn-danger"
                     onClick={this.createNotification('latePayment')}
                 >
                     Late Payment
-                </button> */}
+                </button>
 
                 <NotificationContainer />
             </div>
