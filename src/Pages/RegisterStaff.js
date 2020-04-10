@@ -26,7 +26,10 @@ export default function RegisterStaff(props) {
     const [address, setAddress] = useState('');
     const [staffMembers, setStaffMembers] = useState([{}]);
     const [advisorCode, setAdvisorCode] = useState('');
-    const [commissionRate, setCommissionRate] = useState('');
+    const [commissionRate440, setCommissionRate440] = useState('');
+    const [commissionRate420, setCommissionRate420] = useState('');
+    const [commissionRate201, setCommissionRate201] = useState('');
+
     //validation for form
     function validateForm() {
         return props.isNew
@@ -36,12 +39,10 @@ export default function RegisterStaff(props) {
                   firstName.length > 0 &&
                   lastName.length > 0 &&
                   address.length > 0 &&
-                  commissionRate.length > 0 &&
                   staffType !== 'Choose'
             : username.length > 0 &&
                   firstName.length > 0 &&
                   lastName.length > 0 &&
-                  commissionRate > 0 &&
                   staffType !== 'Choose';
     }
 
@@ -70,7 +71,9 @@ export default function RegisterStaff(props) {
                     setStaffType(tempStaffMember.staffType);
                     setAddress(tempStaffMember.address);
                     setAdvisorCode(tempStaffMember.advisorCode);
-                    setCommissionRate(tempStaffMember.commissionRate);
+                    setCommissionRate440(tempStaffMember.commissionRate440);
+                    setCommissionRate420(tempStaffMember.commissionRate420);
+                    setCommissionRate201(tempStaffMember.commissionRate201);
                 })
                 .catch(err => console.log('Error code: ', err));
         }
@@ -113,7 +116,10 @@ export default function RegisterStaff(props) {
                 password,
                 staffType,
                 advisorCode,
-                commissionRate
+                commissionRate440,
+                commissionRate420,
+                commissionRate201
+
             }
         ];
 
@@ -210,13 +216,7 @@ export default function RegisterStaff(props) {
                             />
                         </FormGroup>
                     ) : null}
-                    <FormGroup controlId="commissionRate" bssize="large">
-                        <FormLabel>Commission Rate</FormLabel>
-                        <FormControl
-                            value={commissionRate}
-                            onChange={e => setCommissionRate(e.target.value)}
-                        />
-                    </FormGroup>
+
 
                     <FormGroup controlId="advisorCode" bssize="large">
                         <FormLabel>Advisor Code</FormLabel>
@@ -231,25 +231,6 @@ export default function RegisterStaff(props) {
                         <Dropdown
                             onSelect={key => {
                                 setStaffType(key);
-                                // console.log(key);
-                                // var temp = Math.floor(
-                                //     Math.random() * 9999999 + 1000000
-                                // );
-                                // setAdvisorCode(temp.toString());
-                                // if (key === 'SystemAdministrator') {
-                                //     setAdvisorCode('1' + temp);
-                                // } else if (key === 'OfficeManager') {
-                                //     setAdvisorCode('2' + temp);
-                                // } else if (key === 'TravelAdvisor') {
-                                //     setAdvisorCode('3' + temp);
-                                // }
-                                // if (key === 'SystemAdministrator') {
-                                //     setAdvisorCode('1' + advisorCode);
-                                // } else if (key === 'OfficeManager') {
-                                //     setAdvisorCode('2' + advisorCode);
-                                // } else if (key === 'TravelAdvisor') {
-                                //     setAdvisorCode('3' + advisorCode);
-                                // }
                             }}
                         >
                             <Dropdown.Toggle
