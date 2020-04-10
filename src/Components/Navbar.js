@@ -14,7 +14,8 @@ import {
 import NavItemsAuth from './NavItemsAuth';
 import '../Styles/Nav.css';
 import Reports from '../Pages/Reports';
-// import logo from '../assets/img/Uni-Verse Logo Straight.png';
+import { Image } from 'react-bootstrap';
+import logo from '../assets/img/Uni-Verse.png';
 // const User = useStoreState(UserStore, s => s.UserType);
 // const IsAuthenticated = useStoreState(UserStore, s => s.IsAuthenticated);
 class Navigation extends Component {
@@ -172,13 +173,18 @@ class Navigation extends Component {
             <Navbar className="Navigation" light expand="md">
                 <NavbarToggler onClick={this.toggle} />
                 <NavbarBrand href="/">
-                    <NavLink>
+                    {/* <NavLink>
                         <h1>ATS Air VIA</h1>
-                    </NavLink>
+                    </NavLink> */}
 
                     {/* <img src={logo} alt="Uni-Verse Tech"></img> */}
+                    <Image
+                        src={logo}
+                        alt="Uni-Verse Tech"
+                        width="130"
+                        fluid
+                    ></Image>
                 </NavbarBrand>
-
                 <Collapse isOpen={this.state.isOpen} navbar>
                     <Nav className="ml-auto" navbar>
                         {}
