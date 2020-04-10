@@ -61,30 +61,33 @@ export default class Discounts extends Component {
         const st = this.state.cName;
         const f = this.state.cName.split(' ');
         //filtering first name
-        const c = this.state.customers.filter(
-            (i) => String(i.firstName) === f[0]
-        );
-        this.setState({ customers: c });
-        //filtering last name
-        const cl = this.state.customers.filter(
-            (i) => String(i.firstName) === f[1]
-        );
-        this.setState({ customers: cl });
+        let i4;
+        for (var i=0; i < this.state.customers.length; i++){
+            if (this.state.customers[i].firstName == f[0]){
+                i4 = i;
+                break;
+            }
+        }
 
         //getting the discount to assign the correct value
+        let i3;
+        for (var i2=0; i2 < this.state.discounts.length; i2++){
+            if (this.state.discounts[i2].name == this.state.dName){
+                i3 = i2;
+                break;
+            }
+        }
 
-        const fc = this.state.discounts.filter(
-            (i) => String(i.name) === this.state.dName
-            //this.state.dName
-        );
-        this.setState({ discounts: fc });
+
+        alert(this.state.discounts.length);
+
 
         let x = 0;
         if (this.state.dType === 'Fixed') {
-            x = this.state.discounts[0].fixedValue;
+            x = this.state.discounts[i3].fixedValue;
         } else if (this.state.dType === 'Flexible') {
-            let z = this.state.customers[0].paidThisMonth;
-            let z2 = this.state.discounts[0];
+            let z = this.state.customers[i4].paidThisMonth;
+            let z2 = this.state.discounts[i3];
 
             if (z < z2.flexibleBand1) {
                 x = z2.band1Value;
@@ -95,20 +98,19 @@ export default class Discounts extends Component {
             }
         }
         const updatedCustomer = {
-            _id: this.state.customers[0]._id,
-            firstName: this.state.customers[0].firstName,
-            lastName: this.state.customers[0].lastName,
-            address: this.state.customers[0].address,
-            phoneNumber: this.state.customers[0].phoneNumber,
-            customerType: this.state.customers[0].customerType,
+            firstName: this.state.customers[i4].firstName,
+            lastName: this.state.customers[i4].lastName,
+            address: this.state.customers[i4].address,
+            phoneNumber: this.state.customers[i4].phoneNumber,
+            customerType: this.state.customers[i4].customerType,
             discountName: this.state.dName,
             discountType: this.state.dType,
             discountValue: x,
-            paidThisMonth: this.state.customers[0].paidThisMonth,
+            paidThisMonth: this.state.customers[i4].paidThisMonth,
         };
         axios
             .put(
-                apiLinks.CUSTOMERS + '/' + this.state.customers[0]._id,
+                apiLinks.CUSTOMERS + '/' + this.state.customers[i4]._id,
                 updatedCustomer
             )
             .then((res) => {
@@ -119,8 +121,8 @@ export default class Discounts extends Component {
             'Discount: ' +
                 this.state.dName +
                 'has been assigned to: ' +
-                this.state.customers[0].firstName +
-                this.state.customers[0].lastName
+                this.state.customers[i4].firstName +
+                this.state.customers[i4].lastName
         );
     }
 

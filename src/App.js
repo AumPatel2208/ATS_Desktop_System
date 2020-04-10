@@ -54,6 +54,7 @@ import ReportTableI from './Components/ReportTableI';
 import SaleEditor from './Components/SaleEditor';
 import LatePayments from './Pages/LatePayments';
 import Notifications from './Components/Notifications';
+import ReportTurnoverT from "./Components/ReportTurnoverT";
 
 const apiLinks = require('./api/config.json');
 
@@ -262,10 +263,15 @@ class App extends React.Component {
                                 this.state.staff.staffType ===
                                     'OfficeManager' ? (
                                     <Reports staff={this.state.staff} />
-                                ) : (
-                                    <ReportTableI
-                                        staff={this.state.staff}
-                                    ></ReportTableI>
+                                ) : (this.state.isAuthenticated &&
+                                        this.state.staff.staffType ===
+                                        'SystemAdministrator' ? (
+                                    <ReportTurnoverT></ReportTurnoverT>
+                                        ) : (
+                                            <ReportTableI
+                                                staff={this.state.staff}
+                                            ></ReportTableI>
+                                        )
                                 )}
                             </div>
                         )}

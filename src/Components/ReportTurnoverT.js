@@ -83,14 +83,11 @@ export default class ReportTurnoverT extends Component {
         pdf.text( "Newly Received Blanks", 50, 20);
         pdf.autoTable({html: '#recieved', columnSpan: 50,columnWidth: 50});
         let page = pdf.internal.getCurrentPageInfo().pageNumber;
-
-        pdf.setPage(page);
         pdf.text( "Assigned From Newly Received Blanks", 50, pdf.autoTable.previous.finalY +20);
         pdf.autoTable({html: '#assignedR', startY: pdf.autoTable.previous.finalY +40, pageBreak: 'avoid'});
         pdf.text( "Assigned During Given Period", 50, pdf.autoTable.previous.finalY +20);
         pdf.autoTable({html: '#assignedp', startY: pdf.autoTable.previous.finalY +40, pageBreak: 'avoid'});
 
-        pdf.setPage(page);
         pdf.text( "Used During Given Period", 50, pdf.autoTable.previous.finalY +20);
         pdf.autoTable({html: '#used', startY: pdf.autoTable.previous.finalY +40,  columnWidth :50});
         pdf.text( "Available At End Of Period", 50, pdf.autoTable.previous.finalY +20);

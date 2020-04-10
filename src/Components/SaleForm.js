@@ -225,14 +225,7 @@ export class SaleForm extends Component {
                 }
             }
 
-            let z;
 
-            if (this.state.customers[i2] !== undefined) {
-                let z1 = parseInt(this.state.fare);
-                let z2 = parseInt(this.state.customers[i2].discountValue);
-                z = z1 - (z2 / 100) * z1;
-            }
-            //storing the sale in the database
             let w = "Casual Customer";
             if (this.state.customers[i2] !== undefined) {
                 w =
@@ -240,6 +233,16 @@ export class SaleForm extends Component {
                     ' ' +
                     this.state.customers[i2].lastName;
             }
+
+
+            let z;
+
+            if (w !== "Casual Customer") {
+                let z1 = parseInt(this.state.fare);
+                let z2 = parseInt(this.state.customers[i2].discountValue);
+                z = z1 - (z2 / 100) * z1;
+            }
+            //storing the sale in the database
 
 
             const newSale = {
@@ -312,7 +315,7 @@ export class SaleForm extends Component {
                 .catch((err) => console.log('Error code: ', err));
 
             // updating customer account to reflect fare
-            if (this.state.customers[i2] != undefined) {
+            if (w !== "Casual Customer") {
                 let x;
 
                 if (this.state.customers[i2].paidThisMonth != undefined) {
