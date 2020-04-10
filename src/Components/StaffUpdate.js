@@ -10,6 +10,7 @@ import {
     Container,
     Form
 } from 'react-bootstrap';
+import {CommissionUpdate} from "./CommissionUpdate";
 
 let apiLinks = require('../api/config.json');
 const _ = require('lodash'); //Library to Change Cases of things

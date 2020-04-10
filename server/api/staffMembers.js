@@ -19,7 +19,10 @@ router.post('/', (q, a) => {
             password: bcrypt.hashSync(staff.password, salt),
             staffType: staff.staffType,
             advisorCode: staff.advisorCode,
-            commissionRate: staff.commissionRate
+            commissionRate440: staff.commissionRate440,
+            commissionRate420: staff.commissionRate420,
+            commissionRate201: staff.commissionRate201
+
         };
         Staff.create(newStaff).then(item => a.json(item));
     });

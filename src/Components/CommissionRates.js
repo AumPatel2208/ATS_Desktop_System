@@ -14,11 +14,11 @@ import { GetUSer } from '../store/User';
 const _ = require('lodash'); //Library to Change Cases of things
 
 let apiLinks = require('../api/config.json');
-export default class Discounts extends Component {
+export default class CommissionRates extends Component {
     state = {
-        discounts: [],
+        commissions: [],
         discountGetV: [],
-        customers: [],
+        staff: [],
         name: '',
         t440: "",
         t420:"",
@@ -42,121 +42,33 @@ export default class Discounts extends Component {
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
         axios
-            .get(apiLinks.DISCOUNT)
+            .get(apiLinks.COMMISSIONRATE)
             .then(res => {
-                const discounts = res.data;
-                this.setState({ discounts });
-
-                this.setState({discountsGetV: discounts});
-                const fc = this.state.discountGetV.filter(
-                    i => String(i.name) == "Plan1"
-                    //this.state.dName
-                );
-                this.setState({discountGetV :fc});
-
-            })
-            .catch(err => console.log('Error code: ', err));
-
-        axios
-            .get(apiLinks.CUSTOMERS)
-            .then(res => {
-                const customers = res.data;
-                this.setState({ customers });
+                const commissions = res.data;
+                this.setState({ commissions });
             })
             .catch(err => console.log('Error code: ', err));
     }
 
-    createDiscount(e) {
+    createCommission(e) {
         e.preventDefault();
-        const st = this.state.cName;
 
-        const newDiscount = {
+        const newCommission = {
             name: this.state.name,
-            fixedValue: this.state.fixed,
-            flexibleBand1: this.state.b1,
-            band1Value: this.state.b1v,
-            flexibleBand2: this.state.b2,
-            band2Value: this.state.b2v,
-            band3Value: this.state.b3v
+            ticket440: this.state.t440,
+            ticket420: this.state.t420,
+            ticket201: this.state.t210
         };
-        console.log(newDiscount);
+        console.log(newCommission);
 
         axios
-            .post(apiLinks.DISCOUNT + '/', newDiscount)
+            .post(apiLinks.COMMISSIONRATE + '/', newCommission)
             .then(response => {
                 console.log(response);
             })
             .catch(err => console.log('Error code: ', err));
     }
 
-    /*assignDiscount(e) {
-        e.preventDefault();
-
-        //Accessing the correct customer to update
-        const st = this.state.cName;
-        const f = this.state.cName.split(" ");
-        //filtering first name
-        const c = this.state.customers.filter(
-            i => String(i.firstName) === f[0]
-        );
-        this.setState({customers :c});
-        //filtering last name
-        const cl = this.state.customers.filter(
-            i => String(i.firstName) === f[1]
-        );
-        this.setState({customers :cl});
-
-        //getting the discount to assign the correct value
-        /*
-        const fc = this.state.discountGetV.filter(
-            i => String(i.name) == "Plan1"
-                //this.state.dName
-        );
-        this.setState({discountGetV :fc});
-
-
-
-
-        if (this.state.dType === "Fixed"){
-            this.setState({dV: this.state.discountGetV[0].fixed})
-        }
-        else if (this.state.dType === "Flexible") {
-            let z = this.state.customers[0].paidThisMonth;
-            let z2 = this.state.discountGetV[0];
-
-            if (z < z2.flexibleBand1){
-                this.setState({dV: z2.band1Value})
-            } else if ((z >= z2.flexibleBand1) && (z < z2.flexibleBand2 )){
-                this.setState({dV: z2.band2Value})
-            }else if (z >= z2.flexibleBand2){
-                this.setState({dV: z2.band3Value})
-            }
-
-        }
-
-
-        const updatedCustomer ={
-        _id: this.state.customers[0]._id,
-            firstName: this.state.customers[0].firstName,
-            lastName: this.state.customers[0].lastName,
-            address: this.state.customers[0].address,
-            phoneNumber: this.state.customers[0].phoneNumber,
-            customerType: this.state.customers[0].customerType,
-            discountName: this.state.dName,
-            discountType:this.state.dType,
-            discountValue: this.state.dV,
-            paidThisMonth: this.state.customers[0].paidThisMonth
-        };
-        axios
-            .put(
-                apiLinks.CUSTOMERS + '/' + this.state.customers[0]._id,
-                updatedCustomer
-            )
-            .then(res => {
-                console.log(res);
-            });
-    }
-*/
     onOpenClick(_id) {
         console.log(_id);
     }
@@ -164,22 +76,16 @@ export default class Discounts extends Component {
     render() {
         const row = (
             name,
-            fixedValue,
-            flexibleBand1,
-            band1Value,
-            flexibleBand2,
-            band2Value,
-            band3Value
+            t440,
+            t420,
+            t201
         ) => (
             <Fragment>
                 <tr>
                     <td>{name}</td>
-                    <td>{fixedValue}</td>
-                    <td>{flexibleBand1}</td>
-                    <td>{band1Value}</td>
-                    <td>{flexibleBand2}</td>
-                    <td>{band2Value}</td>
-                    <td>{band3Value}</td>
+                    <td>{t440}</td>
+                    <td>{t420}</td>
+                    <td>{t201}</td>
                     <td>
                     </td>
                 </tr>
@@ -188,9 +94,9 @@ export default class Discounts extends Component {
 
         return (
             <Container>
-                <h2>Add New Discount</h2>
+                <h2>Add New Commission Rates</h2>
 
-                <FormLabel>Discount Name</FormLabel>
+                <FormLabel>Commission Rate Name</FormLabel>
                 <FormControl
                     autoFocus
                     type="string"
@@ -199,108 +105,72 @@ export default class Discounts extends Component {
                         this.setState({ name: e.target.value });
                     }}
                 />
-                <FormLabel>Fixed Discount Value</FormLabel>
+                <FormLabel> Commission Value 440</FormLabel>
                 <FormControl
                     autoFocus
                     type="string"
-                    value={this.state.fixed}
+                    value={this.state.t440}
                     onChange={e => {
-                        this.setState({ fixed: e.target.value });
+                        this.setState({ t440: e.target.value });
                     }}
                 />
-                <FormLabel>Flexible Discount Band 1</FormLabel>
+                <FormLabel>Commission Value 420</FormLabel>
                 <FormControl
                     autoFocus
                     type="string"
-                    value={this.state.b1}
+                    value={this.state.t420}
                     onChange={e => {
-                        this.setState({ b1: e.target.value });
+                        this.setState({ t420: e.target.value });
                     }}
                 />
-                <FormLabel>Band 1 Discount(Less than Band 1)</FormLabel>
+                <FormLabel>Commission Value 201</FormLabel>
                 <FormControl
                     autoFocus
                     type="string"
-                    value={this.state.b1v}
+                    value={this.state.t210}
                     onChange={e => {
-                        this.setState({ b1v: e.target.value });
-                    }}
-                />
-                <FormLabel>Flexible Discount Band 2</FormLabel>
-                <FormControl
-                    autoFocus
-                    type="string"
-                    value={this.state.b2}
-                    onChange={e => {
-                        this.setState({ b2: e.target.value });
-                    }}
-                />
-                <FormLabel>Band 2 Discount(Greater than band 1, less than 2)</FormLabel>
-                <FormControl
-                    autoFocus
-                    type="string"
-                    value={this.state.b2v}
-                    onChange={e => {
-                        this.setState({ b2v: e.target.value });
-                    }}
-                />
-                <FormLabel>Band 3 Discount(greater than band 2)</FormLabel>
-                <FormControl
-                    autoFocus
-                    type="string"
-                    value={this.state.b3v}
-                    onChange={e => {
-                        this.setState({ b3v: e.target.value });
+                        this.setState({ t210: e.target.value });
                     }}
                 />
                 <Button
                     bssize="medium"
                     variant="outline-danger"
                     onClick={e => {
-                        this.createDiscount(e);
+                        this.createCommission(e);
                     }}
                     //onClick= {this.createDiscount()}
                     block
                 >
-                    Create Discount
+                    Create Commission
                 </Button>
                 <br />
 
                 <br />
 
-                <h2>Current Discounts</h2>
+                <h2>Current Commission Rates</h2>
                 <Table className="mt-4">
                     <thead>
                     <tr>
-                        <th>DiscountName</th>
-                        <th>Fixed Value Discount</th>
-                        <th>Flexible Band 1</th>
-                        <th>Band 1 Discount</th>
-                        <th>Flexible Band 2</th>
-                        <th>Band 2 Discount</th>
-                        <th>Band 3 Discount</th>
+                        <th>Commission Name</th>
+                        <th>Value for 440 Ticket</th>
+                        <th>Value for 420 Ticket</th>
+                        <th>Value for 201 Ticket</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.discounts.map(
+                    {this.state.commissions.map(
                         ({
                              name,
-                             fixedValue,
-                             flexibleBand1,
-                             band1Value,
-                             flexibleBand2,
-                             band2Value,
-                             band3Value
+                             t440,
+                            t420,
+                            t201
                          }) => (
                             <Fragment>
                                 {row(
                                     name,
-                                    fixedValue,
-                                    flexibleBand1,
-                                    band1Value,
-                                    flexibleBand2,
-                                    band2Value,
-                                    band3Value
+                                    t440,
+                                    t420,
+                                    t201
                                 )}
                             </Fragment>
                         )

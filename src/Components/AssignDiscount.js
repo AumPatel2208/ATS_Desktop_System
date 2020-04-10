@@ -78,7 +78,7 @@ export default class Discounts extends Component {
         //getting the discount to assign the correct value
 
         const fc = this.state.discounts.filter(
-            i => String(i.name) === "Plan1"
+            i => String(i.name) === this.state.dName
             //this.state.dName
         );
         this.setState({discounts :fc});
