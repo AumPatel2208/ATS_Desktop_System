@@ -86,6 +86,7 @@ export default class ReportTableI extends Component {
 
                 })
                 .catch(err => console.log('Error code: ', err));
+
         } else {
             axios
                 .get(apiLinks.SALES)
@@ -94,7 +95,7 @@ export default class ReportTableI extends Component {
                     this.setState({sales});
                 })
                 .catch(err => console.log('Error code: ', err));
-            this.setState({sType: "OM"})
+            this.setState({setType: "OM"})
         }
     }
     cashCheck(paymentMethod, fare){
@@ -144,7 +145,13 @@ export default class ReportTableI extends Component {
     }
 
     roleHandler(){
-      if (this.state.setType == "OM"){
+        var ad;
+        {
+            this.props.staff !== undefined
+                ? ad = `${this.props.staff.staffType}`
+                : ad = "undefined"
+        }
+      if (ad=== "OfficeManager"){
             return <Fragment>
                 <FormLabel>Enter Advisor Code</FormLabel>
                 <FormControl
@@ -207,6 +214,14 @@ export default class ReportTableI extends Component {
             for (var i = 0; i < this.state.sales.length; i++) {
                 if (this.state.sales[i].commissionRate === 5) {
                     x += this.state.sales[i].fare;
+                }
+            }
+            return x;
+        }
+        else if (value === 8) {
+            for (var i = 0; i < this.state.sales.length; i++) {
+                if (this.state.sales[i].paymentMethod === "Credit") {
+                    x += parseFloat(this.state.sales[i].fare)*parseFloat(this.state.sales[i].USDExchangeRate);
                 }
             }
             return x;
@@ -493,7 +508,7 @@ return x;
                                 <td> {this.aggregate(2)}</td>
                                 <td> {this.aggregate(3)}</td>
                                 <td> {this.aggregate(4)}</td>
-                                <td> "fix this one"</td>
+                                <td> {this.aggregate(8)}</td>
                                 <td> {this.aggregate(5)}</td>
                                 <td> {this.aggregate(5) + this.aggregate(1)}</td>
                                 <td> {this.aggregate(6)}</td>
