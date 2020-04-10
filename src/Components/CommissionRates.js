@@ -67,6 +67,8 @@ export default class CommissionRates extends Component {
                 console.log(response);
             })
             .catch(err => console.log('Error code: ', err));
+
+        alert("New Commission Created: " + this.state.name);
     }
 
     onOpenClick(_id) {

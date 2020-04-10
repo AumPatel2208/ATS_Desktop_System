@@ -51,6 +51,8 @@ export default class ReportTableG extends Component {
         var source = document.getElementById("export");
         pdf.text( "Global Report By Advisor", 50, 40);
         pdf.autoTable({html: '#export', startY: 60});
+        pdf.autoTable({html: '#exportB2'});
+
         pdf.save("GlobalAdvisor.pdf")
 
     }

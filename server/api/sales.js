@@ -13,11 +13,6 @@ router.post('/', (q, a) => {
     let x = q.body.currency;
     let y = q.body.USDExchangeRate;
 
-    if (q.body.saleType === 'Domestic') {
-        x = 'USD';
-        y = 1;
-    }
-
     var newSale = {
         ticketNumber: q.body.ticketNumber,
         fare: q.body.fare,
