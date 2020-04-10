@@ -195,11 +195,22 @@ export class SaleForm extends Component {
                     : (ad = '-');
             }
             var cd;
-            {
+            if (this.state.tickNum.substring(0,3) == 440){
                 this.props.staff !== undefined
-                    ? (cd = `${this.props.staff.commissionRate}`)
+                    ? (cd = `${this.props.staff.commissionRate440}`)
+                    : (cd = '-');
+
+            }else if (this.state.tickNum.substring(0,3) == 420){
+                this.props.staff !== undefined
+                    ? (cd = `${this.props.staff.commissionRate420}`)
+                    : (cd = '-');
+
+            }else if (this.state.tickNum.substring(0,3) == 201){
+                this.props.staff !== undefined
+                    ? (cd = `${this.props.staff.commissionRate201}`)
                     : (cd = '-');
             }
+
             if (this.state.method !== 'payLater') {
                 this.setState({ hasPayed: true });
             }

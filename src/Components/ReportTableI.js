@@ -113,6 +113,20 @@ export default class ReportTableI extends Component {
            return 0;
        }
     }
+    commissionCheck10(commission, fare){
+        if (commission == "10"){
+            return fare;
+        }else {
+            return 0;
+        }
+    }
+    commissionCheck15(commission, fare){
+        if (commission == "15"){
+            return fare;
+        }else {
+            return 0;
+        }
+    }
 
     commissionCheck9(commission, fare){
         if (commission === "9"){
@@ -244,11 +258,30 @@ export default class ReportTableI extends Component {
             return x;
         } else if (value === 7) {
             for (var i = 0; i < this.state.sales2.length; i++) {
-                if (this.state.sales2[i].commissionRate === 5) {
+                if (this.state.sales2[i].commissionRate === 10) {
                     x += this.state.sales2[i].fare;
                 }
             }
             return x;
+        }else if (value === 8) {
+            for (var i = 0; i < this.state.sales2.length; i++) {
+                    x += this.state.sales2[i].localTax;
+            }
+            return x;
+        }else if (value === 9) {
+            for (var i = 0; i < this.state.sales2.length; i++) {
+                if (this.state.sales2[i].commissionRate === 15) {
+                    x += this.state.sales2[i].fare;
+                }
+            }
+            return x;
+        }else if (value === 10) {
+            for (var i = 0; i < this.state.sales2.length; i++) {
+                if (this.state.sales2[i].paymentMethod === "Credit") {
+                    let y = parseFloat(this.state.sales2[i].fare) * parseFloat(this.state.sales2[i].USDExchangeRate);
+                    x += y;                }
+return x;
+            }
         }
         return x;
     }
@@ -272,6 +305,7 @@ export default class ReportTableI extends Component {
         var pdf = new jsPDF('l', 'pt', 'A4');
         pdf.setFontSize(9);
         pdf.autoTable({html: '#exportB'});
+        pdf.autoTable({html: '#exportB3'});
         pdf.autoTable({html: '#exportB2'});
         pdf.save("InterlineIndividualReport.pdf")
     }
@@ -472,6 +506,14 @@ export default class ReportTableI extends Component {
 
 
 
+
+
+
+
+
+
+
+
                 <h2>Interline Sales Report</h2>
                 <button onClick={this.toPDFB}>Download PDF</button>
 
@@ -479,16 +521,12 @@ export default class ReportTableI extends Component {
                     <thead>
                         <tr>
                             <th>Ticket Number</th>
-                            <th>Fare(Local)</th>
                             <th>Fare(USD)</th>
-                            <th>Cash</th>
-                            <th>Credit Card(USD)</th>
-                            <th>Credit Card(local)</th>
-                            <th>Taxes</th>
-                            <th>Total Paid(local)</th>
-                            <th>Commission 9%</th>
-                            <th>Commission 5%</th>
-                            <th>Notes</th>
+                            <th>Exchange Rate</th>
+                            <th>Fare(local)</th>
+                            <th>Local Taxes</th>
+                            <th>Other Taxes</th>
+                            <th>Document Total</th>
                         </tr>
                         </thead>
 
@@ -499,67 +537,123 @@ export default class ReportTableI extends Component {
                                                    fare,
                                                    USDExchangeRate,
                                                    otherTax,
-                                                   paymentMethod,
-                                                   commissionRate,
-                                                   creditCardNum,
-                                                   expDate,
-                                                   securityCode,
-                                                   saleDate,
-                                                   notes,
-                                                   saleType
+                                                    localTax
                                                }) => {
                             return (
                                 <tr >
                                     <td>{ticketNumber}</td>
-                                    <td> {fare}</td>
                                     <td>{(fare * USDExchangeRate).toFixed(3)}</td>
-                                    <td> {this.cashCheck(paymentMethod, fare)}</td>
-                                    <td> {this.creditCheck(paymentMethod, fare)}</td>
-                                    <td> {this.creditCheck(paymentMethod, fare) * USDExchangeRate}</td>
-                                    <td> {otherTax}</td>
-                                    <td> {otherTax + fare}</td>
-                                    <td> {this.commissionCheck9(commissionRate, fare)}</td>
-                                    <td> {this.commissionCheck5(commissionRate, fare)}</td>
-                                    <td> {notes}</td>
-
+                                    <td>{USDExchangeRate}</td>
+                                    <td>{fare}</td>
+                                    <td>{localTax}</td>
+                                    <td>{otherTax}</td>
+                                    <td>{localTax+otherTax+fare}</td>
                                 </tr>
                             );
                         })}
                         </tbody>
                 </Table>
 
+
+                <Table grid className="mt-4" id="exportB3">
+                    <thead>
+                    <tr>
+                        <th>Ticket Number</th>
+                        <th>Cash</th>
+                        <th>Credit Card Number</th>
+                        <th>Credit Card(USD)</th>
+                        <th>Credit Card(local)</th>
+                        <th>Total Paid</th>
+                        <th>Commission 15%</th>
+                        <th>Commission 10%</th>
+                        <th>Commission 9%</th>
+                        <th>Non-Assessable Amounts</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {this.state.sales2.map(({
+
+                                                ticketNumber,
+                                                fare,
+                                                USDExchangeRate,
+                                                otherTax,
+                                                localTax,
+                                                paymentMethod,
+                                                commissionRate,
+                                                creditCardNum,
+                                                expDate,
+                                                securityCode,
+                                                saleDate,
+                                                notes,
+                                                saleType
+                                            }) => {
+                        return (
+                            <tr >
+                                <td>{ticketNumber}</td>
+                                <td> {this.cashCheck(paymentMethod, fare)}</td>
+                                <td>{creditCardNum}</td>
+                                <td> {this.creditCheck(paymentMethod, fare) * USDExchangeRate}</td>
+                                <td> {this.creditCheck(paymentMethod, fare)}</td>
+                                <td>{localTax+otherTax+fare}</td>
+                                <td> {this.commissionCheck15(commissionRate, fare)}</td>
+                                <td> {this.commissionCheck10(commissionRate, fare)}</td>
+                                <td> {this.commissionCheck9(commissionRate, fare)}</td>
+                                <td> {localTax+otherTax}</td>
+                            </tr>
+                        );
+                    })}
+                    </tbody>
+                </Table>
+
+
                 <Table grid className="mt-4" id="exportB2">
                     <thead>
                     <tr>
-                        <th>Ticket Total</th>
-                        <th>Total Fare(Local)</th>
-                        <th>Total Fare(USD)</th>
-                        <th>Total Cash</th>
-                        <th>Total Credit Card(USD)</th>
-                        <th>Total Credit Card(local)</th>
-                        <th>Total Taxes</th>
-                        <th>Total Paid(local)</th>
-                        <th>Total Commission 9%</th>
-                        <th>Total Commission 5%</th>
-                        <th>Total Commission Amounts</th>
-                        <th>Net Amounts For Debit</th>
+                        <th>Fare(USD)</th>
+                        <th>Fare(local)</th>
+                        <th>Local Taxes</th>
+                        <th>Other Taxes</th>
+                        <th>Document Total</th>
+
+                        <th>Cash</th>
+                        <th>Credit(USD)</th>
+                        <th>Credit(local)</th>
+                        <th>Total Paid</th>
+
+                        <th>Commission 15%</th>
+                        <th>Commission 10%</th>
+                        <th>Commission 9%</th>
+
+                        <th>Non-Assessable Amounts</th>
+                        <th>Commission Amounts</th>
+                        <th>Net Amount for Debit</th>
+                        <th>Net Amount for Remittance</th>
                     </tr>
                     </thead>
 
                     <tbody>
                     <tr >
-                        <td>{this.state.sales2.length}</td>
-                        <td> {this.aggregate2(1)}</td>
                         <td> {this.aggregate2(2)}</td>
-                        <td> {this.aggregate2(3)}</td>
-                        <td> {this.aggregate2(4)}</td>
-                        <td> "fix this one"</td>
+                        <td> {this.aggregate2(1)}</td>
+                        <td> {this.aggregate2(8)}</td>
                         <td> {this.aggregate2(5)}</td>
-                        <td> {this.aggregate2(5) + this.aggregate2(1)}</td>
-                        <td> {this.aggregate2(6)}</td>
-                        <td> {this.aggregate2(7)}</td>
-                        <td>{(this.aggregate2(6)*.09)+(this.aggregate2(7)*.05)}</td>
-                        <td> {(this.aggregate2(6)+this.aggregate2(7))-((this.aggregate2(6)*.09)+(this.aggregate2(7)*.05))}</td>
+                        <td> {this.aggregate2(1)+this.aggregate2(5)+this.aggregate2(8)}</td>
+
+                        <td> {this.aggregate2(3)}</td>
+                        <td> {this.aggregate2(10)}</td>
+                        <td> {this.aggregate2(4)}</td>
+
+                        <td> {this.aggregate2(1)}</td>
+
+                        <td> {this.aggregate2(9)}</td>
+                        <td>{this.aggregate2(7)}</td>
+                        <td>{this.aggregate2(6)}</td>
+
+                        <td>{this.aggregate2(5)+this.aggregate2(8)}</td>
+                        <td> {(this.aggregate2(9)*.15)+(this.aggregate2(7)*.1)+(this.aggregate2(6)*.09)}</td>
+                        <td> {(this.aggregate2(9)+this.aggregate2(7)+this.aggregate2(6)) - (this.aggregate2(9)*.15)+(this.aggregate2(7)*.1)+(this.aggregate2(6)*.09)}</td>
+                        <td> {(this.aggregate2(9)+this.aggregate2(7)+this.aggregate2(6)+this.aggregate2(8)+this.aggregate2(5)) - (this.aggregate2(9)*.15)+(this.aggregate2(7)*.1)+(this.aggregate2(6)*.09)}</td>
                     </tr>
                     </tbody>
                 </Table>
