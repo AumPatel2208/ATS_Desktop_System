@@ -81,7 +81,6 @@ export default class ReportTableGD extends Component {
                     advisorCode: this.state.sales[x].advisorCode,
                     cash: 0,
                     credit: 0,
-                    cheque: 0,
                     saleNum: 0,
                     total: 0,
                     fare2: 0,

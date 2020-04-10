@@ -35,6 +35,9 @@ export default class ReportTableG extends Component {
             .then(res => {
                 const sales = res.data;
                 this.setState({ sales });
+                const fl = this.state.sales.filter(i => i.saleType == "Interline");
+                this.setState({sales: fl});
+
             })
             .catch(err => console.log('Error code: ', err));
     }
@@ -51,19 +54,78 @@ export default class ReportTableG extends Component {
         pdf.save("GlobalAdvisor.pdf")
 
     }
-
+    aggregate2(value) {
+        let x = 0;
+        if (value === 1) {
+            for (var i = 0; i < this.state.summedValues.length; i++) {
+                x += parseFloat(this.state.summedValues[i].saleNum);
+            }
+            return x;
+        } else if (value === 2) {
+            for (var i = 0; i < this.state.summedValues.length; i++) {
+                let y = parseFloat(this.state.summedValues[i].total);
+                x += y;
+            }
+            return x;
+        } else if (value === 3) {
+            for (var i = 0; i < this.state.summedValues.length; i++) {
+                let y = parseFloat(this.state.summedValues[i].taxl);
+                x += y;
+            }
+            return x;
+        }else if (value === 4) {
+            for (var i = 0; i < this.state.summedValues.length; i++) {
+                let y = parseFloat(this.state.summedValues[i].taxo);
+                x += y;
+            }
+            return x;
+        }else if (value === 5) {
+            for (var i = 0; i < this.state.summedValues.length; i++) {
+                let y = parseFloat(this.state.summedValues[i].cash);
+                x += y;
+            }
+            return x;
+        }
+        else if (value === 6) {
+            for (var i = 0; i < this.state.summedValues.length; i++) {
+                let y = parseFloat(this.state.summedValues[i].creditUSD);
+                x += y;
+            }
+            return x;
+        }else if (value === 7) {
+            for (var i = 0; i < this.state.summedValues.length; i++) {
+                let y = parseFloat(this.state.summedValues[i].credit);
+                x += y;
+            }
+            return x;
+        }else if (value === 8) {
+            for (var i = 0; i < this.state.summedValues.length; i++) {
+                let y = parseFloat(this.state.summedValues[i].c15);
+                x += y;
+            }
+            return x;
+        }else if (value === 9) {
+            for (var i = 0; i < this.state.summedValues.length; i++) {
+                let y = parseFloat(this.state.summedValues[i].c10);
+                x += y;
+            }
+            return x;
+        }else if (value === 10) {
+            for (var i = 0; i < this.state.summedValues.length; i++) {
+                let y = parseFloat(this.state.summedValues[i].c9);
+                x += y;
+            }
+            return x;
+        }
+        return x;
+    }
 
     aggregateSales() {
         let start = new Date(this.state.startDate);
         let end = new Date(this.state.endDate);
         start.setHours(0, 0, 0, 0);
         end.setHours(0, 0, 0, 0);
-        /*
-        const fl = this.state.sales.filter(i => (Date.parse(i.date)>= Date.parse(start)));
-        this.setState({sales: fl});
-        const tl = this.state.sales.filter(i => (Date.parse(i.date)<= Date.parse(end)));
-        this.setState({sales: tl});
-        */
+
 
         var x = 0,
             y = 0;
@@ -82,19 +144,40 @@ export default class ReportTableG extends Component {
                     advisorCode: this.state.sales[x].advisorCode,
                     cash: 0,
                     credit: 0,
-                    cheque: 0,
                     saleNum: 0,
-                    total: 0
+                    total: 0,
+                    fare2: 0,
+                    taxl: 0,
+                    taxo:0,
+                    creditUSD: 0,
+                    c9: 0,
+                    c10: 0,
+                    c15: 0,
                 };
                 y = this.state.summedValues.push(this.state.dict) - 1;
             }
             if (this.state.sales[x].paymentMethod === 'CreditCard') {
                 this.state.summedValues[y].credit += this.state.sales[x].fare;
+                this.state.summedValues[y].creditUSD += (this.state.sales[x].fare * this.state.sales[x].USDExchangeRate);
+
             } else if (this.state.sales[x].paymentMethod === 'Cash') {
                 this.state.summedValues[y].cash += this.state.sales[x].fare;
             }
+            if (this.state.sales[x].commissionRate === '9') {
+                this.state.summedValues[y].c9 += this.state.sales[x].fare;
+            }else if (this.state.sales[x].commissionRate === '10') {
+                this.state.summedValues[y].c10 += this.state.sales[x].fare;
+            }else if (this.state.sales[x].commissionRate === '15') {
+                this.state.summedValues[y].c15 += this.state.sales[x].fare;
+            }
+
+            this.state.summedValues[y].taxo += this.state.sales[x].otherTax;
+            this.state.summedValues[y].taxl += this.state.sales[x].localTax;
+
             this.state.summedValues[y].saleNum += 1;
             this.state.summedValues[y].total += this.state.sales[x].fare;
+            this.state.summedValues[y].fare2 += (this.state.sales[x].fare * this.state.sales[x].USDExchangeRate);
+
         }
     }
 
@@ -153,68 +236,12 @@ export default class ReportTableG extends Component {
                 />
                 <br />
                 <Form>
-                    <Dropdown
-                        onSelect={key => {
-                            this.setState({ saleTypeValue: key });
-
-                            if (key === 'Interline') {
-                                this.setState({
-                                    sales: this.state.sales.filter(
-                                        sale =>
-                                            String(
-                                                sale[this.state.saleT]
-                                            ) === 'Interline'
-                                    )
-                                });
-                            } else {
-                                this.setState({
-                                    sales: this.state.sales.filter(
-                                        sale =>
-                                            String(
-                                                sale[this.state.saleT]
-                                            ) === 'Domestic'
-                                    )
-                                });
-                            }
-                        }}
-                    >
-                        <Dropdown.Toggle
-                            variant="success"
-                            id="dropdown-basic"
-                        >
-                            {_.startCase(this.state.saleTypeValue)}
-                        </Dropdown.Toggle>
-
-                        <Dropdown.Menu>
-                            <Dropdown.Item eventKey="Domestic">
-                                Domestic
-                            </Dropdown.Item>
-                            <Dropdown.Item eventKey="Interline">
-                                Interline
-                            </Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
                     <FormGroup>
                         <Button
                             bssize="medium"
                             variant="outline-danger"
                             onClick={() => {
-                                /*
-                                    let start = new Date(this.state.startDate);
-                                    let end =new  Date(this.state.endDate);
-                                    start.setHours(0,0,0,0);
-                                    end.setHours(0,0,0,0);
-/*
-                                    axios.get( apiLinks.SALES +'/byDate',{params:{start, end}}).then(res => {
-                                        const sales = res.data;
-                                        this.setState({ sales });
-                                    });
 
-                                    const fl = this.state.sales.filter(i => (Date.parse(i.date)>= Date.parse(start)));
-                                    this.setState({sales: fl});
-                                    const tl = this.state.sales.filter(i => (Date.parse(i.date)<= Date.parse(end)));
-                                    this.setState({sales: tl});
-                                */
                                 this.setState({
                                     sales: this.aggregateSales()
                                 });
@@ -233,10 +260,18 @@ export default class ReportTableG extends Component {
                         <tr>
                             <th>Advisor Code</th>
                             <th>Sales</th>
-                            <th>Credit</th>
+                            <th>Fare</th>
+                            <th>Local Tax</th>
+                            <th>Other Tax</th>
+                            <th>Document Total</th>
                             <th>Cash</th>
-                            <th>Cheque</th>
-                            <th>USD Total</th>
+                            <th>Credit(USD)</th>
+                            <th>Credit(local)</th>
+                            <th>Total Paid</th>
+                            <th>Commission 15%</th>
+                            <th>Commission 10%</th>
+                            <th>Commission 9%</th>
+                            <th>Non-Assessable Amounts</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -246,23 +281,91 @@ export default class ReportTableG extends Component {
                                 saleNum,
                                 credit,
                                 cash,
-                                cheque,
-                                total
+                                total,c9,c10,c15,
+                                fare2,
+                                taxl,
+                                taxo,
+                                creditUSD,
+
+
                             }) => (
                                 <Fragment key={advisorCode}>
                                     {row(
                                         advisorCode,
                                         saleNum,
-                                        credit,
+                                        total,
+                                        taxl,
+                                        taxo,
+                                        parseFloat(taxo)+parseFloat(taxl)+parseFloat(total),
                                         cash,
-                                        cheque,
-                                        total
+                                        creditUSD,
+                                        credit,
+                                        parseFloat(taxo)+parseFloat(taxl)+parseFloat(total),
+                                        c15,
+                                        c10,
+                                        c9,
+                                        parseFloat(taxo)+parseFloat(taxl)
                                     )}
                                 </Fragment>
                             )
                         )}
                     </tbody>
                 </Table>
+
+                <Table grid className="mt-4" id="exportB2">
+                    <thead>
+                    <tr>
+                        <th>Sales</th>
+                        <th>Fare(local)</th>
+                        <th>Local Taxes</th>
+                        <th>Other Taxes</th>
+                        <th>Document Total</th>
+
+                        <th>Cash</th>
+                        <th>Credit(USD)</th>
+                        <th>Credit(local)</th>
+                        <th>Total Paid</th>
+
+                        <th>Commission 15%</th>
+                        <th>Commission 10%</th>
+                        <th>Commission 9%</th>
+
+                        <th>Non-Assessable Amounts</th>
+                        <th>Commission Amounts</th>
+                        <th>Net Amount for Debit</th>
+                        <th>Net Amount for Remittance</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr >
+                        <td> {this.aggregate2(1)}</td>
+                        <td> {this.aggregate2(2)}</td>
+                        <td> {this.aggregate2(3)}</td>
+                        <td> {this.aggregate2(4)}</td>
+                        <td> {this.aggregate2(2)+this.aggregate2(3)+this.aggregate2(4)}</td>
+
+                        <td> {this.aggregate2(5)}</td>
+                        <td> {this.aggregate2(6)}</td>
+                        <td> {this.aggregate2(7)}</td>
+                        <td> {this.aggregate2(2)+this.aggregate2(3)+this.aggregate2(4)}</td>
+
+                        <td> {this.aggregate2(8)}</td>
+                        <td>{this.aggregate2(9)}</td>
+                        <td>{this.aggregate2(10)}</td>
+
+                        <td>{this.aggregate2(3)+this.aggregate2(4)}</td>
+                        <td> {(this.aggregate2(8)*.15)+(this.aggregate2(9)*.1)+(this.aggregate2(10)*.09)}</td>
+                        <td> {(this.aggregate2(8)+this.aggregate2(9)+this.aggregate2(10)) - ((this.aggregate2(8)*.15)+(this.aggregate2(9)*.1)+(this.aggregate2(10)*.09))}</td>
+                        <td> {((this.aggregate2(8)+this.aggregate2(9)+this.aggregate2(10)+this.aggregate2(3)+this.aggregate2(4)) - ((this.aggregate2(8)*.15)+(this.aggregate2(9)*.1)+(this.aggregate2(10)*.09)))}</td>
+                    </tr>
+                    </tbody>
+                </Table>
+
+
+
+
+
             </Container>
         );
     }
