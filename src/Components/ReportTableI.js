@@ -190,7 +190,30 @@ export default class ReportTableI extends Component {
                     </Button>
                 </Fragment>
             );
-        } else {
+        }
+        // else {
+        //     return (
+        //         <Fragment>
+        //             <Button
+        //                 bssize="medium"
+        //                 variant="outline-danger"
+        //                 onClick={() => {
+        //                     let start = new Date(this.state.startDate);
+        //                     let end = new Date(this.state.endDate);
+        //                     start.setHours(0, 0, 0, 0);
+        //                     end.setHours(0, 0, 0, 0);
+
+        //                     axios
+        //                         .get(apiLinks.BLANKS + '/byDate', {
+        //                             params: { start, end },
+        //                         })
+        //                         .then((res) => {
+        //                             const sales = res.data;
+        //                             this.setState({ sales });
+        //                         });
+
+        // }
+        else {
             return (
                 <Fragment>
                     <Button
@@ -202,14 +225,30 @@ export default class ReportTableI extends Component {
                             start.setHours(0, 0, 0, 0);
                             end.setHours(0, 0, 0, 0);
 
-                            axios
-                                .get(apiLinks.BLANKS + '/byDate', {
-                                    params: { start, end },
-                                })
-                                .then((res) => {
-                                    const sales = res.data;
-                                    this.setState({ sales });
-                                });
+                            //Date sorting
+                            let l = [];
+                            for (let i = 0; i < this.state.sales.length; i++) {
+                                if (
+                                    Date.parse(this.state.sales[i].saleDate) >=
+                                        start &&
+                                    Date.parse(this.state.sales[i].saleDate) <=
+                                        end
+                                ) {
+                                    l.push(this.state.sales[i]);
+                                }
+                            }
+                            this.setState({ sales: l });
+                            /*
+                  axios
+                      .get(apiLinks.BLANKS + '/byDate', {
+                          params: { start, end }
+                      })
+                      .then(res => {
+                          const sales = res.data;
+                          this.setState({ sales });
+                      });
+
+ */
 
                             const dl = this.state.sales.filter(
                                 (i) => i.advisorCode === this.state.code
@@ -385,42 +424,6 @@ export default class ReportTableI extends Component {
         console.log(e, _id);
     }
     render() {
-        const row = (
-            _id,
-            advisorCode,
-            ticketNumber,
-            fare,
-            currency,
-            USDExchangeRate,
-            paymentMethod,
-            commissionRate,
-            creditCardNum,
-            expDate,
-            securityCode,
-            saleDate,
-            notes,
-            saleType
-        ) => (
-            <Fragment>
-                <tr key={_id}>
-                    <td>{advisorCode}</td>
-                    <td>{ticketNumber}</td>
-                    <td>{fare}</td>
-                    <td>{currency}</td>
-                    <td>{USDExchangeRate}</td>
-                    <td>{paymentMethod}</td>
-                    <td>{saleDate}</td>
-                    <td>{commissionRate}</td>
-                    <td>{creditCardNum}</td>
-                    <td>{expDate}</td>
-                    <td>{securityCode}</td>
-                    <td>{notes}</td>
-                    <td>{saleType}</td>
-                    <td></td>
-                </tr>
-            </Fragment>
-        );
-
         return (
             <Container>
                 <Form>

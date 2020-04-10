@@ -18,6 +18,7 @@ export default class ReportTurnoverT extends Component {
         allBlanks: [],
         aBlanks: [],
         allABlanks: [],
+        finalRemainin: [],
         uBlanks: [],
         assigns: [],
         assign: 'assigned',
@@ -148,23 +149,32 @@ export default class ReportTurnoverT extends Component {
 
         //used blanks in period - used during block
         x = 0;
-        for (let i = 0; i < this.state.uBlanks.length; i++) {
-            x += parseInt(this.state.uBlanks[i].amount);
-        }
+        //for (let i =0; i<this.state.uBlanks.length; i++){
+        x += parseInt(this.state.uBlanks.length);
+        //}
         this.setState({ total4: x });
 
         //available blanks at end of period - all available
         x = 0;
-        /*
-        for (let i =0; i< this.state.allBlanks.length; i++){
-            let y = this.state.allABlanks[3];
-            for (let i2 =0; i2< this.state.allABlanks[i].remaining.length; i2++){
-                 x += (y.remaining[i2].end - y.remaining[i2].start);
-            }
+        let len = 0;
+        let dif = 0;
+        //  alert(this.state.allBlanks.length);
+        for (let i = 0; i < this.state.allBlanks.length; i++) {
+            len = this.state.allBlanks[i].remaining.length;
+            //  alert(len);
+            if (len === 0) continue;
 
+            for (let i2 = 0; i2 < len; i2++) {
+                dif =
+                    this.state.allBlanks[i].remaining[i2].end -
+                    this.state.allBlanks[i].remaining[i2].start +
+                    1;
+                // alert( this.state.allBlanks[i].remaining[i2].end );
+                x += dif;
+                //alert(this.state.allABlanks[i].remaining[i2].end);
+            }
         }
-        */
-        this.setState({ total5: 'fix this one' });
+        this.setState({ total5: x });
 
         //assigned blanks in period - all assigned
         x = 0;
@@ -172,6 +182,19 @@ export default class ReportTurnoverT extends Component {
             x += this.state.allABlanks[i].remaining.length;
         }
         this.setState({ total6: x });
+    }
+
+    finalRemainTable() {
+        for (let i = 0; i < this.state.allBlanks.length; i++) {
+            let len = this.state.allBlanks[i].remaining.length;
+            if (len === 0) continue;
+            for (let i2 = 0; i2 < len; i2++) {
+                this.state.finalRemainin.push(
+                    this.state.allBlanks[i].remaining[i2]
+                );
+            }
+        }
+        alert(this.state.finalRemainin.length);
     }
 
     render() {
@@ -271,6 +294,7 @@ export default class ReportTurnoverT extends Component {
  */
 
                         this.generateTotals();
+                        this.finalRemainTable();
                     }}
                 >
                     Enter Dates
@@ -373,19 +397,11 @@ export default class ReportTurnoverT extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.allBlanks.map(({ _id, remaining }) => {
+                        {this.state.finalRemainin.map(({ _id, start, end }) => {
                             return (
                                 <tr key={_id}>
-                                    {remaining.map((sub, i) => {
-                                        return (
-                                            <Fragment>
-                                                {row(
-                                                    sub.start + '-' + sub.end,
-                                                    1 + (sub.end - sub.start)
-                                                )}
-                                            </Fragment>
-                                        );
-                                    })}
+                                    <td>{start + '-' + end}</td>
+                                    <td>{1 + (end - start)}</td>
                                 </tr>
                             );
                         })}
