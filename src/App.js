@@ -126,16 +126,18 @@ class App extends React.Component {
                     isAuthenticated={this.state.isAuthenticated}
                     staff={this.state.staff}
                 ></Nav>
-                {this.state.isAuthenticated &&
-                this.state.staff.staffType === 'OfficeManager' ? (
-                    <Notifications sales={this.state.sales} />
-                ) : null}
+
                 <Switch>
                     <Route
                         exact={true}
                         path="/"
                         render={() => (
                             <div className="App">
+                                {this.state.isAuthenticated &&
+                                this.state.staff.staffType ===
+                                    'OfficeManager' ? (
+                                    <Notifications sales={this.state.sales} />
+                                ) : null}
                                 <Home />
                             </div>
                         )}
@@ -258,14 +260,15 @@ class App extends React.Component {
                             <div className="App">
                                 {this.state.isAuthenticated &&
                                 this.state.staff.staffType ===
-                                'OfficeManager' ? (
+                                    'OfficeManager' ? (
                                     <Reports staff={this.state.staff} />
                                 ) : (
-                                    <ReportTableI staff={this.state.staff}></ReportTableI>
+                                    <ReportTableI
+                                        staff={this.state.staff}
+                                    ></ReportTableI>
                                 )}
                             </div>
                         )}
-
                     />
                     <Route
                         exact={true}

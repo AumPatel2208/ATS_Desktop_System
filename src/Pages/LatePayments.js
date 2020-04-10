@@ -224,12 +224,25 @@ class LatePayments extends Component {
         this.state.sales.map((sale) => {
             var money =
                 Number(sale.fare) +
-                (sale.localTax !== 'Empty.' && sale.localTax !== undefined
+                (Number(sale.localTax) !== undefined
                     ? Number(sale.localTax)
                     : 0) +
-                (sale.otherTax !== 'Empty.' && sale.otherTax !== undefined
+                (Number(sale.otherTax) !== undefined
                     ? Number(sale.otherTax)
                     : 0);
+            // var money =
+            //     Number(sale.fare) +
+            //     (sale.localTax !== 'Empty.' &&
+            //     sale.localTax !== undefined &&
+            //     sale.localTax !== ''
+            //         ? Number(sale.localTax)
+            //         : 0) +
+            //     (sale.otherTax !== 'Empty.' &&
+            //     sale.otherTax !== undefined &&
+            //     sale.otherTax !== ''
+            //         ? Number(sale.otherTax)
+            //         : 0);
+
             var tempCust = this.state.customers.find(
                 (cust) => String(cust._id) === String(sale.custName)
             );
@@ -248,18 +261,16 @@ class LatePayments extends Component {
                     tempCust.lastName.toUpperCase().charAt(0),
             });
         });
-        console.log(tempToDisplay);
-
+        // console.log(tempToDisplay);
+        tempToDisplay.sort((a, b) => a.daysLeft - b.daysLeft);
         this.setState({ toDisplay: tempToDisplay });
     }
     numberOfDaysSinceSale(date) {
-        console.log(date);
+        // console.log(date);
         const saleDate = new Date(date);
         const todaysDate = new Date();
 
-        // var diff = Math.abs(new Date().getTime() - new Date(date).getTime());
         var diff = Math.abs(todaysDate.getTime() - saleDate.getTime());
-        // console.log(diff / (1000 * 60 * 60 * 24));
 
         return diff / (1000 * 60 * 60 * 24);
     }
@@ -285,17 +296,10 @@ class LatePayments extends Component {
                     <td>{daysLeft}</td>
                     <td>{custName}</td>
                     <td>
-                        {/* <Button
-                        onClick={this.handleClick.bind(this, saleID)}
-                        variant="outline-warning"
-                    >
-                        Pay
-                    </Button> */}
                         <Button
                             className="open-btn"
                             variant="outline-warning"
                             size="lg"
-                            // href={}
                             onClick={() => {
                                 this.props.history.push(`/sale_edit/${saleID}`);
                             }}
