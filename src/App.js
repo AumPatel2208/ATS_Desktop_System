@@ -27,6 +27,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
+import './Styles/WrapTD.css';
 
 import Nav from './Components/Navbar';
 import Login from './Pages/Login';

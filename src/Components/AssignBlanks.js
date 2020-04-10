@@ -12,7 +12,6 @@ import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import { Assignment } from './Assignment';
 import { withRouter } from 'react-router';
-
 let apiLinks = require('../api/config.json');
 
 class AssignBlanks extends Component {
@@ -111,7 +110,7 @@ class AssignBlanks extends Component {
                     <strong>Re-Assign Blanks</strong>
                 </h2>
 
-                <Table className="mt-4">
+                <Table className="mt-4" responsive>
                     <thead>
                         <tr>
                             <th>Batch Values</th>

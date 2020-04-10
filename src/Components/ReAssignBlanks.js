@@ -1,5 +1,11 @@
-import { Container, Table } from 'reactstrap';
-import { Button, FormControl, FormGroup, FormLabel } from 'react-bootstrap';
+import {
+    Button,
+    FormControl,
+    FormGroup,
+    FormLabel,
+    Table,
+    Container,
+} from 'react-bootstrap';
 // import DatePicker from 'react-datepicker';
 import React, { Component } from 'react';
 import axios from 'axios';
@@ -16,39 +22,37 @@ export class ReAssignBlanks extends Component {
         blanks: [],
         myId: '',
         myIndex: '',
-        assignedBatch: ''
+        assignedBatch: '',
     };
 
     //runs when component mounts, use to gets the data from db
 
     componentDidMount() {
         let empty = [];
-        this.setState({blanks: empty});
-
+        this.setState({ blanks: empty });
 
         const {
-            match: {params}
+            match: { params },
         } = this.props;
         const id = params.id.split('-');
         const id1 = id[0];
 
-        this.setState({myId: id1});
+        this.setState({ myId: id1 });
 
-
-        axios.get(apiLinks.ASSIGN).then(res => {
+        axios.get(apiLinks.ASSIGN).then((res) => {
             const blanks = res.data;
-            this.setState({blanks});
+            this.setState({ blanks });
 
             const t = this.state.blanks.filter(
-                i => i.remaining[0] !== undefined);
-            this.setState({blanks:t});
+                (i) => i.remaining[0] !== undefined
+            );
+            this.setState({ blanks: t });
 
-            const bl = this.state.blanks.filter(i => String(i._id) === id1);
-            this.setState({blanks:bl});
-
+            const bl = this.state.blanks.filter((i) => String(i._id) === id1);
+            this.setState({ blanks: bl });
         });
 
-       // this.filterStuff();
+        // this.filterStuff();
     }
 
     onOpenClick(_id) {
@@ -58,7 +62,7 @@ export class ReAssignBlanks extends Component {
     onDeleteClick(_id) {
         console.log(_id);
     }
-/*
+    /*
     filterStuff() {
         const {
             match: {params}
@@ -86,22 +90,21 @@ export class ReAssignBlanks extends Component {
 
     updateRemaining() {
         //ADDS IN A NEW ASSIGNMENT UNDER NEW ADVISOR
-        let k = this.state.assignedBatch.split(",");
-
+        let k = this.state.assignedBatch.split(',');
 
         let d = new Date(Date.now());
         d.setHours(0, 0, 0, 0);
 
         const newAssignment = {
             date: d,
-            batchValues: k[0] + "-"+k[(k.length-1)],
+            batchValues: k[0] + '-' + k[k.length - 1],
             advisorCode: this.state.code,
-            batchId: this.state.myId
+            batchId: this.state.myId,
         };
 
         console.log('hello');
 
-        axios.post(apiLinks.ASSIGN, newAssignment).then(response => {
+        axios.post(apiLinks.ASSIGN, newAssignment).then((response) => {
             console.log(response);
 
             this.updateRemaining();
@@ -109,18 +112,15 @@ export class ReAssignBlanks extends Component {
 
         //UPDATING ASSIGNMENT - REMOVING FROM ASSIGNED LIST
 
-
         let z = this.state.blanks[0].remaining;
 
-        for (var i2 =0; i2<k.length; i2++) {
-            var i =0;
-            let t= k[i2];
-            while (z[i] != t){
-                i++
+        for (var i2 = 0; i2 < k.length; i2++) {
+            var i = 0;
+            let t = k[i2];
+            while (z[i] != t) {
+                i++;
             }
-            z.splice(i,1);
-
-
+            z.splice(i, 1);
 
             /*
             for (var i = 0; i < z.length; i++) {
@@ -143,7 +143,7 @@ export class ReAssignBlanks extends Component {
             advisorCode: this.state.blanks.advisorCode,
             amount: this.state.blanks.amount,
             batchId: this.state.myId,
-            remaining: z
+            remaining: z,
         };
 
         axios.put(apiLinks.ASSIGN + '/' + this.state.myId, updatedBlank);
@@ -155,24 +155,23 @@ export class ReAssignBlanks extends Component {
                 <h2>Re-Assign Blank </h2>
                 <Table className="mt-4">
                     <thead>
-                    <tr>
-                        <th>Selected Batch Values</th>
-                        <th>Remaining in Batch</th>
-                    </tr>
+                        <tr>
+                            <th>Selected Batch Values</th>
+                            <th>Remaining in Batch</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {this.state.blanks.map(({_id, remaining, batchValues, advisorCode}) => {
-                            return (
-
-                                <tr key={_id}>
-                                    <td>{batchValues}</td>
-                                    <td>{remaining + ", "}</td>
-                                    <td>{advisorCode}</td>
-                                </tr>
-
-                            );
-
-                    })}
+                        {this.state.blanks.map(
+                            ({ _id, remaining, batchValues, advisorCode }) => {
+                                return (
+                                    <tr key={_id}>
+                                        <td>{batchValues}</td>
+                                        <td>{remaining + ', '}</td>
+                                        <td>{advisorCode}</td>
+                                    </tr>
+                                );
+                            }
+                        )}
                     </tbody>
                 </Table>
 
@@ -182,8 +181,8 @@ export class ReAssignBlanks extends Component {
                         autoFocus
                         type="batchValues"
                         value={this.state.assignedBatch}
-                        onChange={e =>
-                            this.setState({assignedBatch: e.target.value})
+                        onChange={(e) =>
+                            this.setState({ assignedBatch: e.target.value })
                         }
                     />
                 </FormGroup>
@@ -191,11 +190,13 @@ export class ReAssignBlanks extends Component {
                     <FormLabel>Advisor Code</FormLabel>
                     <FormControl
                         selected={this.state.code}
-                        onChange={e => this.setState({code: e.target.value})}
+                        onChange={(e) =>
+                            this.setState({ code: e.target.value })
+                        }
                     />
                 </FormGroup>
                 <Button
-                    onClick={e => {
+                    onClick={(e) => {
                         console.log('hit');
                         this.updateRemaining();
                     }}
@@ -205,5 +206,4 @@ export class ReAssignBlanks extends Component {
             </Container>
         );
     }
-
 }
