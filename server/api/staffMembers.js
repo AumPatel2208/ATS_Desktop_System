@@ -35,6 +35,12 @@ router.get('/', (q, a) => {
         .then(staffMembers => a.json(staffMembers));
 });
 
+router.put('/:id', (q, a) => {
+     console.log("PUT" + q.body.advisorCode);
+        Staff.findByIdAndUpdate(q.params.id, q.body).then(item => a.json(item));
+    });
+
+/*
 //get by advisor code
 router.put('/:id', (q, a) => {
     // let st = q.query.st;
@@ -64,6 +70,8 @@ router.put('/:id', (q, a) => {
     //.then(staff => console.log(staff))
     //a.json(staff));
 });
+
+ */
 
 //find one staff based on their id
 router.get('/:id', (q, a) => {

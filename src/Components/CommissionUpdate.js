@@ -53,6 +53,7 @@ export class CommissionUpdate extends Component {
             .then(res => {
                 const staff = res.data;
                 this.setState({ staff });
+
             })
             .catch(err => console.log('Error code: ', err));
     }
@@ -62,10 +63,12 @@ export class CommissionUpdate extends Component {
         //Accessing the correct staff to update
         const st = this.state.cCode;
         //filtering first name
-        const c = this.state.staff.filter(
-            i => String(i.advisorCode) === this.state.cCode
-        );
-
+        let x =0;
+        for (var i = 0; i <this.state.staff.length; i++){
+            if (this.state.staff[i].advisorCode == st){
+                x =i;
+            }
+        }
         //getting the commission to assign the correct value
 
         const fc = this.state.commissions.filter(
@@ -75,13 +78,13 @@ export class CommissionUpdate extends Component {
         this.setState({commissions :fc});
 
         const updatedStaff ={
-            firstName: this.state.staff[0].firstName,
-            lastName: this.state.staff[0].lastName,
-            address: this.state.staff[0].address,
-                username:this.state.staff[0].username,
-                password:this.state.staff[0].password,
-        staffType: this.state.staff[0].staffType,
-        advisorCode: this.state.staff[0].advisorCode,
+            firstName: this.state.staff[x].firstName,
+            lastName: this.state.staff[x].lastName,
+            address: this.state.staff[x].address,
+                username:this.state.staff[x].username,
+                password:this.state.staff[x].password,
+        staffType: this.state.staff[x].staffType,
+        advisorCode: this.state.staff[x].advisorCode,
         commissionRate440:this.state.commissions[0].ticket440,
         commissionRate420: this.state.commissions[0].ticket420,
         commissionRate201: this.state.commissions[0].ticket201,
@@ -89,7 +92,7 @@ export class CommissionUpdate extends Component {
         };
         axios
             .put(
-                apiLinks.STAFFMEMBERS + '/' + this.state.staff[0]._id,
+                apiLinks.STAFFMEMBERS + '/' + this.state.staff[x]._id,
                 updatedStaff
             )
             .then(res => {
@@ -107,9 +110,9 @@ export class CommissionUpdate extends Component {
                 <FormControl
                     autoFocus
                     type="string"
-                    value={this.state.cName}
+                    value={this.state.cCode}
                     onChange={e => {
-                        this.setState({cName: e.target.value});
+                        this.setState({cCode: e.target.value});
                     }}
                 />
                 <FormLabel>Commission Name</FormLabel>

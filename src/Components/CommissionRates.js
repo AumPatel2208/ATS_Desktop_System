@@ -76,16 +76,16 @@ export default class CommissionRates extends Component {
     render() {
         const row = (
             name,
-            t440,
-            t420,
-            t201
+            ticket440,
+            ticket420,
+            ticket201
         ) => (
             <Fragment>
                 <tr>
                     <td>{name}</td>
-                    <td>{t440}</td>
-                    <td>{t420}</td>
-                    <td>{t201}</td>
+                    <td>{ticket440}</td>
+                    <td>{ticket420}</td>
+                    <td>{ticket201}</td>
                     <td>
                     </td>
                 </tr>
@@ -161,16 +161,16 @@ export default class CommissionRates extends Component {
                     {this.state.commissions.map(
                         ({
                              name,
-                             t440,
-                            t420,
-                            t201
+                             ticket440,
+                            ticket420,
+                            ticket201
                          }) => (
                             <Fragment>
                                 {row(
                                     name,
-                                    t440,
-                                    t420,
-                                    t201
+                                    ticket440,
+                                    ticket420,
+                                    ticket201
                                 )}
                             </Fragment>
                         )

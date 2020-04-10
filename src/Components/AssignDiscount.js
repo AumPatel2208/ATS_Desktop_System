@@ -114,6 +114,14 @@ export default class Discounts extends Component {
             .then((res) => {
                 console.log(res);
             });
+
+        alert(
+            'Discount: ' +
+                this.state.dName +
+                'has been assigned to: ' +
+                this.state.customers[0].firstName +
+                this.state.customers[0].lastName
+        );
     }
 
     render() {
