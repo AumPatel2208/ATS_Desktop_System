@@ -11,19 +11,20 @@ export default function NavItemsAuth(props) {
     const authLinks = (
         <Fragment>
             <NavItem>
-                {/* <span className="navbar-text mr-3"> */}
-                <strong>
-                    {props.staff !== undefined
-                        ? `Welcome ${props.staff.username}`
-                        : 'UsernameNot found'}
-                </strong>
-
-                {/* </span> */}
-            </NavItem>
-            <NavItem>
                 <NavLink tag={Link} to="/logout">
                     Logout
                 </NavLink>
+            </NavItem>
+            <NavItem>
+                {/* <span className="navbar-text mr-3"> */}
+                <NavLink>
+                    <strong>
+                        {props.staff !== undefined
+                            ? `Welcome ${props.staff.username.toUpperCase()}`
+                            : 'UsernameNot found'}
+                    </strong>
+                </NavLink>
+                {/* </span> */}
             </NavItem>
         </Fragment>
     );

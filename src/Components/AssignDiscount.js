@@ -1,5 +1,5 @@
-import React, {Component, Fragment} from 'react';
-import {Container, Table} from 'reactstrap';
+import React, { Component, Fragment } from 'react';
+import { Container, Table } from 'reactstrap';
 import axios from 'axios';
 import {
     Form,
@@ -7,16 +7,14 @@ import {
     FormLabel,
     FormControl,
     Dropdown,
-    Button
+    Button,
 } from 'react-bootstrap';
-import {GetUSer} from '../store/User';
+import { GetUSer } from '../store/User';
 
 const _ = require('lodash'); //Library to Change Cases of things
 
 let apiLinks = require('../api/config.json');
 export default class Discounts extends Component {
-
-
     state = {
         discounts: [],
         discountGetV: [],
@@ -24,8 +22,8 @@ export default class Discounts extends Component {
         cName: '',
         dName: '',
         dType: 'Select Discount Type',
-        dV:"",
-        cType: "",
+        dV: '',
+        cType: '',
         customer: {
             _id: '',
             firstName: '',
@@ -36,70 +34,67 @@ export default class Discounts extends Component {
             customerType: null,
             discountName: '',
             discountType: '',
-            discountValue: ""
-        }
+            discountValue: '',
+        },
     };
     componentDidMount() {
         axios
             .get(apiLinks.DISCOUNT)
-            .then(res => {
+            .then((res) => {
                 const discounts = res.data;
                 this.setState({ discounts });
-
-
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
 
         axios
             .get(apiLinks.CUSTOMERS)
-            .then(res => {
+            .then((res) => {
                 const customers = res.data;
                 this.setState({ customers });
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
     }
     assignDiscount(e) {
         e.preventDefault();
 
         //Accessing the correct customer to update
         const st = this.state.cName;
-        const f = this.state.cName.split(" ");
+        const f = this.state.cName.split(' ');
         //filtering first name
         const c = this.state.customers.filter(
-            i => String(i.firstName) === f[0]
+            (i) => String(i.firstName) === f[0]
         );
-        this.setState({customers: c});
+        this.setState({ customers: c });
         //filtering last name
         const cl = this.state.customers.filter(
-            i => String(i.firstName) === f[1]
+            (i) => String(i.firstName) === f[1]
         );
-        this.setState({customers: cl});
+        this.setState({ customers: cl });
 
         //getting the discount to assign the correct value
 
         const fc = this.state.discounts.filter(
-            i => String(i.name) === this.state.dName
+            (i) => String(i.name) === this.state.dName
             //this.state.dName
         );
-        this.setState({discounts :fc});
+        this.setState({ discounts: fc });
 
-let x = 0;
-        if (this.state.dType === "Fixed") {
-            x= this.state.discounts[0].fixedValue;
-        } else if (this.state.dType === "Flexible") {
+        let x = 0;
+        if (this.state.dType === 'Fixed') {
+            x = this.state.discounts[0].fixedValue;
+        } else if (this.state.dType === 'Flexible') {
             let z = this.state.customers[0].paidThisMonth;
             let z2 = this.state.discounts[0];
 
             if (z < z2.flexibleBand1) {
                 x = z2.band1Value;
-            } else if ((z >= z2.flexibleBand1) && (z < z2.flexibleBand2)) {
-               x= z2.band2Value;
+            } else if (z >= z2.flexibleBand1 && z < z2.flexibleBand2) {
+                x = z2.band2Value;
             } else if (z >= z2.flexibleBand2) {
-               x= z2.band3Value;
+                x = z2.band3Value;
             }
-
         }
-        const updatedCustomer ={
+        const updatedCustomer = {
             _id: this.state.customers[0]._id,
             firstName: this.state.customers[0].firstName,
             lastName: this.state.customers[0].lastName,
@@ -107,20 +102,19 @@ let x = 0;
             phoneNumber: this.state.customers[0].phoneNumber,
             customerType: this.state.customers[0].customerType,
             discountName: this.state.dName,
-            discountType:this.state.dType,
+            discountType: this.state.dType,
             discountValue: x,
-            paidThisMonth: this.state.customers[0].paidThisMonth
+            paidThisMonth: this.state.customers[0].paidThisMonth,
         };
         axios
             .put(
                 apiLinks.CUSTOMERS + '/' + this.state.customers[0]._id,
                 updatedCustomer
             )
-            .then(res => {
+            .then((res) => {
                 console.log(res);
             });
     }
-
 
     render() {
         return (
@@ -132,8 +126,8 @@ let x = 0;
                     autoFocus
                     type="string"
                     value={this.state.cName}
-                    onChange={e => {
-                        this.setState({cName: e.target.value});
+                    onChange={(e) => {
+                        this.setState({ cName: e.target.value });
                     }}
                 />
                 <FormLabel>Discount Name</FormLabel>
@@ -141,13 +135,14 @@ let x = 0;
                     autoFocus
                     type="string"
                     value={this.state.dName}
-                    onChange={e => {
-                        this.setState({dName: e.target.value});
+                    onChange={(e) => {
+                        this.setState({ dName: e.target.value });
                     }}
                 />
+                <br></br>
                 <Dropdown
-                    onSelect={key => {
-                        this.setState({dType: key});
+                    onSelect={(key) => {
+                        this.setState({ dType: key });
                     }}
                 >
                     <Dropdown.Toggle variant="success" id="dropdown-basic">
@@ -160,20 +155,18 @@ let x = 0;
                         </Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
-
+                <br></br>
                 <Button
                     bssize="medium"
                     variant="outline-danger"
-                    onClick={e => {
+                    onClick={(e) => {
                         this.assignDiscount(e);
                     }}
                     block
                 >
                     Assign Discount
                 </Button>
-
             </Container>
-        )
-
+        );
     }
 }

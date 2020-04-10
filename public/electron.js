@@ -8,6 +8,7 @@ const isDev = require('electron-is-dev');
 
 let mainWindow;
 
+// THIS FILE SETS UP THE DESKTOP ENVIRONMENT TO RUN THIS PROGRAM AS A DESKTOP APPLICATION.
 function createWindow() {
     mainWindow = new BrowserWindow({ width: 900, height: 680 });
     mainWindow.loadURL(
