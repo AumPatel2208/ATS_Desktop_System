@@ -94,6 +94,8 @@ export default class Discounts extends Component {
                 console.log(response);
             })
             .catch(err => console.log('Error code: ', err));
+
+        alert("Discount Created");
     }
 
     /*assignDiscount(e) {

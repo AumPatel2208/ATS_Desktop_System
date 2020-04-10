@@ -121,6 +121,8 @@ class AddBlanks extends Component {
         axios
             .put(apiLinks.BLANKS + '/' + myID, updatedBlank)
             .catch(err => alert('Error code: ' + err));
+
+        alert("Deleted: " + this.state.toDelete);
     }
 
     /*
@@ -197,6 +199,8 @@ class AddBlanks extends Component {
             })
             .catch(err => console.log('Error code: ', err));
         this.props.history.push('./blanks');
+
+        alert("Added: " + this.state.batchValues);
     }
 
     render() {

@@ -347,6 +347,7 @@ export class SaleForm extends Component {
                     )
                     .catch((err) => console.log('Error code: ', err));
             }
+           alert(this.state.tickNum + "has been sold");
         }
 
         return (

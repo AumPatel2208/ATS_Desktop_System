@@ -87,6 +87,7 @@ let x = 0;
         if (this.state.dType === "Fixed") {
             x= this.state.discounts[0].fixedValue;
         } else if (this.state.dType === "Flexible") {
+
             let z = this.state.customers[0].paidThisMonth;
             let z2 = this.state.discounts[0];
 
@@ -119,6 +120,8 @@ let x = 0;
             .then(res => {
                 console.log(res);
             });
+
+        alert("Discount: "+ this.state.dName + "has been assigned to: " +this.state.customers[0].firstName + this.state.customers[0].lastName);
     }
 
 

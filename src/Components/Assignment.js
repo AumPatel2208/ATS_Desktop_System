@@ -120,6 +120,8 @@ class Assignment extends Component {
             .catch(err => console.log('Error code: ', err));
 
         this.updateRemaining();
+
+        alert("Assigned: " +this.state.assignedBatch + " to " +this.state.code);
     }
 
     updateRemaining() {
