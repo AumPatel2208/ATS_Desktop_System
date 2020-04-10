@@ -212,9 +212,14 @@ class LatePayments extends Component {
         // this.filterSales();
         //get customers and match using customerID on the data
 
-        await axios.get('/api/customers').then((res) => {
-            this.setState({ customers: res.data });
-        });
+        await axios
+            .get('/api/customers')
+            .then((res) => {
+                this.setState({ customers: res.data });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
 
         this.setState({
             sales: this.state.sales.filter((sale) => !sale.hasPayed),

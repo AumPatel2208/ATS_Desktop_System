@@ -4,13 +4,14 @@ import {
     FormGroup,
     FormControl,
     FormLabel,
-    Dropdown, Form
+    Dropdown,
+    Form,
 } from 'react-bootstrap';
 import '../Styles/Login.css';
 import Container from 'reactstrap/lib/Container';
 import axios from 'axios';
-import {CommissionUpdate} from "../Components/CommissionUpdate";
-import CommissionRates from "../Components/CommissionRates";
+import { CommissionUpdate } from '../Components/CommissionUpdate';
+import CommissionRates from '../Components/CommissionRates';
 
 let apiLinks = require('../api/config.json');
 // "proxy": "http://localhost:5000"
@@ -52,18 +53,18 @@ export default function RegisterStaff(props) {
         if (props.isNew) {
             axios
                 .get(apiLinks.STAFFMEMBERS)
-                .then(async res => {
+                .then(async (res) => {
                     if (mounted) {
                         const tempStaffMembers = await res.data;
                         setStaffMembers(tempStaffMembers);
                     }
                 })
-                .catch(err => console.log('Error code: ', err));
+                .catch((err) => console.log('Error code: ', err));
         } else {
             const getLink = apiLinks.STAFFMEMBERS + '/' + props.match.params.id;
             axios
                 .get(getLink)
-                .then(async res => {
+                .then(async (res) => {
                     const tempStaffMember = await res.data;
                     setUsername(tempStaffMember.username);
                     setFirstName(tempStaffMember.firstName);
@@ -75,7 +76,7 @@ export default function RegisterStaff(props) {
                     setCommissionRate420(tempStaffMember.commissionRate420);
                     setCommissionRate201(tempStaffMember.commissionRate201);
                 })
-                .catch(err => console.log('Error code: ', err));
+                .catch((err) => console.log('Error code: ', err));
         }
         return () => (mounted = false);
     }, [props]);
@@ -118,9 +119,8 @@ export default function RegisterStaff(props) {
                 advisorCode,
                 commissionRate440,
                 commissionRate420,
-                commissionRate201
-
-            }
+                commissionRate201,
+            },
         ];
 
         // axios
@@ -141,22 +141,27 @@ export default function RegisterStaff(props) {
         props.isNew
             ? axios
                   .post(apiLinks.STAFFMEMBERS, tempStaffMember)
-                  .then(response => {
+                  .then((response) => {
                       console.log(response);
                       alert('User Created');
                   })
             : axios
                   .put(getLink, tempStaffMember)
-                  .then(res => {
+                  .then((res) => {
                       console.log(res);
                       alert('User Updated');
                   })
-                  .catch(err => console.log('Error code: ', err));
+                  .catch((err) => console.log('Error code: ', err));
     }
 
     return (
         <Container>
             <div className="RegisterStaff">
+                <br />
+                <h1>
+                    <strong>Register Staff</strong>
+                </h1>
+                <br />
                 <form onSubmit={handleSubmit}>
                     <FormGroup controlId="username" bssize="large">
                         <FormLabel>Username</FormLabel>
@@ -164,7 +169,7 @@ export default function RegisterStaff(props) {
                             autoFocus
                             type="username"
                             value={username}
-                            onChange={e => setUsername(e.target.value)}
+                            onChange={(e) => setUsername(e.target.value)}
                         />
                     </FormGroup>
                     <FormGroup controlId="firstName" bssize="large">
@@ -173,7 +178,7 @@ export default function RegisterStaff(props) {
                             autoFocus
                             type="string"
                             value={firstName}
-                            onChange={e => setFirstName(e.target.value)}
+                            onChange={(e) => setFirstName(e.target.value)}
                         />
                     </FormGroup>
                     <FormGroup controlId="lastName" bssize="large">
@@ -182,7 +187,7 @@ export default function RegisterStaff(props) {
                             autoFocus
                             type="string"
                             value={lastName}
-                            onChange={e => setLastName(e.target.value)}
+                            onChange={(e) => setLastName(e.target.value)}
                         />
                     </FormGroup>
                     <FormGroup controlId="address" bssize="large">
@@ -191,7 +196,7 @@ export default function RegisterStaff(props) {
                             autoFocus
                             type="string"
                             value={address}
-                            onChange={e => setAddress(e.target.value)}
+                            onChange={(e) => setAddress(e.target.value)}
                         />
                     </FormGroup>
                     {props.isNew ? (
@@ -199,7 +204,7 @@ export default function RegisterStaff(props) {
                             <FormLabel>Password</FormLabel>
                             <FormControl
                                 value={password}
-                                onChange={e => setPassword(e.target.value)}
+                                onChange={(e) => setPassword(e.target.value)}
                                 type="password"
                             />
                         </FormGroup>
@@ -209,7 +214,7 @@ export default function RegisterStaff(props) {
                             <FormLabel>Confirm Password</FormLabel>
                             <FormControl
                                 value={confirmPassword}
-                                onChange={e =>
+                                onChange={(e) =>
                                     setConfirmPassword(e.target.value)
                                 }
                                 type="password"
@@ -217,19 +222,18 @@ export default function RegisterStaff(props) {
                         </FormGroup>
                     ) : null}
 
-
                     <FormGroup controlId="advisorCode" bssize="large">
                         <FormLabel>Advisor Code</FormLabel>
                         <FormControl
                             value={advisorCode}
-                            onChange={e => setAdvisorCode(e.target.value)}
+                            onChange={(e) => setAdvisorCode(e.target.value)}
                         />
                     </FormGroup>
 
                     <FormGroup controlId="staffType" bssize="large">
                         <FormLabel>Staff Type</FormLabel>
                         <Dropdown
-                            onSelect={key => {
+                            onSelect={(key) => {
                                 setStaffType(key);
                             }}
                         >
@@ -263,15 +267,19 @@ export default function RegisterStaff(props) {
                     </Button>
                 </form>
             </div>
-            <br/>
-            <h2>Update Commission Rates</h2>
+            <br />
+            <br />
+            <br />
+            <h1>
+                <strong>Update Commission Rates</strong>
+            </h1>
+            <br />
+
             <CommissionRates></CommissionRates>
-            <br/>
+            <br />
             <CommissionUpdate></CommissionUpdate>
-            <br/>
-            <br/>
-
-
+            <br />
+            <br />
         </Container>
     );
 }

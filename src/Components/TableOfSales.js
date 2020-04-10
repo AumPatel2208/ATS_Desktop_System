@@ -21,11 +21,14 @@ class TableOfSales extends Component {
     //Set the state to an empty list of objects that will be taken from the database
     state = {
         sales: [{}],
+        customers: [{}],
         filterString: '',
         filterCondition: 'Please Select',
         sort: 'Please Select',
     };
-
+    constructor(props) {
+        super(props);
+    }
     //runs when component mounts, use to gets the data from db
     async componentDidMount() {
         this.mounted = true;
@@ -70,21 +73,21 @@ class TableOfSales extends Component {
                             sale.otherTax = 'Empty.';
                         if (sale.custName === undefined)
                             sale.custName = 'Empty.';
-                        if (
-                            sale.isRefunded === undefined ||
-                            sale.isRefunded === false
-                        )
-                            sale.isRefunded = 'No';
-                        if (sale.isRefunded === true) sale.isRefunded = 'Yes';
-                        if (
-                            sale.hasPayed === undefined ||
-                            sale.hasPayed === false
-                        )
-                            sale.hasPayed = 'No';
-                        if (sale.hasPayed === true) sale.hasPayed = 'Yes';
+                        // if (
+                        //     sale.isRefunded === undefined ||
+                        //     sale.isRefunded === false
+                        // )
+                        //     sale.isRefunded = 'No';
+                        // if (sale.isRefunded === true) sale.isRefunded = 'Yes';
+                        // if (
+                        //     sale.hasPayed === undefined ||
+                        //     sale.hasPayed === false
+                        // )
+                        //     sale.hasPayed = 'No';
+                        // if (sale.hasPayed === true) sale.hasPayed = 'Yes';
                         return sale;
                     });
-                    console.log(changedSales);
+                    // console.log(changedSales);
 
                     // this.setState({ sales: changedSales });
                 }
@@ -92,10 +95,19 @@ class TableOfSales extends Component {
             .catch((err) => {
                 console.log(err);
             });
+
+        await axios
+            .get('/api/customers')
+            .then((res) => {
+                this.setState({ customers: res.data });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     async onRefundClick(_id) {
-        console.log(_id);
+        // console.log(_id);
         const index = this.state.sales.findIndex((sale) => sale._id === _id);
         var tempSales = this.state.sales;
         tempSales[index].isRefunded = true;
@@ -103,6 +115,7 @@ class TableOfSales extends Component {
         await axios
             .put('/api/sales/refund/' + _id, tempSales[index])
             .then((res) => {
+                console.log(res);
                 alert('Refund Logged. Response: ', res);
                 tempSales[index].isRefunded = 'Yes';
                 this.setState({ sales: tempSales });
@@ -144,6 +157,7 @@ class TableOfSales extends Component {
             .catch((err) => console.log('Error code: ', err));
         // this.filterSales();
     }
+
     sortList(key) {
         this.setState({
             sales: []
@@ -155,6 +169,15 @@ class TableOfSales extends Component {
         e.preventDefault();
     }
     render() {
+        const findName = (id) => (
+            <Fragment>
+                <td>
+                    {this.state.customers.find(
+                        (cust) => String(cust._id) === String(id)
+                    )}
+                </td>
+            </Fragment>
+        );
         /**
          * Will return a Fragment to be used when mapping in the render function.
          * Allows to break down the data into rows and TD.
@@ -202,8 +225,8 @@ class TableOfSales extends Component {
                     <td>{localTax}</td>
                     <td>{otherTax}</td>
                     <td>{custName}</td>
-                    <td>{hasPayed}</td>
-                    <td>{isRefunded}</td>
+                    <td>{hasPayed ? 'Yes' : 'No'}</td>
+                    <td>{isRefunded ? 'Yes' : 'No'}</td>
                     <td>
                         {isRefunded === 'No' || !isRefunded ? (
                             <Button

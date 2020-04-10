@@ -172,7 +172,10 @@ class Navigation extends Component {
             <Navbar className="Navigation" light expand="md">
                 <NavbarToggler onClick={this.toggle} />
                 <NavbarBrand href="/">
-                    <h1>ATS Air VIA</h1>
+                    <NavLink>
+                        <h1>ATS Air VIA</h1>
+                    </NavLink>
+
                     {/* <img src={logo} alt="Uni-Verse Tech"></img> */}
                 </NavbarBrand>
 

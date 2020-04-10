@@ -10,7 +10,7 @@ let mainWindow;
 
 // THIS FILE SETS UP THE DESKTOP ENVIRONMENT TO RUN THIS PROGRAM AS A DESKTOP APPLICATION.
 function createWindow() {
-    mainWindow = new BrowserWindow({ width: 900, height: 680 });
+    mainWindow = new BrowserWindow({ width: 1200, height: 720 });
     mainWindow.loadURL(
         isDev
             ? 'http://localhost:3000'

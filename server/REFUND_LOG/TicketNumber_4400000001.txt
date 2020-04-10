@@ -1,0 +1,3 @@
+Refund Ticket Number 4400000001
+Date: 1586528997501 
+JSON: {"saleDate":"2020-04-05T23:00:00.000Z","_id":"5e8afb3aded6e81274449353","ticketNumber":"4400000001","currency":"USD","USDExchangeRate":1,"paymentMethod":"Cash","creditCardNum":"-","expDate":"-","fare":320,"securityCode":"-","commissionRate":9,"advisorCode":250,"saleType":"Domestic","localTax":"","otherTax":"5","custName":"5e8afac3ded6e81274449350","isRefunded":true,"__v":0,"paymentDate":"Empty.","notes":"Empty."}

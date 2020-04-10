@@ -56,7 +56,7 @@ export default class Discounts extends Component {
 
                 this.setState({ discountsGetV: discounts });
                 const fc = this.state.discountGetV.filter(
-                    (i) => String(i.name) == 'Plan1'
+                    (i) => String(i.name) === 'Plan1'
                     //this.state.dName
                 );
                 this.setState({ discountGetV: fc });

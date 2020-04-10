@@ -7,7 +7,7 @@ import {
     FormLabel,
     FormControl,
     Dropdown,
-    Button
+    Button,
 } from 'react-bootstrap';
 import { GetUSer } from '../store/User';
 
@@ -20,9 +20,9 @@ export default class CommissionRates extends Component {
         discountGetV: [],
         staff: [],
         name: '',
-        t440: "",
-        t420:"",
-        t210: "",
+        t440: '',
+        t420: '',
+        t210: '',
         sName: '',
         cName: '',
         staffMember: {
@@ -35,19 +35,19 @@ export default class CommissionRates extends Component {
             customerType: null,
             discountName: '',
             discountType: '',
-            discountValue: ""
-        }
+            discountValue: '',
+        },
     };
 
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
         axios
             .get(apiLinks.COMMISSIONRATE)
-            .then(res => {
+            .then((res) => {
                 const commissions = res.data;
                 this.setState({ commissions });
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
     }
 
     createCommission(e) {
@@ -57,16 +57,16 @@ export default class CommissionRates extends Component {
             name: this.state.name,
             ticket440: this.state.t440,
             ticket420: this.state.t420,
-            ticket201: this.state.t210
+            ticket201: this.state.t210,
         };
         console.log(newCommission);
 
         axios
             .post(apiLinks.COMMISSIONRATE + '/', newCommission)
-            .then(response => {
+            .then((response) => {
                 console.log(response);
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
     }
 
     onOpenClick(_id) {
@@ -74,34 +74,31 @@ export default class CommissionRates extends Component {
     }
 
     render() {
-        const row = (
-            name,
-            ticket440,
-            ticket420,
-            ticket201
-        ) => (
+        const row = (name, ticket440, ticket420, ticket201) => (
             <Fragment>
                 <tr>
                     <td>{name}</td>
                     <td>{ticket440}</td>
                     <td>{ticket420}</td>
                     <td>{ticket201}</td>
-                    <td>
-                    </td>
+                    <td></td>
                 </tr>
             </Fragment>
         );
 
         return (
             <Container>
-                <h2>Add New Commission Rates</h2>
+                <h2>
+                    <strong>Add New Commission Rates</strong>
+                </h2>
+                <br />
 
                 <FormLabel>Commission Rate Name</FormLabel>
                 <FormControl
                     autoFocus
                     type="string"
                     value={this.state.name}
-                    onChange={e => {
+                    onChange={(e) => {
                         this.setState({ name: e.target.value });
                     }}
                 />
@@ -110,7 +107,7 @@ export default class CommissionRates extends Component {
                     autoFocus
                     type="string"
                     value={this.state.t440}
-                    onChange={e => {
+                    onChange={(e) => {
                         this.setState({ t440: e.target.value });
                     }}
                 />
@@ -119,7 +116,7 @@ export default class CommissionRates extends Component {
                     autoFocus
                     type="string"
                     value={this.state.t420}
-                    onChange={e => {
+                    onChange={(e) => {
                         this.setState({ t420: e.target.value });
                     }}
                 />
@@ -128,14 +125,16 @@ export default class CommissionRates extends Component {
                     autoFocus
                     type="string"
                     value={this.state.t210}
-                    onChange={e => {
+                    onChange={(e) => {
                         this.setState({ t210: e.target.value });
                     }}
                 />
+                <br />
+
                 <Button
                     bssize="medium"
                     variant="outline-danger"
-                    onClick={e => {
+                    onClick={(e) => {
                         this.createCommission(e);
                     }}
                     //onClick= {this.createDiscount()}
@@ -147,36 +146,38 @@ export default class CommissionRates extends Component {
 
                 <br />
 
-                <h2>Current Commission Rates</h2>
-                <Table className="mt-4">
-                    <thead>
-                    <tr>
-                        <th>Commission Name</th>
-                        <th>Value for 440 Ticket</th>
-                        <th>Value for 420 Ticket</th>
-                        <th>Value for 201 Ticket</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {this.state.commissions.map(
-                        ({
-                             name,
-                             ticket440,
-                            ticket420,
-                            ticket201
-                         }) => (
-                            <Fragment>
-                                {row(
-                                    name,
-                                    ticket440,
-                                    ticket420,
-                                    ticket201
-                                )}
-                            </Fragment>
-                        )
-                    )}
-                    </tbody>
-                </Table>
+                <h2>
+                    <strong>Current Commission Rates</strong>
+                </h2>
+                {this.state.commissions.length > 0 ? (
+                    <Table className="mt-4">
+                        <thead>
+                            <tr>
+                                <th>Commission Name</th>
+                                <th>Value for 440 Ticket</th>
+                                <th>Value for 420 Ticket</th>
+                                <th>Value for 201 Ticket</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.commissions.map(
+                                ({ name, ticket440, ticket420, ticket201 }) => (
+                                    <Fragment>
+                                        {row(
+                                            name,
+                                            ticket440,
+                                            ticket420,
+                                            ticket201
+                                        )}
+                                    </Fragment>
+                                )
+                            )}
+                        </tbody>
+                    </Table>
+                ) : (
+                    <h4>Commission Rates Empty.</h4>
+                )}
+                <br></br>
             </Container>
         );
     }

@@ -1,0 +1,3 @@
+Refund Ticket Number 4400000008
+Date: 1586529123336 
+JSON: {"saleDate":"2020-03-11T23:00:00.000Z","_id":"5e8f00a476ebf6dd84458f08","ticketNumber":"4400000008","currency":"USD","USDExchangeRate":60,"paymentMethod":"Cash","creditCardNum":"-","expDate":"-","fare":200,"securityCode":"-","commissionRate":25,"advisorCode":1234,"saleType":" ","localTax":"12","otherTax":"10","custName":"5e8afac3ded6e81274449350","isRefunded":true,"__v":0,"hasPayed":true,"paymentDate":"Empty.","notes":"Empty."}
