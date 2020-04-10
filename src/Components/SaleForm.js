@@ -351,12 +351,18 @@ export class SaleForm extends Component {
                     .catch((err) => console.log('Error code: ', err));
             }
            alert(this.state.tickNum + "has been sold");
+
+            this.props.history.push('/sales');
+
+
+
         }
 
         return (
             <Container>
                 <h2>Make a Sale</h2>
-                <Form onSubmit={submitSale.bind(this)}>
+                <Form onSubmit={submitSale.bind(this)
+                }>
                     <Dropdown
                         onSelect={(key) => {
                             this.setState({ method: key });
