@@ -58,27 +58,38 @@ export default class ReportTableGD extends Component {
 
 
     aggregateSales() {
+        //getting the dates into the proper format
         let start = new Date(this.state.startDate);
         let end = new Date(this.state.endDate);
         start.setHours(0, 0, 0, 0);
         end.setHours(0, 0, 0, 0);
 
+        //Date sorting
+        let l =[];
+        for (let i= 0; i< this.state.sales.length; i++){
+            if ((Date.parse(this.state.sales[i].saleDate) >= start) && (Date.parse(this.state.sales[i].saleDate) <= end)){
+                l.push(this.state.sales[i]);
+            }
+        }
+       // this.setState({sales: l});
 
+
+        //aggregating the sales together
         var x = 0,
             y = 0;
-        for (x = 0; x < this.state.sales.length; x++) {
+        for (x = 0; x < l.length; x++) {
             var k = 0;
             for (k = 0; k < this.state.summedValues.length; k++) {
                 if (
                     this.state.summedValues[k].advisorCode ==
-                    this.state.sales[x].advisorCode
+                    l[x].advisorCode
                 )
                     break;
             }
             y = k;
             if (k == this.state.summedValues.length) {
                 this.state.dict = {
-                    advisorCode: this.state.sales[x].advisorCode,
+                    advisorCode: l[x].advisorCode,
                     cash: 0,
                     credit: 0,
                     saleNum: 0,
@@ -86,17 +97,18 @@ export default class ReportTableGD extends Component {
                     fare2: 0,
                     tax: 0,
                     creditUSD: 0,
+                    creditT:0,
                     c9: 0,
                     c5: 0
                 };
                 y = this.state.summedValues.push(this.state.dict) - 1;
             }
             if (this.state.sales[x].paymentMethod === 'CreditCard') {
-                this.state.summedValues[y].credit += this.state.sales[x].fare;
-                this.state.summedValues[y].creditUSD += (this.state.sales[x].fare * this.state.sales[x].USDExchangeRate);
-
+                this.state.summedValues[y].credit += parseInt(this.state.sales[x].fare);
+                this.state.summedValues[y].creditUSD += (parseInt(this.state.sales[x].fare) * this.state.sales[x].USDExchangeRate);
+                this.state.summedValues[y].creditT += 1;
             } else if (this.state.sales[x].paymentMethod === 'Cash') {
-                this.state.summedValues[y].cash += this.state.sales[x].fare;
+                this.state.summedValues[y].cash += parseInt(this.state.sales[x].fare);
             }
 
             if (this.state.sales[x].commissionRate === '9') {
@@ -104,13 +116,15 @@ export default class ReportTableGD extends Component {
             }else if (this.state.sales[x].commissionRate === '5') {
                 this.state.summedValues[y].c5 += this.state.sales[x].fare;
             }
-            this.state.summedValues[y].tax += this.state.sales[x].otherTax;
+            this.state.summedValues[y].tax += parseFloat(this.state.sales[x].otherTax);
             this.state.summedValues[y].saleNum += 1;
-            this.state.summedValues[y].total += this.state.sales[x].fare;
+            this.state.summedValues[y].total += parseInt(this.state.sales[x].fare);
             this.state.summedValues[y].fare2 += (this.state.sales[x].fare * this.state.sales[x].USDExchangeRate);
         }
     }
     aggregate2(value) {
+        //adding up the totals for the total table
+
         let x = 0;
         if (value === 1) {
             for (var i = 0; i < this.state.summedValues.length; i++) {
@@ -257,6 +271,7 @@ export default class ReportTableGD extends Component {
                         <th>Fare(USD)</th>
                         <th>Taxes</th>
                         <th>Cash</th>
+                        <th>Credit#</th>
                         <th>Credit(USD)</th>
                         <th>Credit(local)</th>
                         <th>Total Paid</th>
@@ -273,7 +288,7 @@ export default class ReportTableGD extends Component {
                              credit,
                              cash,
                              total,
-                            fare2,tax,creditUSD,c9,c5
+                            fare2,tax,creditUSD,c9,c5,creditT
 
 
                          }) => (
@@ -285,6 +300,7 @@ export default class ReportTableGD extends Component {
                                     fare2,
                                     tax,
                                     cash,
+                                    creditT,
                                     creditUSD,
                                     credit,
                                     total,

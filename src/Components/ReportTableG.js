@@ -128,22 +128,29 @@ export default class ReportTableG extends Component {
         start.setHours(0, 0, 0, 0);
         end.setHours(0, 0, 0, 0);
 
+        //Date sorting
+        let l =[];
+        for (let i= 0; i< this.state.sales.length; i++){
+            if ((Date.parse(this.state.sales[i].saleDate) >= start) && (Date.parse(this.state.sales[i].saleDate) <= end)){
+                l.push(this.state.sales[i]);
+            }
+        }
 
         var x = 0,
             y = 0;
-        for (x = 0; x < this.state.sales.length; x++) {
+        for (x = 0; x < l.length; x++) {
             var k = 0;
             for (k = 0; k < this.state.summedValues.length; k++) {
                 if (
                     this.state.summedValues[k].advisorCode ==
-                    this.state.sales[x].advisorCode
+                    l[x].advisorCode
                 )
                     break;
             }
             y = k;
             if (k == this.state.summedValues.length) {
                 this.state.dict = {
-                    advisorCode: this.state.sales[x].advisorCode,
+                    advisorCode: l[x].advisorCode,
                     cash: 0,
                     credit: 0,
                     saleNum: 0,
@@ -152,6 +159,7 @@ export default class ReportTableG extends Component {
                     taxl: 0,
                     taxo:0,
                     creditUSD: 0,
+                    creditT: 0,
                     c9: 0,
                     c10: 0,
                     c15: 0,
@@ -161,6 +169,7 @@ export default class ReportTableG extends Component {
             if (this.state.sales[x].paymentMethod === 'CreditCard') {
                 this.state.summedValues[y].credit += this.state.sales[x].fare;
                 this.state.summedValues[y].creditUSD += (this.state.sales[x].fare * this.state.sales[x].USDExchangeRate);
+                this.state.summedValues[y].creditT += 1;
 
             } else if (this.state.sales[x].paymentMethod === 'Cash') {
                 this.state.summedValues[y].cash += this.state.sales[x].fare;
@@ -267,6 +276,7 @@ export default class ReportTableG extends Component {
                             <th>Other Tax</th>
                             <th>Document Total</th>
                             <th>Cash</th>
+                            <th>Credit#</th>
                             <th>Credit(USD)</th>
                             <th>Credit(local)</th>
                             <th>Total Paid</th>
@@ -288,6 +298,7 @@ export default class ReportTableG extends Component {
                                 taxl,
                                 taxo,
                                 creditUSD,
+                                creditT
 
 
                             }) => (
@@ -300,6 +311,7 @@ export default class ReportTableG extends Component {
                                         taxo,
                                         parseFloat(taxo)+parseFloat(taxl)+parseFloat(total),
                                         cash,
+                                        creditT,
                                         creditUSD,
                                         credit,
                                         parseFloat(taxo)+parseFloat(taxl)+parseFloat(total),
