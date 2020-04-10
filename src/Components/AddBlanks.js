@@ -125,61 +125,6 @@ class AddBlanks extends Component {
         alert("Deleted: " + this.state.toDelete);
     }
 
-    /*
-    async handleSearch() {
-        let x = parseInt(this.state.find);
-        const bl = this.state.blanksf.filter(
-            i => i.batchStart <= x && i.batchEnd >= x
-        );
-        this.setState({blanksf: bl});
-
-        const b = this.state.blanksa.filter(
-            i => i.batchStart <= x && i.batchEnd >= x
-        );
-        this.setState({blanksa: b});
-
-        //if it's not in any of the blank batches, it's not in the system
-        if (this.state.blanksf[0].remaining == undefined) {
-            alert("This value does not exist in the system");
-            return;
-        } else {
-            for (var i = 0; i < this.state.blanksf[0].remaining.length; i++) {
-                if ((parseInt(this.state.blanksf[0].remaining[i].start) <= x) && (parseInt(this.state.blanksf[0].remaining[i].end) >= x)) {
-                    break;
-                }
-            }
-            if (i !== this.state.blanks[0].remaining.length && this.state.blanks[0].remaining !== undefined) {
-                alert(this.state.find + " is available and unassigned in batch " + this.state.blanksf[0].remaining[0].start +"-"+ this.state.blanksf[0].remaining[0].end);
-                return;
-
-            }else {
-                if (this.state.blanksa[0] == undefined) {
-                    alert("This value does not exist in the system");
-                    return;
-                }
-                for (var l = 0; l < this.state.blanksa[0].remaining.length; l++) {
-                    if (this.state.blanksa[0].remaining[l] === x) {
-                        break;
-                    }
-                }
-                if (l === this.state.blanksa[0].remaining.length) {
-                    if (this.state.blanksu[0] == undefined) {
-                        alert("This value does not exist in the system");
-                        return;
-                    }
-                    alert(this.state.find + " has been used by advisor " + this.state.blanksu[0].advisorCode + " and sold to " + this.state.blanksu[0].custName)
-
-                } else {
-                    alert(this.state.find + " has been assigned to advisor " + this.state.blanksa[0].advisorCode)
-                }
-            }
-
-        }
-
-    }
-
-     */
-
 
     async handleSubmit(event) {
         event.preventDefault();

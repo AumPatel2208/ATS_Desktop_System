@@ -198,7 +198,12 @@ export class SaleForm extends Component {
                     ? (cd = `${this.props.staff.commissionRate440}`)
                     : (cd = '-');
 
-            }else if (this.state.tickNum.substring(0,3) == 420){
+            }else if (this.state.tickNum.substring(0,3) == 444){
+                this.props.staff !== undefined
+                    ? (cd = `${this.props.staff.commissionRate444}`)
+                    : (cd = '-');
+
+            } else if (this.state.tickNum.substring(0,3) == 420){
                 this.props.staff !== undefined
                     ? (cd = `${this.props.staff.commissionRate420}`)
                     : (cd = '-');
@@ -346,12 +351,18 @@ export class SaleForm extends Component {
                     .catch((err) => console.log('Error code: ', err));
             }
            alert(this.state.tickNum + "has been sold");
+
+            this.props.history.push('/sales');
+
+
+
         }
 
         return (
             <Container>
                 <h2>Make a Sale</h2>
-                <Form onSubmit={submitSale.bind(this)}>
+                <Form onSubmit={submitSale.bind(this)
+                }>
                     <Dropdown
                         onSelect={(key) => {
                             this.setState({ method: key });

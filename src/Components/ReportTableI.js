@@ -151,7 +151,7 @@ export default class ReportTableI extends Component {
                 ? ad = `${this.props.staff.staffType}`
                 : ad = "undefined"
         }
-      if (ad=== "OfficeManager"){
+      if (ad !== "TravelAdvisor"){
             return <Fragment>
                 <FormLabel>Enter Advisor Code</FormLabel>
                 <FormControl
@@ -164,9 +164,66 @@ export default class ReportTableI extends Component {
                         });
                     }}
                 />
+                <Button
+                    bssize="medium"
+                    variant="outline-danger"
+                    onClick={() => {
+                        let start = new Date(this.state.startDate);
+                        let end = new Date(this.state.endDate);
+                        start.setHours(0, 0, 0, 0);
+                        end.setHours(0, 0, 0, 0);
+
+                        axios
+                            .get(apiLinks.BLANKS + '/byDate', {
+                                params: { start, end }
+                            })
+                            .then(res => {
+                                const sales = res.data;
+                                this.setState({ sales });
+                            });
+
+                        const dl = this.state.sales.filter(
+                            i => i.advisorCode === this.state.code);
+                        this.setState({sales: dl});
+                    }}
+                    block
+                >
+                    Filter Report
+                </Button>
+
             </Fragment>
 
-        }
+        }else{
+          return <Fragment>
+              <Button
+              bssize="medium"
+              variant="outline-danger"
+              onClick={() => {
+                  let start = new Date(this.state.startDate);
+                  let end = new Date(this.state.endDate);
+                  start.setHours(0, 0, 0, 0);
+                  end.setHours(0, 0, 0, 0);
+
+                  axios
+                      .get(apiLinks.BLANKS + '/byDate', {
+                          params: { start, end }
+                      })
+                      .then(res => {
+                          const sales = res.data;
+                          this.setState({ sales });
+                      });
+
+                  const dl = this.state.sales.filter(
+                      i => i.advisorCode === this.state.code);
+                  this.setState({sales: dl});
+              }}
+          >
+              Enter Dates
+          </Button>
+          </Fragment>
+
+
+      }
     }
 
     aggregate(value) {
@@ -369,7 +426,6 @@ return x;
         return (
             <Container>
                 <Form>
-                    <h2>For Advisor: {this.state.code}</h2>
                     <FormGroup controlId="saleT" bssize="large">
                         <FormLabel>From: </FormLabel>
                         <DatePicker
@@ -394,37 +450,6 @@ return x;
 
 
                         <Fragment>{this.roleHandler()}</Fragment>
-
-
-
-                        <Button
-                            bssize="medium"
-                            variant="outline-danger"
-                            onClick={() => {
-                                let start = new Date(this.state.startDate);
-                                let end = new Date(this.state.endDate);
-                                start.setHours(0, 0, 0, 0);
-                                end.setHours(0, 0, 0, 0);
-
-                                axios
-                                    .get(apiLinks.BLANKS + '/byDate', {
-                                        params: { start, end }
-                                    })
-                                    .then(res => {
-                                        const sales = res.data;
-                                        this.setState({ sales });
-                                    });
-
-                                const dl = this.state.sales.filter(
-                                    i => i.advisorCode === this.state.code);
-                                this.setState({sales: dl});
-                            }}
-                            block
-                        >
-                            Filter Report
-                        </Button>
-
-
 
                         <h2>Domestic Sales Report</h2>
                     </FormGroup>
@@ -457,12 +482,8 @@ return x;
                                                 otherTax,
                                                 paymentMethod,
                                                 commissionRate,
-                                                creditCardNum,
-                                                expDate,
-                                                securityCode,
-                                                saleDate,
                                                 notes,
-                                                saleType
+
                                             }) => {
                         return (
                             <tr >
@@ -518,16 +539,6 @@ return x;
                             </tr>
                     </tbody>
                 </Table>
-
-
-
-
-
-
-
-
-
-
 
                 <h2>Interline Sales Report</h2>
                 <button onClick={this.toPDFB}>Download PDF</button>
