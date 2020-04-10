@@ -362,10 +362,6 @@ export default class ReportTableG extends Component {
                     </tbody>
                 </Table>
 
-
-
-
-
             </Container>
         );
     }
