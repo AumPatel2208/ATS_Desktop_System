@@ -15,51 +15,81 @@ const _ = require('lodash'); //Library to Change Cases of things
 
 export class CommissionUpdate extends Component {
     state = {
+        commissions: [],
+        discountGetV: [],
         staff: [],
-        code: '',
-        rate: ''
+        cCode: '',
+        t440:"",
+        t420: "",
+        t201: "",
+        dName: '',
+        dType: 'Select Commission Type',
+        dV:"",
+        cType: "",
+        customer: {
+            _id: '',
+            firstName: '',
+            lastName: '',
+            address: '',
+            phoneNumber: '',
+            discount: 0,
+            customerType: null,
+            discountName: '',
+            discountType: '',
+            discountValue: ""
+        }
     };
-
     componentDidMount() {
-        const st = this.state.staff.advisorCode;
         axios
-            .get(apiLinks.STAFFMEMBERS + '/commission', { params: { st } })
+            .get(apiLinks.COMMISSIONRATE)
+            .then(res => {
+                const commissions = res.data;
+                this.setState({ commissions });
+            })
+            .catch(err => console.log('Error code: ', err));
+
+        axios
+            .get(apiLinks.STAFFMEMBERS)
             .then(res => {
                 const staff = res.data;
                 this.setState({ staff });
-            });
+            })
+            .catch(err => console.log('Error code: ', err));
     }
-
-    // componentDidMount() {
-    //     axios.get(apiLinks.STAFFMEMBERS).then(res => {
-    //         const staff = res.data;
-    //         this.setState({staff});
-    //         console.log(staff)
-    //     });
-
-    // }
-
-    updateCommission(e) {
+    assignDiscount(e) {
         e.preventDefault();
-        const st = this.state.staff.advisorCode;
 
-        const bl = this.state.staff.filter(i => String(i.advisorCode) === st);
-        console.log(bl);
+        //Accessing the correct staff to update
+        const st = this.state.cCode;
+        //filtering first name
+        const c = this.state.staff.filter(
+            i => String(i.advisorCode) === this.state.cCode
+        );
 
-        const updatedStaff = {
-            username: this.state.staff.username,
-            firstName: this.state.staff.firstName,
-            lastName: this.state.staff.lastName,
-            address: this.state.staff.address,
-            //password: bcrypt.hashSync(staff.password, salt),
-            staffType: this.state.staff.staffType,
-            advisorCode: this.state.staff.advisorCode,
-            commissionRate: this.state.staff.commissionRate
+        //getting the commission to assign the correct value
+
+        const fc = this.state.commissions.filter(
+            i => String(i.name) === this.state.dName
+            //this.state.dName
+        );
+        this.setState({commissions :fc});
+
+        const updatedStaff ={
+            firstName: this.state.staff[0].firstName,
+            lastName: this.state.staff[0].lastName,
+            address: this.state.staff[0].address,
+                username:this.state.staff[0].username,
+                password:this.state.staff[0].password,
+        staffType: this.state.staff[0].staffType,
+        advisorCode: this.state.staff[0].advisorCode,
+        commissionRate440:this.state.commissions[0].ticket440,
+        commissionRate420: this.state.commissions[0].ticket420,
+        commissionRate201: this.state.commissions[0].ticket201,
+
         };
-
         axios
             .put(
-                apiLinks.STAFFMEMBERS + '/' + this.state.staff._id,
+                apiLinks.STAFFMEMBERS + '/' + this.state.staff[0]._id,
                 updatedStaff
             )
             .then(res => {
@@ -67,54 +97,43 @@ export class CommissionUpdate extends Component {
             });
     }
 
+
     render() {
         return (
             <Container>
-                <form>
-                    {/*
-                     //onSubmit={this.updateCommission().bind(this)}>
-                     {console.log(this.state.customer)} */}
+                <h2>Assign New Commission Rates</h2>
 
-                    <FormGroup controlId="advisorCode" bssize="large">
-                        <FormLabel>Enter Advisor Code</FormLabel>
-                        <FormControl
-                            autoFocus
-                            type="String"
-                            value={this.state.code}
-                            onChange={e =>
-                                this.setState({
-                                    code: e.target.value
-                                })
-                            }
-                        />
-                    </FormGroup>
+                <FormLabel>Staff Code</FormLabel>
+                <FormControl
+                    autoFocus
+                    type="string"
+                    value={this.state.cName}
+                    onChange={e => {
+                        this.setState({cName: e.target.value});
+                    }}
+                />
+                <FormLabel>Commission Name</FormLabel>
+                <FormControl
+                    autoFocus
+                    type="string"
+                    value={this.state.dName}
+                    onChange={e => {
+                        this.setState({dName: e.target.value});
+                    }}
+                />
+                <Button
+                    bssize="medium"
+                    variant="outline-danger"
+                    onClick={e => {
+                        this.assignDiscount(e);
+                    }}
+                    block
+                >
+                    Assign Commission Rate
+                </Button>
 
-                    <FormGroup controlId="commissionRate" bssize="large">
-                        <FormLabel>Enter New Commission Rate</FormLabel>
-                        <FormControl
-                            autoFocus
-                            type="String"
-                            value={this.state.rate}
-                            onChange={e =>
-                                this.setState({
-                                    rate: e.target.value
-                                })
-                            }
-                        />
-                    </FormGroup>
-                    <Button
-                        block
-                        bssize="large"
-                        type="submit"
-                        onClick={e => {
-                            console.log('hit');
-                            this.updateCommission(e);
-                        }}
-                    >
-                        Update Rate
-                    </Button>
-                </form>
             </Container>
-        );
+        )
+
     }
 }

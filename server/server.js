@@ -13,6 +13,7 @@ const restore = require('./api/restore');
 const blankAssigned = require('./api/blankAssigned');
 const blankUsed = require('./api/blankUsed');
 const discounts = require('./api/discounts');
+const commissionRates = require('./api/commissionRates');
 
 const config = require('../server/config/db');
 
@@ -66,6 +67,7 @@ app.use('/api/restore', restore);
 app.use('/api/blankUsed', blankUsed);
 app.use('/api/blankAssigned', blankAssigned);
 app.use('/api/discounts', discounts);
+app.use('/api/commissionRates', commissionRates);
 
 
 const port = process.env.PORT || 5000;

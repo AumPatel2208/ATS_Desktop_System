@@ -4,11 +4,13 @@ import {
     FormGroup,
     FormControl,
     FormLabel,
-    Dropdown
+    Dropdown, Form
 } from 'react-bootstrap';
 import '../Styles/Login.css';
 import Container from 'reactstrap/lib/Container';
 import axios from 'axios';
+import {CommissionUpdate} from "../Components/CommissionUpdate";
+import CommissionRates from "../Components/CommissionRates";
 
 let apiLinks = require('../api/config.json');
 // "proxy": "http://localhost:5000"
@@ -280,6 +282,15 @@ export default function RegisterStaff(props) {
                     </Button>
                 </form>
             </div>
+            <br/>
+            <h2>Update Commission Rates</h2>
+            <CommissionRates></CommissionRates>
+            <br/>
+            <CommissionUpdate></CommissionUpdate>
+            <br/>
+            <br/>
+
+
         </Container>
     );
 }

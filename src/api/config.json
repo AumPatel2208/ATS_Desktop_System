@@ -9,5 +9,6 @@
     "RESTORE": "/api/restore",
     "ASSIGN": "/api/blankAssigned",
     "USED": "/api/blankUsed",
-    "DISCOUNT": "/api/discounts"
+    "DISCOUNT": "/api/discounts",
+    "COMMISSIONRATE": "/api/commissionRates"
 }

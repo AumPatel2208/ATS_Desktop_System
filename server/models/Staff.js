@@ -30,10 +30,19 @@ const StaffSchema = new Schema({
         type: Number
         // required: true
     },
-    commissionRate: {
+    commissionRate440: {
+        type: Number
+
+    },
+    commissionRate420: {
+        type: Number
+
+    },
+    commissionRate201: {
         type: Number
 
     }
+
 });
 // eslint-disable-next-line no-undef
 module.exports = Staff = mongoose.model('Staff', StaffSchema);
