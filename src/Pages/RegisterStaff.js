@@ -28,6 +28,7 @@ export default function RegisterStaff(props) {
     const [staffMembers, setStaffMembers] = useState([{}]);
     const [advisorCode, setAdvisorCode] = useState('');
     const [commissionRate440, setCommissionRate440] = useState('');
+    const [commissionRate444, setCommissionRate444] = useState('');
     const [commissionRate420, setCommissionRate420] = useState('');
     const [commissionRate201, setCommissionRate201] = useState('');
 
@@ -73,6 +74,7 @@ export default function RegisterStaff(props) {
                     setAddress(tempStaffMember.address);
                     setAdvisorCode(tempStaffMember.advisorCode);
                     setCommissionRate440(tempStaffMember.commissionRate440);
+                    setCommissionRate444(tempStaffMember.commissionRate444);
                     setCommissionRate420(tempStaffMember.commissionRate420);
                     setCommissionRate201(tempStaffMember.commissionRate201);
                 })

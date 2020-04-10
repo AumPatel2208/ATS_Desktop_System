@@ -20,6 +20,7 @@ export class CommissionUpdate extends Component {
         staff: [],
         cCode: '',
         t440: '',
+        t444: '',
         t420: '',
         t201: '',
         dName: '',
@@ -85,6 +86,7 @@ export class CommissionUpdate extends Component {
             staffType: this.state.staff[x].staffType,
             advisorCode: this.state.staff[x].advisorCode,
             commissionRate440: this.state.commissions[0].ticket440,
+            commissionRate444: this.state.commissions[0].ticket440,
             commissionRate420: this.state.commissions[0].ticket420,
             commissionRate201: this.state.commissions[0].ticket201,
         };

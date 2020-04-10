@@ -6,12 +6,12 @@ const CommissionRateSchema = new Schema({
         type: String
     },
     ticket440: {
-type: Number
+        type: Number
     },
-    ticket420:{
-type: Number
+    ticket420: {
+        type: Number
     },
-    ticket201:{
+    ticket201: {
         type: Number
     }
 

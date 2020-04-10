@@ -482,12 +482,8 @@ return x;
                                                 otherTax,
                                                 paymentMethod,
                                                 commissionRate,
-                                                creditCardNum,
-                                                expDate,
-                                                securityCode,
-                                                saleDate,
                                                 notes,
-                                                saleType
+
                                             }) => {
                         return (
                             <tr >
@@ -543,16 +539,6 @@ return x;
                             </tr>
                     </tbody>
                 </Table>
-
-
-
-
-
-
-
-
-
-
 
                 <h2>Interline Sales Report</h2>
                 <button onClick={this.toPDFB}>Download PDF</button>

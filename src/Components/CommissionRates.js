@@ -21,6 +21,7 @@ export default class CommissionRates extends Component {
         staff: [],
         name: '',
         t440: '',
+        t444: '',
         t420: '',
         t210: '',
         sName: '',
@@ -76,11 +77,12 @@ export default class CommissionRates extends Component {
     }
 
     render() {
-        const row = (name, ticket440, ticket420, ticket201) => (
+        const row = (name, ticket440,ticket444, ticket420, ticket201) => (
             <Fragment>
                 <tr>
                     <td>{name}</td>
                     <td>{ticket440}</td>
+                    <td>{ticket444}</td>
                     <td>{ticket420}</td>
                     <td>{ticket201}</td>
                     <td></td>
@@ -111,6 +113,15 @@ export default class CommissionRates extends Component {
                     value={this.state.t440}
                     onChange={(e) => {
                         this.setState({ t440: e.target.value });
+                    }}
+                />
+                <FormLabel> Commission Value 444</FormLabel>
+                <FormControl
+                    autoFocus
+                    type="string"
+                    value={this.state.t444}
+                    onChange={(e) => {
+                        this.setState({ t444: e.target.value });
                     }}
                 />
                 <FormLabel>Commission Value 420</FormLabel>
@@ -157,17 +168,19 @@ export default class CommissionRates extends Component {
                             <tr>
                                 <th>Commission Name</th>
                                 <th>Value for 440 Ticket</th>
+                                <th>Value for 444 Ticket</th>
                                 <th>Value for 420 Ticket</th>
                                 <th>Value for 201 Ticket</th>
                             </tr>
                         </thead>
                         <tbody>
                             {this.state.commissions.map(
-                                ({ name, ticket440, ticket420, ticket201 }) => (
+                                ({ name, ticket440,  ticket444, ticket420, ticket201,}) => (
                                     <Fragment>
                                         {row(
                                             name,
                                             ticket440,
+                                            ticket444,
                                             ticket420,
                                             ticket201
                                         )}

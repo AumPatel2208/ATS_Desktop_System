@@ -198,7 +198,12 @@ export class SaleForm extends Component {
                     ? (cd = `${this.props.staff.commissionRate440}`)
                     : (cd = '-');
 
-            }else if (this.state.tickNum.substring(0,3) == 420){
+            }else if (this.state.tickNum.substring(0,3) == 444){
+                this.props.staff !== undefined
+                    ? (cd = `${this.props.staff.commissionRate444}`)
+                    : (cd = '-');
+
+            } else if (this.state.tickNum.substring(0,3) == 420){
                 this.props.staff !== undefined
                     ? (cd = `${this.props.staff.commissionRate420}`)
                     : (cd = '-');

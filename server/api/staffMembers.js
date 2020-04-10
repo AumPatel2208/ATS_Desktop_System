@@ -20,6 +20,7 @@ router.post('/', (q, a) => {
             staffType: staff.staffType,
             advisorCode: staff.advisorCode,
             commissionRate440: staff.commissionRate440,
+            commissionRate444: staff.commissionRate444,
             commissionRate420: staff.commissionRate420,
             commissionRate201: staff.commissionRate201
 

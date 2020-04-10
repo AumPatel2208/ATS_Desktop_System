@@ -10,6 +10,7 @@ router.post('/', (q, a) => {
     newdiscount = {
         name: q.body.name,
         ticket440: q.body.ticket440,
+        ticket444: q.body.ticket444,
         ticket420: q.body.ticket420,
         ticket201: q.body.ticket201
     };

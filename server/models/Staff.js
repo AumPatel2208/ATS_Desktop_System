@@ -34,6 +34,10 @@ const StaffSchema = new Schema({
         type: Number
 
     },
+    commissionRate444: {
+        type: Number
+
+    },
     commissionRate420: {
         type: Number
 
