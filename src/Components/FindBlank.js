@@ -42,49 +42,55 @@ class FindBlank extends Component {
 
     async handleSearch() {
         let x = parseInt(this.state.find);
-        const bl = this.state.blanksf.filter(
-            i => i.batchStart <= x && i.batchEnd >= x
-        );
-        this.setState({blanksf: bl});
+        let i2;
+        let i3;
+        for(i=0; i <this.state.blanksf.length; i++ ){
+            if( (this.state.blanksf[i].batchStart <= x) && (this.state.blanksf[i].batchEnd >= x)){
+                i3 = i;
+                break;
+            }
+        }
 
-        const b = this.state.blanksa.filter(
-            i => i.batchStart <= x && i.batchEnd >= x
-        );
-        this.setState({blanksa: b});
+        for(i=0; i <this.state.blanksa.length; i++ ){
+            if( (this.state.blanksa[i].batchStart <= x) && (this.state.blanksa[i].batchEnd >= x)){
+                i2 = i;
+                break;
+            }
+        }
 
         //if it's not in any of the blank batches, it's not in the system
-        if (this.state.blanksf[0].remaining == undefined) {
+        if (this.state.blanksf[i3] == undefined) {
             alert("This value does not exist in the system");
             return;
         } else {
-            for (var i = 0; i < this.state.blanksf[0].remaining.length; i++) {
-                if ((parseInt(this.state.blanksf[0].remaining[i].start) <= x) && (parseInt(this.state.blanksf[0].remaining[i].end) >= x)) {
+            for (var i = 0; i < this.state.blanksf[i3].remaining.length; i++) {
+                if ((parseInt(this.state.blanksf[i3].remaining[i].start) <= x) && (parseInt(this.state.blanksf[i3].remaining[i].end) >= x)) {
                     break;
                 }
             }
-            if ( this.state.blanksf !== undefined && i !== this.state.blanksf[0].remaining.length) {
-                alert(this.state.find + " is available and unassigned in batch " + this.state.blanksf[0].remaining[0].start + "-" + this.state.blanksf[0].remaining[0].end);
+            if ( this.state.blanksf !== undefined && i !== this.state.blanksf[i3].remaining.length) {
+                alert(this.state.find + " is available and unassigned in batch " + this.state.blanksf[i3].remaining[0].start + "-" + this.state.blanksf[i3].remaining[0].end);
                 return;
 
             } else {
-                if (this.state.blanksa[0] == undefined) {
-                    alert("This value does not exist in the system");
-                    return;
-                }
-                for (var l = 0; l < this.state.blanksa[0].remaining.length; l++) {
-                    if (this.state.blanksa[0].remaining[l] === x) {
+                for (var l = 0; l < this.state.blanksa[i2].remaining.length; l++) {
+                    if (this.state.blanksa[i2].remaining[l] === x) {
                         break;
                     }
                 }
-                if (l === this.state.blanksa[0].remaining.length) {
-                    if (this.state.blanksu[0] == undefined) {
-                        alert("This value does not exist in the system");
-                        return;
-                    }
-                    alert(this.state.find + " has been used by advisor " + this.state.blanksu[0].advisorCode + " and sold to " + this.state.blanksu[0].custName)
+                if (l === this.state.blanksa[i2].remaining.length) {
+                    let i4=0;
+                    for(i=0; i <this.state.blanksu.length; i++){
+                        if (this.state.blanksu[i].batchValues == x){
+                            i4 =i;
+                            break;
 
+                        }
+                    }
+alert(i4);
+                    alert(this.state.find + " has been used by advisor " + this.state.blanksu[i4].advisorCode + " and sold to " + this.state.blanksu[i4].custName)
                 } else {
-                    alert(this.state.find + " has been assigned to advisor " + this.state.blanksa[0].advisorCode)
+                    alert(this.state.find + " has been assigned to advisor " + this.state.blanksa[i2].advisorCode)
                 }
             }
 
