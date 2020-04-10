@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Button, FormGroup, FormControl, FormLabel } from 'react-bootstrap';
+import {
+    Button,
+    FormGroup,
+    FormControl,
+    FormLabel,
+    Fade,
+} from 'react-bootstrap';
 import '../Styles/Login.css';
 import Container from 'reactstrap/lib/Container';
 import axios from 'axios';
@@ -30,47 +36,47 @@ export default function Login(props) {
 
         axios
             .get(apiLinks.STAFFMEMBERS)
-            .then(async res => {
+            .then(async (res) => {
                 if (mounted) {
                     const tempStaffMemebers = await res.data;
                     setStaffMembers(tempStaffMemebers);
                 }
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
         return () => (mounted = false);
     }, []);
 
     //Global State
     // eslint-disable-next-line no-unused-vars
-    const User = useStoreState(UserStore, s => s.UserType);
+    const User = useStoreState(UserStore, (s) => s.UserType);
     // eslint-disable-next-line no-unused-vars
-    const IsAuthenticated = useStoreState(UserStore, s => s.IsAuthenticated);
+    const IsAuthenticated = useStoreState(UserStore, (s) => s.IsAuthenticated);
 
     function handleSubmit(event) {
         // Headers
         const headersConfig = {
             headers: {
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            },
         };
 
         axios
             .post(apiLinks.SECURE, { username, password }, headersConfig)
-            .then(res => {
+            .then((res) => {
                 var staff = staffMemebers.filter(
-                    staffMemeber => staffMemeber._id === res.data.staff.id
+                    (staffMemeber) => staffMemeber._id === res.data.staff.id
                 );
                 staff = { ...staff };
                 staff = staff[0];
                 // localStorage.setItem('token', res.data.token);
 
-                UserStore.update(s => {
+                UserStore.update((s) => {
                     s.User = staff;
                     s.IsAuthenticated = true; // need to move later after jwtAuthentication
                     setIsSignedIn(true);
                 });
             })
-            .catch(err => {
+            .catch((err) => {
                 alert('Login Failed! \n Error: ' + err);
             });
         event.preventDefault();
@@ -89,14 +95,14 @@ export default function Login(props) {
                             autoFocus
                             type="username"
                             value={username}
-                            onChange={e => setUsername(e.target.value)}
+                            onChange={(e) => setUsername(e.target.value)}
                         />
                     </FormGroup>
                     <FormGroup controlId="password" bssize="large">
                         <FormLabel>Password</FormLabel>
                         <FormControl
                             value={password}
-                            onChange={e => setPassword(e.target.value)}
+                            onChange={(e) => setPassword(e.target.value)}
                             type="password"
                         />
                     </FormGroup>

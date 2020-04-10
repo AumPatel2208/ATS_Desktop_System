@@ -45,7 +45,9 @@ class Notifications extends React.Component {
     componentDidUpdate() {
         this.props.sales.map((sale) => {
             if (
-                Math.floor(30 - this.numberOfDaysSinceSale(sale.saleDate)) <= 0
+                Math.floor(30 - this.numberOfDaysSinceSale(sale.saleDate)) <=
+                    0 &&
+                sale.hasPayed === false
             ) {
                 setTimeout(async () => {
                     // await axios

@@ -1,16 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Container, Table, Button, Col } from 'reactstrap';
+import { Table, Col } from 'reactstrap';
+import { Container, Button } from 'react-bootstrap';
 import axios from 'axios';
-import {
-    Form,
-    FormGroup,
-    Dropdown,
-    FormControl,
-    FormLabel
-} from 'react-bootstrap';
-import jsPDF from "jspdf";
+import { FormLabel } from 'react-bootstrap';
+import jsPDF from 'jspdf';
 
 const _ = require('lodash'); //Library to Change Cases of things
 
@@ -20,9 +15,9 @@ export default class ReportTurnoverT extends Component {
     //Set the state to an empty list of objects that will be taken from the database
     state = {
         blanks: [],
-        allBlanks:[],
+        allBlanks: [],
         aBlanks: [],
-        allABlanks:[],
+        allABlanks: [],
         uBlanks: [],
         assigns: [],
         assign: 'assigned',
@@ -32,107 +27,134 @@ export default class ReportTurnoverT extends Component {
         endDate: new Date(Date.now()),
         ed: '',
         total1: 0,
-        total2:0,
-        total3:0,
-        total4:0,
-        total5:0,
-        total6:0
-
+        total2: 0,
+        total3: 0,
+        total4: 0,
+        total5: 0,
+        total6: 0,
     };
     //runs when component mounts, use to gets the data from db
 
     componentDidMount() {
         axios
             .get(apiLinks.BLANKS)
-            .then(res => {
+            .then((res) => {
                 const blanks = res.data;
                 this.setState({ blanks });
 
                 const allBlanks = res.data;
                 this.setState({ allBlanks });
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
 
         axios
             .get(apiLinks.ASSIGN)
-            .then(res => {
+            .then((res) => {
                 const allABlanks = res.data;
                 this.setState({ allABlanks });
                 const aBlanks = res.data;
                 this.setState({ aBlanks });
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
 
-
-        axios
-            .get(apiLinks.USED )
-            .then(res => {
-                const uBlanks = res.data;
-                this.setState({ uBlanks });
-            });
+        axios.get(apiLinks.USED).then((res) => {
+            const uBlanks = res.data;
+            this.setState({ uBlanks });
+        });
     }
-
-
-
-
 
     toPDF() {
-
         var pdf = new jsPDF('l', 'pt', 'A4');
 
-        pdf.text( "Newly Received Blanks", 50, 20);
-        pdf.autoTable({html: '#recieved', columnSpan: 50,columnWidth: 50});
+        pdf.text('Newly Received Blanks', 50, 20);
+        pdf.autoTable({ html: '#recieved', columnSpan: 50, columnWidth: 50 });
         let page = pdf.internal.getCurrentPageInfo().pageNumber;
-        pdf.text( "Assigned From Newly Received Blanks", 50, pdf.autoTable.previous.finalY +20);
-        pdf.autoTable({html: '#assignedR', startY: pdf.autoTable.previous.finalY +40, pageBreak: 'avoid'});
-        pdf.text( "Assigned During Given Period", 50, pdf.autoTable.previous.finalY +20);
-        pdf.autoTable({html: '#assignedp', startY: pdf.autoTable.previous.finalY +40, pageBreak: 'avoid'});
+        pdf.text(
+            'Assigned From Newly Received Blanks',
+            50,
+            pdf.autoTable.previous.finalY + 20
+        );
+        pdf.autoTable({
+            html: '#assignedR',
+            startY: pdf.autoTable.previous.finalY + 40,
+            pageBreak: 'avoid',
+        });
+        pdf.text(
+            'Assigned During Given Period',
+            50,
+            pdf.autoTable.previous.finalY + 20
+        );
+        pdf.autoTable({
+            html: '#assignedp',
+            startY: pdf.autoTable.previous.finalY + 40,
+            pageBreak: 'avoid',
+        });
 
-        pdf.text( "Used During Given Period", 50, pdf.autoTable.previous.finalY +20);
-        pdf.autoTable({html: '#used', startY: pdf.autoTable.previous.finalY +40,  columnWidth :50});
-        pdf.text( "Available At End Of Period", 50, pdf.autoTable.previous.finalY +20);
-        pdf.autoTable({html: '#available', startY: pdf.autoTable.previous.finalY +40});
-        pdf.text( "Assigned At End Of Period", 50, pdf.autoTable.previous.finalY +20);
-        pdf.autoTable({html: '#assignedA', startY: pdf.autoTable.previous.finalY +40});
+        pdf.text(
+            'Used During Given Period',
+            50,
+            pdf.autoTable.previous.finalY + 20
+        );
+        pdf.autoTable({
+            html: '#used',
+            startY: pdf.autoTable.previous.finalY + 40,
+            columnWidth: 50,
+        });
+        pdf.text(
+            'Available At End Of Period',
+            50,
+            pdf.autoTable.previous.finalY + 20
+        );
+        pdf.autoTable({
+            html: '#available',
+            startY: pdf.autoTable.previous.finalY + 40,
+        });
+        pdf.text(
+            'Assigned At End Of Period',
+            50,
+            pdf.autoTable.previous.finalY + 20
+        );
+        pdf.autoTable({
+            html: '#assignedA',
+            startY: pdf.autoTable.previous.finalY + 40,
+        });
 
-
-        pdf.save("TurnoverReport.pdf")
+        pdf.save('TurnoverReport.pdf');
     }
 
-    generateTotals(){
-
+    generateTotals() {
         //getting totals
-//newly added blanks - new
-        let x=0;
-        for (let i =0; i<this.state.blanks.length; i++){
+        //newly added blanks - new
+        let x = 0;
+        for (let i = 0; i < this.state.blanks.length; i++) {
             x += parseInt(this.state.blanks[i].amount);
         }
-        this.setState({total1:x});
-//newly assigned blanks - new & assigned during block
-        x=0;
-        for (let i =0; i<this.state.aBlanks.length; i++){
+        this.setState({ total1: x });
+        //newly assigned blanks - new & assigned during block
+        x = 0;
+        for (let i = 0; i < this.state.aBlanks.length; i++) {
             x += parseInt(this.state.aBlanks[i].amount);
         }
-        this.setState({total2:x});
+        this.setState({ total2: x });
 
-//assigned blanks in period - assigned during block
-        x=0;
-        for (let i =0; i<this.state.aBlanks.length; i++){
+        //assigned blanks in period - assigned during block
+        x = 0;
+        for (let i = 0; i < this.state.aBlanks.length; i++) {
             x += parseInt(this.state.aBlanks[i].amount);
         }
-        this.setState({total3:x});
+        this.setState({ total3: x });
 
         //below are all set
 
-//used blanks in period - used during block
-        x=0;
-        for (let i =0; i<this.state.uBlanks.length; i++){
+        //used blanks in period - used during block
+        x = 0;
+        for (let i = 0; i < this.state.uBlanks.length; i++) {
             x += parseInt(this.state.uBlanks[i].amount);
         }
-        this.setState({total4:x});
+        this.setState({ total4: x });
 
-//available blanks at end of period - all available
-        x=0;
+        //available blanks at end of period - all available
+        x = 0;
         /*
         for (let i =0; i< this.state.allBlanks.length; i++){
             let y = this.state.allABlanks[3];
@@ -142,17 +164,15 @@ export default class ReportTurnoverT extends Component {
 
         }
         */
-        this.setState({total5:"fix this one"});
+        this.setState({ total5: 'fix this one' });
 
-//assigned blanks in period - all assigned
-        x=0;
-        for (let i =0; i<this.state.allABlanks.length; i++){
+        //assigned blanks in period - all assigned
+        x = 0;
+        for (let i = 0; i < this.state.allABlanks.length; i++) {
             x += this.state.allABlanks[i].remaining.length;
         }
-        this.setState({total6:x})
-
+        this.setState({ total6: x });
     }
-
 
     render() {
         const row = (_id, batchValues, date, amount, advisorCode) => (
@@ -187,9 +207,9 @@ export default class ReportTurnoverT extends Component {
                 <FormLabel>From: </FormLabel>
                 <DatePicker
                     selected={this.state.startDate}
-                    onChange={date => {
+                    onChange={(date) => {
                         this.setState({
-                            startDate: date
+                            startDate: date,
                         });
                     }}
                 />
@@ -197,9 +217,9 @@ export default class ReportTurnoverT extends Component {
                 <FormLabel>To: </FormLabel>
                 <DatePicker
                     selected={this.state.endDate}
-                    onChange={date => {
+                    onChange={(date) => {
                         this.setState({
-                            endDate: date
+                            endDate: date,
                         });
                     }}
                 />
@@ -215,16 +235,16 @@ export default class ReportTurnoverT extends Component {
                         end.setHours(0, 0, 0, 0);
 
                         const fl = this.state.blanks.filter(
-                            i => Date.parse(i.date) >= Date.parse(start)
+                            (i) => Date.parse(i.date) >= Date.parse(start)
                         );
                         this.setState({ blanks: fl });
                         const tl = this.state.blanks.filter(
-                            i => Date.parse(i.date) <= Date.parse(end)
+                            (i) => Date.parse(i.date) <= Date.parse(end)
                         );
                         this.setState({ blanks: tl });
 
                         const t = this.state.allABlanks.filter(
-                            i => i.remaining[0] !== undefined
+                            (i) => i.remaining[0] !== undefined
                         );
                         this.setState({ allABlanks: t });
 
@@ -238,7 +258,7 @@ export default class ReportTurnoverT extends Component {
                                 this.set
 
                          */
-/*
+                        /*
                         axios
                             .get(apiLinks.USED + '/byDate', {
                                 params: { start, end }
@@ -251,7 +271,6 @@ export default class ReportTurnoverT extends Component {
  */
 
                         this.generateTotals();
-
                     }}
                 >
                     Enter Dates
@@ -261,16 +280,14 @@ export default class ReportTurnoverT extends Component {
 
                 <button onClick={this.toPDF}>Download PDF</button>
 
-
                 <h4>Received Blanks</h4>
-                <Table striped id = "recieved" className="mt-4">
+                <Table striped id="recieved" className="mt-4">
                     <thead>
                         <tr>
                             <th>Batch</th>
                             <th>Date</th>
                             <th>Batch Quantity</th>
                             <th>Total Amount Recieved: {this.state.total1}</th>
-
                         </tr>
                     </thead>
                     <tbody>
@@ -280,19 +297,17 @@ export default class ReportTurnoverT extends Component {
                                     {row(
                                         batchValues,
                                         date.substring(0, 10),
-                                        amount,
+                                        amount
                                     )}
                                     <td></td>
                                 </Fragment>
                             )
                         )}
-
                     </tbody>
-
                 </Table>
 
                 <h4>Assigned Received Blanks</h4>
-                <Table striped id ="assignedR" className="mt-4">
+                <Table striped id="assignedR" className="mt-4">
                     <thead>
                         <tr>
                             <th>New Blanks Assigned</th>
@@ -302,18 +317,17 @@ export default class ReportTurnoverT extends Component {
                     </thead>
                     <tbody>
                         {this.state.aBlanks.map(
-                            ({ batchValues, advisorCode,amount }) => (
+                            ({ batchValues, advisorCode, amount }) => (
                                 <Fragment>
                                     {row(batchValues, advisorCode, amount)}
                                 </Fragment>
                             )
                         )}
                     </tbody>
-
                 </Table>
 
                 <h4>Assigned Blanks</h4>
-                <Table striped id ="assignedp">
+                <Table striped id="assignedp">
                     <thead>
                         <tr>
                             <th>Assigned Blanks</th>
@@ -331,11 +345,10 @@ export default class ReportTurnoverT extends Component {
                             )
                         )}
                     </tbody>
-
                 </Table>
 
                 <h4>Used Blanks</h4>
-                <Table striped id = "used" className="mt-4">
+                <Table striped id="used" className="mt-4">
                     <thead>
                         <tr>
                             <th>Used Blanks</th>
@@ -348,12 +361,10 @@ export default class ReportTurnoverT extends Component {
                             <Fragment>{row(batchValues, amount)}</Fragment>
                         ))}
                     </tbody>
-
-
                 </Table>
 
                 <h4>All Available Blanks</h4>
-                <Table striped id ="available" className="mt-4">
+                <Table striped id="available" className="mt-4">
                     <thead>
                         <tr>
                             <th>Available Batches of Blanks </th>
@@ -370,7 +381,7 @@ export default class ReportTurnoverT extends Component {
                                             <Fragment>
                                                 {row(
                                                     sub.start + '-' + sub.end,
-                                                    1+(sub.end - sub.start)
+                                                    1 + (sub.end - sub.start)
                                                 )}
                                             </Fragment>
                                         );
@@ -379,12 +390,10 @@ export default class ReportTurnoverT extends Component {
                             );
                         })}
                     </tbody>
-
-
                 </Table>
 
                 <h4>All Assigned Blanks </h4>
-                <Table striped id ="assignedA" className="mt-4">
+                <Table striped id="assignedA" className="mt-4">
                     <thead>
                         <tr>
                             <th>Advisor Code</th>
@@ -394,21 +403,25 @@ export default class ReportTurnoverT extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                    {this.state.allABlanks.map(({ _id, remaining, advisorCode }) => {
-                        return (
-                                        <Fragment>
-                                            {row(
-                                                advisorCode,
-                                                remaining[0] +"-"+ remaining[(remaining.length)-1],
-                                                (remaining[(remaining.length)-1] -remaining[0]) +1
-                                            )}
-                                        </Fragment>
-                                    );
-                                })}
+                        {this.state.allABlanks.map(
+                            ({ _id, remaining, advisorCode }) => {
+                                return (
+                                    <Fragment>
+                                        {row(
+                                            advisorCode,
+                                            remaining[0] +
+                                                '-' +
+                                                remaining[remaining.length - 1],
+                                            remaining[remaining.length - 1] -
+                                                remaining[0] +
+                                                1
+                                        )}
+                                    </Fragment>
+                                );
+                            }
+                        )}
                     </tbody>
-
                 </Table>
-
             </Container>
         );
     }

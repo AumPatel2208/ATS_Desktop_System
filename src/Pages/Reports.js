@@ -6,8 +6,8 @@ import ReportTableI from '../Components/ReportTableI';
 import ReportTurnoverT from '../Components/ReportTurnoverT';
 import ReportTableG from '../Components/ReportTableG';
 import ReportTableGRate from '../Components/ReportTableGRate';
-import {NavItem} from "reactstrap";
-import ReportTableGD from "../Components/ReportTableGD";
+import { NavItem } from 'reactstrap';
+import ReportTableGD from '../Components/ReportTableGD';
 
 // let apiLinks = require('../api/config.json');
 
@@ -41,21 +41,23 @@ export default function Reports(props) {
         </Container>
     );
     const advisor = (
-        <Container><ReportTableI></ReportTableI></Container>
+        <Container>
+            <ReportTableI></ReportTableI>
+        </Container>
     );
     const admin = (
-        <Container><ReportTurnoverT></ReportTurnoverT></Container>
+        <Container>
+            <ReportTurnoverT></ReportTurnoverT>
+        </Container>
     );
 
     const officeManager = (
         <Container>
-            <h2>Generate Reports</h2>
-            <br></br>
             <div className="Reports"></div>
             <Form>
                 <FormGroup controlId="tableType" bssize="large">
                     <Dropdown
-                        onSelect={key => {
+                        onSelect={(key) => {
                             setTableType(key);
                             console.log(key);
                             var temp = Math.floor(
@@ -70,8 +72,7 @@ export default function Reports(props) {
                                 setTableCode('C');
                             } else if (key === 'Ticket Turnover') {
                                 setTableCode('D');
-                            }
-                            else if (key === 'Global Domestic') {
+                            } else if (key === 'Global Domestic') {
                                 setTableCode('E');
                             }
                             reportHandler();
@@ -100,17 +101,10 @@ export default function Reports(props) {
                         </Dropdown.Menu>
                     </Dropdown>
                 </FormGroup>
-                <Fragment>{reportHandler()}</Fragment>
             </Form>
+            <Fragment>{reportHandler()}</Fragment>
         </Container>
-
     );
-
-
-
-
-
-
 
     function reportHandler() {
         if (tableCode === 'A') {
@@ -121,10 +115,9 @@ export default function Reports(props) {
             return <Fragment>{globalR}</Fragment>;
         } else if (tableCode === 'D') {
             return <Fragment>{blanks}</Fragment>;
-        }else if (tableCode === 'E') {
+        } else if (tableCode === 'E') {
             return <Fragment>{globalRD}</Fragment>;
-        }
-        else {
+        } else {
             return 'Please Select A Report Type';
         }
     }
@@ -133,25 +126,18 @@ export default function Reports(props) {
         var role;
         {
             props.staff !== undefined
-                ? role = `${props.staff.staffType}`
-                : role = "not working"
+                ? (role = `${props.staff.staffType}`)
+                : (role = 'not working');
         }
-        if (role === "OfficeManager") {
-            return <Fragment>{officeManager}</Fragment>
-        }
-        else if (role === "SystemAdministrator") {
-            return <Fragment>{admin}</Fragment>
+        if (role === 'OfficeManager') {
+            return <Fragment>{officeManager}</Fragment>;
+        } else if (role === 'SystemAdministrator') {
+            return <Fragment>{admin}</Fragment>;
         } else {
-            return <Fragment>
-                {advisor}
-               </Fragment>
+            return <Fragment>{advisor}</Fragment>;
         }
     }
 
-
     //add in handling here to determine the form that shows up
-    return (
-            <Fragment>{displayHandler()}</Fragment>
-    );
-
+    return <Fragment>{displayHandler()}</Fragment>;
 }

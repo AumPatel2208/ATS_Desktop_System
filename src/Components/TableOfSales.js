@@ -263,6 +263,9 @@ class TableOfSales extends Component {
 
         return (
             <Container>
+                <h1>
+                    <strong>Sales</strong>
+                </h1>
                 <Form onSubmit={this.onFakeSubmit}>
                     <FormGroup controlId="filterCondition" bssize="large">
                         <FormLabel>Filter Condition</FormLabel>

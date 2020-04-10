@@ -195,7 +195,9 @@ export default class Discounts extends Component {
 
         return (
             <Container>
-                <h2>Add New Discount</h2>
+                <h2>
+                    <strong>Add New Discount</strong>
+                </h2>
 
                 <FormLabel>Discount Name</FormLabel>
                 <FormControl
@@ -262,6 +264,7 @@ export default class Discounts extends Component {
                         this.setState({ b3v: e.target.value });
                     }}
                 />
+                <p></p>
                 <Button
                     bssize="medium"
                     variant="outline-danger"

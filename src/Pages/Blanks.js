@@ -16,7 +16,7 @@ import AddBlanks from '../Components/AddBlanks';
 import AssignBlanks from '../Components/AssignBlanks';
 import { useStoreState } from 'pullstate';
 import { UserStore } from '../store/UserStore';
-import FindBlank from "../Components/FindBlank";
+import FindBlank from '../Components/FindBlank';
 let apiLinks = require('../api/config.json');
 
 export default function Blanks(props) {
@@ -28,6 +28,10 @@ export default function Blanks(props) {
     );
     const admin = (
         <Container>
+            <h1>
+                <strong>Blanks</strong>
+            </h1>
+            <br />
             <AddBlanks></AddBlanks>
             <br />
             <FindBlank></FindBlank>
@@ -35,11 +39,12 @@ export default function Blanks(props) {
     );
 
     function displayHandler() {
-
         var ad;
-        {props.staff !== undefined
-            ? ad =`${props.staff.staffType}`
-            : ad = "undefined"}
+        {
+            props.staff !== undefined
+                ? (ad = `${props.staff.staffType}`)
+                : (ad = 'undefined');
+        }
 
         if (ad === 'SystemAdministrator') {
             return <Fragment>{admin}</Fragment>;

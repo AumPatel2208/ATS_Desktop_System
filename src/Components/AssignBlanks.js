@@ -61,6 +61,11 @@ class AssignBlanks extends Component {
 
         return (
             <Container>
+                <h1>
+                    <strong>Blanks</strong>
+                </h1>
+                <br></br>
+                <br></br>
                 <h2>
                     <strong>Assign Blanks</strong>
                 </h2>

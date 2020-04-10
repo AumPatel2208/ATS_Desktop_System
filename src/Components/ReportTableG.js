@@ -1,15 +1,10 @@
 import React, { Component, Fragment } from 'react';
-import { Container, Table, Button } from 'reactstrap';
+import { Table } from 'reactstrap';
+import { Container, Button } from 'react-bootstrap';
 import axios from 'axios';
-import {
-    Form,
-    FormGroup,
-    Dropdown,
-    FormControl,
-    FormLabel
-} from 'react-bootstrap';
+import { Form, FormGroup, FormLabel } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
-import jsPDF from "jspdf";
+import jsPDF from 'jspdf';
 
 const _ = require('lodash'); //Library to Change Cases of things
 
@@ -25,21 +20,22 @@ export default class ReportTableG extends Component {
         summedValues: [],
         dict: {},
         startDate: new Date(),
-        endDate: new Date()
+        endDate: new Date(),
     };
 
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
         axios
             .get(apiLinks.SALES)
-            .then(res => {
+            .then((res) => {
                 const sales = res.data;
                 this.setState({ sales });
-                const fl = this.state.sales.filter(i => i.saleType == "Interline");
-                this.setState({sales: fl});
-
+                const fl = this.state.sales.filter(
+                    (i) => i.saleType == 'Interline'
+                );
+                this.setState({ sales: fl });
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
     }
 
     onOpenClick(e, _id) {
@@ -48,13 +44,12 @@ export default class ReportTableG extends Component {
 
     toPDF() {
         var pdf = new jsPDF('l', 'pt', 'A4');
-        var source = document.getElementById("export");
-        pdf.text( "Global Report By Advisor", 50, 40);
-        pdf.autoTable({html: '#export', startY: 60});
-        pdf.autoTable({html: '#exportB2'});
+        var source = document.getElementById('export');
+        pdf.text('Global Report By Advisor', 50, 40);
+        pdf.autoTable({ html: '#export', startY: 60 });
+        pdf.autoTable({ html: '#exportB2' });
 
-        pdf.save("GlobalAdvisor.pdf")
-
+        pdf.save('GlobalAdvisor.pdf');
     }
     aggregate2(value) {
         let x = 0;
@@ -75,44 +70,43 @@ export default class ReportTableG extends Component {
                 x += y;
             }
             return x;
-        }else if (value === 4) {
+        } else if (value === 4) {
             for (var i = 0; i < this.state.summedValues.length; i++) {
                 let y = parseFloat(this.state.summedValues[i].taxo);
                 x += y;
             }
             return x;
-        }else if (value === 5) {
+        } else if (value === 5) {
             for (var i = 0; i < this.state.summedValues.length; i++) {
                 let y = parseFloat(this.state.summedValues[i].cash);
                 x += y;
             }
             return x;
-        }
-        else if (value === 6) {
+        } else if (value === 6) {
             for (var i = 0; i < this.state.summedValues.length; i++) {
                 let y = parseFloat(this.state.summedValues[i].creditUSD);
                 x += y;
             }
             return x;
-        }else if (value === 7) {
+        } else if (value === 7) {
             for (var i = 0; i < this.state.summedValues.length; i++) {
                 let y = parseFloat(this.state.summedValues[i].credit);
                 x += y;
             }
             return x;
-        }else if (value === 8) {
+        } else if (value === 8) {
             for (var i = 0; i < this.state.summedValues.length; i++) {
                 let y = parseFloat(this.state.summedValues[i].c15);
                 x += y;
             }
             return x;
-        }else if (value === 9) {
+        } else if (value === 9) {
             for (var i = 0; i < this.state.summedValues.length; i++) {
                 let y = parseFloat(this.state.summedValues[i].c10);
                 x += y;
             }
             return x;
-        }else if (value === 10) {
+        } else if (value === 10) {
             for (var i = 0; i < this.state.summedValues.length; i++) {
                 let y = parseFloat(this.state.summedValues[i].c9);
                 x += y;
@@ -127,7 +121,6 @@ export default class ReportTableG extends Component {
         let end = new Date(this.state.endDate);
         start.setHours(0, 0, 0, 0);
         end.setHours(0, 0, 0, 0);
-
 
         var x = 0,
             y = 0;
@@ -150,7 +143,7 @@ export default class ReportTableG extends Component {
                     total: 0,
                     fare2: 0,
                     taxl: 0,
-                    taxo:0,
+                    taxo: 0,
                     creditUSD: 0,
                     c9: 0,
                     c10: 0,
@@ -160,16 +153,17 @@ export default class ReportTableG extends Component {
             }
             if (this.state.sales[x].paymentMethod === 'CreditCard') {
                 this.state.summedValues[y].credit += this.state.sales[x].fare;
-                this.state.summedValues[y].creditUSD += (this.state.sales[x].fare * this.state.sales[x].USDExchangeRate);
-
+                this.state.summedValues[y].creditUSD +=
+                    this.state.sales[x].fare *
+                    this.state.sales[x].USDExchangeRate;
             } else if (this.state.sales[x].paymentMethod === 'Cash') {
                 this.state.summedValues[y].cash += this.state.sales[x].fare;
             }
             if (this.state.sales[x].commissionRate === '9') {
                 this.state.summedValues[y].c9 += this.state.sales[x].fare;
-            }else if (this.state.sales[x].commissionRate === '10') {
+            } else if (this.state.sales[x].commissionRate === '10') {
                 this.state.summedValues[y].c10 += this.state.sales[x].fare;
-            }else if (this.state.sales[x].commissionRate === '15') {
+            } else if (this.state.sales[x].commissionRate === '15') {
                 this.state.summedValues[y].c15 += this.state.sales[x].fare;
             }
 
@@ -178,8 +172,8 @@ export default class ReportTableG extends Component {
 
             this.state.summedValues[y].saleNum += 1;
             this.state.summedValues[y].total += this.state.sales[x].fare;
-            this.state.summedValues[y].fare2 += (this.state.sales[x].fare * this.state.sales[x].USDExchangeRate);
-
+            this.state.summedValues[y].fare2 +=
+                this.state.sales[x].fare * this.state.sales[x].USDExchangeRate;
         }
     }
 
@@ -220,9 +214,9 @@ export default class ReportTableG extends Component {
                 <FormLabel>From: </FormLabel>
                 <DatePicker
                     selected={this.state.startDate}
-                    onChange={date => {
+                    onChange={(date) => {
                         this.setState({
-                            startDate: date
+                            startDate: date,
                         });
                     }}
                 />
@@ -230,9 +224,9 @@ export default class ReportTableG extends Component {
                 <FormLabel>To: </FormLabel>
                 <DatePicker
                     selected={this.state.endDate}
-                    onChange={date => {
+                    onChange={(date) => {
                         this.setState({
-                            endDate: date
+                            endDate: date,
                         });
                     }}
                 />
@@ -243,9 +237,8 @@ export default class ReportTableG extends Component {
                             bssize="medium"
                             variant="outline-danger"
                             onClick={() => {
-
                                 this.setState({
-                                    sales: this.aggregateSales()
+                                    sales: this.aggregateSales(),
                                 });
                             }}
                         >
@@ -254,10 +247,9 @@ export default class ReportTableG extends Component {
                         {''}
 
                         <button onClick={this.toPDF}>Download PDF</button>
-
                     </FormGroup>
                 </Form>
-                <Table striped id = "export" className="mt-4">
+                <Table striped id="export" className="mt-4">
                     <thead>
                         <tr>
                             <th>Advisor Code</th>
@@ -283,13 +275,14 @@ export default class ReportTableG extends Component {
                                 saleNum,
                                 credit,
                                 cash,
-                                total,c9,c10,c15,
+                                total,
+                                c9,
+                                c10,
+                                c15,
                                 fare2,
                                 taxl,
                                 taxo,
                                 creditUSD,
-
-
                             }) => (
                                 <Fragment key={advisorCode}>
                                     {row(
@@ -298,15 +291,19 @@ export default class ReportTableG extends Component {
                                         total,
                                         taxl,
                                         taxo,
-                                        parseFloat(taxo)+parseFloat(taxl)+parseFloat(total),
+                                        parseFloat(taxo) +
+                                            parseFloat(taxl) +
+                                            parseFloat(total),
                                         cash,
                                         creditUSD,
                                         credit,
-                                        parseFloat(taxo)+parseFloat(taxl)+parseFloat(total),
+                                        parseFloat(taxo) +
+                                            parseFloat(taxl) +
+                                            parseFloat(total),
                                         c15,
                                         c10,
                                         c9,
-                                        parseFloat(taxo)+parseFloat(taxl)
+                                        parseFloat(taxo) + parseFloat(taxl)
                                     )}
                                 </Fragment>
                             )
@@ -316,54 +313,86 @@ export default class ReportTableG extends Component {
 
                 <Table grid className="mt-4" id="exportB2">
                     <thead>
-                    <tr>
-                        <th>Sales</th>
-                        <th>Fare(local)</th>
-                        <th>Local Taxes</th>
-                        <th>Other Taxes</th>
-                        <th>Document Total</th>
+                        <tr>
+                            <th>Sales</th>
+                            <th>Fare(local)</th>
+                            <th>Local Taxes</th>
+                            <th>Other Taxes</th>
+                            <th>Document Total</th>
 
-                        <th>Cash</th>
-                        <th>Credit(USD)</th>
-                        <th>Credit(local)</th>
-                        <th>Total Paid</th>
+                            <th>Cash</th>
+                            <th>Credit(USD)</th>
+                            <th>Credit(local)</th>
+                            <th>Total Paid</th>
 
-                        <th>Commission 15%</th>
-                        <th>Commission 10%</th>
-                        <th>Commission 9%</th>
+                            <th>Commission 15%</th>
+                            <th>Commission 10%</th>
+                            <th>Commission 9%</th>
 
-                        <th>Non-Assessable Amounts</th>
-                        <th>Commission Amounts</th>
-                        <th>Net Amount for Debit</th>
-                        <th>Net Amount for Remittance</th>
-                    </tr>
+                            <th>Non-Assessable Amounts</th>
+                            <th>Commission Amounts</th>
+                            <th>Net Amount for Debit</th>
+                            <th>Net Amount for Remittance</th>
+                        </tr>
                     </thead>
 
                     <tbody>
-                    <tr >
-                        <td> {this.aggregate2(1)}</td>
-                        <td> {this.aggregate2(2)}</td>
-                        <td> {this.aggregate2(3)}</td>
-                        <td> {this.aggregate2(4)}</td>
-                        <td> {this.aggregate2(2)+this.aggregate2(3)+this.aggregate2(4)}</td>
+                        <tr>
+                            <td> {this.aggregate2(1)}</td>
+                            <td> {this.aggregate2(2)}</td>
+                            <td> {this.aggregate2(3)}</td>
+                            <td> {this.aggregate2(4)}</td>
+                            <td>
+                                {' '}
+                                {this.aggregate2(2) +
+                                    this.aggregate2(3) +
+                                    this.aggregate2(4)}
+                            </td>
 
-                        <td> {this.aggregate2(5)}</td>
-                        <td> {this.aggregate2(6)}</td>
-                        <td> {this.aggregate2(7)}</td>
-                        <td> {this.aggregate2(2)+this.aggregate2(3)+this.aggregate2(4)}</td>
+                            <td> {this.aggregate2(5)}</td>
+                            <td> {this.aggregate2(6)}</td>
+                            <td> {this.aggregate2(7)}</td>
+                            <td>
+                                {' '}
+                                {this.aggregate2(2) +
+                                    this.aggregate2(3) +
+                                    this.aggregate2(4)}
+                            </td>
 
-                        <td> {this.aggregate2(8)}</td>
-                        <td>{this.aggregate2(9)}</td>
-                        <td>{this.aggregate2(10)}</td>
+                            <td> {this.aggregate2(8)}</td>
+                            <td>{this.aggregate2(9)}</td>
+                            <td>{this.aggregate2(10)}</td>
 
-                        <td>{this.aggregate2(3)+this.aggregate2(4)}</td>
-                        <td> {(this.aggregate2(8)*.15)+(this.aggregate2(9)*.1)+(this.aggregate2(10)*.09)}</td>
-                        <td> {(this.aggregate2(8)+this.aggregate2(9)+this.aggregate2(10)) - ((this.aggregate2(8)*.15)+(this.aggregate2(9)*.1)+(this.aggregate2(10)*.09))}</td>
-                        <td> {((this.aggregate2(8)+this.aggregate2(9)+this.aggregate2(10)+this.aggregate2(3)+this.aggregate2(4)) - ((this.aggregate2(8)*.15)+(this.aggregate2(9)*.1)+(this.aggregate2(10)*.09)))}</td>
-                    </tr>
+                            <td>{this.aggregate2(3) + this.aggregate2(4)}</td>
+                            <td>
+                                {' '}
+                                {this.aggregate2(8) * 0.15 +
+                                    this.aggregate2(9) * 0.1 +
+                                    this.aggregate2(10) * 0.09}
+                            </td>
+                            <td>
+                                {' '}
+                                {this.aggregate2(8) +
+                                    this.aggregate2(9) +
+                                    this.aggregate2(10) -
+                                    (this.aggregate2(8) * 0.15 +
+                                        this.aggregate2(9) * 0.1 +
+                                        this.aggregate2(10) * 0.09)}
+                            </td>
+                            <td>
+                                {' '}
+                                {this.aggregate2(8) +
+                                    this.aggregate2(9) +
+                                    this.aggregate2(10) +
+                                    this.aggregate2(3) +
+                                    this.aggregate2(4) -
+                                    (this.aggregate2(8) * 0.15 +
+                                        this.aggregate2(9) * 0.1 +
+                                        this.aggregate2(10) * 0.09)}
+                            </td>
+                        </tr>
                     </tbody>
                 </Table>
-
             </Container>
         );
     }

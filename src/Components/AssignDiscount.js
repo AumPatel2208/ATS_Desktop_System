@@ -62,8 +62,8 @@ export default class Discounts extends Component {
         const f = this.state.cName.split(' ');
         //filtering first name
         let i4;
-        for (var i=0; i < this.state.customers.length; i++){
-            if (this.state.customers[i].firstName == f[0]){
+        for (var i = 0; i < this.state.customers.length; i++) {
+            if (this.state.customers[i].firstName == f[0]) {
                 i4 = i;
                 break;
             }
@@ -71,16 +71,14 @@ export default class Discounts extends Component {
 
         //getting the discount to assign the correct value
         let i3;
-        for (var i2=0; i2 < this.state.discounts.length; i2++){
-            if (this.state.discounts[i2].name == this.state.dName){
+        for (var i2 = 0; i2 < this.state.discounts.length; i2++) {
+            if (this.state.discounts[i2].name == this.state.dName) {
                 i3 = i2;
                 break;
             }
         }
 
-
         alert(this.state.discounts.length);
-
 
         let x = 0;
         if (this.state.dType === 'Fixed') {
@@ -129,7 +127,9 @@ export default class Discounts extends Component {
     render() {
         return (
             <Container>
-                <h2>Assign Discount</h2>
+                <h2>
+                    <strong>Assign Discount</strong>
+                </h2>
 
                 <FormLabel>Customer Name</FormLabel>
                 <FormControl
@@ -149,7 +149,7 @@ export default class Discounts extends Component {
                         this.setState({ dName: e.target.value });
                     }}
                 />
-                <br></br>
+                <p></p>
                 <Dropdown
                     onSelect={(key) => {
                         this.setState({ dType: key });
@@ -165,7 +165,7 @@ export default class Discounts extends Component {
                         </Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
-                <br></br>
+                <p></p>
                 <Button
                     bssize="medium"
                     variant="outline-danger"
@@ -176,6 +176,7 @@ export default class Discounts extends Component {
                 >
                     Assign Discount
                 </Button>
+                <br></br>
             </Container>
         );
     }

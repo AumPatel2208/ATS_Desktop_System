@@ -139,7 +139,10 @@ class App extends React.Component {
                                     'OfficeManager' ? (
                                     <Notifications sales={this.state.sales} />
                                 ) : null}
-                                <Home />
+                                <Home
+                                    isAuthenticated={this.state.isAuthenticated}
+                                    staff={this.state.staff}
+                                />
                             </div>
                         )}
                     />

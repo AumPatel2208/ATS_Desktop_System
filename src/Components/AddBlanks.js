@@ -1,4 +1,4 @@
-import {Container, Table} from 'reactstrap';
+import { Container, Table } from 'reactstrap';
 import { Button, FormControl, FormGroup, FormLabel } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import React, { Component, Fragment } from 'react';
@@ -12,40 +12,37 @@ class AddBlanks extends Component {
         batchValues: '',
         enteredDate: new Date(),
         blanks: [],
-        myID: "",
-        toDelete: "",
-        find: "",
+        myID: '',
+        toDelete: '',
+        find: '',
         blanksf: [],
         blanksu: [],
         blanksa: [],
-        result: "",
-        findCode:""
+        result: '',
+        findCode: '',
     };
 
     //runs when component mounts, use to gets the data from db
 
-
     componentDidMount() {
-    this.setState({find: ""});
+        this.setState({ find: '' });
 
-        axios.get(apiLinks.BLANKS).then(res => {
+        axios.get(apiLinks.BLANKS).then((res) => {
             const blanks = res.data;
-            this.setState({blanks});
-            this.setState({blanksf: blanks})
-
+            this.setState({ blanks });
+            this.setState({ blanksf: blanks });
         });
 
-        axios.get(apiLinks.ASSIGN).then(res => {
+        axios.get(apiLinks.ASSIGN).then((res) => {
             const blanksa = res.data;
-            this.setState({blanksa});
+            this.setState({ blanksa });
         });
 
-        axios.get(apiLinks.USED).then(res => {
+        axios.get(apiLinks.USED).then((res) => {
             const blanksu = res.data;
-            this.setState({blanksu});
+            this.setState({ blanksu });
         });
     }
-
 
     async handleDelete(e) {
         let zzz = this.state.toDelete.split('-');
@@ -55,33 +52,32 @@ class AddBlanks extends Component {
             z = parseInt(zzz[0]);
             z2 = parseInt(zzz[1]);
 
+            const bl = this.state.blanks.filter((i) => i.batchStart <= z);
+            this.setState({ blanks: bl });
 
-            const bl = this.state.blanks.filter(
-                i => i.batchStart <= z
-            );
-            this.setState({blanks: bl});
-
-            const l = this.state.blanks.filter(
-                i => i.batchEnd >= z2
-            );
-            this.setState({blanks: l});
+            const l = this.state.blanks.filter((i) => i.batchEnd >= z2);
+            this.setState({ blanks: l });
         } else {
             z = parseInt(this.state.toDelete);
-            z2 = parseInt(this.state.toDelete)
-
+            z2 = parseInt(this.state.toDelete);
         }
 
         let myID = this.state.blanks[0]._id;
 
         let x = this.state.blanks[0].remaining;
         for (var i = 0; i < this.state.blanks[0].remaining.length; i++) {
-            if (this.state.blanks[0].remaining[i].start <= z && this.state.blanks[0].remaining[i].end >= z2) {
+            if (
+                this.state.blanks[0].remaining[i].start <= z &&
+                this.state.blanks[0].remaining[i].end >= z2
+            ) {
                 break;
             }
         }
 
         if (x[i] === undefined) {
-            alert("This value does not exist in available blanks and cannot be deleted");
+            alert(
+                'This value does not exist in available blanks and cannot be deleted'
+            );
             return;
         }
 
@@ -92,16 +88,16 @@ class AddBlanks extends Component {
 
         if (z !== st) {
             if (z - 1 === st) {
-                x.push({start: st, end: st});
+                x.push({ start: st, end: st });
             } else {
-                x.push({start: st, end: z - 1});
+                x.push({ start: st, end: z - 1 });
             }
         }
         if (z2 !== en) {
             if (z2 + 1 === en) {
-                x.push({start: en, end: en});
+                x.push({ start: en, end: en });
             } else {
-                x.push({start: z2 + 1, end: en});
+                x.push({ start: z2 + 1, end: en });
             }
         }
 
@@ -115,16 +111,15 @@ class AddBlanks extends Component {
             date: this.state.blanks[0].date,
             batchType: this.state.blanks[0].batchType,
             amount: this.state.blanks[0].amount,
-            remaining: x
+            remaining: x,
         };
 
         axios
             .put(apiLinks.BLANKS + '/' + myID, updatedBlank)
-            .catch(err => alert('Error code: ' + err));
+            .catch((err) => alert('Error code: ' + err));
 
-        alert("Deleted: " + this.state.toDelete);
+        alert('Deleted: ' + this.state.toDelete);
     }
-
 
     async handleSubmit(event) {
         event.preventDefault();
@@ -135,30 +130,32 @@ class AddBlanks extends Component {
 
         const newblanks = {
             batchValues: this.state.batchValues,
-            date: dt
+            date: dt,
         };
         await axios
             .post(apiLinks.BLANKS, newblanks)
-            .then(response => {
+            .then((response) => {
                 console.log(response);
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
         this.props.history.push('./blanks');
 
-        alert("Added: " + this.state.batchValues);
+        alert('Added: ' + this.state.batchValues);
     }
 
     render() {
         return (
             <Container>
-                <h3>Add New Blanks</h3>
+                <h3>
+                    <strong>Add New Blanks</strong>
+                </h3>
                 <FormGroup controlId="username" bssize="large">
                     <FormLabel>Batch</FormLabel>
                     <FormControl
                         autoFocus
                         type="batchValues"
                         value={this.state.batchValues}
-                        onChange={e =>
+                        onChange={(e) =>
                             this.setState({ batchValues: e.target.value })
                         }
                     />
@@ -167,52 +164,50 @@ class AddBlanks extends Component {
                     <FormLabel>Receipt Date:</FormLabel>
                     <DatePicker
                         selected={this.state.enteredDate}
-                        onChange={date => {
+                        onChange={(date) => {
                             this.setState({
-                                enteredDate: date
+                                enteredDate: date,
                             });
                         }}
                     />
                     <br />
                 </FormGroup>
                 <Button
-                    onClick={e => {
+                    onClick={(e) => {
                         this.handleSubmit(e);
                     }}
                 >
                     Add Blanks
                 </Button>
 
-<br/>
-<br/>
-<br/>
+                <br />
+                <br />
+                <br />
 
-                <h3>Delete Blanks</h3>
+                <h3>
+                    <strong>Delete Blanks</strong>
+                </h3>
                 <FormGroup controlId="username" bssize="large">
                     <FormLabel>Batch</FormLabel>
                     <FormControl
                         autoFocus
                         type="batchValues"
                         value={this.state.toDelete}
-                        onChange={e =>
+                        onChange={(e) =>
                             this.setState({ toDelete: e.target.value })
                         }
                     />
                 </FormGroup>
 
                 <Button
-                    onClick={e => {
+                    onClick={(e) => {
                         this.handleDelete(e);
                     }}
                 >
                     Delete Blanks
                 </Button>
-<br/>
-<br/>
-
-
-
-
+                <br />
+                <br />
             </Container>
         );
     }

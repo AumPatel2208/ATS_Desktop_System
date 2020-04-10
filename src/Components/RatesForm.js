@@ -1,11 +1,11 @@
-import { Button, Container, Table } from 'reactstrap';
+import { Button, Container, Table } from 'react-bootstrap';
 import React, { Component, Fragment } from 'react';
 import {
     Dropdown,
     Form,
     FormControl,
     FormGroup,
-    FormLabel
+    FormLabel,
 } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import axios from 'axios';
@@ -17,14 +17,14 @@ export default class RatesForm extends Component {
         rates: [],
         dateE: new Date(),
         eRate: '',
-        code: ''
+        code: '',
     };
 
     handleSubmit(event) {
         const newRate = {
             currencyCode: this.state.code,
             date: Date.now(),
-            toUSDRate: this.state.eRate
+            toUSDRate: this.state.eRate,
         };
 
         event.preventDefault();
@@ -32,10 +32,10 @@ export default class RatesForm extends Component {
 
         axios
             .post(apiLinks.EXCHANGERATES, newRate)
-            .then(response => {
+            .then((response) => {
                 console.log(response);
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
     }
 
     render() {
@@ -61,15 +61,19 @@ export default class RatesForm extends Component {
 
         return (
             <Container>
+                <br></br>
+                <h2>
+                    <strong>Create Exchange Rate</strong>
+                </h2>
                 <Form>
                     <FormLabel>Enter Rate</FormLabel>
                     <FormControl
                         autoFocus
                         type="string"
                         value={this.state.eRate}
-                        onChange={e => {
+                        onChange={(e) => {
                             this.setState({
-                                eRate: e.target.value
+                                eRate: e.target.value,
                             });
                         }}
                     />
@@ -78,38 +82,42 @@ export default class RatesForm extends Component {
                         autoFocus
                         type="string"
                         value={this.state.code}
-                        onChange={e => {
+                        onChange={(e) => {
                             this.setState({
-                                code: e.target.value
+                                code: e.target.value,
                             });
                         }}
                     />
+                    <br></br>
                     <Button
                         bssize="medium"
-                        variant="outline-danger"
-                        onClick={e => {
+                        variant="outline-info"
+                        onClick={(e) => {
                             this.handleSubmit(e);
                         }}
                         block
                     >
                         Save Rate
                     </Button>
-
                     <br></br>
-
+                    <br></br>
+                    <br></br>
+                    <h2>
+                        <strong>Search Exchange Rates</strong>
+                    </h2>
+                    <br></br>
                     <FormLabel>Search For Rates By Date </FormLabel>
                     <DatePicker
                         //selected = {this.state.date}
                         //  onSelect= { e=> this.setState({date: e.target.value})}
                         //onChange={ e=> this.setState({date: e.target.value})}
                         selected={this.state.dateE}
-                        onChange={date => {
+                        onChange={(date) => {
                             this.setState({
-                                dateE: date
+                                dateE: date,
                             });
                         }}
-                    ></DatePicker>
-
+                    ></DatePicker>{' '}
                     <Button
                         bssize="medium"
                         variant="outline-danger"
@@ -118,19 +126,17 @@ export default class RatesForm extends Component {
                             //(apiLinks.EXCHANGERATES + '/byDate', {params: {start}})
                             axios
                                 .get(apiLinks.EXCHANGERATES + '/byDate', {
-                                    params: { start }
+                                    params: { start },
                                 })
-                                .then(res => {
+                                .then((res) => {
                                     const rates = res.data;
                                     this.setState({ rates });
                                     console.log(rates);
                                 });
                         }}
-                        block
                     >
                         Search
                     </Button>
-
                     <Table className="mt-4">
                         <thead>
                             <tr>

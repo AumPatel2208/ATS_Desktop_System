@@ -5,7 +5,7 @@ import {
     FormGroup,
     FormControl,
     FormLabel,
-    Dropdown
+    Dropdown,
 } from 'react-bootstrap';
 import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
@@ -20,10 +20,10 @@ function BackupRestore() {
     useEffect(() => {
         axios
             .get(apiLinks.RESTORE)
-            .then(async res => {
+            .then(async (res) => {
                 setBackupFiles(await res.data.listOfFiles);
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
     }, [backupFiles]);
 
     async function handleBackup(e) {
@@ -31,37 +31,37 @@ function BackupRestore() {
         // Headers
         const headersConfig = {
             headers: {
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            },
         };
 
         await axios
             .post(apiLinks.BACKUP, { name: name }, headersConfig)
-            .then(res => {
+            .then((res) => {
                 if (res.status === 200) alert('Backup Successful');
                 else alert('Backup Failed!');
                 window.location.reload(false);
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
 
         await axios
             .get(apiLinks.RESTORE)
-            .then(async res => {
+            .then(async (res) => {
                 setBackupFiles(await res.data.listOfFiles);
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
     }
     function handleRestore(e) {
         e.preventDefault();
         // Headers
         const headersConfig = {
             headers: {
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            },
         };
         axios
             .post(apiLinks.RESTORE, { name: file }, headersConfig)
-            .then(res => {
+            .then((res) => {
                 if (res.status === 200) alert('Restore Successful');
                 else alert('Restore Failed!');
                 window.location.reload(false);
@@ -69,39 +69,41 @@ function BackupRestore() {
     }
     return (
         <Container>
-            <h1>Backup</h1>
+            <br></br>
+            <h2>
+                <strong>Backup</strong>
+            </h2>
+
             <form onSubmit={handleBackup}>
                 <FormGroup controlId="Backup_Name">
                     <FormControl
                         autoFocus
                         type="string"
                         value={name}
-                        onChange={e => setName(e.target.value)}
+                        onChange={(e) => setName(e.target.value)}
                     ></FormControl>
                 </FormGroup>
+                <p></p>
+
                 <Button block bssize="large" type="submit" color="primary">
                     Backup
                 </Button>
             </form>
-            <h1>Restore</h1>
+            <br></br>
+            <br></br>
+            <br></br>
+            <h2>
+                <strong>Restore</strong>
+            </h2>
+            <p></p>
 
             <form onSubmit={handleRestore}>
-                {/* <FormGroup controlId="Restore_Name">
-                    <FormControl
-                        autoFocus
-                        type="string"
-                        value={file}
-                        onChange={e => {
-                            setFile(e.target.value);
-                        }}
-                    ></FormControl>
-                </FormGroup> */}
                 <Autocomplete
                     id="combo-box-customers"
                     options={backupFiles}
-                    getOptionLabel={option => option}
+                    getOptionLabel={(option) => option}
                     style={{ width: 300 }}
-                    renderInput={params => (
+                    renderInput={(params) => (
                         <TextField
                             {...params}
                             label="Backups"
@@ -112,6 +114,8 @@ function BackupRestore() {
                         setFile(value);
                     }}
                 />
+                <br></br>
+
                 <Button block bssize="large" type="submit" color="primary">
                     Restore
                 </Button>

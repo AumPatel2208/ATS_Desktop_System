@@ -318,6 +318,9 @@ class LatePayments extends Component {
 
         return (
             <Container>
+                <h1>
+                    <strong>Late Payments</strong>
+                </h1>
                 <Table className="mt-4">
                     <thead>
                         <tr>

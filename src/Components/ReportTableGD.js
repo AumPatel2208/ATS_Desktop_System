@@ -1,15 +1,16 @@
 import React, { Component, Fragment } from 'react';
-import { Container, Table, Button } from 'reactstrap';
+import { Table } from 'reactstrap';
+import { Container, Button } from 'react-bootstrap';
 import axios from 'axios';
 import {
     Form,
     FormGroup,
     Dropdown,
     FormControl,
-    FormLabel
+    FormLabel,
 } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
-import jsPDF from "jspdf";
+import jsPDF from 'jspdf';
 
 const _ = require('lodash'); //Library to Change Cases of things
 
@@ -25,21 +26,22 @@ export default class ReportTableGD extends Component {
         summedValues: [],
         dict: {},
         startDate: new Date(),
-        endDate: new Date()
+        endDate: new Date(),
     };
 
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
         axios
             .get(apiLinks.SALES)
-            .then(res => {
+            .then((res) => {
                 const sales = res.data;
                 this.setState({ sales });
-                const fl = this.state.sales.filter(i => i.saleType === "Domestic");
-                this.setState({sales: fl});
-
+                const fl = this.state.sales.filter(
+                    (i) => i.saleType === 'Domestic'
+                );
+                this.setState({ sales: fl });
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
     }
 
     onOpenClick(e, _id) {
@@ -48,21 +50,18 @@ export default class ReportTableGD extends Component {
 
     toPDF() {
         var pdf = new jsPDF('l', 'pt', 'A4');
-        var source = document.getElementById("export");
-        pdf.text( "Global Domestic Report", 50, 40);
-        pdf.autoTable({html: '#export', startY: 60});
-        pdf.autoTable({html: '#exportB2'});
-        pdf.save("GlobalDomesticAdvisor.pdf")
-
+        var source = document.getElementById('export');
+        pdf.text('Global Domestic Report', 50, 40);
+        pdf.autoTable({ html: '#export', startY: 60 });
+        pdf.autoTable({ html: '#exportB2' });
+        pdf.save('GlobalDomesticAdvisor.pdf');
     }
-
 
     aggregateSales() {
         let start = new Date(this.state.startDate);
         let end = new Date(this.state.endDate);
         start.setHours(0, 0, 0, 0);
         end.setHours(0, 0, 0, 0);
-
 
         var x = 0,
             y = 0;
@@ -87,27 +86,29 @@ export default class ReportTableGD extends Component {
                     tax: 0,
                     creditUSD: 0,
                     c9: 0,
-                    c5: 0
+                    c5: 0,
                 };
                 y = this.state.summedValues.push(this.state.dict) - 1;
             }
             if (this.state.sales[x].paymentMethod === 'CreditCard') {
                 this.state.summedValues[y].credit += this.state.sales[x].fare;
-                this.state.summedValues[y].creditUSD += (this.state.sales[x].fare * this.state.sales[x].USDExchangeRate);
-
+                this.state.summedValues[y].creditUSD +=
+                    this.state.sales[x].fare *
+                    this.state.sales[x].USDExchangeRate;
             } else if (this.state.sales[x].paymentMethod === 'Cash') {
                 this.state.summedValues[y].cash += this.state.sales[x].fare;
             }
 
             if (this.state.sales[x].commissionRate === '9') {
                 this.state.summedValues[y].c9 += this.state.sales[x].fare;
-            }else if (this.state.sales[x].commissionRate === '5') {
+            } else if (this.state.sales[x].commissionRate === '5') {
                 this.state.summedValues[y].c5 += this.state.sales[x].fare;
             }
             this.state.summedValues[y].tax += this.state.sales[x].otherTax;
             this.state.summedValues[y].saleNum += 1;
             this.state.summedValues[y].total += this.state.sales[x].fare;
-            this.state.summedValues[y].fare2 += (this.state.sales[x].fare * this.state.sales[x].USDExchangeRate);
+            this.state.summedValues[y].fare2 +=
+                this.state.sales[x].fare * this.state.sales[x].USDExchangeRate;
         }
     }
     aggregate2(value) {
@@ -123,14 +124,13 @@ export default class ReportTableGD extends Component {
                 x += y;
             }
             return x;
-        }
-        else if (value === 3) {
+        } else if (value === 3) {
             for (var i = 0; i < this.state.summedValues.length; i++) {
                 let y = parseFloat(this.state.summedValues[i].fare2);
                 x += y;
             }
             return x;
-        }else if (value === 4) {
+        } else if (value === 4) {
             for (var i = 0; i < this.state.summedValues.length; i++) {
                 let y = parseFloat(this.state.summedValues[i].tax);
                 x += y;
@@ -142,29 +142,25 @@ export default class ReportTableGD extends Component {
                 x += y;
             }
             return x;
-        }
-        else if (value === 6) {
+        } else if (value === 6) {
             for (var i = 0; i < this.state.summedValues.length; i++) {
                 let y = parseFloat(this.state.summedValues[i].credit);
                 x += y;
             }
             return x;
-        }
-        else if (value === 7) {
+        } else if (value === 7) {
             for (var i = 0; i < this.state.summedValues.length; i++) {
                 let y = parseFloat(this.state.summedValues[i].creditUSD);
                 x += y;
             }
             return x;
-        }
-        else if (value === 8) {
+        } else if (value === 8) {
             for (var i = 0; i < this.state.summedValues.length; i++) {
                 let y = parseFloat(this.state.summedValues[i].c9);
                 x += y;
             }
             return x;
-        }
-        else if (value === 9) {
+        } else if (value === 9) {
             for (var i = 0; i < this.state.summedValues.length; i++) {
                 let y = parseFloat(this.state.summedValues[i].c5);
                 x += y;
@@ -173,7 +169,6 @@ export default class ReportTableGD extends Component {
         }
         return x;
     }
-
 
     render() {
         const row = (
@@ -212,9 +207,9 @@ export default class ReportTableGD extends Component {
                 <FormLabel>From: </FormLabel>
                 <DatePicker
                     selected={this.state.startDate}
-                    onChange={date => {
+                    onChange={(date) => {
                         this.setState({
-                            startDate: date
+                            startDate: date,
                         });
                     }}
                 />
@@ -222,9 +217,9 @@ export default class ReportTableGD extends Component {
                 <FormLabel>To: </FormLabel>
                 <DatePicker
                     selected={this.state.endDate}
-                    onChange={date => {
+                    onChange={(date) => {
                         this.setState({
-                            endDate: date
+                            endDate: date,
                         });
                     }}
                 />
@@ -236,7 +231,7 @@ export default class ReportTableGD extends Component {
                             variant="outline-danger"
                             onClick={() => {
                                 this.setState({
-                                    sales: this.aggregateSales()
+                                    sales: this.aggregateSales(),
                                 });
                             }}
                         >
@@ -245,99 +240,103 @@ export default class ReportTableGD extends Component {
                         {''}
 
                         <button onClick={this.toPDF}>Download PDF</button>
-
                     </FormGroup>
                 </Form>
-                <Table striped id = "export" className="mt-4">
+                <Table striped id="export" className="mt-4">
                     <thead>
-                    <tr>
-                        <th>Advisor Code</th>
-                        <th>Sales</th>
-                        <th>Fare(local)</th>
-                        <th>Fare(USD)</th>
-                        <th>Taxes</th>
-                        <th>Cash</th>
-                        <th>Credit(USD)</th>
-                        <th>Credit(local)</th>
-                        <th>Total Paid</th>
-                        <th>Commission 9%</th>
-                        <th>Commission 5%</th>
-                        <th>Notes</th>
-                    </tr>
+                        <tr>
+                            <th>Advisor Code</th>
+                            <th>Sales</th>
+                            <th>Fare(local)</th>
+                            <th>Fare(USD)</th>
+                            <th>Taxes</th>
+                            <th>Cash</th>
+                            <th>Credit(USD)</th>
+                            <th>Credit(local)</th>
+                            <th>Total Paid</th>
+                            <th>Commission 9%</th>
+                            <th>Commission 5%</th>
+                            <th>Notes</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {this.state.summedValues.map(
-                        ({
-                             advisorCode,
-                             saleNum,
-                             credit,
-                             cash,
-                             total,
-                            fare2,tax,creditUSD,c9,c5
-
-
-                         }) => (
-                            <Fragment key={advisorCode}>
-                                {row(
-                                    advisorCode,
-                                    saleNum,
-                                    total,
-                                    fare2,
-                                    tax,
-                                    cash,
-                                    creditUSD,
-                                    credit,
-                                    total,
-                                    c9,
-                                    c5
-                                )}
-                            </Fragment>
-                        )
-                    )}
+                        {this.state.summedValues.map(
+                            ({
+                                advisorCode,
+                                saleNum,
+                                credit,
+                                cash,
+                                total,
+                                fare2,
+                                tax,
+                                creditUSD,
+                                c9,
+                                c5,
+                            }) => (
+                                <Fragment key={advisorCode}>
+                                    {row(
+                                        advisorCode,
+                                        saleNum,
+                                        total,
+                                        fare2,
+                                        tax,
+                                        cash,
+                                        creditUSD,
+                                        credit,
+                                        total,
+                                        c9,
+                                        c5
+                                    )}
+                                </Fragment>
+                            )
+                        )}
                     </tbody>
                 </Table>
-
-
-
 
                 <Table grid className="mt-4" id="exportB2">
                     <thead>
-                    <tr>
-                        <th>Sales</th>
-                        <th>Fare(local)</th>
-                        <th>Fare(USD)</th>
-                        <th>Taxes</th>
-                        <th>Cash</th>
-                        <th>Credit(USD)</th>
-                        <th>Credit(local)</th>
-                        <th>Total Paid</th>
-                        <th>Commission 9%</th>
-                        <th>Commission 5%</th>
-                        <th>Total Commission</th>
-                        <th>Net Amount Debit</th>
-
-
-                    </tr>
+                        <tr>
+                            <th>Sales</th>
+                            <th>Fare(local)</th>
+                            <th>Fare(USD)</th>
+                            <th>Taxes</th>
+                            <th>Cash</th>
+                            <th>Credit(USD)</th>
+                            <th>Credit(local)</th>
+                            <th>Total Paid</th>
+                            <th>Commission 9%</th>
+                            <th>Commission 5%</th>
+                            <th>Total Commission</th>
+                            <th>Net Amount Debit</th>
+                        </tr>
                     </thead>
 
                     <tbody>
-                    <tr >
-                        <td> {this.aggregate2(1)}</td>
-                        <td> {this.aggregate2(2)}</td>
-                        <td> {this.aggregate2(3)}</td>
-                        <td> {this.aggregate2(4)}</td>
-                        <td> {this.aggregate2(5)}</td>
-                        <td> {this.aggregate2(7)}</td>
-                        <td> {this.aggregate2(6)}</td>
-                        <td> {this.aggregate2(2)}</td>
-                        <td> {this.aggregate2(8)}</td>
-                        <td> {this.aggregate2(9)}</td>
-                        <td>{(this.aggregate2(8)*.09)+(this.aggregate2(9)*.05)}</td>
-                        <td> {(this.aggregate2(8)+this.aggregate2(9))-((this.aggregate2(8)*.09)+(this.aggregate2(9)*.05))}</td>
-                    </tr>
+                        <tr>
+                            <td> {this.aggregate2(1)}</td>
+                            <td> {this.aggregate2(2)}</td>
+                            <td> {this.aggregate2(3)}</td>
+                            <td> {this.aggregate2(4)}</td>
+                            <td> {this.aggregate2(5)}</td>
+                            <td> {this.aggregate2(7)}</td>
+                            <td> {this.aggregate2(6)}</td>
+                            <td> {this.aggregate2(2)}</td>
+                            <td> {this.aggregate2(8)}</td>
+                            <td> {this.aggregate2(9)}</td>
+                            <td>
+                                {this.aggregate2(8) * 0.09 +
+                                    this.aggregate2(9) * 0.05}
+                            </td>
+                            <td>
+                                {' '}
+                                {this.aggregate2(8) +
+                                    this.aggregate2(9) -
+                                    (this.aggregate2(8) * 0.09 +
+                                        this.aggregate2(9) * 0.05)}
+                            </td>
+                        </tr>
                     </tbody>
                 </Table>
-
             </Container>
         );
     }
