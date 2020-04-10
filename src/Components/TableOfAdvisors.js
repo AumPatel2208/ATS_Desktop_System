@@ -8,7 +8,7 @@ import {
     FormLabel,
     FormControl,
     Dropdown,
-    Button
+    Button,
 } from 'react-bootstrap';
 const _ = require('lodash'); //Library to Change Cases of things
 
@@ -20,7 +20,7 @@ class TableOfAdvisors extends Component {
         advisors: [],
         filterString: '',
         filterCondition: 'Please Select',
-        sort: 'Please Select'
+        sort: 'Please Select',
     };
 
     //runs when component mounts, use to gets the data from db
@@ -29,13 +29,13 @@ class TableOfAdvisors extends Component {
 
         await axios
             .get(apiLinks.STAFFMEMBERS)
-            .then(async res => {
+            .then(async (res) => {
                 if (this.mounted) {
                     const advisors = await res.data;
                     this.setState({ advisors });
                 }
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log(err);
             });
         this.filterAdvisors();
@@ -49,8 +49,8 @@ class TableOfAdvisors extends Component {
     filterAdvisors() {
         this.setState({
             advisors: this.state.advisors.filter(
-                advisor => advisor.staffType === 'TravelAdvisor'
-            )
+                (advisor) => advisor.staffType === 'TravelAdvisor'
+            ),
         });
     }
 
@@ -63,28 +63,28 @@ class TableOfAdvisors extends Component {
         ) {
             this.setState({
                 advisors: this.state.advisors.filter(
-                    advisor =>
+                    (advisor) =>
                         String(advisor[this.state.filterCondition]) ===
                         String(this.state.filterString)
-                )
+                ),
             });
         }
     }
     async reset() {
         await axios
             .get(apiLinks.STAFFMEMBERS)
-            .then(async res => {
+            .then(async (res) => {
                 const advisors = await res.data;
                 this.setState({ advisors });
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
         this.filterAdvisors();
     }
     sortList(key) {
         this.setState({
             advisors: []
                 .concat(this.state.advisors)
-                .sort((a, b) => (a[`${key}`] > b[`${key}`] ? 1 : -1))
+                .sort((a, b) => (a[`${key}`] > b[`${key}`] ? 1 : -1)),
         });
     }
 
@@ -128,11 +128,15 @@ class TableOfAdvisors extends Component {
 
         return (
             <Container>
+                <h1>
+                    <strong>Advisors</strong>
+                </h1>
+                <br />
                 <Form>
                     <FormGroup controlId="filterCondition" bssize="large">
                         <FormLabel>Filter Condition</FormLabel>
                         <Dropdown
-                            onSelect={key => {
+                            onSelect={(key) => {
                                 this.setState({ filterCondition: key });
 
                                 // console.log(_.startCase(key));
@@ -173,9 +177,9 @@ class TableOfAdvisors extends Component {
                             autoFocus
                             type="string"
                             value={this.state.filterString}
-                            onChange={e => {
+                            onChange={(e) => {
                                 this.setState({
-                                    filterString: e.target.value
+                                    filterString: e.target.value,
                                 });
                             }}
                         />
@@ -213,7 +217,7 @@ class TableOfAdvisors extends Component {
                     <FormGroup controlId="sort" bssize="large">
                         <FormLabel>Sort</FormLabel>
                         <Dropdown
-                            onSelect={key => {
+                            onSelect={(key) => {
                                 this.setState({ sort: key });
                                 this.sortList(key);
                                 // console.log(_.startCase(key));
@@ -267,7 +271,7 @@ class TableOfAdvisors extends Component {
                                 address,
                                 username,
                                 advisorCode,
-                                commissionRate
+                                commissionRate,
                             }) => (
                                 <Fragment key={_id}>
                                     {row(
