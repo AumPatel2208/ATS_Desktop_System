@@ -346,7 +346,7 @@ export default class ReportTableI extends Component {
             return x;
         } else if (value === 8) {
             for (var i = 0; i < this.state.sales2.length; i++) {
-                x += this.state.sales2[i].localTax;
+                x += parseFloat(this.state.sales2[i].localTax);
             }
             return x;
         } else if (value === 9) {
@@ -426,94 +426,123 @@ export default class ReportTableI extends Component {
 
         }
 
-       this.state.check = true;
-        alert(this.state.check);
+        this.componentDidMount()
 
     }
 
-    callDomestic() {
-        if (this.state.check == true) {
-            return <Fragment><Table grid className="mt-4" id="export">
-                <thead>
-                <tr>
-                    <th>Ticket Number</th>
-                    <th>Fare(Local)</th>
-                    <th>Fare(USD)</th>
-                    <th>Cash</th>
-                    <th>Credit Card(USD)</th>
-                    <th>Credit Card(local)</th>
-                    <th>Taxes</th>
-                    <th>Total Paid(local)</th>
-                    <th>Commission 9%</th>
-                    <th>Commission 5%</th>
-                    <th>Notes</th>
-                </tr>
-                </thead>
+    render() {
+        return (
+            <Container>
+                <Form>
+                    <FormGroup controlId="saleT" bssize="large">
+                        <FormLabel>From: </FormLabel>
+                        <DatePicker
+                            selected={this.state.startDate}
+                            onChange={(date) => {
+                                this.setState({
+                                    startDate: date,
+                                });
+                            }}
+                        />
+                        <br />
+                        <FormLabel>To: </FormLabel>
+                        <DatePicker
+                            selected={this.state.endDate}
+                            onChange={(date) => {
+                                this.setState({
+                                    endDate: date,
+                                });
+                            }}
+                        />
+                        <br></br>
 
-                <tbody>
-                {this.state.sales.map(
-                    ({
-                         ticketNumber,
-                         fare,
-                         USDExchangeRate,
-                         otherTax,
-                         paymentMethod,
-                         commissionRate,
-                         notes,
-                     }) => {
-                        return (
-                            <tr>
-                                <td>{ticketNumber}</td>
-                                <td> {fare}</td>
-                                <td>
-                                    {(fare * USDExchangeRate).toFixed(
-                                        3
-                                    )}
-                                </td>
-                                <td>
-                                    {' '}
-                                    {this.cashCheck(
-                                        paymentMethod,
-                                        fare
-                                    )}
-                                </td>
-                                <td>
-                                    {' '}
-                                    {this.creditCheck(
-                                        paymentMethod,
-                                        fare
-                                    )}
-                                </td>
-                                <td>
-                                    {' '}
-                                    {this.creditCheck(
-                                        paymentMethod,
-                                        fare
-                                    ) * USDExchangeRate}
-                                </td>
-                                <td> {otherTax}</td>
-                                <td> {otherTax + fare}</td>
-                                <td>
-                                    {' '}
-                                    {this.commissionCheck9(
-                                        commissionRate,
-                                        fare
-                                    )}
-                                </td>
-                                <td>
-                                    {' '}
-                                    {this.commissionCheck5(
-                                        commissionRate,
-                                        fare
-                                    )}
-                                </td>
-                                <td> {notes}</td>
-                            </tr>
-                        );
-                    }
-                )}
-                </tbody>
-            </Table>
+                        <Fragment>{this.roleHandler()}</Fragment>
+
+                        <h2>Domestic Sales Report</h2>
+                    </FormGroup>
+                </Form>
+                <button onClick={this.toPDF}>Download PDF</button>
+                <Table grid className="mt-4" id="export">
+                    <thead>
+                    <tr>
+                        <th>Ticket Number</th>
+                        <th>Fare(Local)</th>
+                        <th>Fare(USD)</th>
+                        <th>Cash</th>
+                        <th>Credit Card(USD)</th>
+                        <th>Credit Card(local)</th>
+                        <th>Taxes</th>
+                        <th>Total Paid(local)</th>
+                        <th>Commission 9%</th>
+                        <th>Commission 5%</th>
+                        <th>Notes</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {this.state.sales.map(
+                        ({
+                             ticketNumber,
+                             fare,
+                             USDExchangeRate,
+                             otherTax,
+                             paymentMethod,
+                             commissionRate,
+                             notes,
+                         }) => {
+                            return (
+                                <tr>
+                                    <td>{ticketNumber}</td>
+                                    <td> {fare}</td>
+                                    <td>
+                                        {(fare * USDExchangeRate).toFixed(
+                                            3
+                                        )}
+                                    </td>
+                                    <td>
+                                        {' '}
+                                        {this.cashCheck(
+                                            paymentMethod,
+                                            fare
+                                        )}
+                                    </td>
+                                    <td>
+                                        {' '}
+                                        {this.creditCheck(
+                                            paymentMethod,
+                                            fare
+                                        )}
+                                    </td>
+                                    <td>
+                                        {' '}
+                                        {this.creditCheck(
+                                            paymentMethod,
+                                            fare
+                                        ) * USDExchangeRate}
+                                    </td>
+                                    <td> {otherTax}</td>
+                                    <td> {(parseFloat(otherTax) + parseFloat(fare)).toFixed(3)}</td>
+                                    <td>
+                                        {' '}
+                                        {this.commissionCheck9(
+                                            commissionRate,
+                                            fare
+                                        )}
+                                    </td>
+                                    <td>
+                                        {' '}
+                                        {this.commissionCheck5(
+                                            commissionRate,
+                                            fare
+                                        )}
+                                    </td>
+                                    <td> {notes}</td>
+                                </tr>
+                            );
+                        }
+                    )}
+                    </tbody>
+                </Table>
                 <Table grid className="mt-4" id="export2">
                     <thead>
                     <tr>
@@ -536,17 +565,17 @@ export default class ReportTableI extends Component {
                     <tr>
                         <td>{this.state.sales.length}</td>
                         <td> {this.aggregate(1)}</td>
-                        <td> {this.aggregate(2)}</td>
+                        <td> {this.aggregate(2).toFixed(3)}</td>
                         <td> {this.aggregate(3)}</td>
-                        <td> {this.aggregate(4)}</td>
+                        <td> {this.aggregate(4).toFixed(3)}</td>
                         <td> {this.aggregate(8)}</td>
                         <td> {this.aggregate(5)}</td>
-                        <td> {this.aggregate(5) + this.aggregate(1)}</td>
+                        <td> {(this.aggregate(5) + this.aggregate(1)).toString().substring(0,7)}</td>
                         <td> {this.aggregate(6)}</td>
                         <td> {this.aggregate(7)}</td>
                         <td>
-                            {this.aggregate(6) * 0.09 +
-                            this.aggregate(7) * 0.05}
+                            {(this.aggregate(6) * 0.09 +
+                            this.aggregate(7) * 0.05).toFixed(3)}
                         </td>
                         <td>
                             {' '}
@@ -558,18 +587,12 @@ export default class ReportTableI extends Component {
                     </tr>
                     </tbody>
                 </Table>
-            </Fragment>
-        }
-    }
-
-    callInterline(){
-        //alert("interline ")
-        if (this.state.check == true) {
-
-            alert("interline true ")
 
 
-            return <Fragment>
+
+
+                <h2>Interline Sales Report</h2>
+                <button onClick={this.toPDFB}>Download PDF</button>
                 <Table grid className="mt-4" id="exportB">
                     <thead>
                     <tr>
@@ -604,7 +627,7 @@ export default class ReportTableI extends Component {
                                     <td>{fare}</td>
                                     <td>{localTax}</td>
                                     <td>{otherTax}</td>
-                                    <td>{localTax + otherTax + fare}</td>
+                                    <td>{parseFloat(localTax) + parseFloat(otherTax) + parseFloat(fare)}</td>
                                 </tr>
                             );
                         }
@@ -670,7 +693,7 @@ export default class ReportTableI extends Component {
                                             fare
                                         )}
                                     </td>
-                                    <td>{localTax + otherTax + fare}</td>
+                                    <td>{parseFloat(localTax) + parseFloat(otherTax) + parseFloat(fare)}</td>
                                     <td>
                                         {' '}
                                         {this.commissionCheck15(
@@ -692,7 +715,7 @@ export default class ReportTableI extends Component {
                                             fare
                                         )}
                                     </td>
-                                    <td> {localTax + otherTax}</td>
+                                    <td> {parseFloat(localTax) + parseFloat(otherTax)}</td>
                                 </tr>
                             );
                         }
@@ -733,9 +756,9 @@ export default class ReportTableI extends Component {
                         <td> {this.aggregate2(5)}</td>
                         <td>
                             {' '}
-                            {this.aggregate2(1) +
-                            this.aggregate2(5) +
-                            this.aggregate2(8)}
+                            {parseFloat(this.aggregate2(1)) +
+                            parseFloat(this.aggregate2(5)) +
+                           parseFloat( this.aggregate2(8))}
                         </td>
 
                         <td> {this.aggregate2(3)}</td>
@@ -748,7 +771,7 @@ export default class ReportTableI extends Component {
                         <td>{this.aggregate2(7)}</td>
                         <td>{this.aggregate2(6)}</td>
 
-                        <td>{this.aggregate2(5) + this.aggregate2(8)}</td>
+                        <td>{parseFloat(this.aggregate2(5)) +parseFloat( this.aggregate2(8))}</td>
                         <td>
                             {' '}
                             {this.aggregate2(9) * 0.15 +
@@ -766,63 +789,19 @@ export default class ReportTableI extends Component {
                         </td>
                         <td>
                             {' '}
-                            {this.aggregate2(9) +
-                            this.aggregate2(7) +
-                            this.aggregate2(6) +
-                            this.aggregate2(8) +
-                            this.aggregate2(5) -
-                            this.aggregate2(9) * 0.15 +
-                            this.aggregate2(7) * 0.1 +
-                            this.aggregate2(6) * 0.09}
+                            {
+                                parseFloat(this.aggregate2(9)) +
+                                parseFloat(this.aggregate2(7)) +
+                            parseFloat(this.aggregate2(6)) +
+                            parseFloat(this.aggregate2(8)) +
+                            parseFloat(this.aggregate2(5)) -
+                                (parseFloat(this.aggregate2(9)) * 0.15 )+
+                                (parseFloat(this.aggregate2(7)) * 0.1) +
+                                (parseFloat(this.aggregate2(6)) * 0.09)}
                         </td>
                     </tr>
                     </tbody>
                 </Table>
-            </Fragment>
-        }
-    }
-
-
-
-    render() {
-        return (
-            <Container>
-                <Form>
-                    <FormGroup controlId="saleT" bssize="large">
-                        <FormLabel>From: </FormLabel>
-                        <DatePicker
-                            selected={this.state.startDate}
-                            onChange={(date) => {
-                                this.setState({
-                                    startDate: date,
-                                });
-                            }}
-                        />
-                        <br />
-                        <FormLabel>To: </FormLabel>
-                        <DatePicker
-                            selected={this.state.endDate}
-                            onChange={(date) => {
-                                this.setState({
-                                    endDate: date,
-                                });
-                            }}
-                        />
-                        <br></br>
-
-                        <Fragment>{this.roleHandler()}</Fragment>
-
-                        <h2>Domestic Sales Report</h2>
-                    </FormGroup>
-                </Form>
-                <button onClick={this.toPDF}>Download PDF</button>
-                <Fragment>{this.callDomestic()}</Fragment>
-
-
-                <h2>Interline Sales Report</h2>
-                <button onClick={this.toPDFB}>Download PDF</button>
-                <Fragment>{this.callInterline()}</Fragment>
-
 
             </Container>
         );
