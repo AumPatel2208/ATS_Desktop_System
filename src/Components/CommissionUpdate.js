@@ -70,13 +70,13 @@ export class CommissionUpdate extends Component {
             }
         }
         //getting the commission to assign the correct value
-
-        const fc = this.state.commissions.filter(
-            (i) => String(i.name) === this.state.dName
-            //this.state.dName
-        );
-        this.setState({ commissions: fc });
-
+        let w=0;
+        for (var i = 0; i < this.state.commissions.length; i++) {
+            if (this.state.commissions[i].name == this.state.dName) {
+                w = i;
+                break;
+            }
+        }
         const updatedStaff = {
             firstName: this.state.staff[x].firstName,
             lastName: this.state.staff[x].lastName,
@@ -85,10 +85,10 @@ export class CommissionUpdate extends Component {
             password: this.state.staff[x].password,
             staffType: this.state.staff[x].staffType,
             advisorCode: this.state.staff[x].advisorCode,
-            commissionRate440: this.state.commissions[0].ticket440,
-            commissionRate444: this.state.commissions[0].ticket440,
-            commissionRate420: this.state.commissions[0].ticket420,
-            commissionRate201: this.state.commissions[0].ticket201,
+            commissionRate440: this.state.commissions[w].ticket440,
+            commissionRate444: this.state.commissions[w].ticket440,
+            commissionRate420: this.state.commissions[w].ticket420,
+            commissionRate201: this.state.commissions[w].ticket201,
         };
         axios
             .put(

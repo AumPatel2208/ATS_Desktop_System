@@ -38,6 +38,7 @@ router.get('/', (q, a) => {
 
 router.put('/:id', (q, a) => {
      console.log("PUT" + q.body.advisorCode);
+    console.log("PUT" + q.body.commissionRate201);
         Staff.findByIdAndUpdate(q.params.id, q.body).then(item => a.json(item));
     });
 
