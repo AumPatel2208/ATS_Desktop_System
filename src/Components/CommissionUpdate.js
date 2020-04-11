@@ -102,6 +102,10 @@ export class CommissionUpdate extends Component {
             .catch((err) => {
                 console.log('Error: ' + err);
             });
+
+
+        alert("Commission Assigned");
+
     }
 
     render() {

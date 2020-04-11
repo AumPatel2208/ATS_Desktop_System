@@ -18,6 +18,7 @@ export default class ReportTurnoverT extends Component {
         blanks2:[],
         allBlanks: [],
         aBlanks: [],
+        anBlanks:[],
         aBlanks2: [],
         allABlanks: [],
         finalRemainin: [],
@@ -144,7 +145,6 @@ export default class ReportTurnoverT extends Component {
             }
         }
 
-
         //assigned during period
         for (let i = 0; i < this.state.aBlanks2.length; i++) {
             if (
@@ -155,6 +155,20 @@ export default class ReportTurnoverT extends Component {
             }
         }
 
+
+
+//assigned from new during period
+        for (let i = 0; i < this.state.aBlanks.length; i++) {
+            for(let i2=0; i2<this.state.blanks.length; i2++){
+               // alert(this.state.aBlanks[i].batchStart)
+              //  alert(this.state.blanks[i2].batchStart)
+                if ((this.state.aBlanks[i].batchStart >= this.state.blanks[i2].batchStart)
+                    &&(this.state.aBlanks[i].batchEnd <= this.state.blanks[i2].batchEnd)){
+                    this.state.anBlanks.push(this.state.aBlanks2[i]);
+                }
+            }
+        }
+        alert(this.state.aBlanks.length)
 
         //used during period
 
@@ -181,8 +195,8 @@ export default class ReportTurnoverT extends Component {
         this.setState({ total1: x });
         //newly assigned blanks - new & assigned during block
         x = 0;
-        for (let i = 0; i < this.state.aBlanks.length; i++) {
-            x += parseInt(this.state.aBlanks[i].amount);
+        for (let i = 0; i < this.state.anBlanks.length; i++) {
+            x += parseInt(this.state.anBlanks[i].amount);
         }
         this.setState({ total2: x });
 
@@ -349,7 +363,7 @@ export default class ReportTurnoverT extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.aBlanks.map(
+                        {this.state.anBlanks.map(
                             ({ batchValues, advisorCode, amount }) => (
                                 <Fragment>
                                     {row(batchValues, advisorCode, amount)}
@@ -391,7 +405,7 @@ export default class ReportTurnoverT extends Component {
                     </thead>
                     <tbody>
                         {this.state.uBlanks.map(({ batchValues, amount }) => (
-                            <Fragment>{row(batchValues, amount)}</Fragment>
+                            <Fragment>{row(batchValues, 1)}</Fragment>
                         ))}
                     </tbody>
                 </Table>

@@ -101,7 +101,10 @@ class TableOfAdvisors extends Component {
             address,
             username, //
             advisorCode, //
-            commissionRate
+            commissionRate440,
+            commissionRate444,
+            commissionRate420,
+            commissionRate201
         ) => (
             <Fragment>
                 <tr key={_id}>
@@ -110,7 +113,10 @@ class TableOfAdvisors extends Component {
                     <td>{address}</td>
                     <td>{username}</td>
                     <td>{advisorCode}</td>
-                    <td>{commissionRate}</td>
+                    <td>{commissionRate440}</td>
+                    <td>{commissionRate444}</td>
+                    <td>{commissionRate420}</td>
+                    <td>{commissionRate201}</td>
                     <td>
                         {/* <CustomerUpdate id={_id}></CustomerUpdate> */}
                         <Button
@@ -258,7 +264,10 @@ class TableOfAdvisors extends Component {
                             <th>Address</th>
                             <th>Username</th>
                             <th>Advisor Code</th>
-                            <th>Commission Rate</th>
+                            <th>440 Commission</th>
+                            <th>444 Commission</th>
+                            <th>420 Commission</th>
+                            <th>201 Commission</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -271,7 +280,10 @@ class TableOfAdvisors extends Component {
                                 address,
                                 username,
                                 advisorCode,
-                                commissionRate,
+                                commissionRate440,
+                                 commissionRate444,
+                                 commissionRate420,
+                                 commissionRate201
                             }) => (
                                 <Fragment key={_id}>
                                     {row(
@@ -281,7 +293,10 @@ class TableOfAdvisors extends Component {
                                         address,
                                         username,
                                         advisorCode,
-                                        commissionRate
+                                        commissionRate440,
+                                        commissionRate444,
+                                        commissionRate420,
+                                        commissionRate201
                                     )}
                                 </Fragment>
                             )

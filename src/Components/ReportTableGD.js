@@ -298,22 +298,21 @@ export default class ReportTableGD extends Component {
                                 c5,
                                 creditT,
                             }) => (
-                                <Fragment key={advisorCode}>
-                                    {row(
-                                        advisorCode,
-                                        saleNum,
-                                        total,
-                                        fare2,
-                                        tax,
-                                        cash,
-                                        creditT,
-                                        creditUSD,
-                                        credit,
-                                        total,
-                                        c9,
-                                        c5
-                                    )}
-                                </Fragment>
+                                <tr key={advisorCode}>
+                                    <td>{advisorCode}</td>
+                                    <td>{saleNum}</td>
+                                    <td>{total}</td>
+                                    <td>{fare2.toString().substring(0,7)}</td>
+                                    <td>{tax}</td>
+                                    <td>{cash}</td>
+                                    <td>{creditT}</td>
+                                    <td>{creditUSD.toString().substring(0,7)}</td>
+                                    <td>{credit}</td>
+                                    <td>{total}</td>
+                                    <td>{c9}</td>
+                                    <td>{c5}</td>
+
+                                </tr>
                             )
                         )}
                     </tbody>
@@ -327,6 +326,7 @@ export default class ReportTableGD extends Component {
                             <th>Fare(USD)</th>
                             <th>Taxes</th>
                             <th>Cash</th>
+
                             <th>Credit(USD)</th>
                             <th>Credit(local)</th>
                             <th>Total Paid</th>
@@ -341,10 +341,10 @@ export default class ReportTableGD extends Component {
                         <tr>
                             <td> {this.aggregate2(1)}</td>
                             <td> {this.aggregate2(2)}</td>
-                            <td> {this.aggregate2(3)}</td>
+                            <td> {this.aggregate2(3).toString().substring(0,7)}</td>
                             <td> {this.aggregate2(4)}</td>
                             <td> {this.aggregate2(5)}</td>
-                            <td> {this.aggregate2(7)}</td>
+                            <td> {this.aggregate2(7).toString().substring(0,7)}</td>
                             <td> {this.aggregate2(6)}</td>
                             <td> {this.aggregate2(2)}</td>
                             <td> {this.aggregate2(8)}</td>
