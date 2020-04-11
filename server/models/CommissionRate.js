@@ -8,6 +8,9 @@ const CommissionRateSchema = new Schema({
     ticket440: {
         type: Number
     },
+    ticket444: {
+        type: Number
+    },
     ticket420: {
         type: Number
     },

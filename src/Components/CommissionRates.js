@@ -57,6 +57,7 @@ export default class CommissionRates extends Component {
         const newCommission = {
             name: this.state.name,
             ticket440: this.state.t440,
+            ticket444: this.state.t444,
             ticket420: this.state.t420,
             ticket201: this.state.t210,
         };
@@ -70,7 +71,7 @@ export default class CommissionRates extends Component {
             .catch((err) => console.log('Error code: ', err));
 
         alert('New Commission Created:'+ ' ' + this.state.name);
-        Window.location.reload();
+       // Window.location.reload();
     }
 
     onOpenClick(_id) {

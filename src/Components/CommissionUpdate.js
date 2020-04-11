@@ -97,7 +97,6 @@ export class CommissionUpdate extends Component {
             )
             .then((res) => {
                 console.log(res);
-                alert('Assigned');
             })
             .catch((err) => {
                 console.log('Error: ' + err);
