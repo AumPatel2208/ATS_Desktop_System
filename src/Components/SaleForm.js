@@ -233,6 +233,8 @@ export class SaleForm extends Component {
                 let z1 = parseInt(this.state.fare);
                 let z2 = parseInt(this.state.customers[i2].discountValue);
                 z = z1 - (z2 / 100) * z1;
+            }else {
+                z = this.state.fare;
             }
 
             var payed = false;
