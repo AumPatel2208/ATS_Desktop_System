@@ -160,15 +160,12 @@ export default class ReportTurnoverT extends Component {
 //assigned from new during period
         for (let i = 0; i < this.state.aBlanks.length; i++) {
             for(let i2=0; i2<this.state.blanks.length; i2++){
-               // alert(this.state.aBlanks[i].batchStart)
-              //  alert(this.state.blanks[i2].batchStart)
                 if ((this.state.aBlanks[i].batchStart >= this.state.blanks[i2].batchStart)
                     &&(this.state.aBlanks[i].batchEnd <= this.state.blanks[i2].batchEnd)){
                     this.state.anBlanks.push(this.state.aBlanks2[i]);
                 }
             }
         }
-        alert(this.state.aBlanks.length)
 
         //used during period
 

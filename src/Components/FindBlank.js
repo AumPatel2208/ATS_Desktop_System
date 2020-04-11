@@ -104,7 +104,6 @@ class FindBlank extends Component {
                             break;
                         }
                     }
-                    alert(i4);
                     alert(
                         this.state.find +
                             ' has been used by advisor ' +
