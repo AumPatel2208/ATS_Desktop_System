@@ -89,9 +89,9 @@ export default class Discounts extends Component {
 
             if (parseInt(z) < parseInt(z2.flexibleBand1)) {
                 x = z2.band1Value;
-            } else if (z >= z2.flexibleBand1 && z < z2.flexibleBand2) {
+            } else if (parseInt(z) >= parseInt(z2.flexibleBand1) && parseInt(z) < parseInt(z2.flexibleBand2)) {
                 x = z2.band2Value;
-            } else if (z >= z2.flexibleBand2) {
+            } else if (parseInt(z) >= parseInt(z2.flexibleBand2)) {
                 x = z2.band3Value;
             }
         }

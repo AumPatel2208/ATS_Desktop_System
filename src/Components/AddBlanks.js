@@ -26,7 +26,7 @@ class AddBlanks extends Component {
 
     componentDidMount() {
         this.setState({ find: '' });
-
+    //getting blanks and setting to database values
         axios.get(apiLinks.BLANKS).then((res) => {
             const blanks = res.data;
             this.setState({ blanks });
@@ -47,7 +47,7 @@ class AddBlanks extends Component {
     async handleDelete(e) {
         let zzz = this.state.toDelete.split('-');
         let z, z2;
-
+        //filtering blanks to delete based on requested values
         if (zzz !== undefined) {
             z = parseInt(zzz[0]);
             z2 = parseInt(zzz[1]);
@@ -84,8 +84,7 @@ class AddBlanks extends Component {
         let st = parseInt(x[i].start);
         let en = parseInt(x[i].end);
 
-        //  if (z < st || z > en || z2 > en || z2 < st) return;
-
+        //updating the remaining blanks based on start/end values of deleted portion
         if (z !== st) {
             if (z - 1 === st) {
                 x.push({ start: st, end: st });
@@ -103,6 +102,8 @@ class AddBlanks extends Component {
 
         x.splice(i, 1);
 
+
+        //putting updated values back into the database
         const updatedBlank = {
             _id: this.state.blanks[0]._id,
             batchValues: this.state.blanks[0].batchValues,
@@ -122,6 +123,8 @@ class AddBlanks extends Component {
     }
 
     async handleSubmit(event) {
+        //handling the addition of new blanks into the system
+
         event.preventDefault();
         console.log('hello');
 

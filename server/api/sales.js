@@ -5,8 +5,6 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 
 router.post('/', (q, a) => {
-    //console.log(q.body.ticketNumber);
-    //console.log(q.body.currency, q.body.USDExchangeRate);
     console.log('ad code' + q.body.advisorCode);
     console.log('commission' + q.body.commissionRate);
 
@@ -70,12 +68,6 @@ router.get('/by-advisor/:advisorCode', (q, a) => {
         .sort({ date: -1 })
         .then((sales) => a.json(sales));
 });
-// // find sales by advisor code
-// router.get('/', (q, a) => {
-//     Sale.find(q.param.advisorCode)
-//         .sort({ date: -1 })
-//         .then(sales => a.json(sales));
-// });
 
 // find sales by date, sorted by advisor
 router.get('/', (q, a) => {
@@ -118,7 +110,6 @@ router.put('/refund/:id', (q, a) => {
 //find and update one sale by id
 router.put('/pay/:id', (q, a) => {
     q.body.hasPayed = true;
-    // q.body.paymentDate = Date.now();
     Sale.findByIdAndUpdate(q.params.id, q.body).then((sale) => a.json(sale));
 });
 

@@ -1,11 +1,6 @@
 import { Container, Table } from 'reactstrap';
 import {
-    Button,
-    Dropdown,
-    Form,
-    FormControl,
-    FormGroup,
-    FormLabel,
+    Button
 } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import React, { Component, Fragment } from 'react';

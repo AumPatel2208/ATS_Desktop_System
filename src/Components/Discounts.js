@@ -73,8 +73,8 @@ export default class Discounts extends Component {
     }
 
     createDiscount(e) {
+        //adds a new discount into the database
         e.preventDefault();
-        const st = this.state.cName;
 
         const newDiscount = {
             name: this.state.name,
@@ -98,74 +98,6 @@ export default class Discounts extends Component {
         window.location.reload();
     }
 
-    /*assignDiscount(e) {
-        e.preventDefault();
-
-        //Accessing the correct customer to update
-        const st = this.state.cName;
-        const f = this.state.cName.split(" ");
-        //filtering first name
-        const c = this.state.customers.filter(
-            i => String(i.firstName) === f[0]
-        );
-        this.setState({customers :c});
-        //filtering last name
-        const cl = this.state.customers.filter(
-            i => String(i.firstName) === f[1]
-        );
-        this.setState({customers :cl});
-
-        //getting the discount to assign the correct value
-        /*
-        const fc = this.state.discountGetV.filter(
-            i => String(i.name) == "Plan1"
-                //this.state.dName
-        );
-        this.setState({discountGetV :fc});
-
-
-
-
-        if (this.state.dType === "Fixed"){
-            this.setState({dV: this.state.discountGetV[0].fixed})
-        }
-        else if (this.state.dType === "Flexible") {
-            let z = this.state.customers[0].paidThisMonth;
-            let z2 = this.state.discountGetV[0];
-
-            if (z < z2.flexibleBand1){
-                this.setState({dV: z2.band1Value})
-            } else if ((z >= z2.flexibleBand1) && (z < z2.flexibleBand2 )){
-                this.setState({dV: z2.band2Value})
-            }else if (z >= z2.flexibleBand2){
-                this.setState({dV: z2.band3Value})
-            }
-
-        }
-
-
-        const updatedCustomer ={
-        _id: this.state.customers[0]._id,
-            firstName: this.state.customers[0].firstName,
-            lastName: this.state.customers[0].lastName,
-            address: this.state.customers[0].address,
-            phoneNumber: this.state.customers[0].phoneNumber,
-            customerType: this.state.customers[0].customerType,
-            discountName: this.state.dName,
-            discountType:this.state.dType,
-            discountValue: this.state.dV,
-            paidThisMonth: this.state.customers[0].paidThisMonth
-        };
-        axios
-            .put(
-                apiLinks.CUSTOMERS + '/' + this.state.customers[0]._id,
-                updatedCustomer
-            )
-            .then(res => {
-                console.log(res);
-            });
-    }
-*/
     onOpenClick(_id) {
         console.log(_id);
     }

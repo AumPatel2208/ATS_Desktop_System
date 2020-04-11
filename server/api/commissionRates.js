@@ -32,7 +32,6 @@ router.get('/', (q, a) => {
 });
 
 router.get('/byDate',(q,a)=>{
-    // x = JSON.parse(q.body);
     let sd = q.query.start;
     let ed = q.query.end;
 

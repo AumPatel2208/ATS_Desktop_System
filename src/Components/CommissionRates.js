@@ -53,7 +53,7 @@ export default class CommissionRates extends Component {
 
     createCommission(e) {
         e.preventDefault();
-
+    //adds a new commission into the database
         const newCommission = {
             name: this.state.name,
             ticket440: this.state.t440,

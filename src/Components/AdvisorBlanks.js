@@ -1,11 +1,6 @@
 import { Container, Table } from 'reactstrap';
 import {
     Button,
-    Dropdown,
-    Form,
-    FormControl,
-    FormGroup,
-    FormLabel,
     Tabs,
     Tab,
 } from 'react-bootstrap';
@@ -52,7 +47,7 @@ class AdvisorBlanks extends Component {
                 const blanks = res.data;
                 this.setState({ blanks });
 
-                //filtering so only assigned to the current advisor
+                //filtering so only assigned to the current advisor & correct ypes
                 const cl = this.state.blanks.filter(
                     i => i.advisorCode == cd
                 );

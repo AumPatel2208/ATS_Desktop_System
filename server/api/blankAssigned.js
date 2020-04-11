@@ -4,22 +4,18 @@ const BlankAssigned = require('../models/BlankAssigned');
 const bodyParser = require('body-parser');
 
 router.post('/', (q, a) => {
-    // const { blankNumber, assigned, used, batch } = q.body;
-    //Blank.create(q.body).then(item => a.json(item));
-    //console.log(q.body);
+
     const f = String(q.body.batchValues);
     console.log(f);
-    //console.log(f);
-   // console.log(q.param.batchValues);
+
     var x = f.split("-");
     var c = (x[0]);
     var d = (x[1]);
-    //console.log(c);
-    //console.log(d);
     let amount = (d-c);
     let remain = [];
   var h= f.indexOf("-");
 
+  //filling the remaining with the values
 if ( h=== -1){
     remain.push(q.body.batchValues);
     amount = 1;
@@ -28,9 +24,10 @@ if ( h=== -1){
         remain.push(parseInt(c) + i)
     }
 }
+
+//setting batch type
 console.log(h);
     console.log("assigned" +remain);
-      //  {start: c, end:d}];
     let batchTp = "";
     if (f.substring(0,3)==="201"){
         batchTp = "Domestic";

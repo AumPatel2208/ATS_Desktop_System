@@ -62,31 +62,6 @@ export class ReAssignBlanks extends Component {
     onDeleteClick(_id) {
         console.log(_id);
     }
-    /*
-    filterStuff() {
-        const {
-            match: {params}
-        } = this.props;
-        const id = params.id.split('-');
-        const id1 = id[0];
-
-        this.setState({myId: id1});
-
-        const bl = this.state.blanks.filter(i => String(i._id) === id1);
-        console.log(bl);
-
-        const t = this.state.blanks.filter(
-            i => i.remaining[0] !== " "
-        );
-
-        this.setState({blanks:t});
-        console.log(t);
-        //this.setState({
-        //    blanks: bla
-        // })
-    }
-
- */
 
     updateRemaining() {
         //ADDS IN A NEW ASSIGNMENT UNDER NEW ADVISOR
@@ -122,16 +97,6 @@ export class ReAssignBlanks extends Component {
             }
             z.splice(i, 1);
 
-            /*
-            for (var i = 0; i < z.length; i++) {
-                if (z[i] == k[i2]) {
-                    z.splice(i, 1);
-                    i2++;
-                    break;
-                }
-            }
-
-             */
         }
 
         const updatedBlank = {

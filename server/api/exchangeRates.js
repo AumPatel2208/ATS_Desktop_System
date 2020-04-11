@@ -3,10 +3,8 @@ const router = express.Router();
 const ExchangeRate = require('../models/ExchangeRate');
 // q= query, a = answer
 
+//adding in a new one into the database
 router.post('/', (q, a) => {
-    // const { currencyCode, date, toUSDRate } = q.body;
-    // ExchangeRate.create(q.body).then(item => a.json(item));
-    // console.log(q.body);
 let dt = new Date(Date.now());
 dt.setHours(0,0,0,0)
     const newExchangeRate = new ExchangeRate({
@@ -29,12 +27,8 @@ router.get('/', (q, a) => {
 router.get('/byDate', (q, a) => {
     let d = new Date(q.query.start);
     d.setHours(0,0,0,0);
-       // d.setHours(0,0,0,0);
-   // let df = d.setHours(0,0,0,0);
-    console.log(d)
+    console.log(d);
     ExchangeRate.find({date:d})
-    //ExchangeRate.find()
-   // console.log(ExchangeRate.find({date: "2020-03-25T10:40:36.900Z"}))
         .then(exchangeRates => a.json(exchangeRates));
 });
 
@@ -44,31 +38,6 @@ router.get('/sale', (req, res) => {
     d.setHours(0,0,0,0);
     ExchangeRate.find({date: d})
         .then(rates => res.json(rates));
-   /*
-    console.log(d);
-
-    let c = req.query.currency;
-    console.log(c);
-
-//    ExchangeRate.find({date:d, currencyCode:c })
-    ExchangeRate.find({currencyCode:c })
- //       .then(exchangeRates => res.json(exchangeRates))
-        .then(function  (x) {
-            console.log("db response");
-            console.log(x);
-            res.json(x)
-        })
-        .catch(function (err) {
-            console.log(err)
-        })
-        .then(function () {
-            console.log("rates")
-        })
-
-    console.log("Done");
-    return res;
-            //a.json(exchangeRates));
-*/
 
 });
 

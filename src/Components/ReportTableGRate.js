@@ -31,21 +31,6 @@ export default class ReportTableGRate extends Component {
 
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
-        /*
-        let start = new Date(this.state.startDate);
-        start.setHours(0,0,0,0);
-        let end = new Date(this.state.endDate);
-        end.setHours(0,0,0,0);
-
-
-        axios.get( apiLinks.SALES +'/byDate',{params:{start, end}}).then(res => {
-            const sales = res.data;
-            this.setState({sales});
-        });
-
-
-         */
-
         axios
             .get(apiLinks.SALES)
             .then((res) => {
@@ -60,10 +45,13 @@ export default class ReportTableGRate extends Component {
     }
 
     toPDF() {
+        //exports table to pdf
         var pdf = new jsPDF('l', 'pt', 'A4');
         var source = document.getElementById('export');
         pdf.text('Global Interline Report By Rate', 50, 40);
         pdf.autoTable({ html: '#export', startY: 60 });
+        pdf.autoTable({ html: '#exportB2' });
+
         pdf.save('GlobalRate.pdf');
     }
 

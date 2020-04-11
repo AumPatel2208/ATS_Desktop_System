@@ -8,7 +8,6 @@ const salt = 10;
 // request   response
 
 router.post('/', (q, a) => {
-    // console.log(q.body);
 
     q.body.map(staff => {
         var newStaff = {
@@ -42,38 +41,7 @@ router.put('/:id', (q, a) => {
         Staff.findByIdAndUpdate(q.params.id, q.body).then(item => a.json(item));
     });
 
-/*
-//get by advisor code
-router.put('/:id', (q, a) => {
-    // let st = q.query.st;
-    // console.log(q.url);
 
-    Staff.findById(q.params.id).then(staff => {
-        // console.log('DB: ', staff);
-        const pass = staff.password;
-        console.log(q.body);
-        const bodyDestruct = { ...q.body };
-        q.body[0].password = pass;
-        // var updatedStaff = { ...q.body, password: pass };
-        // updatedStaff = [...updatedStaff[0], ...updatedStaff[1]];
-        console.log(q.body);
-
-        Staff.findByIdAndUpdate(q.params.id, q.body[0], {
-            new: true
-        }).then(item => a.json(item));
-    });
-
-    // console.log('UD: ', staff);
-
-    // Staff.findOneAndUpdate(q.params.id, updatedStaff).then(item =>
-    //     a.json(item)
-    // );
-
-    //.then(staff => console.log(staff))
-    //a.json(staff));
-});
-
- */
 
 //find one staff based on their id
 router.get('/:id', (q, a) => {
@@ -84,15 +52,7 @@ router.get('/:id', (q, a) => {
 
         a.json(staffWithoutPass);
     });
-    // console.log('Staff');
 });
-
-// //find and update one staff by code
-// router.put('/', (q, a) => {
-//     Staff.findByIdAndUpdate(q.params.advisorCode, q.body).then(item =>
-//         a.json(item)
-//     );
-// });
 
 //Delete one staff
 router.delete('/:id', (q, a) => {

@@ -62,6 +62,7 @@ export class CommissionUpdate extends Component {
 
         //Accessing the correct staff to update
         const st = this.state.cCode;
+
         //filtering first name
         let x = 0;
         for (var i = 0; i < this.state.staff.length; i++) {

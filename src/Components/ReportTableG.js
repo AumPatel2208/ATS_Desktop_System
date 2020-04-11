@@ -43,6 +43,7 @@ export default class ReportTableG extends Component {
     }
 
     toPDF() {
+        //transferring the tables to pdf
         var pdf = new jsPDF('l', 'pt', 'A4');
         var source = document.getElementById('export');
         pdf.text('Global Report By Advisor', 50, 40);
@@ -52,6 +53,7 @@ export default class ReportTableG extends Component {
         pdf.save('GlobalAdvisor.pdf');
     }
     aggregate2(value) {
+        //adding up values for display on the totals table
         let x = 0;
         if (value === 1) {
             for (var i = 0; i < this.state.summedValues.length; i++) {
@@ -117,6 +119,7 @@ export default class ReportTableG extends Component {
     }
 
     aggregateSales() {
+        //adding up values based on advisor code
         let start = new Date(this.state.startDate);
         let end = new Date(this.state.endDate);
         start.setHours(0, 0, 0, 0);
@@ -188,35 +191,6 @@ export default class ReportTableG extends Component {
     }
 
     render() {
-        const row = (
-            advisorCode,
-            saleNum,
-            currency,
-            USDExchangeRate,
-            commissionRate,
-            saleDate,
-            cash,
-            credit,
-            cheque,
-            total
-        ) => (
-            <Fragment>
-                <tr key={advisorCode}>
-                    <td>{advisorCode}</td>
-                    <td>{saleNum}</td>
-                    <td>{currency}</td>
-                    <td>{USDExchangeRate}</td>
-                    <td>{commissionRate}</td>
-                    <td>{saleDate}</td>
-                    <td>{cash}</td>
-                    <td>{credit}</td>
-                    <td>{cheque}</td>
-                    <td>{total}</td>
-                    <td></td>
-                </tr>
-            </Fragment>
-        );
-
         return (
             <Container>
                 <br></br>

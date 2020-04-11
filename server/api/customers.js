@@ -4,7 +4,6 @@ const Customer = require('../models/Customer');
 // q= query, a = answer
 
 router.post('/', (q, a) => {
-    // const { firstName, lastName, address, phoneNumber, customerType } = q.body;
     Customer.create(q.body).then(item => a.json(item));
 });
 
@@ -31,9 +30,7 @@ router.get('/:id', (q, a) => {
 
 //find and update one customer
 router.put('/:id', (q, a) => {
-  //  console.log(q.body);
     Customer.findByIdAndUpdate(q.params.id, q.body).then(item => a.json(item));
-        //a.json(item));
     console.log("updated"+ q.body.discountValue)
 });
 

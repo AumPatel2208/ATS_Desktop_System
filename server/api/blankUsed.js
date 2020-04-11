@@ -3,10 +3,6 @@ const router = express.Router();
 const BlankUsed = require('../models/BlankUsed');
 
 router.post('/', (q, a) => {
-    // const { blankNumber, assigned, used, batch } = q.body;
-    //Blank.create(q.body).then(item => a.json(item));
-
-
     usedBlanks = {
         batchValues: q.body.batchValues,
         date: q.body.date,
@@ -34,7 +30,6 @@ router.get('/', (q, a) => {
 });
 
 router.get('/byDate',(q,a)=>{
-    // x = JSON.parse(q.body);
     let sd = q.query.start;
     let ed = q.query.end;
 
