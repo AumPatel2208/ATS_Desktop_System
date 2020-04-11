@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import { Container, Table } from 'reactstrap';
+import { Container } from 'reactstrap';
 import axios from 'axios';
 import {
     Form,
+    Table,
     FormGroup,
     FormLabel,
     FormControl,
@@ -464,7 +465,7 @@ class TableOfSales extends Component {
                         </Dropdown>
                     </FormGroup>
                 </Form>
-                <Table className="mt-4">
+                <Table className="mt-4" fluid>
                     <thead>
                         <tr>
                             {/* <th>_id</th> */}

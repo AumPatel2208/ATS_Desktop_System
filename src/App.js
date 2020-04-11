@@ -189,13 +189,23 @@ class App extends React.Component {
                     <Route
                         path="/customers/:id"
                         render={(props) => (
-                            <CustomerUpdate {...props} isNew={false} />
+                            <CustomerUpdate
+                                {...props}
+                                staff={this.state.staff}
+                                isAuthenticated={this.state.isAuthenticated}
+                                isNew={false}
+                            />
                         )}
                     />
                     <Route
                         path="/customer/create"
                         render={(props) => (
-                            <CustomerUpdate {...props} isNew={true} />
+                            <CustomerUpdate
+                                {...props}
+                                staff={this.state.staff}
+                                isAuthenticated={this.state.isAuthenticated}
+                                isNew={true}
+                            />
                         )}
                     />
                     <Route

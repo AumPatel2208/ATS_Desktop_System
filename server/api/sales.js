@@ -7,8 +7,8 @@ const fs = require('fs');
 router.post('/', (q, a) => {
     //console.log(q.body.ticketNumber);
     //console.log(q.body.currency, q.body.USDExchangeRate);
-    console.log("ad code" + q.body.advisorCode);
-    console.log("commission" + q.body.commissionRate);
+    console.log('ad code' + q.body.advisorCode);
+    console.log('commission' + q.body.commissionRate);
 
     let x = q.body.currency;
     let y = q.body.USDExchangeRate;
@@ -29,7 +29,8 @@ router.post('/', (q, a) => {
         localTax: q.body.localTax,
         otherTax: q.body.otherTax,
         custName: q.body.custName,
-        isRefunded: false
+        hasPayed: q.body.hasPayed,
+        isRefunded: false,
     };
 
     Sale.create(newSale, (err, newSale) => {
@@ -45,13 +46,13 @@ router.post('/', (q, a) => {
 router.get('/', (q, a) => {
     Sale.find(q.param.saleType)
         .sort({ date: -1 })
-        .then(sales => a.json(sales));
+        .then((sales) => a.json(sales));
 });
 //FOR THE REPORTS - gets sale type
 router.get('/customer', (q, a) => {
     Sale.find()
         .sort({ date: -1 })
-        .then(sales => a.json(sales));
+        .then((sales) => a.json(sales));
 });
 
 // find all sales by payment type
@@ -60,14 +61,14 @@ router.get('/byDate', (q, a) => {
     let sd = q.query.start;
     let ed = q.query.end;
     console.log(q.url);
-    Sale.find({ date: { $lte: ed, $gte: sd } }).then(sales => a.json(sales));
+    Sale.find({ date: { $lte: ed, $gte: sd } }).then((sales) => a.json(sales));
 });
 
 // find sales by advisor code
 router.get('/by-advisor/:advisorCode', (q, a) => {
     Sale.find(q.params.advisorCode)
         .sort({ date: -1 })
-        .then(sales => a.json(sales));
+        .then((sales) => a.json(sales));
 });
 // // find sales by advisor code
 // router.get('/', (q, a) => {
@@ -80,21 +81,21 @@ router.get('/by-advisor/:advisorCode', (q, a) => {
 router.get('/', (q, a) => {
     Sale.find(q.param.saleDate)
         .sort({ advisorCode: -1 })
-        .then(sales => a.json(sales));
+        .then((sales) => a.json(sales));
 });
 router.get('/:id', (q, a) => {
     Sale.findById(q.params.id)
-        .then(sale => {
+        .then((sale) => {
             a.json(sale);
         })
-        .catch(err => {
+        .catch((err) => {
             a.json(err);
         });
 });
 
 //find and update one sale by id
 router.put('/:id', (q, a) => {
-    Sale.findByIdAndUpdate(q.params.id, q.body).then(sale => a.json(sale));
+    Sale.findByIdAndUpdate(q.params.id, q.body).then((sale) => a.json(sale));
 });
 //find and update one sale by id
 router.put('/refund/:id', (q, a) => {
@@ -104,29 +105,29 @@ router.put('/refund/:id', (q, a) => {
         `Refund Ticket Number ${
             q.body.ticketNumber
         }\nDate: ${Date.now()} \nJSON: ${JSON.stringify(q.body)}`,
-        err => {
+        (err) => {
             if (err) {
                 return console.log(err);
             }
             console.log('The file was saved!');
         }
     );
-    Sale.findByIdAndUpdate(q.params.id, q.body).then(sale => a.json(sale));
+    Sale.findByIdAndUpdate(q.params.id, q.body).then((sale) => a.json(sale));
 });
 
 //find and update one sale by id
 router.put('/pay/:id', (q, a) => {
     q.body.hasPayed = true;
     // q.body.paymentDate = Date.now();
-    Sale.findByIdAndUpdate(q.params.id, q.body).then(sale => a.json(sale));
+    Sale.findByIdAndUpdate(q.params.id, q.body).then((sale) => a.json(sale));
 });
 
 //Delete one sale
 
 router.delete('/:id', (q, a) => {
     Sale.findById(q.params.id)
-        .then(sale => sale.remove().then(() => a.json({ success: true })))
-        .catch(err => a.status(404).json({ success: false }));
+        .then((sale) => sale.remove().then(() => a.json({ success: true })))
+        .catch((err) => a.status(404).json({ success: false }));
 });
 
 module.exports = router;

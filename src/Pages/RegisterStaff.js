@@ -131,11 +131,18 @@ export default function RegisterStaff(props) {
                 transition={false}
                 id="uncontrolled-tab-example"
             >
-                <Tab eventKey="registerStaff" title="Register Staff">
+                <Tab
+                    eventKey="registerStaff"
+                    title={props.isNew ? 'Register Staff' : 'Update Staff'}
+                >
                     <div className="RegisterStaff">
                         <br />
                         <h1>
-                            <strong>Register Staff</strong>
+                            <strong>
+                                {props.isNew
+                                    ? 'Register Staff'
+                                    : 'Update Staff'}
+                            </strong>
                         </h1>
                         <br />
                         <form onSubmit={handleSubmit}>
