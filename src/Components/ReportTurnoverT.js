@@ -15,11 +15,14 @@ export default class ReportTurnoverT extends Component {
     //Set the state to an empty list of objects that will be taken from the database
     state = {
         blanks: [],
+        blanks2:[],
         allBlanks: [],
         aBlanks: [],
+        aBlanks2: [],
         allABlanks: [],
         finalRemainin: [],
         uBlanks: [],
+        uBlanks2:[],
         assigns: [],
         assign: 'assigned',
         batch: 'batchValues',
@@ -40,8 +43,8 @@ export default class ReportTurnoverT extends Component {
         axios
             .get(apiLinks.BLANKS)
             .then((res) => {
-                const blanks = res.data;
-                this.setState({ blanks });
+                const blanks2 = res.data;
+                this.setState({ blanks2 });
 
                 const allBlanks = res.data;
                 this.setState({ allBlanks });
@@ -53,18 +56,20 @@ export default class ReportTurnoverT extends Component {
             .then((res) => {
                 const allABlanks = res.data;
                 this.setState({ allABlanks });
-                const aBlanks = res.data;
-                this.setState({ aBlanks });
+                const aBlanks2 = res.data;
+                this.setState({ aBlanks2 });
             })
             .catch((err) => console.log('Error code: ', err));
 
         axios.get(apiLinks.USED).then((res) => {
-            const uBlanks = res.data;
-            this.setState({ uBlanks });
+            const uBlanks2 = res.data;
+            this.setState({ uBlanks2 });
         });
     }
 
     toPDF() {
+        //fetching and arranging what gets exported into the pdf
+
         var pdf = new jsPDF('l', 'pt', 'A4');
 
         pdf.text('Newly Received Blanks', 50, 20);
@@ -123,8 +128,51 @@ export default class ReportTurnoverT extends Component {
         pdf.save('TurnoverReport.pdf');
     }
 
+    dateHandling(){
+        let start = new Date(this.state.startDate);
+        let end = new Date(this.state.endDate);
+        start.setHours(0, 0, 0, 0);
+        end.setHours(0, 0, 0, 0);
+
+        //Date sorting - blanks added in
+        for (let i = 0; i < this.state.blanks2.length; i++) {
+            if (
+                Date.parse(this.state.blanks2[i].date) >= Date.parse(start) &&
+                Date.parse(this.state.blanks2[i].date) <= Date.parse(end)
+            ) {
+                this.state.blanks.push(this.state.blanks2[i]);
+            }
+        }
+
+
+        //assigned during period
+        for (let i = 0; i < this.state.aBlanks2.length; i++) {
+            if (
+                Date.parse(this.state.aBlanks2[i].date) >= start &&
+                Date.parse(this.state.aBlanks2[i].date) <= end
+            ) {
+                this.state.aBlanks.push(this.state.aBlanks2[i]);
+            }
+        }
+
+
+        //used during period
+
+        for (let i = 0; i < this.state.uBlanks2.length; i++) {
+            if (
+                Date.parse(this.state.uBlanks2[i].date) >= start &&
+                Date.parse(this.state.uBlanks2[i].date) <= end
+            ) {
+                this.state.uBlanks.push(this.state.uBlanks2[i]);
+            }
+        }
+
+    }
+
+
     generateTotals() {
         //getting totals
+
         //newly added blanks - new
         let x = 0;
         for (let i = 0; i < this.state.blanks.length; i++) {
@@ -145,23 +193,18 @@ export default class ReportTurnoverT extends Component {
         }
         this.setState({ total3: x });
 
-        //below are all set
 
         //used blanks in period - used during block
         x = 0;
-        //for (let i =0; i<this.state.uBlanks.length; i++){
         x += parseInt(this.state.uBlanks.length);
-        //}
         this.setState({ total4: x });
 
         //available blanks at end of period - all available
         x = 0;
         let len = 0;
         let dif = 0;
-        //  alert(this.state.allBlanks.length);
         for (let i = 0; i < this.state.allBlanks.length; i++) {
             len = this.state.allBlanks[i].remaining.length;
-            //  alert(len);
             if (len === 0) continue;
 
             for (let i2 = 0; i2 < len; i2++) {
@@ -169,9 +212,7 @@ export default class ReportTurnoverT extends Component {
                     this.state.allBlanks[i].remaining[i2].end -
                     this.state.allBlanks[i].remaining[i2].start +
                     1;
-                // alert( this.state.allBlanks[i].remaining[i2].end );
                 x += dif;
-                //alert(this.state.allABlanks[i].remaining[i2].end);
             }
         }
         this.setState({ total5: x });
@@ -185,16 +226,15 @@ export default class ReportTurnoverT extends Component {
     }
 
     finalRemainTable() {
-        for (let i = 0; i < this.state.allBlanks.length; i++) {
-            let len = this.state.allBlanks[i].remaining.length;
-            if (len === 0) continue;
-            for (let i2 = 0; i2 < len; i2++) {
-                this.state.finalRemainin.push(
-                    this.state.allBlanks[i].remaining[i2]
-                );
-            }
+    for (let i = 0; i < this.state.allBlanks.length; i++) {
+        let len = this.state.allBlanks[i].remaining.length;
+        if (len === 0) continue;
+        for (let i2 = 0; i2 < len; i2++) {
+            this.state.finalRemainin.push(
+                this.state.allBlanks[i].remaining[i2]
+            );
         }
-        alert(this.state.finalRemainin.length);
+    }
     }
 
     render() {
@@ -252,46 +292,15 @@ export default class ReportTurnoverT extends Component {
                     bssize="medium"
                     variant="outline-info"
                     onClick={async () => {
-                        let start = new Date(this.state.startDate);
-                        let end = new Date(this.state.endDate);
-                        start.setHours(0, 0, 0, 0);
-                        end.setHours(0, 0, 0, 0);
 
-                        const fl = this.state.blanks.filter(
-                            (i) => Date.parse(i.date) >= Date.parse(start)
-                        );
-                        this.setState({ blanks: fl });
-                        const tl = this.state.blanks.filter(
-                            (i) => Date.parse(i.date) <= Date.parse(end)
-                        );
-                        this.setState({ blanks: tl });
+                        this.dateHandling();
 
                         const t = this.state.allABlanks.filter(
                             (i) => i.remaining[0] !== undefined
                         );
                         this.setState({ allABlanks: t });
 
-                        /*
-                        axios
-                            .get(apiLinks.ASSIGN + '/byDate', {
-                                params: { start, end }
-                            })
-                            .then(res => {
-                                const aBlanks = res.data;
-                                this.set
 
-                         */
-                        /*
-                        axios
-                            .get(apiLinks.USED + '/byDate', {
-                                params: { start, end }
-                            })
-                            .then(res => {
-                                const uBlanks = res.data;
-                                this.setState({ uBlanks });
-                            });
-
- */
 
                         this.generateTotals();
                         this.finalRemainTable();

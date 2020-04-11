@@ -29,6 +29,8 @@ export default class ReportTableI extends Component {
         this.state = {
             sales: [],
             sales2: [],
+            salesTemp: [],
+            salesTemp2: [],
             saleT: 'saleType',
             code: 'advisorCode',
             inputCode: '',
@@ -64,24 +66,24 @@ export default class ReportTableI extends Component {
             axios
                 .get(apiLinks.SALES)
                 .then((res) => {
-                    const sales = res.data;
-                    this.setState({ sales });
+                    const salesTemp = res.data;
+                    this.setState({ salesTemp });
 
-                    const dl = this.state.sales.filter(
+                    const dl = this.state.salesTemp.filter(
                         (i) => i.advisorCode == a
                     );
-                    this.setState({ sales: dl });
-                    this.setState({ sales2: dl });
+                    this.setState({ salesTemp: dl });
+                    this.setState({ salesTemp2: dl });
 
-                    const l = this.state.sales.filter(
+                    const l = this.state.salesTemp.filter(
                         (i) => i.saleType == 'Domestic'
                     );
-                    this.setState({ sales: l });
+                    this.setState({ salesTemp: l });
 
-                    const d = this.state.sales2.filter(
+                    const d = this.state.salesTemp2.filter(
                         (i) => i.saleType == 'Interline'
                     );
-                    this.setState({ sales2: d });
+                    this.setState({ salesTemp2: d });
                 })
                 .catch((err) => console.log('Error code: ', err));
         } else {
@@ -95,6 +97,38 @@ export default class ReportTableI extends Component {
             this.setState({ setType: 'OM' });
         }
     }
+    dateHandling() {
+        let start = new Date(this.state.startDate);
+        let end = new Date(this.state.endDate);
+        start.setHours(0, 0, 0, 0);
+        end.setHours(0, 0, 0, 0);
+
+        //Date sorting
+        for (let i = 0; i < this.state.salesTemp.length; i++) {
+            if (
+                Date.parse(this.state.salesTemp[i].saleDate) >=
+                start &&
+                Date.parse(this.state.salesTemp[i].saleDate) <=
+                end
+            ) {
+                this.state.sales.push(this.state.salesTemp[i]);
+            }
+        }
+
+        for (let i = 0; i < this.state.salesTemp2.length; i++) {
+            if (
+                Date.parse(this.state.salesTemp2[i].saleDate) >=
+                start &&
+                Date.parse(this.state.salesTemp2[i].saleDate) <=
+                end
+            ) {
+                this.state.sales2.push(this.state.salesTemp2[i]);
+            }
+
+        }
+    }
+
+
     cashCheck(paymentMethod, fare) {
         if (paymentMethod === 'Cash') {
             return fare;
@@ -165,19 +199,35 @@ export default class ReportTableI extends Component {
                         bssize="medium"
                         variant="outline-danger"
                         onClick={() => {
+
+                            //filtering by date
                             let start = new Date(this.state.startDate);
                             let end = new Date(this.state.endDate);
                             start.setHours(0, 0, 0, 0);
                             end.setHours(0, 0, 0, 0);
 
-                            axios
-                                .get(apiLinks.BLANKS + '/byDate', {
-                                    params: { start, end },
-                                })
-                                .then((res) => {
-                                    const sales = res.data;
-                                    this.setState({ sales });
-                                });
+
+                            const f = this.state.sales2.filter(
+                                (i) => i.saleDate >= start
+                            );
+                            this.setState({ sales2: f });
+
+                            let l = [];
+                            for (let i = 0; i < this.state.sales.length; i++) {
+                                if (
+                                    Date.parse(this.state.sales[i].saleDate) >= start &&
+                                    Date.parse(this.state.sales[i].saleDate) <= end
+                                ) {
+                                    l.push(this.state.sales[i]);
+                                }
+                            }
+                            this.setState({sales:l});
+
+                            //filtering so only given advisor
+                            const d = this.state.sales2.filter(
+                                ( (i) => i.advisorCode === this.state.code
+                                ));
+                            this.setState({ sales2: d });
 
                             const dl = this.state.sales.filter(
                                 (i) => i.advisorCode === this.state.code
@@ -191,28 +241,6 @@ export default class ReportTableI extends Component {
                 </Fragment>
             );
         }
-        // else {
-        //     return (
-        //         <Fragment>
-        //             <Button
-        //                 bssize="medium"
-        //                 variant="outline-danger"
-        //                 onClick={() => {
-        //                     let start = new Date(this.state.startDate);
-        //                     let end = new Date(this.state.endDate);
-        //                     start.setHours(0, 0, 0, 0);
-        //                     end.setHours(0, 0, 0, 0);
-
-        //                     axios
-        //                         .get(apiLinks.BLANKS + '/byDate', {
-        //                             params: { start, end },
-        //                         })
-        //                         .then((res) => {
-        //                             const sales = res.data;
-        //                             this.setState({ sales });
-        //                         });
-
-        // }
         else {
             return (
                 <Fragment>
@@ -220,40 +248,7 @@ export default class ReportTableI extends Component {
                         bssize="medium"
                         variant="outline-danger"
                         onClick={() => {
-                            let start = new Date(this.state.startDate);
-                            let end = new Date(this.state.endDate);
-                            start.setHours(0, 0, 0, 0);
-                            end.setHours(0, 0, 0, 0);
-
-                            //Date sorting
-                            let l = [];
-                            for (let i = 0; i < this.state.sales.length; i++) {
-                                if (
-                                    Date.parse(this.state.sales[i].saleDate) >=
-                                        start &&
-                                    Date.parse(this.state.sales[i].saleDate) <=
-                                        end
-                                ) {
-                                    l.push(this.state.sales[i]);
-                                }
-                            }
-                            this.setState({ sales: l });
-                            /*
-                  axios
-                      .get(apiLinks.BLANKS + '/byDate', {
-                          params: { start, end }
-                      })
-                      .then(res => {
-                          const sales = res.data;
-                          this.setState({ sales });
-                      });
-
- */
-
-                            const dl = this.state.sales.filter(
-                                (i) => i.advisorCode === this.state.code
-                            );
-                            this.setState({ sales: dl });
+                            this.dateHandling();
                         }}
                     >
                         Enter Dates
