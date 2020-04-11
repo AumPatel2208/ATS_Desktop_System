@@ -247,6 +247,7 @@ export class SaleForm extends Component {
                 let z2 = parseInt(this.state.customers[i2].discountValue);
                 z = z1 - (z2 / 100) * z1;
             }
+
             //storing the sale in the database
 
 
@@ -341,7 +342,6 @@ export class SaleForm extends Component {
                     discountType: this.state.customers[i2].discountType,
                     paidThisMonth: parseFloat(x) + parseFloat(this.state.fare),
                 };
-                //TODO - DEAL W INCREASING DISCOUNT BASED ON FARE & LEVEL
 
                 axios
                     .put(
@@ -350,7 +350,7 @@ export class SaleForm extends Component {
                     )
                     .catch((err) => console.log('Error code: ', err));
             }
-           alert(this.state.tickNum + "has been sold");
+           alert(this.state.tickNum + " has been sold");
 
             this.props.history.push('/sales');
 
