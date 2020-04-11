@@ -136,11 +136,10 @@ class AddBlanks extends Component {
             .post(apiLinks.BLANKS, newblanks)
             .then((response) => {
                 console.log(response);
+                alert('Added: ' + this.state.batchValues);
             })
             .catch((err) => console.log('Error code: ', err));
         this.props.history.push('./blanks');
-
-        alert('Added: ' + this.state.batchValues);
     }
 
     render() {

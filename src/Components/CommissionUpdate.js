@@ -70,7 +70,7 @@ export class CommissionUpdate extends Component {
             }
         }
         //getting the commission to assign the correct value
-        let w=0;
+        let w = 0;
         for (var i = 0; i < this.state.commissions.length; i++) {
             if (this.state.commissions[i].name == this.state.dName) {
                 w = i;
@@ -97,6 +97,10 @@ export class CommissionUpdate extends Component {
             )
             .then((res) => {
                 console.log(res);
+                alert('Assigned');
+            })
+            .catch((err) => {
+                console.log('Error: ' + err);
             });
 
 

@@ -178,12 +178,10 @@ export class SaleForm extends Component {
 
     render() {
         function submitSale(event) {
-
             let dt = new Date(Date.now());
             dt.setHours(0, 0, 0, 0);
 
             event.preventDefault();
-
 
             var ad;
             {
@@ -193,45 +191,35 @@ export class SaleForm extends Component {
             }
 
             var cd;
-            if (this.state.tickNum.substring(0,3) == 440){
+            if (this.state.tickNum.substring(0, 3) == 440) {
                 this.props.staff !== undefined
                     ? (cd = `${this.props.staff.commissionRate440}`)
                     : (cd = '-');
-
-            }else if (this.state.tickNum.substring(0,3) == 444){
+            } else if (this.state.tickNum.substring(0, 3) == 444) {
                 this.props.staff !== undefined
                     ? (cd = `${this.props.staff.commissionRate444}`)
                     : (cd = '-');
-
-            } else if (this.state.tickNum.substring(0,3) == 420){
+            } else if (this.state.tickNum.substring(0, 3) == 420) {
                 this.props.staff !== undefined
                     ? (cd = `${this.props.staff.commissionRate420}`)
                     : (cd = '-');
-
-            }else if (this.state.tickNum.substring(0,3) == 201){
+            } else if (this.state.tickNum.substring(0, 3) == 201) {
                 this.props.staff !== undefined
                     ? (cd = `${this.props.staff.commissionRate201}`)
                     : (cd = '-');
             }
 
-            if (this.state.method !== 'payLater') {
-                this.setState({ hasPayed: true });
-            }
-
-
-
             //getting the correct customer and applying the discount to the fare
             //filtering by ID
             let i2;
-            for (let i =0; i<this.state.customers.length; i++){
-                if (this.state.customers[i]._id == this.state.custName){
+            for (let i = 0; i < this.state.customers.length; i++) {
+                if (this.state.customers[i]._id == this.state.custName) {
                     i2 = i;
                     break;
                 }
             }
 
-
-            let w = "Casual Customer";
+            let w = 'Casual Customer';
             if (this.state.customers[i2] !== undefined) {
                 w =
                     this.state.customers[i2].firstName +
@@ -239,18 +227,21 @@ export class SaleForm extends Component {
                     this.state.customers[i2].lastName;
             }
 
-
             let z;
 
-            if (w !== "Casual Customer") {
+            if (w !== 'Casual Customer') {
                 let z1 = parseInt(this.state.fare);
                 let z2 = parseInt(this.state.customers[i2].discountValue);
                 z = z1 - (z2 / 100) * z1;
             }
 
+            var payed = false;
+            if (this.state.method !== 'payLater') {
+                console.log(this.state.method);
+                this.setState({ hasPayed: true });
+                payed = true;
+            }
             //storing the sale in the database
-
-
             const newSale = {
                 ticketNumber: this.state.tickNum,
                 saleType: this.state.setType,
@@ -267,7 +258,7 @@ export class SaleForm extends Component {
                 advisorCode: ad,
                 saleDate: dt,
                 notes: this.state.notes,
-                hasPayed: this.state.hasPayed,
+                hasPayed: payed,
                 USDExchangeRate: this.state.exch[0].toUSDRate,
             };
             axios
@@ -277,7 +268,6 @@ export class SaleForm extends Component {
                     console.log(this.state.exch);
                 })
                 .catch((res) => console.log(res));
-
 
             //USING THE BLANK/ADDING TO THE USED DATABASE SECTION
             let d = new Date(Date.now());
@@ -301,10 +291,11 @@ export class SaleForm extends Component {
             let x = this.state.blanks[0].remaining;
             let y;
             for (var i = 0; i < x.length; i++) {
-                if (x[i] == this.state.tickNum) {y=i;}
+                if (x[i] == this.state.tickNum) {
+                    y = i;
+                }
             }
-                x.splice(y, 1);
-
+            x.splice(y, 1);
 
             const updatedBlank = {
                 batchValues: this.state.blanks[0].batchValues,
@@ -321,7 +312,7 @@ export class SaleForm extends Component {
                 .catch((err) => console.log('Error code: ', err));
 
             // updating customer account to reflect fare
-            if (w !== "Casual Customer") {
+            if (w !== 'Casual Customer') {
                 let x;
 
                 if (this.state.customers[i2].paidThisMonth != undefined) {
@@ -350,19 +341,17 @@ export class SaleForm extends Component {
                     )
                     .catch((err) => console.log('Error code: ', err));
             }
+
            alert(this.state.tickNum + " has been sold");
 
+
             this.props.history.push('/sales');
-
-
-
         }
 
         return (
             <Container>
                 <h2>Make a Sale</h2>
-                <Form onSubmit={submitSale.bind(this)
-                }>
+                <Form onSubmit={submitSale.bind(this)}>
                     <Dropdown
                         onSelect={(key) => {
                             this.setState({ method: key });
