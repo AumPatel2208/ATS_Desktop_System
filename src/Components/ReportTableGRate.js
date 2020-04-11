@@ -190,21 +190,35 @@ export default class ReportTableGRate extends Component {
             } else if (this.state.sales[x].paymentMethod === 'Cash') {
                 this.state.summedValues[y].cash += this.state.sales[x].fare;
             }
-            if (this.state.sales[x].commissionRate === '9') {
+            if (this.state.sales[x].commissionRate == '9') {
                 this.state.summedValues[y].c9 += this.state.sales[x].fare;
-            } else if (this.state.sales[x].commissionRate === '10') {
+            } else if (this.state.sales[x].commissionRate == '10') {
                 this.state.summedValues[y].c10 += this.state.sales[x].fare;
-            } else if (this.state.sales[x].commissionRate === '15') {
+            } else if (this.state.sales[x].commissionRate == '15') {
                 this.state.summedValues[y].c15 += this.state.sales[x].fare;
             }
+            else {
 
-            this.state.summedValues[y].taxo += this.state.sales[x].otherTax;
-            this.state.summedValues[y].taxl += this.state.sales[x].localTax;
+            }
+
+            this.state.summedValues[y].taxo += parseFloat(this.state.sales[x].otherTax);
+            this.state.summedValues[y].taxl += parseFloat(this.state.sales[x].localTax);
 
             this.state.summedValues[y].saleNum += 1;
             this.state.summedValues[y].total += this.state.sales[x].fare;
             this.state.summedValues[y].fare2 +=
                 this.state.sales[x].fare * this.state.sales[x].USDExchangeRate;
+
+            if (this.state.summedValues.c9 == undefined){
+                this.state.summedValues.c9 =0;
+            }
+            if (this.state.summedValues.c10 == undefined){
+                this.state.summedValues.c10 =0;
+            }
+            if (this.state.summedValues.c15 == undefined){
+                this.state.summedValues.c15 =0;
+            }
+
         }
     }
 
@@ -317,29 +331,23 @@ export default class ReportTableGRate extends Component {
                                 creditUSD,
                                 creditT,
                             }) => (
-                                <Fragment key={USDExchangeRate}>
-                                    {row(
-                                        USDExchangeRate,
-                                        saleNum,
-                                        total,
-                                        taxl,
-                                        taxo,
-                                        parseFloat(taxo) +
-                                            parseFloat(taxl) +
-                                            parseFloat(total),
-                                        cash,
-                                        creditT,
-                                        creditUSD,
-                                        credit,
-                                        parseFloat(taxo) +
-                                            parseFloat(taxl) +
-                                            parseFloat(total),
-                                        c15,
-                                        c10,
-                                        c9,
-                                        parseFloat(taxo) + parseFloat(taxl)
-                                    )}
-                                </Fragment>
+                                <tr key={USDExchangeRate}>
+                                       <td>{USDExchangeRate}</td>
+                                       <td>{saleNum}</td>
+                                        <td>{total}</td>
+                                       <td>{taxl}</td>
+                                        <td>{taxo}</td>
+                                        <td>{parseFloat(taxo) + parseFloat(taxl) + parseFloat(total)}</td>
+                                       <td>{cash}</td>
+                                        <td>{creditT}</td>
+                                    <td>{creditUSD.toString().substring(0,7)}</td>
+                                       <td>{credit}</td>
+                                        <td>{parseFloat(taxo) + parseFloat(taxl) + parseFloat(total)}</td>
+                                    <td>{c15}</td>
+                                       <td>{c10}</td>
+                                    <td>{c9}</td>
+                                    <td>{taxo + taxl}</td>
+                                </tr>
                             )
                         )}
                     </tbody>
@@ -384,7 +392,7 @@ export default class ReportTableGRate extends Component {
                             </td>
 
                             <td> {this.aggregate2(5)}</td>
-                            <td> {this.aggregate2(6)}</td>
+                            <td> {this.aggregate2(6).toString().substring(0,7)}</td>
                             <td> {this.aggregate2(7)}</td>
                             <td>
                                 {' '}

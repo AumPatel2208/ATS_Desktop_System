@@ -98,6 +98,10 @@ export class CommissionUpdate extends Component {
             .then((res) => {
                 console.log(res);
             });
+
+
+        alert("Commission Assigned");
+
     }
 
     render() {
