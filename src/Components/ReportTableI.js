@@ -46,7 +46,7 @@ export default class ReportTableI extends Component {
     componentDidMount() {
         //   let start = this.state.startDate;
         //let end = this.state.endDate;
-
+/*
         var ad;
         {
             this.props.staff !== undefined
@@ -54,6 +54,9 @@ export default class ReportTableI extends Component {
                 : (ad = 'undefined');
         }
 
+ */
+
+        /*
         if (ad !== 'OfficeManager') {
             var a;
             {
@@ -64,17 +67,15 @@ export default class ReportTableI extends Component {
 
             this.setState({ code: a });
 
+         */
+
             axios
                 .get(apiLinks.SALES)
                 .then((res) => {
                     const salesTemp = res.data;
                     this.setState({ salesTemp });
+                    this.setState({ salesTemp2:salesTemp });
 
-                    const dl = this.state.salesTemp.filter(
-                        (i) => i.advisorCode == a
-                    );
-                    this.setState({ salesTemp: dl });
-                    this.setState({ salesTemp2: dl });
 
                     const l = this.state.salesTemp.filter(
                         (i) => i.saleType == 'Domestic'
@@ -87,16 +88,6 @@ export default class ReportTableI extends Component {
                     this.setState({ salesTemp2: d });
                 })
                 .catch((err) => console.log('Error code: ', err));
-        } else {
-            axios
-                .get(apiLinks.SALES)
-                .then((res) => {
-                    const sales = res.data;
-                    this.setState({ sales });
-                })
-                .catch((err) => console.log('Error code: ', err));
-            this.setState({ setType: 'OM' });
-        }
     }
 
 
@@ -160,7 +151,7 @@ export default class ReportTableI extends Component {
                     <FormControl
                         autoFocus
                         type="string"
-                        value={this.state.sales.code}
+                        value={this.state.code}
                         onChange={(e) => {
                             this.setState({
                                 code: e.target.value,
@@ -172,41 +163,11 @@ export default class ReportTableI extends Component {
                         variant="outline-danger"
                         onClick={() => {
 
-                            //filtering by date
-                            let start = new Date(this.state.startDate);
-                            let end = new Date(this.state.endDate);
-                            start.setHours(0, 0, 0, 0);
-                            end.setHours(0, 0, 0, 0);
-
-
-                            const f = this.state.sales2.filter(
-                                (i) => i.saleDate >= start
-                            );
-                            this.setState({ sales2: f });
-
-                            let l = [];
-                            for (let i = 0; i < this.state.sales.length; i++) {
-                                if (
-                                    Date.parse(this.state.sales[i].saleDate) >= start &&
-                                    Date.parse(this.state.sales[i].saleDate) <= end
-                                ) {
-                                    l.push(this.state.sales[i]);
-                                }
-                            }
-                            this.setState({sales:l});
-
                             //filtering so only given advisor
-                            const d = this.state.sales2.filter(
-                                ( (i) => i.advisorCode === this.state.code
-                                ));
-                            this.setState({ sales2: d });
 
-                            const dl = this.state.sales.filter(
-                                (i) => i.advisorCode === this.state.code
-                            );
-                            this.setState({ sales: dl });
+                            this.dateHandling();
                         }}
-                        block
+
                     >
                         Filter Report
                     </Button>
@@ -395,6 +356,27 @@ export default class ReportTableI extends Component {
     }
 
     dateHandling() {
+        let a;
+        let w;
+        {
+            this.props.staff !== undefined
+                ? (a = `${this.props.staff.staffType}`)
+                : (a = '');
+        }
+
+
+
+        if (a == "TravelAdvisor"){
+            this.props.staff !== undefined
+                ? (w = `${this.props.staff.advisorCode}`)
+                : (w = '');
+        }else {
+            w = this.state.code
+            alert(w)
+
+        }
+
+
         let start = new Date(this.state.startDate);
         let end = new Date(this.state.endDate);
         start.setHours(0, 0, 0, 0);
@@ -406,7 +388,8 @@ export default class ReportTableI extends Component {
                 Date.parse(this.state.salesTemp[i].saleDate) >=
                 start &&
                 Date.parse(this.state.salesTemp[i].saleDate) <=
-                end
+                end &&
+                this.state.salesTemp[i].advisorCode == w
             ) {
                 this.state.sales.push(this.state.salesTemp[i]);
             }
@@ -421,9 +404,10 @@ export default class ReportTableI extends Component {
                 Date.parse(this.state.salesTemp2[i].saleDate) <=
                 end
             ) {
-                this.state.sales2.push(this.state.salesTemp2[i]);
+                if( this.state.salesTemp2[i].advisorCode == w) {
+                    this.state.sales2.push(this.state.salesTemp2[i]);
+                }
             }
-
         }
 
         this.componentDidMount()
