@@ -212,8 +212,7 @@ class Assignment extends Component {
                 <Table className="mt-4">
                     <thead>
                         <tr>
-                            <th>Batch Start</th>
-                            <th>Batch End</th>
+                            <th>Batch Values</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -224,7 +223,6 @@ class Assignment extends Component {
                                         {remaining.map((sub, i) => {
                                             return (
                                                 <tr key={i}>
-                                                    <td>{_id}</td>
                                                     <td> {sub.start}</td>
                                                     <td>{sub.end}</td>
                                                     <td>

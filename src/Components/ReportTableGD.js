@@ -116,9 +116,9 @@ export default class ReportTableGD extends Component {
                 );
             }
 
-            if (this.state.sales[x].commissionRate === '9') {
+            if (this.state.sales[x].commissionRate == '9') {
                 this.state.summedValues[y].c9 += this.state.sales[x].fare;
-            } else if (this.state.sales[x].commissionRate === '5') {
+            } else if (this.state.sales[x].commissionRate == '5') {
                 this.state.summedValues[y].c5 += this.state.sales[x].fare;
             }
             this.state.summedValues[y].tax += parseFloat(

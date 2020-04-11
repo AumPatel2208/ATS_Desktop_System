@@ -237,6 +237,10 @@ export class SaleForm extends Component {
                 z = this.state.fare;
             }
 
+            if (this.state.cCode == "USD"){
+                z = (this.state.fare /this.state.exch[0].toUSDRate).toFixed(3);
+            }
+
             var payed = false;
             if (this.state.method !== 'payLater') {
                 console.log(this.state.method);

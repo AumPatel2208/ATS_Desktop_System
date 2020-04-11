@@ -62,6 +62,9 @@ class AdvisorBlanks extends Component {
                 const l = this.state.blanks.filter( i => i.batchType == "Interline");
                 this.setState({ blanks: l });
 
+                const ll = this.state.blanks.filter( i => i.batchStart.substring(0,3) !== "101");
+                this.setState({ blanks: ll });
+
                 const c = this.state.blanksD.filter(i => i.batchType == "Domestic");
                 this.setState({ blanksD: c });
 
@@ -83,7 +86,7 @@ class AdvisorBlanks extends Component {
         return (
             <Container>
             <Tabs
-                defaultActiveKey="registerStaff"
+                defaultActiveKey="interlineBlanks"
                 transition={false}
                 id="uncontrolled-tab-example"
             >

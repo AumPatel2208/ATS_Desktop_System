@@ -78,7 +78,6 @@ export default class Discounts extends Component {
             }
         }
 
-        alert(this.state.discounts.length);
 
         let x = 0;
         if (this.state.dType === 'Fixed') {
@@ -87,7 +86,8 @@ export default class Discounts extends Component {
             let z = this.state.customers[i4].paidThisMonth;
             let z2 = this.state.discounts[i3];
 
-            if (z < z2.flexibleBand1) {
+
+            if (parseInt(z) < parseInt(z2.flexibleBand1)) {
                 x = z2.band1Value;
             } else if (z >= z2.flexibleBand1 && z < z2.flexibleBand2) {
                 x = z2.band2Value;
@@ -118,7 +118,7 @@ export default class Discounts extends Component {
         alert(
             'Discount: ' +
                 this.state.dName +
-                'has been assigned to: ' +
+                ' has been assigned to: ' +
                 this.state.customers[i4].firstName +
                 this.state.customers[i4].lastName
         );
