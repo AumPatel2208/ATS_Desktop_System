@@ -44,30 +44,6 @@ export default class ReportTableI extends Component {
 
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
-        //   let start = this.state.startDate;
-        //let end = this.state.endDate;
-/*
-        var ad;
-        {
-            this.props.staff !== undefined
-                ? (ad = `${this.props.staff.staffType}`)
-                : (ad = 'undefined');
-        }
-
- */
-
-        /*
-        if (ad !== 'OfficeManager') {
-            var a;
-            {
-                this.props.staff !== undefined
-                    ? (a = `${this.props.staff.advisorCode}`)
-                    : (a = '');
-            }
-
-            this.setState({ code: a });
-
-         */
 
             axios
                 .get(apiLinks.SALES)
@@ -91,7 +67,7 @@ export default class ReportTableI extends Component {
     }
 
 
-
+//checking if displaying fare for cash or credit
     cashCheck(paymentMethod, fare) {
         if (paymentMethod === 'Cash') {
             return fare;
@@ -107,6 +83,7 @@ export default class ReportTableI extends Component {
             return 0;
         }
     }
+    //checkign which commission to display the fare with
     commissionCheck10(commission, fare) {
         if (commission == '10') {
             return fare;
@@ -138,6 +115,9 @@ export default class ReportTableI extends Component {
     }
 
     roleHandler() {
+        //handles the display of report (travel advisor can only access their own, whereas the office manager can
+        //search for a specific advisor code
+
         var ad;
         {
             this.props.staff !== undefined
@@ -163,8 +143,7 @@ export default class ReportTableI extends Component {
                         variant="outline-danger"
                         onClick={() => {
 
-                            //filtering so only given advisor
-
+                            //filtering dates
                             this.dateHandling();
                         }}
 
@@ -192,6 +171,7 @@ export default class ReportTableI extends Component {
     }
 
     aggregate(value) {
+        //adding totals for total table at the end - DOMESTIC
         let x = 0;
         if (value === 1) {
             for (var i = 0; i < this.state.sales.length; i++) {
@@ -257,6 +237,8 @@ export default class ReportTableI extends Component {
 
 
     aggregate2(value) {
+        //adding totals for total table at the end - INTERLINE
+
         let x = 0;
         if (value === 1) {
             for (var i = 0; i < this.state.sales2.length; i++) {
@@ -359,6 +341,8 @@ export default class ReportTableI extends Component {
     dateHandling() {
         let a;
         let w;
+
+        //setting code based on if given (advisor) or entered (manager)
         {
             this.props.staff !== undefined
                 ? (a = `${this.props.staff.staffType}`)

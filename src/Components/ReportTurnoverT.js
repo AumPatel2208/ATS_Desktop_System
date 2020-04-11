@@ -237,6 +237,7 @@ export default class ReportTurnoverT extends Component {
     }
 
     finalRemainTable() {
+        //setting up a new array so the remaining will display correctly
     for (let i = 0; i < this.state.allBlanks.length; i++) {
         let len = this.state.allBlanks[i].remaining.length;
         if (len === 0) continue;
