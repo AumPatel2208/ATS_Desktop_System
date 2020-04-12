@@ -21,6 +21,8 @@ export default class RatesForm extends Component {
     };
 
     handleSubmit(event) {
+        //adds a new exchange rate into the system
+
         const newRate = {
             currencyCode: this.state.code,
             date: Date.now(),
@@ -108,9 +110,6 @@ export default class RatesForm extends Component {
                     <br></br>
                     <FormLabel>Search For Rates By Date </FormLabel>
                     <DatePicker
-                        //selected = {this.state.date}
-                        //  onSelect= { e=> this.setState({date: e.target.value})}
-                        //onChange={ e=> this.setState({date: e.target.value})}
                         selected={this.state.dateE}
                         onChange={(date) => {
                             this.setState({
@@ -123,7 +122,6 @@ export default class RatesForm extends Component {
                         variant="outline-primary"
                         onClick={() => {
                             let start = this.state.dateE;
-                            //(apiLinks.EXCHANGERATES + '/byDate', {params: {start}})
                             axios
                                 .get(apiLinks.EXCHANGERATES + '/byDate', {
                                     params: { start },

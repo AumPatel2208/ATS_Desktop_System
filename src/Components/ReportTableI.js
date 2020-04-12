@@ -44,30 +44,6 @@ export default class ReportTableI extends Component {
 
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
-        //   let start = this.state.startDate;
-        //let end = this.state.endDate;
-/*
-        var ad;
-        {
-            this.props.staff !== undefined
-                ? (ad = `${this.props.staff.staffType}`)
-                : (ad = 'undefined');
-        }
-
- */
-
-        /*
-        if (ad !== 'OfficeManager') {
-            var a;
-            {
-                this.props.staff !== undefined
-                    ? (a = `${this.props.staff.advisorCode}`)
-                    : (a = '');
-            }
-
-            this.setState({ code: a });
-
-         */
 
             axios
                 .get(apiLinks.SALES)
@@ -91,7 +67,7 @@ export default class ReportTableI extends Component {
     }
 
 
-
+//checking if displaying fare for cash or credit
     cashCheck(paymentMethod, fare) {
         if (paymentMethod === 'Cash') {
             return fare;
@@ -101,12 +77,13 @@ export default class ReportTableI extends Component {
     }
 
     creditCheck(paymentMethod, fare) {
-        if (paymentMethod === 'Credit') {
+        if (paymentMethod === 'CreditCard') {
             return fare;
         } else {
             return 0;
         }
     }
+    //checkign which commission to display the fare with
     commissionCheck10(commission, fare) {
         if (commission == '10') {
             return fare;
@@ -123,14 +100,14 @@ export default class ReportTableI extends Component {
     }
 
     commissionCheck9(commission, fare) {
-        if (commission === '9') {
+        if (commission == '9') {
             return fare;
         } else {
             return 0;
         }
     }
     commissionCheck5(commission, fare) {
-        if (commission === '5') {
+        if (commission == '5') {
             return fare;
         } else {
             return 0;
@@ -138,6 +115,9 @@ export default class ReportTableI extends Component {
     }
 
     roleHandler() {
+        //handles the display of report (travel advisor can only access their own, whereas the office manager can
+        //search for a specific advisor code
+
         var ad;
         {
             this.props.staff !== undefined
@@ -163,8 +143,7 @@ export default class ReportTableI extends Component {
                         variant="outline-danger"
                         onClick={() => {
 
-                            //filtering so only given advisor
-
+                            //filtering dates
                             this.dateHandling();
                         }}
 
@@ -192,6 +171,7 @@ export default class ReportTableI extends Component {
     }
 
     aggregate(value) {
+        //adding totals for total table at the end - DOMESTIC
         let x = 0;
         if (value === 1) {
             for (var i = 0; i < this.state.sales.length; i++) {
@@ -216,7 +196,7 @@ export default class ReportTableI extends Component {
             return x;
         } else if (value === 4) {
             for (var i = 0; i < this.state.sales.length; i++) {
-                if (this.state.sales[i].paymentMethod === 'Credit') {
+                if (this.state.sales[i].paymentMethod === 'CreditCard') {
                     x += parseFloat(this.state.sales[i].fare);
                 }
             }
@@ -228,21 +208,21 @@ export default class ReportTableI extends Component {
             return x;
         } else if (value === 6) {
             for (var i = 0; i < this.state.sales.length; i++) {
-                if (this.state.sales[i].commissionRate === 9) {
+                if (this.state.sales[i].commissionRate == 9) {
                     x += this.state.sales[i].fare;
                 }
             }
             return x;
         } else if (value === 7) {
             for (var i = 0; i < this.state.sales.length; i++) {
-                if (this.state.sales[i].commissionRate === 5) {
+                if (this.state.sales[i].commissionRate == 5) {
                     x += this.state.sales[i].fare;
                 }
             }
             return x;
         } else if (value === 8) {
             for (var i = 0; i < this.state.sales.length; i++) {
-                if (this.state.sales[i].paymentMethod === 'Credit') {
+                if (this.state.sales[i].paymentMethod === 'CreditCard') {
                     x +=
                         parseFloat(this.state.sales[i].fare) *
                         parseFloat(this.state.sales[i].USDExchangeRate);
@@ -257,6 +237,8 @@ export default class ReportTableI extends Component {
 
 
     aggregate2(value) {
+        //adding totals for total table at the end - INTERLINE
+
         let x = 0;
         if (value === 1) {
             for (var i = 0; i < this.state.sales2.length; i++) {
@@ -281,7 +263,7 @@ export default class ReportTableI extends Component {
             return x;
         } else if (value === 4) {
             for (var i = 0; i < this.state.sales2.length; i++) {
-                if (this.state.sales2[i].paymentMethod === 'Credit') {
+                if (this.state.sales2[i].paymentMethod === 'CreditCard') {
                     x += parseFloat(this.state.sales2[i].fare);
                 }
             }
@@ -293,14 +275,14 @@ export default class ReportTableI extends Component {
             return x;
         } else if (value === 6) {
             for (var i = 0; i < this.state.sales2.length; i++) {
-                if (this.state.sales2[i].commissionRate === 9) {
+                if (this.state.sales2[i].commissionRate == 9) {
                     x += this.state.sales2[i].fare;
                 }
             }
             return x;
         } else if (value === 7) {
             for (var i = 0; i < this.state.sales2.length; i++) {
-                if (this.state.sales2[i].commissionRate === 10) {
+                if (this.state.sales2[i].commissionRate == 10) {
                     x += this.state.sales2[i].fare;
                 }
             }
@@ -312,14 +294,14 @@ export default class ReportTableI extends Component {
             return x;
         } else if (value === 9) {
             for (var i = 0; i < this.state.sales2.length; i++) {
-                if (this.state.sales2[i].commissionRate === 15) {
+                if (this.state.sales2[i].commissionRate == 15) {
                     x += this.state.sales2[i].fare;
                 }
             }
             return x;
         } else if (value === 10) {
             for (var i = 0; i < this.state.sales2.length; i++) {
-                if (this.state.sales2[i].paymentMethod === 'Credit') {
+                if (this.state.sales2[i].paymentMethod === 'CreditCard') {
                     let y =
                         parseFloat(this.state.sales2[i].fare) *
                         parseFloat(this.state.sales2[i].USDExchangeRate);
@@ -335,7 +317,7 @@ export default class ReportTableI extends Component {
     toPDF() {
         var pdf = new jsPDF('l', 'pt', 'A4');
         pdf.setFontSize(10);
-        pdf.text('For Advisor: ' + this.state.code, 50, 20);
+        pdf.text('Individual Domestic Report', 50, 20);
         var source = document.getElementById('export');
         pdf.autoTable({ html: '#export' });
         pdf.autoTable({ html: '#export2' });
@@ -345,6 +327,7 @@ export default class ReportTableI extends Component {
     toPDFB() {
         var pdf = new jsPDF('l', 'pt', 'A4');
         pdf.setFontSize(9);
+        pdf.text('Individual Interline Report', 50, 20);
         pdf.autoTable({ html: '#exportB' });
         pdf.autoTable({ html: '#exportB3' });
         pdf.autoTable({ html: '#exportB2' });
@@ -358,6 +341,8 @@ export default class ReportTableI extends Component {
     dateHandling() {
         let a;
         let w;
+
+        //setting code based on if given (advisor) or entered (manager)
         {
             this.props.staff !== undefined
                 ? (a = `${this.props.staff.staffType}`)
@@ -477,7 +462,7 @@ export default class ReportTableI extends Component {
                             return (
                                 <tr>
                                     <td>{ticketNumber}</td>
-                                    <td> {fare}</td>
+                                    <td> {fare.toString().substring(0,7)}</td>
                                     <td>
                                         {(fare * USDExchangeRate).toFixed(
                                             3
@@ -548,7 +533,7 @@ export default class ReportTableI extends Component {
                     <tbody>
                     <tr>
                         <td>{this.state.sales.length}</td>
-                        <td> {this.aggregate(1)}</td>
+                        <td> {this.aggregate(1).toFixed(3)}</td>
                         <td> {this.aggregate(2).toFixed(3)}</td>
                         <td> {this.aggregate(3)}</td>
                         <td> {this.aggregate(4).toFixed(3)}</td>
@@ -563,10 +548,10 @@ export default class ReportTableI extends Component {
                         </td>
                         <td>
                             {' '}
-                            {this.aggregate(6) +
+                            {(this.aggregate(6) +
                             this.aggregate(7) -
                             (this.aggregate(6) * 0.09 +
-                                this.aggregate(7) * 0.05)}
+                                this.aggregate(7) * 0.05)).toFixed(3)}
                         </td>
                     </tr>
                     </tbody>
@@ -740,9 +725,9 @@ export default class ReportTableI extends Component {
                         <td> {this.aggregate2(5)}</td>
                         <td>
                             {' '}
-                            {parseFloat(this.aggregate2(1)) +
+                            {(parseFloat(this.aggregate2(1)) +
                             parseFloat(this.aggregate2(5)) +
-                           parseFloat( this.aggregate2(8))}
+                           parseFloat( this.aggregate2(8))).toFixed(3)}
                         </td>
 
                         <td> {this.aggregate2(3)}</td>
@@ -755,33 +740,33 @@ export default class ReportTableI extends Component {
                         <td>{this.aggregate2(7)}</td>
                         <td>{this.aggregate2(6)}</td>
 
-                        <td>{parseFloat(this.aggregate2(5)) +parseFloat( this.aggregate2(8))}</td>
+                        <td>{((parseFloat(this.aggregate2(5)) +parseFloat( this.aggregate2(8))).toFixed(3)).toString().substring(0,7)}</td>
                         <td>
                             {' '}
-                            {this.aggregate2(9) * 0.15 +
+                            {(this.aggregate2(9) * 0.15 +
                             this.aggregate2(7) * 0.1 +
-                            this.aggregate2(6) * 0.09}
+                            this.aggregate2(6) * 0.09).toFixed(3)}
                         </td>
                         <td>
                             {' '}
-                            {this.aggregate2(9) +
+                            {(this.aggregate2(9) +
                             this.aggregate2(7) +
                             this.aggregate2(6) -
                             this.aggregate2(9) * 0.15 +
                             this.aggregate2(7) * 0.1 +
-                            this.aggregate2(6) * 0.09}
+                            this.aggregate2(6) * 0.09).toFixed(3)}
                         </td>
                         <td>
                             {' '}
                             {
-                                parseFloat(this.aggregate2(9)) +
+                                (parseFloat(this.aggregate2(9)) +
                                 parseFloat(this.aggregate2(7)) +
                             parseFloat(this.aggregate2(6)) +
                             parseFloat(this.aggregate2(8)) +
                             parseFloat(this.aggregate2(5)) -
                                 (parseFloat(this.aggregate2(9)) * 0.15 )+
                                 (parseFloat(this.aggregate2(7)) * 0.1) +
-                                (parseFloat(this.aggregate2(6)) * 0.09)}
+                                (parseFloat(this.aggregate2(6)) * 0.09)).toFixed(3)}
                         </td>
                     </tr>
                     </tbody>

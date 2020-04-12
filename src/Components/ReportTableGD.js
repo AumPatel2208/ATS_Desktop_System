@@ -49,6 +49,7 @@ export default class ReportTableGD extends Component {
     }
 
     toPDF() {
+        //for pdf export
         var pdf = new jsPDF('l', 'pt', 'A4');
         var source = document.getElementById('export');
         pdf.text('Global Domestic Report', 50, 40);
@@ -74,7 +75,6 @@ export default class ReportTableGD extends Component {
                 l.push(this.state.sales[i]);
             }
         }
-        // this.setState({sales: l});
 
         //aggregating the sales together
         var x = 0,
@@ -116,9 +116,9 @@ export default class ReportTableGD extends Component {
                 );
             }
 
-            if (this.state.sales[x].commissionRate === '9') {
+            if (this.state.sales[x].commissionRate == '9') {
                 this.state.summedValues[y].c9 += this.state.sales[x].fare;
-            } else if (this.state.sales[x].commissionRate === '5') {
+            } else if (this.state.sales[x].commissionRate == '5') {
                 this.state.summedValues[y].c5 += this.state.sales[x].fare;
             }
             this.state.summedValues[y].tax += parseFloat(
@@ -194,34 +194,6 @@ export default class ReportTableGD extends Component {
     }
 
     render() {
-        const row = (
-            advisorCode,
-            saleNum,
-            currency,
-            USDExchangeRate,
-            commissionRate,
-            saleDate,
-            cash,
-            credit,
-            cheque,
-            total
-        ) => (
-            <Fragment>
-                <tr key={advisorCode}>
-                    <td>{advisorCode}</td>
-                    <td>{saleNum}</td>
-                    <td>{currency}</td>
-                    <td>{USDExchangeRate}</td>
-                    <td>{commissionRate}</td>
-                    <td>{saleDate}</td>
-                    <td>{cash}</td>
-                    <td>{credit}</td>
-                    <td>{cheque}</td>
-                    <td>{total}</td>
-                    <td></td>
-                </tr>
-            </Fragment>
-        );
 
         return (
             <Container>

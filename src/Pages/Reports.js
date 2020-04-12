@@ -87,10 +87,10 @@ export default function Reports(props) {
                                 Individual
                             </Dropdown.Item>
                             <Dropdown.Item eventKey="Global by Advisor">
-                                Global By Advisor
+                                Global Interline By Advisor
                             </Dropdown.Item>
                             <Dropdown.Item eventKey="Global by Rate">
-                                Global By Rate
+                                Global Interline By Rate
                             </Dropdown.Item>
                             <Dropdown.Item eventKey="Global Domestic">
                                 Global Domestic

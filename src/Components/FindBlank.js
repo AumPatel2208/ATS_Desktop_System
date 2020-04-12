@@ -38,9 +38,12 @@ class FindBlank extends Component {
     }
 
     async handleSearch() {
+        //x is the value being looked for
         let x = parseInt(this.state.find);
         let i2;
         let i3;
+
+        //searching the unassigned blanks to find if the value has ever been added
         for (i = 0; i < this.state.blanksf.length; i++) {
             if (
                 this.state.blanksf[i].batchStart <= x &&
@@ -51,6 +54,7 @@ class FindBlank extends Component {
             }
         }
 
+        //checking in assigned blanks
         for (i = 0; i < this.state.blanksa.length; i++) {
             if (
                 this.state.blanksa[i].batchStart <= x &&
@@ -96,6 +100,7 @@ class FindBlank extends Component {
                         break;
                     }
                 }
+                //if it exists, but isn't in remaining in assigned or available, it's used
                 if (l === this.state.blanksa[i2].remaining.length) {
                     let i4 = 0;
                     for (i = 0; i < this.state.blanksu.length; i++) {
@@ -104,19 +109,18 @@ class FindBlank extends Component {
                             break;
                         }
                     }
-                    alert(i4);
                     alert(
                         this.state.find +
-                            ' has been used by advisor ' +
-                            this.state.blanksu[i4].advisorCode +
-                            ' and sold to ' +
-                            this.state.blanksu[i4].custName
+                        ' has been used by advisor ' +
+                        this.state.blanksu[i4].advisorCode +
+                        ' and sold to ' +
+                        this.state.blanksu[i4].custName
                     );
                 } else {
                     alert(
                         this.state.find +
-                            ' has been assigned to advisor ' +
-                            this.state.blanksa[i2].advisorCode
+                        ' has been assigned to advisor ' +
+                        this.state.blanksa[i2].advisorCode
                     );
                 }
             }

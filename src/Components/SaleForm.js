@@ -104,6 +104,7 @@ export class SaleForm extends Component {
     }
 
     creditHandler() {
+        //if it's a credit sale, this will display extra places to input the credit card values
         if (this.state.method === 'CreditCard') {
             return (
                 <Fragment>
@@ -146,6 +147,7 @@ export class SaleForm extends Component {
     }
 
     taxHandler() {
+        //if it is an interline sale, this will give boxes to enter the extra values needed
         if (this.state.setType === 'Interline') {
             return (
                 <Fragment>
@@ -178,11 +180,15 @@ export class SaleForm extends Component {
 
     render() {
         function submitSale(event) {
+            //adds a new sale
+
             let dt = new Date(Date.now());
             dt.setHours(0, 0, 0, 0);
 
             event.preventDefault();
 
+            //handling to make sure correct commission rate is tagged to the sale based on ticket type
+            // and advisor commission values
             var ad;
             {
                 this.props.staff !== undefined
@@ -228,13 +234,17 @@ export class SaleForm extends Component {
             }
 
             let z;
-
+            //applying discount if valued customer
             if (w !== 'Casual Customer') {
                 let z1 = parseInt(this.state.fare);
                 let z2 = parseInt(this.state.customers[i2].discountValue);
                 z = z1 - (z2 / 100) * z1;
             }else {
                 z = this.state.fare;
+            }
+            //converting usd sale into local fare
+            if (this.state.cCode == "USD"){
+                z = (this.state.fare /this.state.exch[0].toUSDRate).toFixed(3);
             }
 
             var payed = false;

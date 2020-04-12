@@ -1,11 +1,8 @@
 import { Container, Table } from 'reactstrap';
 import {
     Button,
-    Dropdown,
-    Form,
-    FormControl,
-    FormGroup,
-    FormLabel
+    Tabs,
+    Tab,
 } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import React, { Component, Fragment } from 'react';
@@ -50,7 +47,7 @@ class AdvisorBlanks extends Component {
                 const blanks = res.data;
                 this.setState({ blanks });
 
-                //filtering so only assigned to the current advisor
+                //filtering so only assigned to the current advisor & correct ypes
                 const cl = this.state.blanks.filter(
                     i => i.advisorCode == cd
                 );
@@ -59,6 +56,9 @@ class AdvisorBlanks extends Component {
 
                 const l = this.state.blanks.filter( i => i.batchType == "Interline");
                 this.setState({ blanks: l });
+
+                const ll = this.state.blanks.filter( i => i.batchStart.substring(0,3) !== "101");
+                this.setState({ blanks: ll });
 
                 const c = this.state.blanksD.filter(i => i.batchType == "Domestic");
                 this.setState({ blanksD: c });
@@ -80,6 +80,14 @@ class AdvisorBlanks extends Component {
     render() {
         return (
             <Container>
+            <Tabs
+                defaultActiveKey="interlineBlanks"
+                transition={false}
+                id="uncontrolled-tab-example"
+            >
+            <Tab
+                eventKey="interlineBlanks" title="Interline Blanks"
+            >
                 <Table className="mt-4">
                     <thead>
                         <tr>
@@ -123,8 +131,9 @@ class AdvisorBlanks extends Component {
                         })}
                     </tbody>
                 </Table>
+            </Tab>
 
-
+<Tab                 eventKey="domesticBlanks" title="Domestic Blanks">
                 <Table className="mt-4">
                     <thead>
                     <tr>
@@ -168,6 +177,8 @@ class AdvisorBlanks extends Component {
                     })}
                     </tbody>
                 </Table>
+                </Tab>
+            </Tabs>
             </Container>
         );
     }

@@ -43,6 +43,7 @@ export default class ReportTableG extends Component {
     }
 
     toPDF() {
+        //transferring the tables to pdf
         var pdf = new jsPDF('l', 'pt', 'A4');
         var source = document.getElementById('export');
         pdf.text('Global Report By Advisor', 50, 40);
@@ -52,6 +53,7 @@ export default class ReportTableG extends Component {
         pdf.save('GlobalAdvisor.pdf');
     }
     aggregate2(value) {
+        //adding up values for display on the totals table
         let x = 0;
         if (value === 1) {
             for (var i = 0; i < this.state.summedValues.length; i++) {
@@ -117,6 +119,7 @@ export default class ReportTableG extends Component {
     }
 
     aggregateSales() {
+        //adding up values based on advisor code
         let start = new Date(this.state.startDate);
         let end = new Date(this.state.endDate);
         start.setHours(0, 0, 0, 0);
@@ -169,11 +172,11 @@ export default class ReportTableG extends Component {
             } else if (this.state.sales[x].paymentMethod === 'Cash') {
                 this.state.summedValues[y].cash += parseFloat(this.state.sales[x].fare);
             }
-            if (this.state.sales[x].commissionRate === '9') {
+            if (this.state.sales[x].commissionRate == '9') {
                 this.state.summedValues[y].c9 += this.state.sales[x].fare;
-            } else if (this.state.sales[x].commissionRate === '10') {
+            } else if (this.state.sales[x].commissionRate == '10') {
                 this.state.summedValues[y].c10 += this.state.sales[x].fare;
-            } else if (this.state.sales[x].commissionRate === '15') {
+            } else if (this.state.sales[x].commissionRate == '15') {
                 this.state.summedValues[y].c15 += this.state.sales[x].fare;
             }
 
@@ -188,35 +191,6 @@ export default class ReportTableG extends Component {
     }
 
     render() {
-        const row = (
-            advisorCode,
-            saleNum,
-            currency,
-            USDExchangeRate,
-            commissionRate,
-            saleDate,
-            cash,
-            credit,
-            cheque,
-            total
-        ) => (
-            <Fragment>
-                <tr key={advisorCode}>
-                    <td>{advisorCode}</td>
-                    <td>{saleNum}</td>
-                    <td>{currency}</td>
-                    <td>{USDExchangeRate}</td>
-                    <td>{commissionRate}</td>
-                    <td>{saleDate}</td>
-                    <td>{cash}</td>
-                    <td>{credit}</td>
-                    <td>{cheque}</td>
-                    <td>{total}</td>
-                    <td></td>
-                </tr>
-            </Fragment>
-        );
-
         return (
             <Container>
                 <br></br>
@@ -267,11 +241,13 @@ export default class ReportTableG extends Component {
                             <th>Fare</th>
                             <th>Local Tax</th>
                             <th>Other Tax</th>
+
                             <th>Document Total</th>
                             <th>Cash</th>
                             <th>Credit#</th>
                             <th>Credit(USD)</th>
                             <th>Credit(local)</th>
+
                             <th>Total Paid</th>
                             <th>Commission 15%</th>
                             <th>Commission 10%</th>
@@ -299,22 +275,22 @@ export default class ReportTableG extends Component {
                                 <tr key={advisorCode}>
                                     <td>{advisorCode}</td>
                                     <td>{saleNum}</td>
-                                    <td>{total}</td>
+                                    <td>{total.toString().substring(0,7)}</td>
                                     <td>{taxl}</td>
                                     <td>{taxo}</td>
-                                       <td>{ parseFloat(taxo) +
+                                       <td>{ (parseFloat(taxo) +
                                             parseFloat(taxl) +
-                                       parseFloat(total)}</td>
+                                       parseFloat(total)).toFixed(3)}</td>
                                     <td>{cash}</td>
                                     <td>{creditT}</td>
                                     <td>{creditUSD.toString().substring(0,7)}</td>
                                     <td>{credit}</td>
-                                       <td>{parseFloat(taxo) +
+                                       <td>{(parseFloat(taxo) +
                                             parseFloat(taxl) +
-                                       parseFloat(total)}</td>
+                                       parseFloat(total)).toFixed(3)}</td>
                                     <td>{c15}</td>
                                     <td>{c10}</td>
-                                    <td>{c9}</td>
+                                    <td>{c9.toString().substring(0,7)}</td>
                                     <td>{parseFloat(taxo) + parseFloat(taxl)}</td>
                                 </tr>
                             )
@@ -350,14 +326,14 @@ export default class ReportTableG extends Component {
                     <tbody>
                         <tr>
                             <td> {this.aggregate2(1)}</td>
-                            <td> {this.aggregate2(2)}</td>
+                            <td> {this.aggregate2(2).toFixed(3)}</td>
                             <td> {this.aggregate2(3)}</td>
                             <td> {this.aggregate2(4)}</td>
                             <td>
                                 {' '}
-                                {this.aggregate2(2) +
-                                    this.aggregate2(3) +
-                                    this.aggregate2(4)}
+                                {(parseFloat(this.aggregate2(2).toFixed(3)) +
+                                    parseFloat(this.aggregate2(3).toFixed(3)) +
+                                    parseFloat(this.aggregate2(4).toFixed(3)))}
                             </td>
 
                             <td> {this.aggregate2(5)}</td>
@@ -365,14 +341,14 @@ export default class ReportTableG extends Component {
                             <td> {this.aggregate2(7)}</td>
                             <td>
                                 {' '}
-                                {this.aggregate2(2) +
-                                    this.aggregate2(3) +
-                                    this.aggregate2(4)}
+                                {(parseFloat(this.aggregate2(2).toFixed(3)) +
+                                    parseFloat(this.aggregate2(3).toFixed(3)) +
+                                    parseFloat(this.aggregate2(4).toFixed(3)))}
                             </td>
 
                             <td> {this.aggregate2(8)}</td>
                             <td>{this.aggregate2(9)}</td>
-                            <td>{this.aggregate2(10)}</td>
+                            <td>{this.aggregate2(10).toFixed(3)}</td>
 
                             <td>{this.aggregate2(3) + this.aggregate2(4)}</td>
                             <td>
@@ -383,23 +359,23 @@ export default class ReportTableG extends Component {
                             </td>
                             <td>
                                 {' '}
-                                {this.aggregate2(8) +
+                                {(this.aggregate2(8) +
                                     this.aggregate2(9) +
                                     this.aggregate2(10) -
                                     (this.aggregate2(8) * 0.15 +
                                         this.aggregate2(9) * 0.1 +
-                                        this.aggregate2(10) * 0.09)}
+                                        this.aggregate2(10) * 0.09)).toFixed(3)}
                             </td>
                             <td>
                                 {' '}
-                                {this.aggregate2(8) +
+                                {(this.aggregate2(8) +
                                     this.aggregate2(9) +
                                     this.aggregate2(10) +
                                     this.aggregate2(3) +
                                     this.aggregate2(4) -
                                     (this.aggregate2(8) * 0.15 +
                                         this.aggregate2(9) * 0.1 +
-                                        this.aggregate2(10) * 0.09)}
+                                        this.aggregate2(10) * 0.09)).toFixed(3)}
                             </td>
                         </tr>
                     </tbody>
