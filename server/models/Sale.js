@@ -1,67 +1,69 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+
+// Scema for Sales
 const SaleSchema = new Schema({
     ticketNumber: {
-        type: String
+        type: String,
     },
     fare: {
-        type: Number
+        type: Number,
     },
     currency: {
-        type: String
+        type: String,
     },
     USDExchangeRate: {
-        type: Number
+        type: Number,
     },
     paymentMethod: {
-        type: String
+        type: String,
     },
     creditCardNum: {
-        type: String
+        type: String,
     },
     expDate: {
-        type: String
+        type: String,
     },
     securityCode: {
-        type: String
+        type: String,
     },
     commissionRate: {
-        type: Number
+        type: Number,
     },
     advisorCode: {
-        type: Number
+        type: Number,
     },
     saleDate: {
         type: String,
-        default: Date.now()
+        default: Date.now(),
     },
     paymentDate: {
-        type: String
+        type: String,
     },
     notes: {
-        type: String
+        type: String,
     },
     saleType: {
-        type: String
+        type: String,
     },
     localTax: {
-        type: String
+        type: String,
     },
     otherTax: {
-        type: String
+        type: String,
     },
     custName: {
-        type: String
+        type: String,
     },
     hasPayed: {
-        type: Boolean
+        type: Boolean,
     },
     isRefunded: {
-        type: Boolean
+        type: Boolean,
     },
     customerID: {
-        type: String
-    }
+        type: String,
+    },
 });
 // eslint-disable-next-line no-undef
 module.exports = Sale = mongoose.model('Sale', SaleSchema);

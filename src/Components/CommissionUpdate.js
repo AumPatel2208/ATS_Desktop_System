@@ -13,6 +13,7 @@ import {
 let apiLinks = require('../api/config.json');
 const _ = require('lodash'); //Library to Change Cases of things
 
+// Component to update commission rates
 export class CommissionUpdate extends Component {
     state = {
         commissions: [],
@@ -40,6 +41,8 @@ export class CommissionUpdate extends Component {
             discountValue: '',
         },
     };
+
+    // Load data from database via server
     componentDidMount() {
         axios
             .get(apiLinks.COMMISSIONRATE)
@@ -57,6 +60,7 @@ export class CommissionUpdate extends Component {
             })
             .catch((err) => console.log('Error code: ', err));
     }
+
     assignDiscount(e) {
         e.preventDefault();
 
@@ -103,11 +107,10 @@ export class CommissionUpdate extends Component {
                 console.log('Error: ' + err);
             });
 
-
-        alert("Commission Assigned");
-
+        alert('Commission Assigned');
     }
 
+    // Render component
     render() {
         return (
             <Container>

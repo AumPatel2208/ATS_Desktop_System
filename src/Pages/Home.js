@@ -4,11 +4,8 @@ import { Image, Row, Col, Button, Jumbotron } from 'react-bootstrap';
 import logo from '../assets/img/Uni-Verse.png';
 import { withRouter } from 'react-router';
 
+// Home page, displays the buttons appropriate for the pages the certain roles can access.
 class Home extends Component {
-    // constructor(props) {
-    //     super(props);
-    //     // this.roleHandler().bind(this);
-    // }
     roleHandler() {
         if (this.props.isAuthenticated) {
             if (this.props.staff.staffType === 'OfficeManager') {
@@ -327,6 +324,7 @@ class Home extends Component {
         }
     }
 
+    // Renders them
     render() {
         return (
             <Container>

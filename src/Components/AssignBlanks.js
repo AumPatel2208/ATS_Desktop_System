@@ -1,7 +1,5 @@
 import { Container, Table } from 'reactstrap';
-import {
-    Button
-} from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
@@ -9,6 +7,7 @@ import { Assignment } from './Assignment';
 import { withRouter } from 'react-router';
 let apiLinks = require('../api/config.json');
 
+// Assign Blanks Component
 class AssignBlanks extends Component {
     state = {
         batchValues: '',
@@ -20,8 +19,7 @@ class AssignBlanks extends Component {
         aBlanks: [],
     };
 
-    //runs when component mounts, use to gets the data from db
-
+    // runs when component mounts, use to gets the data from db
     componentDidMount() {
         axios.get(apiLinks.BLANKS).then((res) => {
             const blanks = res.data;
@@ -37,6 +35,7 @@ class AssignBlanks extends Component {
             this.setState({ aBlanks: t });
         });
     }
+
     onOpenClick(_id, i) {
         console.log(_id);
         this.props.history.push('./blanks/' + _id + '-' + i);
@@ -46,13 +45,8 @@ class AssignBlanks extends Component {
         this.props.history.push('./blankAssigned/' + _id + '-' + i);
     }
 
+    // Render Components
     render() {
-        /**
-         * Will return a Fragment to be used when mapping in the render function.
-         * Allows to break down the data into rows and TD.
-         * @param {The MongoDB ID of the object in the collection} _id
-         */
-
         return (
             <Container>
                 <h1>

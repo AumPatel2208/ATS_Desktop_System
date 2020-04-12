@@ -27,7 +27,7 @@ var CronJob = require('cron').CronJob;
 
 app.use(
     bodyParser.urlencoded({
-        extended: true
+        extended: true,
     })
 );
 app.use(bodyParser.json());
@@ -44,18 +44,19 @@ app.use(cors());
 mongoose.connect(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify: false
+    useFindAndModify: false,
 });
 
 // to test the connection
 const db = mongoose.connection;
-db.once('open', _ => {
+db.once('open', (_) => {
     console.log('connected to database:', url);
 });
-db.on('error', err => {
+db.on('error', (err) => {
     console.error('connection error:', err);
 });
 
+// API links for the server
 app.use('/api/blanks', blanks);
 app.use('/api/customers', customers);
 app.use('/api/exchangeRates', exchangeRates);
@@ -69,16 +70,17 @@ app.use('/api/blankAssigned', blankAssigned);
 app.use('/api/discounts', discounts);
 app.use('/api/commissionRates', commissionRates);
 
-
+// run on Localhost 5000
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
 
+// Creates a Backup regularly at
 // 12pm every day
 // '00 12 * 0-11 0-6'
 var job = new CronJob(
     '00 12 * 0-11 0-6',
-    function() {
+    function () {
         backupFunction('', true);
     },
     null,

@@ -14,6 +14,8 @@ import { GetUSer } from '../store/User';
 const _ = require('lodash'); //Library to Change Cases of things
 
 let apiLinks = require('../api/config.json');
+
+// Discount assigning Component
 export default class Discounts extends Component {
     state = {
         discounts: [],
@@ -78,7 +80,6 @@ export default class Discounts extends Component {
             }
         }
 
-
         let x = 0;
         if (this.state.dType === 'Fixed') {
             x = this.state.discounts[i3].fixedValue;
@@ -86,10 +87,12 @@ export default class Discounts extends Component {
             let z = this.state.customers[i4].paidThisMonth;
             let z2 = this.state.discounts[i3];
 
-
             if (parseInt(z) < parseInt(z2.flexibleBand1)) {
                 x = z2.band1Value;
-            } else if (parseInt(z) >= parseInt(z2.flexibleBand1) && parseInt(z) < parseInt(z2.flexibleBand2)) {
+            } else if (
+                parseInt(z) >= parseInt(z2.flexibleBand1) &&
+                parseInt(z) < parseInt(z2.flexibleBand2)
+            ) {
                 x = z2.band2Value;
             } else if (parseInt(z) >= parseInt(z2.flexibleBand2)) {
                 x = z2.band3Value;
@@ -124,6 +127,7 @@ export default class Discounts extends Component {
         );
     }
 
+    // Render
     render() {
         return (
             <Container>

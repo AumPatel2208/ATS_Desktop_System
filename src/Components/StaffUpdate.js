@@ -8,13 +8,14 @@ import {
     FormLabel,
     FormControl,
     Container,
-    Form
+    Form,
 } from 'react-bootstrap';
-import {CommissionUpdate} from "./CommissionUpdate";
+import { CommissionUpdate } from './CommissionUpdate';
 
 let apiLinks = require('../api/config.json');
 const _ = require('lodash'); //Library to Change Cases of things
 
+// Component to update the customer
 export class CustomerUpdate extends Component {
     state = {
         staff: {
@@ -26,28 +27,30 @@ export class CustomerUpdate extends Component {
             username: '',
             staffType: '',
             advisorCode: 0,
-            commisionRate: 0
-        }
+            commisionRate: 0,
+        },
     };
 
+    // Load data when component is mounted
     async componentDidMount() {
         const getLink =
             apiLinks.STAFFMEMBERS + '/' + this.props.match.params.id;
         if (!this.props.isNew)
             await axios
                 .get(getLink)
-                .then(res => {
+                .then((res) => {
                     const tempStaff = res.data;
                     // console.log(res);
 
                     this.setState({
                         ...this.state.staff,
-                        staff: tempStaff
+                        staff: tempStaff,
                     });
                 })
-                .catch(err => console.log('Error code: ', err));
+                .catch((err) => console.log('Error code: ', err));
     }
 
+    // render the form
     render() {
         function updateCustomer(e) {
             e.preventDefault();
@@ -58,7 +61,7 @@ export class CustomerUpdate extends Component {
                         apiLinks.STAFFMEMBERS + '/' + this.state.staff._id,
                         this.state.staff
                     )
-                    .then(res => {
+                    .then((res) => {
                         console.log(res);
                     });
             } else {
@@ -70,16 +73,18 @@ export class CustomerUpdate extends Component {
                     username: this.state.staff.username,
                     staffType: this.state.staff.staffType,
                     advisorCode: this.state.staff.advisorCode,
-                    commisionRate: this.state.staff.commisionRate
+                    commisionRate: this.state.staff.commisionRate,
                 };
                 axios
                     .post(apiLinks.STAFFMEMBERS, newCustomer)
-                    .then(response => {
+                    .then((response) => {
                         console.log(response);
                     })
-                    .catch(res => console.log(res));
+                    .catch((res) => console.log(res));
             }
         }
+
+        // Return the form
         return (
             <Form>
                 <form onSubmit={updateCustomer.bind(this)}>
@@ -89,12 +94,12 @@ export class CustomerUpdate extends Component {
                             autoFocus
                             type="String"
                             value={this.state.staff.firstName}
-                            onChange={e =>
+                            onChange={(e) =>
                                 this.setState({
                                     staff: {
                                         ...this.state.staff,
-                                        firstName: e.target.value
-                                    }
+                                        firstName: e.target.value,
+                                    },
                                 })
                             }
                         />
@@ -105,12 +110,12 @@ export class CustomerUpdate extends Component {
                             autoFocus
                             type="String"
                             value={this.state.staff.lastName}
-                            onChange={e =>
+                            onChange={(e) =>
                                 this.setState({
                                     staff: {
                                         ...this.state.staff,
-                                        lastName: e.target.value
-                                    }
+                                        lastName: e.target.value,
+                                    },
                                 })
                             }
                         />
@@ -121,12 +126,12 @@ export class CustomerUpdate extends Component {
                             autoFocus
                             type="String"
                             value={this.state.staff.address}
-                            onChange={e =>
+                            onChange={(e) =>
                                 this.setState({
                                     staff: {
                                         ...this.state.staff,
-                                        address: e.target.value
-                                    }
+                                        address: e.target.value,
+                                    },
                                 })
                             }
                         />
@@ -137,12 +142,12 @@ export class CustomerUpdate extends Component {
                             autoFocus
                             type="String"
                             value={this.state.staff.username}
-                            onChange={e =>
+                            onChange={(e) =>
                                 this.setState({
                                     staff: {
                                         ...this.state.staff,
-                                        username: e.target.value
-                                    }
+                                        username: e.target.value,
+                                    },
                                 })
                             }
                         />
@@ -153,12 +158,12 @@ export class CustomerUpdate extends Component {
                             autoFocus
                             type="Number"
                             value={this.state.staff.commisionRate}
-                            onChange={e =>
+                            onChange={(e) =>
                                 this.setState({
                                     staff: {
                                         ...this.state.staff,
-                                        commisionRate: e.target.value
-                                    }
+                                        commisionRate: e.target.value,
+                                    },
                                 })
                             }
                         />
@@ -169,12 +174,12 @@ export class CustomerUpdate extends Component {
                             autoFocus
                             type="Number"
                             value={this.state.staff.advisorCode}
-                            onChange={e =>
+                            onChange={(e) =>
                                 this.setState({
                                     staff: {
                                         ...this.state.staff,
-                                        advisorCode: e.target.value
-                                    }
+                                        advisorCode: e.target.value,
+                                    },
                                 })
                             }
                         />

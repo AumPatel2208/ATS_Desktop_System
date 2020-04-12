@@ -11,19 +11,20 @@ const _ = require('lodash'); //Library to Change Cases of things
 
 let apiLinks = require('../api/config.json');
 
+// Report Table Turnover
 export default class ReportTurnoverT extends Component {
     //Set the state to an empty list of objects that will be taken from the database
     state = {
         blanks: [],
-        blanks2:[],
+        blanks2: [],
         allBlanks: [],
         aBlanks: [],
-        anBlanks:[],
+        anBlanks: [],
         aBlanks2: [],
         allABlanks: [],
         finalRemainin: [],
         uBlanks: [],
-        uBlanks2:[],
+        uBlanks2: [],
         assigns: [],
         assign: 'assigned',
         batch: 'batchValues',
@@ -68,9 +69,9 @@ export default class ReportTurnoverT extends Component {
         });
     }
 
+    // Create PDF file
     toPDF() {
         //fetching and arranging what gets exported into the pdf
-
         var pdf = new jsPDF('l', 'pt', 'A4');
 
         pdf.text('Newly Received Blanks', 50, 20);
@@ -129,7 +130,7 @@ export default class ReportTurnoverT extends Component {
         pdf.save('TurnoverReport.pdf');
     }
 
-    dateHandling(){
+    dateHandling() {
         let start = new Date(this.state.startDate);
         let end = new Date(this.state.endDate);
         start.setHours(0, 0, 0, 0);
@@ -155,13 +156,15 @@ export default class ReportTurnoverT extends Component {
             }
         }
 
-
-
-//assigned from new during period
+        //assigned from new during period
         for (let i = 0; i < this.state.aBlanks.length; i++) {
-            for(let i2=0; i2<this.state.blanks.length; i2++){
-                if ((this.state.aBlanks[i].batchStart >= this.state.blanks[i2].batchStart)
-                    &&(this.state.aBlanks[i].batchEnd <= this.state.blanks[i2].batchEnd)){
+            for (let i2 = 0; i2 < this.state.blanks.length; i2++) {
+                if (
+                    this.state.aBlanks[i].batchStart >=
+                        this.state.blanks[i2].batchStart &&
+                    this.state.aBlanks[i].batchEnd <=
+                        this.state.blanks[i2].batchEnd
+                ) {
                     this.state.anBlanks.push(this.state.aBlanks2[i]);
                 }
             }
@@ -177,9 +180,7 @@ export default class ReportTurnoverT extends Component {
                 this.state.uBlanks.push(this.state.uBlanks2[i]);
             }
         }
-
     }
-
 
     generateTotals() {
         //getting totals
@@ -203,7 +204,6 @@ export default class ReportTurnoverT extends Component {
             x += parseInt(this.state.aBlanks[i].amount);
         }
         this.setState({ total3: x });
-
 
         //used blanks in period - used during block
         x = 0;
@@ -238,15 +238,15 @@ export default class ReportTurnoverT extends Component {
 
     finalRemainTable() {
         //setting up a new array so the remaining will display correctly
-    for (let i = 0; i < this.state.allBlanks.length; i++) {
-        let len = this.state.allBlanks[i].remaining.length;
-        if (len === 0) continue;
-        for (let i2 = 0; i2 < len; i2++) {
-            this.state.finalRemainin.push(
-                this.state.allBlanks[i].remaining[i2]
-            );
+        for (let i = 0; i < this.state.allBlanks.length; i++) {
+            let len = this.state.allBlanks[i].remaining.length;
+            if (len === 0) continue;
+            for (let i2 = 0; i2 < len; i2++) {
+                this.state.finalRemainin.push(
+                    this.state.allBlanks[i].remaining[i2]
+                );
+            }
         }
-    }
     }
 
     render() {
@@ -304,15 +304,12 @@ export default class ReportTurnoverT extends Component {
                     bssize="medium"
                     variant="outline-info"
                     onClick={async () => {
-
                         this.dateHandling();
 
                         const t = this.state.allABlanks.filter(
                             (i) => i.remaining[0] !== undefined
                         );
                         this.setState({ allABlanks: t });
-
-
 
                         this.generateTotals();
                         this.finalRemainTable();

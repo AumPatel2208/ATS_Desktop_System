@@ -11,6 +11,8 @@ import ReportTableGD from '../Components/ReportTableGD';
 
 // let apiLinks = require('../api/config.json');
 
+// Page for all the Reports
+// what is displayed is based on who is signed in
 export default function Reports(props) {
     const [tableType, setTableType] = useState('Select Report Type');
     const [tableCode, setTableCode] = useState('');

@@ -132,6 +132,7 @@ class TableOfSales extends Component {
         });
     }
 
+    // filter the table of sales
     filter() {
         if (
             !(
@@ -148,6 +149,7 @@ class TableOfSales extends Component {
             });
         }
     }
+    //reset the state
     async reset() {
         await axios
             .get('http://localhost:5000/api/sales')
@@ -159,6 +161,7 @@ class TableOfSales extends Component {
         // this.filterSales();
     }
 
+    //sort the table
     sortList(key) {
         this.setState({
             sales: []
@@ -166,9 +169,13 @@ class TableOfSales extends Component {
                 .sort((a, b) => (a[`${key}`] > b[`${key}`] ? 1 : -1)),
         });
     }
+
+    // dummy submit function
     onFakeSubmit(e) {
         e.preventDefault();
     }
+
+    //render table of sales
     render() {
         const findName = (id) => (
             <Fragment>

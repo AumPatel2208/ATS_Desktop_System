@@ -1,26 +1,26 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// Scema for Commission Rate
 const CommissionRateSchema = new Schema({
     name: {
-        type: String
+        type: String,
     },
     ticket440: {
-        type: Number
+        type: Number,
     },
     ticket444: {
-        type: Number
+        type: Number,
     },
     ticket420: {
-        type: Number
+        type: Number,
     },
     ticket201: {
-        type: Number
-    }
-
-
+        type: Number,
+    },
 });
 
-
-module.exports = CommissionRate = mongoose.model('CommissionRate', CommissionRateSchema);
-
+module.exports = CommissionRate = mongoose.model(
+    'CommissionRate',
+    CommissionRateSchema
+);

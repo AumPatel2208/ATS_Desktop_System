@@ -1,26 +1,23 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// Scema for Used Blanks
 const BlankUsedSchema = new Schema({
     batchValues: {
-        type: String
-
+        type: String,
     },
-    date:{
+    date: {
         type: Date,
-
     },
     advisorCode: {
-        type: Number
+        type: Number,
     },
     batchId: {
-        type: String
+        type: String,
     },
     custName: {
-        type: String
-    }
-
+        type: String,
+    },
 });
 
 module.exports = BlankUsed = mongoose.model('BlankUsed', BlankUsedSchema);
-

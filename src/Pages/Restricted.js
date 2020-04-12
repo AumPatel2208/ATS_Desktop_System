@@ -7,25 +7,26 @@ import fourOhFour from '../assets/img/Restricted.svg';
 // import astrodude from '../assets/img/astrodude.png';
 import Container from 'reactstrap/lib/Container';
 
-class App extends Component {
+// Restricted page, opens when someone tries to access a page that they have no access to.
+class Restricted extends Component {
     constructor(props) {
         super(props);
         this.state = {
             pageLoaded: false,
             fourOhFourLoaded: false,
             astrotop: '0px',
-            astroright: '0px'
+            astroright: '0px',
         };
     }
     componentDidMount() {
         this.setState({
-            pageLoaded: true
+            pageLoaded: true,
         });
     }
     onMouseMove(e) {
         this.setState({
             astrotop: e.clientY / 8 + 'px',
-            astroright: e.clientX / 8 + 'px'
+            astroright: e.clientX / 8 + 'px',
         });
     }
     render() {
@@ -41,21 +42,21 @@ class App extends Component {
                                 this.setState({
                                     fourOhFourLoaded: true,
                                     astrotop: '10px',
-                                    astroright: '30px'
+                                    astroright: '30px',
                                 });
                             }}
                             unmountOnExit
                         >
-                            {state => (
+                            {(state) => (
                                 <div
                                     className="res-fourOhFour flex justifyCenter"
-                                    onMouseMove={e => {
+                                    onMouseMove={(e) => {
                                         this.onMouseMove(e);
                                     }}
                                     onMouseOut={() => {
                                         this.setState({
                                             astrotop: '10px',
-                                            astroright: '30px'
+                                            astroright: '30px',
                                         });
                                     }}
                                 >
@@ -69,11 +70,11 @@ class App extends Component {
                             classNames="res-error-text"
                             unmountOnExit
                         >
-                            {state => (
+                            {(state) => (
                                 <div className="res-error-text flex justifyCenter">
                                     <h3
                                         style={{
-                                            color: 'white'
+                                            color: 'white',
                                         }}
                                     >
                                         Oops… Looks like you do not have access
@@ -90,4 +91,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default Restricted;

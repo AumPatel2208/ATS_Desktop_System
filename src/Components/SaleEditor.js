@@ -10,6 +10,7 @@ import {
 } from 'react-bootstrap';
 import axios from 'axios';
 
+// Edit a sale to either pay for it or to refund it.
 export default class SaleEditor extends Component {
     constructor(props) {
         super(props);
@@ -48,6 +49,8 @@ export default class SaleEditor extends Component {
                 console.log(err);
             });
     }
+
+    // Render the forms.
     render() {
         return (
             <Container>
@@ -58,7 +61,6 @@ export default class SaleEditor extends Component {
                             autoFocus
                             type="currency"
                             value={this.state.sale.currency}
-                            // onChange={e => this.setState(e.target.value)}
                             onChange={(e) => {
                                 var tempSale = this.state.sale;
                                 tempSale.currency = e.target.value;
@@ -74,7 +76,6 @@ export default class SaleEditor extends Component {
                             autoFocus
                             type="USDExchangeRate"
                             value={this.state.sale.USDExchangeRate}
-                            // onChange={e => this.setState(e.target.value)}
                             onChange={(e) => {
                                 var tempSale = this.state.sale;
                                 tempSale.USDExchangeRate = e.target.value;
@@ -86,19 +87,6 @@ export default class SaleEditor extends Component {
                     </FormGroup>
                     <FormGroup controlId="paymentMethod" bssize="large">
                         <FormLabel>paymentMethod</FormLabel>
-                        {/* <FormControl
-                        autoFocus
-                        type="paymentMethod"
-                        value={this.state.sale.paymentMethod}
-                        // onChange={e => this.setState(e.target.value)}
-                        onChange={(e) => {
-                            var tempSale = this.state.sale;
-                            tempSale.paymentMethod = e.target.value;
-                            this.setState({
-                                sale: tempSale,
-                            });
-                        }}
-                    /> */}
                         <Dropdown
                             onSelect={(key) => {
                                 this.setState({
@@ -132,7 +120,6 @@ export default class SaleEditor extends Component {
                             autoFocus
                             type="creditCardNum"
                             value={this.state.sale.creditCardNum}
-                            // onChange={e => this.setState(e.target.value)}
                             onChange={(e) => {
                                 var tempSale = this.state.sale;
                                 tempSale.creditCardNum = e.target.value;
@@ -148,7 +135,6 @@ export default class SaleEditor extends Component {
                             autoFocus
                             type="date"
                             value={this.state.sale.expDate}
-                            // onChange={e => this.setState(e.target.value)}
                             onChange={(e) => {
                                 var tempSale = this.state.sale;
                                 tempSale.expDate = e.target.value;
@@ -164,7 +150,6 @@ export default class SaleEditor extends Component {
                             autoFocus
                             type="securityCode"
                             value={this.state.sale.securityCode}
-                            // onChange={e => this.setState(e.target.value)}
                             onChange={(e) => {
                                 var tempSale = this.state.sale;
                                 tempSale.securityCode = e.target.value;
@@ -180,7 +165,6 @@ export default class SaleEditor extends Component {
                             autoFocus
                             type="date"
                             value={this.state.sale.paymentDate}
-                            // onChange={e => this.setState(e.target.value)}
                             onChange={(e) => {
                                 var tempSale = this.state.sale;
                                 tempSale.paymentDate = e.target.value;

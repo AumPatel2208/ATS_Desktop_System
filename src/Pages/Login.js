@@ -1,20 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import {
-    Button,
-    FormGroup,
-    FormControl,
-    FormLabel,
-    Fade,
-} from 'react-bootstrap';
+import { Button, FormGroup, FormControl, FormLabel } from 'react-bootstrap';
 import '../Styles/Login.css';
 import Container from 'reactstrap/lib/Container';
 import axios from 'axios';
-// import { useStoreState } from "pullstate";
-// import UserStore from "../store/UserStore";
-import CheckStore from '../store/CheckStore';
-import { useStoreState } from 'pullstate';
-import { UserStore } from '../store/UserStore.js';
-import { Redirect } from 'react-router-dom';
 
 let apiLinks = require('../api/config.json');
 
@@ -46,12 +34,6 @@ export default function Login(props) {
         return () => (mounted = false);
     }, []);
 
-    //Global State
-    // eslint-disable-next-line no-unused-vars
-    const User = useStoreState(UserStore, (s) => s.UserType);
-    // eslint-disable-next-line no-unused-vars
-    const IsAuthenticated = useStoreState(UserStore, (s) => s.IsAuthenticated);
-
     function handleSubmit(event) {
         // Headers
         const headersConfig = {
@@ -68,13 +50,8 @@ export default function Login(props) {
                 );
                 staff = { ...staff };
                 staff = staff[0];
-                // localStorage.setItem('token', res.data.token);
 
-                UserStore.update((s) => {
-                    s.User = staff;
-                    s.IsAuthenticated = true; // need to move later after jwtAuthentication
-                    setIsSignedIn(true);
-                });
+                setIsSignedIn(true);
             })
             .catch((err) => {
                 alert('Login Failed! \n Error: ' + err);

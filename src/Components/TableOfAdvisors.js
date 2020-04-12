@@ -118,7 +118,6 @@ class TableOfAdvisors extends Component {
                     <td>{commissionRate420}</td>
                     <td>{commissionRate201}</td>
                     <td>
-                        {/* <CustomerUpdate id={_id}></CustomerUpdate> */}
                         <Button
                             className="open-btn"
                             color="primary"
@@ -281,9 +280,9 @@ class TableOfAdvisors extends Component {
                                 username,
                                 advisorCode,
                                 commissionRate440,
-                                 commissionRate444,
-                                 commissionRate420,
-                                 commissionRate201
+                                commissionRate444,
+                                commissionRate420,
+                                commissionRate201,
                             }) => (
                                 <Fragment key={_id}>
                                     {row(

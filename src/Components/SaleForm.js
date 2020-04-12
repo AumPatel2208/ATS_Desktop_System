@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 let apiLinks = require('../api/config.json');
 
+// sale form component
 export class SaleForm extends Component {
     constructor(props) {
         super(props);
@@ -178,6 +179,7 @@ export class SaleForm extends Component {
         }
     }
 
+    // Render the components neccessary to show Sale Form
     render() {
         function submitSale(event) {
             //adds a new sale
@@ -239,12 +241,12 @@ export class SaleForm extends Component {
                 let z1 = parseInt(this.state.fare);
                 let z2 = parseInt(this.state.customers[i2].discountValue);
                 z = z1 - (z2 / 100) * z1;
-            }else {
+            } else {
                 z = this.state.fare;
             }
             //converting usd sale into local fare
-            if (this.state.cCode == "USD"){
-                z = (this.state.fare /this.state.exch[0].toUSDRate).toFixed(3);
+            if (this.state.cCode == 'USD') {
+                z = (this.state.fare / this.state.exch[0].toUSDRate).toFixed(3);
             }
 
             var payed = false;
@@ -354,8 +356,7 @@ export class SaleForm extends Component {
                     .catch((err) => console.log('Error code: ', err));
             }
 
-           alert(this.state.tickNum + " has been sold");
-
+            alert(this.state.tickNum + ' has been sold');
 
             this.props.history.push('/sales');
         }

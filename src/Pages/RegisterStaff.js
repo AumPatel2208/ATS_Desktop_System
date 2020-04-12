@@ -5,7 +5,6 @@ import {
     FormControl,
     FormLabel,
     Dropdown,
-    Form,
     Tabs,
     Tab,
 } from 'react-bootstrap';
@@ -16,8 +15,8 @@ import { CommissionUpdate } from '../Components/CommissionUpdate';
 import CommissionRates from '../Components/CommissionRates';
 
 let apiLinks = require('../api/config.json');
-// "proxy": "http://localhost:5000"
 
+// Register Staff or update staff based on the properties
 export default function RegisterStaff(props) {
     //state hooks
     const [username, setUsername] = useState('');
@@ -85,6 +84,7 @@ export default function RegisterStaff(props) {
         return () => (mounted = false);
     }, [props]);
 
+    // Create Staff member on submit
     function handleSubmit(event) {
         event.preventDefault();
 
@@ -124,6 +124,7 @@ export default function RegisterStaff(props) {
                   .catch((err) => console.log('Error code: ', err));
     }
 
+    // Return Form with Tabs for the commision rates
     return (
         <Container>
             <Tabs

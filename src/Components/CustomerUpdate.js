@@ -13,6 +13,7 @@ import {
 let apiLinks = require('../api/config.json');
 // const _ = require('lodash'); //Library to Change Cases of things
 
+// Update customer
 export class CustomerUpdate extends Component {
     state = {
         customer: {
@@ -29,6 +30,8 @@ export class CustomerUpdate extends Component {
             paidThisMonth: 0,
         },
     };
+
+    //Validation for the form
     validateForm() {
         return (
             this.state.customer.firstName.length > 0 &&
@@ -37,6 +40,8 @@ export class CustomerUpdate extends Component {
             this.state.customer.phoneNumber.length > 0
         );
     }
+
+    // Load customers into the database
     componentDidMount() {
         const getLink = apiLinks.CUSTOMERS + '/' + this.props.match.params.id;
         if (!this.props.isNew)
@@ -54,6 +59,7 @@ export class CustomerUpdate extends Component {
                 .catch((err) => console.log('Error code: ', err));
     }
 
+    // Render the components
     render() {
         async function updateCustomer(e) {
             e.preventDefault();

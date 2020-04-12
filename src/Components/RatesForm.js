@@ -1,17 +1,12 @@
 import { Button, Container, Table } from 'react-bootstrap';
 import React, { Component, Fragment } from 'react';
-import {
-    Dropdown,
-    Form,
-    FormControl,
-    FormGroup,
-    FormLabel,
-} from 'react-bootstrap';
+import { Form, FormControl, FormLabel } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import axios from 'axios';
 
 let apiLinks = require('../api/config.json');
 
+// component for the Rates Form
 export default class RatesForm extends Component {
     state = {
         rates: [],
@@ -40,6 +35,7 @@ export default class RatesForm extends Component {
             .catch((err) => console.log('Error code: ', err));
     }
 
+    // Render it
     render() {
         const row = (currencyCode, date, toUSDRate) => (
             <Fragment>

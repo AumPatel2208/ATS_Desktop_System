@@ -6,7 +6,7 @@ import {
     Form,
     FormControl,
     FormGroup,
-    FormLabel
+    FormLabel,
 } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import axios from 'axios';
@@ -14,6 +14,7 @@ import { withRouter } from 'react-router';
 
 let apiLinks = require('../api/config.json');
 
+// Component to assign blanks
 class Assignment extends Component {
     state = {
         batchValues: '',
@@ -31,8 +32,8 @@ class Assignment extends Component {
                 date: '',
                 batchType: '',
                 amount: '800',
-                remaining: []
-            }
+                remaining: [],
+            },
         ],
         myId: '',
         myIndex: '',
@@ -40,14 +41,12 @@ class Assignment extends Component {
     };
 
     //runs when component mounts, use to gets the data from db
-
     componentDidMount() {
         let empty = [];
         this.setState({ blanks: empty });
 
-
         const {
-            match: { params }
+            match: { params },
         } = this.props;
         const id = params.id.split('-');
         const id1 = id[0];
@@ -57,13 +56,15 @@ class Assignment extends Component {
 
         axios
             .get(apiLinks.BLANKS)
-            .then(res => {
+            .then((res) => {
                 const blanks = res.data;
                 this.setState({ blanks });
-                const bl = this.state.blanks.filter(i => String(i._id) === id1);
+                const bl = this.state.blanks.filter(
+                    (i) => String(i._id) === id1
+                );
                 this.setState({ blanks: bl });
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
     }
 
     onOpenClick(_id, i) {
@@ -85,8 +86,6 @@ class Assignment extends Component {
             batchValues: this.state.assignedBatch,
             advisorCode: this.state.code,
             batchId: this.state.myId,
-
-
         };
 
         e.preventDefault();
@@ -94,14 +93,16 @@ class Assignment extends Component {
 
         axios
             .post(apiLinks.ASSIGN, newAssignment)
-            .then(response => {
+            .then((response) => {
                 console.log(response);
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
 
         this.updateRemaining();
 
-        alert("Assigned: " +this.state.assignedBatch + " to " +this.state.code);
+        alert(
+            'Assigned: ' + this.state.assignedBatch + ' to ' + this.state.code
+        );
     }
 
     updateRemaining() {
@@ -146,22 +147,15 @@ class Assignment extends Component {
             date: this.state.blanks.date,
             batchType: this.state.blanks.batchType,
             amount: this.state.blanks.amount,
-            remaining: x
+            remaining: x,
         };
 
         axios
             .put(apiLinks.BLANKS + '/' + this.state.myId, updatedBlank)
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
     }
 
     render() {
-        /**
-         * Will return a Fragment to be used when mapping in the render function.
-         * Allows to break down the data into rows and TD.
-         * @param {The MongoDB ID of the object in the collection} _id
-         */
-
-
         return (
             <Container>
                 <Table className="mt-4">
@@ -199,7 +193,7 @@ class Assignment extends Component {
                         autoFocus
                         type="batchValues"
                         value={this.state.assignedBatch}
-                        onChange={e =>
+                        onChange={(e) =>
                             this.setState({ assignedBatch: e.target.value })
                         }
                     />
@@ -208,33 +202,46 @@ class Assignment extends Component {
                     <FormLabel>Advisor Code</FormLabel>
                     <FormControl
                         selected={this.state.code}
-                        onChange={e => this.setState({ code: e.target.value })}
+                        onChange={(e) =>
+                            this.setState({ code: e.target.value })
+                        }
                     />
                 </FormGroup>
                 <Button
-                    onClick={e => {
+                    onClick={(e) => {
                         console.log('hit');
-                        let x = String(this.state.assignedBatch).split("-")[0];
-                        let y = String(this.state.assignedBatch).split("-")[1];
+                        let x = String(this.state.assignedBatch).split('-')[0];
+                        let y = String(this.state.assignedBatch).split('-')[1];
 
                         //making sure values are within bounds of the batch they're being assigned from
                         var i;
-                        for (i=0; i< this.state.blanks[0].remaining.length; i++){
-                            if ((this.state.blanks[0].remaining[i].start <= x) &&(this.state.blanks[0].remaining[i].end >= y)){
-                                break
+                        for (
+                            i = 0;
+                            i < this.state.blanks[0].remaining.length;
+                            i++
+                        ) {
+                            if (
+                                this.state.blanks[0].remaining[i].start <= x &&
+                                this.state.blanks[0].remaining[i].end >= y
+                            ) {
+                                break;
                             }
                         }
-                        if (i === this.state.blanks[0].remaining.length){
-                            alert(this.state.assignedBatch + "is not part of this batch and cannot be assigned" + this.state.assignedBatch[0]._id);
+                        if (i === this.state.blanks[0].remaining.length) {
+                            alert(
+                                this.state.assignedBatch +
+                                    'is not part of this batch and cannot be assigned' +
+                                    this.state.assignedBatch[0]._id
+                            );
 
                             return;
-                        }else {
+                        } else {
                             this.assignBlanks(e);
                             this.updateRemaining();
                             this.props.history.push('./blanks');
                         }
 
-                        this.setState({blanks: []})
+                        this.setState({ blanks: [] });
                     }}
                 >
                     Assign Blanks
@@ -244,4 +251,3 @@ class Assignment extends Component {
     }
 }
 export default withRouter(Assignment);
-

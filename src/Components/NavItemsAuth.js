@@ -1,14 +1,9 @@
 import React, { Fragment } from 'react';
 import { NavItem, NavLink } from 'reactstrap';
-// import { useStoreState } from 'pullstate';
-// import { UserStore } from '../store/UserStore';
 import { Link } from 'react-router-dom';
-import { red } from '@material-ui/core/colors';
 
+// Returns the Nav items to be renered based on wether the user is authenticated or now
 export default function NavItemsAuth(props) {
-    //Global State
-    // const User = useStoreState(UserStore, s => s.User);
-    // const IsAuthenticated = useStoreState(UserStore, s => s.IsAuthenticated);
     const authLinks = (
         <Fragment>
             <NavItem>
@@ -17,7 +12,6 @@ export default function NavItemsAuth(props) {
                 </NavLink>
             </NavItem>
             <NavItem>
-                {/* <span className="navbar-text mr-3"> */}
                 <NavLink>
                     <strong>
                         {props.staff !== undefined
@@ -25,7 +19,6 @@ export default function NavItemsAuth(props) {
                             : 'UsernameNot found'}
                     </strong>
                 </NavLink>
-                {/* </span> */}
             </NavItem>
         </Fragment>
     );

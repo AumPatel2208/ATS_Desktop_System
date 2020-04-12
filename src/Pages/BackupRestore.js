@@ -12,6 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 const apiLinks = require('../api/config.json');
 
+// Backup and restore page
 function BackupRestore() {
     const [name, setName] = useState('');
     const [file, setFile] = useState('');

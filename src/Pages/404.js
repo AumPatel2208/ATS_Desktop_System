@@ -1,26 +1,3 @@
-// import React from 'react';
-// import { Link } from 'react-router-dom';
-
-// const NotFound = () => (
-//     <div>
-//         {/* <img
-//             src={PageNotFound}
-//             style={{
-//                 width: 400,
-//                 height: 400,
-//                 display: 'block',
-//                 margin: 'auto',
-//                 position: 'relative'
-//             }}
-//         /> */}
-//         <center>
-//             <h3>Error 404: Page Not Found</h3>
-//             <Link to="/">Return to Home Page</Link>
-//         </center>
-//     </div>
-// );
-// export default NotFound;
-
 import React, { Component } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
@@ -30,25 +7,26 @@ import fourOhFour from '../assets/img/fourOhFour.svg';
 // import astrodude from '../assets/img/astrodude.png';
 import Container from 'reactstrap/lib/Container';
 
-class App extends Component {
+// 404 page, renders if the user goes into wrong page
+class FourOFour extends Component {
     constructor(props) {
         super(props);
         this.state = {
             pageLoaded: false,
             fourOhFourLoaded: false,
             astrotop: '0px',
-            astroright: '0px'
+            astroright: '0px',
         };
     }
     componentDidMount() {
         this.setState({
-            pageLoaded: true
+            pageLoaded: true,
         });
     }
     onMouseMove(e) {
         this.setState({
             astrotop: e.clientY / 8 + 'px',
-            astroright: e.clientX / 8 + 'px'
+            astroright: e.clientX / 8 + 'px',
         });
     }
     render() {
@@ -64,21 +42,21 @@ class App extends Component {
                                 this.setState({
                                     fourOhFourLoaded: true,
                                     astrotop: '10px',
-                                    astroright: '30px'
+                                    astroright: '30px',
                                 });
                             }}
                             unmountOnExit
                         >
-                            {state => (
+                            {(state) => (
                                 <div
                                     className="fourOhFour flex justifyCenter"
-                                    onMouseMove={e => {
+                                    onMouseMove={(e) => {
                                         this.onMouseMove(e);
                                     }}
                                     onMouseOut={() => {
                                         this.setState({
                                             astrotop: '10px',
-                                            astroright: '30px'
+                                            astroright: '30px',
                                         });
                                     }}
                                 >
@@ -101,11 +79,11 @@ class App extends Component {
                             classNames="error-text"
                             unmountOnExit
                         >
-                            {state => (
+                            {(state) => (
                                 <div className="error-text flex justifyCenter">
                                     <h3
                                         style={{
-                                            color: 'white'
+                                            color: 'white',
                                         }}
                                     >
                                         Oops… Looks like you got lost
@@ -121,4 +99,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default FourOFour;

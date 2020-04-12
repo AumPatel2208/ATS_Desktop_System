@@ -14,6 +14,8 @@ import { GetUSer } from '../store/User';
 const _ = require('lodash'); //Library to Change Cases of things
 
 let apiLinks = require('../api/config.json');
+
+// Discount Component
 export default class Discounts extends Component {
     state = {
         discounts: [],
@@ -72,6 +74,7 @@ export default class Discounts extends Component {
             .catch((err) => console.log('Error code: ', err));
     }
 
+    // Create a new discount and save it into the database
     createDiscount(e) {
         //adds a new discount into the database
         e.preventDefault();
@@ -102,6 +105,7 @@ export default class Discounts extends Component {
         console.log(_id);
     }
 
+    // Render components : Table with all the data
     render() {
         const row = (
             name,

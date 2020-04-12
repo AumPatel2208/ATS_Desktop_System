@@ -1,23 +1,8 @@
-import React, { useState, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { Container } from 'reactstrap';
-import ReportTurnoverT from '../Components/ReportTurnoverT';
-// import {
-//     Button,
-//     Dropdown,
-//     Form,
-//     FormControl,
-//     FormGroup,
-//     FormLabel
-// } from 'react-bootstrap';
-
-import axios from 'axios';
-import DatePicker from 'react-datepicker';
 import AddBlanks from '../Components/AddBlanks';
 import AssignBlanks from '../Components/AssignBlanks';
-import { useStoreState } from 'pullstate';
-import { UserStore } from '../store/UserStore';
 import FindBlank from '../Components/FindBlank';
-let apiLinks = require('../api/config.json');
 
 export default function Blanks(props) {
     const manager = (
@@ -38,6 +23,7 @@ export default function Blanks(props) {
         </Container>
     );
 
+    // Handles what to display the appropriate components based on role
     function displayHandler() {
         var ad;
         {

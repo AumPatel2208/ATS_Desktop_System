@@ -1,52 +1,49 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+
+// Scema for Staff
 const StaffSchema = new Schema({
     firstName: {
-        type: String
+        type: String,
         // required: true
     },
     lastName: {
-        type: String
+        type: String,
         // required: true
     },
     address: {
-        type: String
+        type: String,
         // required: true
     },
     username: {
-        type: String
+        type: String,
         //required: true
     },
 
     password: {
-        type: String
+        type: String,
         // required: true
     },
     staffType: {
-        type: String
+        type: String,
         //required: true
     },
     advisorCode: {
-        type: Number
+        type: Number,
         // required: true
     },
     commissionRate440: {
-        type: Number
-
+        type: Number,
     },
     commissionRate444: {
-        type: Number
-
+        type: Number,
     },
     commissionRate420: {
-        type: Number
-
+        type: Number,
     },
     commissionRate201: {
-        type: Number
-
-    }
-
+        type: Number,
+    },
 });
 // eslint-disable-next-line no-undef
 module.exports = Staff = mongoose.model('Staff', StaffSchema);

@@ -41,7 +41,7 @@
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
-        "dev": "concurrently \"cd server && yarn start\" \"yarn start\""
+        "dev": "concurrently \"cd server && yarn start\" \"yarn electron-dev\""
     },
     "eslintConfig": {
         "extends": "react-app"

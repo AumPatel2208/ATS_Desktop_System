@@ -4,6 +4,7 @@ const Sale = require('../models/Sale');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 
+// Insert sale into the system
 router.post('/', (q, a) => {
     console.log('ad code' + q.body.advisorCode);
     console.log('commission' + q.body.commissionRate);

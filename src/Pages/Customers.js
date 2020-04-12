@@ -4,6 +4,7 @@ import TableOfCustomers from '../Components/TableOfCustomers';
 import Discount from '../Components/Discounts';
 import AssignDiscount from '../Components/AssignDiscount';
 
+// Display customers, assigning discounts, displaying discounts etc.
 export default function Customers(props) {
     const officeManager = (
         <Fragment>

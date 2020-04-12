@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const config = require('./db');
 
+// Configurating for securing using JWT
 function secure(q, a, next) {
     const token = q.header('x-auth-token');
 

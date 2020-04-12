@@ -1,8 +1,10 @@
 const config = require('./config/db');
 const terminal = require('child_process').exec;
 
+// Function that performs the backup.
+// If no name is provided it will create a name based on the date
+// It runs a command on the terminal that uses the MongoDB CLI.
 module.exports = function backup(name, isAuto) {
-    // if (!name) name = '';
     var path = '.';
     if (name === '') {
         var today = new Date();
@@ -18,7 +20,7 @@ module.exports = function backup(name, isAuto) {
     const command =
         'mongodump --uri="' + config.URI + '" --out="' + path + '" --gzip';
 
-    terminal(command, err => {
+    terminal(command, (err) => {
         if (err) {
             var msg = () => {
                 return (

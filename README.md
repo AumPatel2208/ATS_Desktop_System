@@ -1,21 +1,28 @@
 # Team Project
 
-- Please run command before trying to run project:
-    - `yarn install` installs the dependancies for frontend
-    - `cd server` move into server directory
-    - `yarn install` installs the dependancies for the backend
-- to run project
-    - `yarn electron-dev` or `yarn start` start as desktop app or website
-    - `cd server` move into server directory
-    - `yarn start` run server
+-   Please run command before trying to run project:
+    -   `yarn install` installs the dependancies for frontend
+    -   `cd server` move into server directory
+    -   `yarn install` installs the dependancies for the backend
+-   to run project
 
+    -   `yarn electron-dev` or `yarn start` start as desktop app or website
+    -   `cd server` move into server directory
+    -   `yarn start` run server
+
+-   The list of dependancies can be found in the respective package.json files under dependancies.
+-   In the submission we shall include the dependancies. However it is best to run `yarn install` to install them.
 
 ## Disclaimer
-Please install before running:
-- NodeJS (npm)
-- Yarn
 
-### On Macs:
+Please install before running:
+
+-   NodeJS (npm)
+-   Yarn
+-   MongoDB
+
+### Macs:
+
 If you do not have Homebrew, install by:
 `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`
 
@@ -23,17 +30,23 @@ then you can:
 `brew install node`
 `brew install yarn`
 
-### On Windows:
-You gotta be a **scrub** and go through the *install wizard*.
+Follow `https://docs.mongodb.com/manual/installation/` for instructions on installing a local mongoDB and run it
 
+-   To populate DB, can restore from backups via system or just use the system.
 
+### Windows:
+
+`https://www.npmjs.com/get-npm`
+`https://classic.yarnpkg.com/en/docs/install/#windows-stable`
+`https://docs.mongodb.com/manual/installation/`
 
 ## Available Scripts
 
 In the project directory, you can run:
 
 ### `yarn electron-dev`
-- Run as an Electron Application
+
+-   Run as an Electron Application when developing
 
 ### `yarn start`
 

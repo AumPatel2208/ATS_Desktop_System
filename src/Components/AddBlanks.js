@@ -1,12 +1,13 @@
-import { Container, Table } from 'reactstrap';
+import { Container } from 'reactstrap';
 import { Button, FormControl, FormGroup, FormLabel } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import { withRouter } from 'react-router';
 
 let apiLinks = require('../api/config.json');
 
+// Component to Add Blanks into the database
 class AddBlanks extends Component {
     state = {
         batchValues: '',
@@ -23,27 +24,36 @@ class AddBlanks extends Component {
     };
 
     //runs when component mounts, use to gets the data from db
-
     componentDidMount() {
         this.setState({ find: '' });
-    //getting blanks and setting to database values
-        axios.get(apiLinks.BLANKS).then((res) => {
-            const blanks = res.data;
-            this.setState({ blanks });
-            this.setState({ blanksf: blanks });
-        });
+        //getting blanks and setting to database values
+        axios
+            .get(apiLinks.BLANKS)
+            .then((res) => {
+                const blanks = res.data;
+                this.setState({ blanks });
+                this.setState({ blanksf: blanks });
+            })
+            .catch((err) => console.log(err));
 
-        axios.get(apiLinks.ASSIGN).then((res) => {
-            const blanksa = res.data;
-            this.setState({ blanksa });
-        });
+        axios
+            .get(apiLinks.ASSIGN)
+            .then((res) => {
+                const blanksa = res.data;
+                this.setState({ blanksa });
+            })
+            .catch((err) => console.log(err));
 
-        axios.get(apiLinks.USED).then((res) => {
-            const blanksu = res.data;
-            this.setState({ blanksu });
-        });
+        axios
+            .get(apiLinks.USED)
+            .then((res) => {
+                const blanksu = res.data;
+                this.setState({ blanksu });
+            })
+            .catch((err) => console.log(err));
     }
 
+    // handling deletion of data from database
     async handleDelete(e) {
         let zzz = this.state.toDelete.split('-');
         let z, z2;
@@ -102,7 +112,6 @@ class AddBlanks extends Component {
 
         x.splice(i, 1);
 
-
         //putting updated values back into the database
         const updatedBlank = {
             _id: this.state.blanks[0]._id,
@@ -145,6 +154,7 @@ class AddBlanks extends Component {
         this.props.history.push('./blanks');
     }
 
+    // Renders the Forms
     render() {
         return (
             <Container>

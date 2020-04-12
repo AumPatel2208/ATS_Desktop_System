@@ -9,6 +9,7 @@ const _ = require('lodash'); //Library to Change Cases of things
 
 let apiLinks = require('../api/config.json');
 
+// Display the Late payments
 class LatePayments extends Component {
     mounted = false; //to make sure server process is stopped
     //Set the state to an empty list of objects that will be taken from the database
@@ -32,9 +33,8 @@ class LatePayments extends Component {
             .catch((err) => {
                 console.log(err);
             });
-        // this.filterSales();
-        //get customers and match using customerID on the data
 
+        //get customers and match using customerID on the data
         await axios
             .get('/api/customers')
             .then((res) => {
@@ -80,8 +80,9 @@ class LatePayments extends Component {
         tempToDisplay.sort((a, b) => a.daysLeft - b.daysLeft);
         this.setState({ toDisplay: tempToDisplay });
     }
+
+    // calculates number of days since sale
     numberOfDaysSinceSale(date) {
-        // console.log(date);
         const saleDate = new Date(date);
         const todaysDate = new Date();
 
@@ -89,6 +90,8 @@ class LatePayments extends Component {
 
         return diff / (1000 * 60 * 60 * 24);
     }
+
+    // Render the table
     render() {
         /**
          * Will return a Fragment to be used when mapping in the render function.

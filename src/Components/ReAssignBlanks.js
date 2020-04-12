@@ -6,12 +6,12 @@ import {
     Table,
     Container,
 } from 'react-bootstrap';
-// import DatePicker from 'react-datepicker';
 import React, { Component } from 'react';
 import axios from 'axios';
 
 let apiLinks = require('../api/config.json');
 
+// ReAssign blanks componnent
 export class ReAssignBlanks extends Component {
     state = {
         batchValues: '',
@@ -26,7 +26,6 @@ export class ReAssignBlanks extends Component {
     };
 
     //runs when component mounts, use to gets the data from db
-
     componentDidMount() {
         let empty = [];
         this.setState({ blanks: empty });
@@ -51,8 +50,6 @@ export class ReAssignBlanks extends Component {
             const bl = this.state.blanks.filter((i) => String(i._id) === id1);
             this.setState({ blanks: bl });
         });
-
-        // this.filterStuff();
     }
 
     onOpenClick(_id) {
@@ -63,6 +60,7 @@ export class ReAssignBlanks extends Component {
         console.log(_id);
     }
 
+    // Update remaining blanks
     updateRemaining() {
         //ADDS IN A NEW ASSIGNMENT UNDER NEW ADVISOR
         let k = this.state.assignedBatch.split(',');
@@ -96,7 +94,6 @@ export class ReAssignBlanks extends Component {
                 i++;
             }
             z.splice(i, 1);
-
         }
 
         const updatedBlank = {
@@ -114,6 +111,7 @@ export class ReAssignBlanks extends Component {
         axios.put(apiLinks.ASSIGN + '/' + this.state.myId, updatedBlank);
     }
 
+    // Render the component
     render() {
         return (
             <Container>

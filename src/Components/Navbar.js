@@ -16,8 +16,8 @@ import '../Styles/Nav.css';
 import Reports from '../Pages/Reports';
 import { Image } from 'react-bootstrap';
 import logo from '../assets/img/Uni-Verse.png';
-// const User = useStoreState(UserStore, s => s.UserType);
-// const IsAuthenticated = useStoreState(UserStore, s => s.IsAuthenticated);
+
+// Navbar component
 class Navigation extends Component {
     constructor(props) {
         super(props);
@@ -36,6 +36,7 @@ class Navigation extends Component {
         });
     };
 
+    // returns what to render based on the role of the staff member logged in.
     roleHandler() {
         var ad;
         {
@@ -104,11 +105,6 @@ class Navigation extends Component {
         } else if (ad === 'OfficeManager') {
             return (
                 <Nav>
-                    {/* <NavItem>
-                        <NavLink tag={Link} to="/">
-                            Home
-                        </NavLink>
-                    </NavItem> */}
                     <NavItem>
                         <NavLink tag={Link} to="/customers">
                             Customers
@@ -168,16 +164,12 @@ class Navigation extends Component {
         }
     }
 
+    // Render the navbar.
     render() {
         return (
             <Navbar className="Navigation" light expand="md">
                 <NavbarToggler onClick={this.toggle} />
                 <NavbarBrand href="/">
-                    {/* <NavLink>
-                        <h1>ATS Air VIA</h1>
-                    </NavLink> */}
-
-                    {/* <img src={logo} alt="Uni-Verse Tech"></img> */}
                     <Image
                         src={logo}
                         alt="Uni-Verse Tech"

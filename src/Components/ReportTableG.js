@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Table } from 'reactstrap';
 import { Container, Button } from 'react-bootstrap';
 import axios from 'axios';
@@ -9,6 +9,8 @@ import jsPDF from 'jspdf';
 const _ = require('lodash'); //Library to Change Cases of things
 
 let apiLinks = require('../api/config.json');
+
+// Report Table
 export default class ReportTableG extends Component {
     //Set the state to an empty list of objects that will be taken from the database
     state = {
@@ -42,6 +44,7 @@ export default class ReportTableG extends Component {
         console.log(e, _id);
     }
 
+    // Create PDF file
     toPDF() {
         //transferring the tables to pdf
         var pdf = new jsPDF('l', 'pt', 'A4');
@@ -164,13 +167,17 @@ export default class ReportTableG extends Component {
                 y = this.state.summedValues.push(this.state.dict) - 1;
             }
             if (this.state.sales[x].paymentMethod === 'CreditCard') {
-                this.state.summedValues[y].credit += parseFloat(this.state.sales[x].fare);
+                this.state.summedValues[y].credit += parseFloat(
+                    this.state.sales[x].fare
+                );
                 this.state.summedValues[y].creditUSD +=
                     this.state.sales[x].fare *
                     this.state.sales[x].USDExchangeRate;
                 this.state.summedValues[y].creditT += 1;
             } else if (this.state.sales[x].paymentMethod === 'Cash') {
-                this.state.summedValues[y].cash += parseFloat(this.state.sales[x].fare);
+                this.state.summedValues[y].cash += parseFloat(
+                    this.state.sales[x].fare
+                );
             }
             if (this.state.sales[x].commissionRate == '9') {
                 this.state.summedValues[y].c9 += this.state.sales[x].fare;
@@ -180,16 +187,24 @@ export default class ReportTableG extends Component {
                 this.state.summedValues[y].c15 += this.state.sales[x].fare;
             }
 
-            this.state.summedValues[y].taxo += parseFloat(this.state.sales[x].otherTax);
-            this.state.summedValues[y].taxl += parseFloat(this.state.sales[x].localTax);
+            this.state.summedValues[y].taxo += parseFloat(
+                this.state.sales[x].otherTax
+            );
+            this.state.summedValues[y].taxl += parseFloat(
+                this.state.sales[x].localTax
+            );
 
             this.state.summedValues[y].saleNum += 1;
-            this.state.summedValues[y].total += parseFloat(this.state.sales[x].fare);
+            this.state.summedValues[y].total += parseFloat(
+                this.state.sales[x].fare
+            );
             this.state.summedValues[y].fare2 +=
-                parseFloat(this.state.sales[x].fare) * parseFloat(this.state.sales[x].USDExchangeRate);
+                parseFloat(this.state.sales[x].fare) *
+                parseFloat(this.state.sales[x].USDExchangeRate);
         }
     }
 
+    // Display the table
     render() {
         return (
             <Container>
@@ -275,23 +290,35 @@ export default class ReportTableG extends Component {
                                 <tr key={advisorCode}>
                                     <td>{advisorCode}</td>
                                     <td>{saleNum}</td>
-                                    <td>{total.toString().substring(0,7)}</td>
+                                    <td>{total.toString().substring(0, 7)}</td>
                                     <td>{taxl}</td>
                                     <td>{taxo}</td>
-                                       <td>{ (parseFloat(taxo) +
+                                    <td>
+                                        {(
+                                            parseFloat(taxo) +
                                             parseFloat(taxl) +
-                                       parseFloat(total)).toFixed(3)}</td>
+                                            parseFloat(total)
+                                        ).toFixed(3)}
+                                    </td>
                                     <td>{cash}</td>
                                     <td>{creditT}</td>
-                                    <td>{creditUSD.toString().substring(0,7)}</td>
+                                    <td>
+                                        {creditUSD.toString().substring(0, 7)}
+                                    </td>
                                     <td>{credit}</td>
-                                       <td>{(parseFloat(taxo) +
+                                    <td>
+                                        {(
+                                            parseFloat(taxo) +
                                             parseFloat(taxl) +
-                                       parseFloat(total)).toFixed(3)}</td>
+                                            parseFloat(total)
+                                        ).toFixed(3)}
+                                    </td>
                                     <td>{c15}</td>
                                     <td>{c10}</td>
-                                    <td>{c9.toString().substring(0,7)}</td>
-                                    <td>{parseFloat(taxo) + parseFloat(taxl)}</td>
+                                    <td>{c9.toString().substring(0, 7)}</td>
+                                    <td>
+                                        {parseFloat(taxo) + parseFloat(taxl)}
+                                    </td>
                                 </tr>
                             )
                         )}
@@ -331,19 +358,22 @@ export default class ReportTableG extends Component {
                             <td> {this.aggregate2(4)}</td>
                             <td>
                                 {' '}
-                                {(parseFloat(this.aggregate2(2).toFixed(3)) +
+                                {parseFloat(this.aggregate2(2).toFixed(3)) +
                                     parseFloat(this.aggregate2(3).toFixed(3)) +
-                                    parseFloat(this.aggregate2(4).toFixed(3)))}
+                                    parseFloat(this.aggregate2(4).toFixed(3))}
                             </td>
 
                             <td> {this.aggregate2(5)}</td>
-                            <td> {this.aggregate2(6).toString().substring(0,7)}</td>
+                            <td>
+                                {' '}
+                                {this.aggregate2(6).toString().substring(0, 7)}
+                            </td>
                             <td> {this.aggregate2(7)}</td>
                             <td>
                                 {' '}
-                                {(parseFloat(this.aggregate2(2).toFixed(3)) +
+                                {parseFloat(this.aggregate2(2).toFixed(3)) +
                                     parseFloat(this.aggregate2(3).toFixed(3)) +
-                                    parseFloat(this.aggregate2(4).toFixed(3)))}
+                                    parseFloat(this.aggregate2(4).toFixed(3))}
                             </td>
 
                             <td> {this.aggregate2(8)}</td>
@@ -359,23 +389,27 @@ export default class ReportTableG extends Component {
                             </td>
                             <td>
                                 {' '}
-                                {(this.aggregate2(8) +
+                                {(
+                                    this.aggregate2(8) +
                                     this.aggregate2(9) +
                                     this.aggregate2(10) -
                                     (this.aggregate2(8) * 0.15 +
                                         this.aggregate2(9) * 0.1 +
-                                        this.aggregate2(10) * 0.09)).toFixed(3)}
+                                        this.aggregate2(10) * 0.09)
+                                ).toFixed(3)}
                             </td>
                             <td>
                                 {' '}
-                                {(this.aggregate2(8) +
+                                {(
+                                    this.aggregate2(8) +
                                     this.aggregate2(9) +
                                     this.aggregate2(10) +
                                     this.aggregate2(3) +
                                     this.aggregate2(4) -
                                     (this.aggregate2(8) * 0.15 +
                                         this.aggregate2(9) * 0.1 +
-                                        this.aggregate2(10) * 0.09)).toFixed(3)}
+                                        this.aggregate2(10) * 0.09)
+                                ).toFixed(3)}
                             </td>
                         </tr>
                     </tbody>

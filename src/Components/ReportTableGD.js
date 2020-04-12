@@ -15,6 +15,8 @@ import jsPDF from 'jspdf';
 const _ = require('lodash'); //Library to Change Cases of things
 
 let apiLinks = require('../api/config.json');
+
+// Report Table
 export default class ReportTableGD extends Component {
     //Set the state to an empty list of objects that will be taken from the database
     state = {
@@ -48,6 +50,7 @@ export default class ReportTableGD extends Component {
         console.log(e, _id);
     }
 
+    // Create PDF file
     toPDF() {
         //for pdf export
         var pdf = new jsPDF('l', 'pt', 'A4');
@@ -194,7 +197,6 @@ export default class ReportTableGD extends Component {
     }
 
     render() {
-
         return (
             <Container>
                 <br></br>
@@ -274,16 +276,17 @@ export default class ReportTableGD extends Component {
                                     <td>{advisorCode}</td>
                                     <td>{saleNum}</td>
                                     <td>{total}</td>
-                                    <td>{fare2.toString().substring(0,7)}</td>
+                                    <td>{fare2.toString().substring(0, 7)}</td>
                                     <td>{tax}</td>
                                     <td>{cash}</td>
                                     <td>{creditT}</td>
-                                    <td>{creditUSD.toString().substring(0,7)}</td>
+                                    <td>
+                                        {creditUSD.toString().substring(0, 7)}
+                                    </td>
                                     <td>{credit}</td>
                                     <td>{total}</td>
                                     <td>{c9}</td>
                                     <td>{c5}</td>
-
                                 </tr>
                             )
                         )}
@@ -313,10 +316,16 @@ export default class ReportTableGD extends Component {
                         <tr>
                             <td> {this.aggregate2(1)}</td>
                             <td> {this.aggregate2(2)}</td>
-                            <td> {this.aggregate2(3).toString().substring(0,7)}</td>
+                            <td>
+                                {' '}
+                                {this.aggregate2(3).toString().substring(0, 7)}
+                            </td>
                             <td> {this.aggregate2(4)}</td>
                             <td> {this.aggregate2(5)}</td>
-                            <td> {this.aggregate2(7).toString().substring(0,7)}</td>
+                            <td>
+                                {' '}
+                                {this.aggregate2(7).toString().substring(0, 7)}
+                            </td>
                             <td> {this.aggregate2(6)}</td>
                             <td> {this.aggregate2(2)}</td>
                             <td> {this.aggregate2(8)}</td>

@@ -1,28 +1,3 @@
-// import React from 'react';
-// import logo from './logo.svg';
-// import './App.css';
-// // import PaymentForm from './Components/PaymentForm';
-
-// function App() {
-//     return (
-//         <div className="App">
-//             <header className="App-header">
-//                 <img src={logo} className="App-logo" alt="logo" />
-//                 <p>
-//                     Edit <code>src/App.js</code> and save to reload.
-//                 </p>
-//             </header>{' '}
-//             */}
-//         </div>
-//     );
-// }
-
-// export default App;
-// // start script
-// // "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\""
-
-//Add REACT function to do the authentication thing for routes
-
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import axios from 'axios';
@@ -59,6 +34,7 @@ import ReportTurnoverT from './Components/ReportTurnoverT';
 
 const apiLinks = require('./api/config.json');
 
+// Main Component that is loaded before anything.
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -70,6 +46,7 @@ class App extends React.Component {
         };
     }
 
+    // Load the user in when the component is mounted.
     async componentDidMount() {
         //Loading User
         await axios
@@ -106,6 +83,7 @@ class App extends React.Component {
         }
     }
 
+    // on logout, do a POST which will delete the cookie and refresh the page.
     async logout() {
         await axios
             .post('api/secure/logout')
@@ -121,6 +99,9 @@ class App extends React.Component {
         window.location.replace('./');
     }
 
+    // Render the components
+    // Renders the NavBar
+    // Uses a Switch which changes what routes are rendered based on the URL
     render() {
         return (
             <div>

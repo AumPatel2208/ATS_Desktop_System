@@ -6,6 +6,7 @@ import { withRouter } from 'react-router';
 
 let apiLinks = require('../api/config.json');
 
+// Find Blanks component
 class FindBlank extends Component {
     state = {
         batchValues: '',
@@ -111,22 +112,23 @@ class FindBlank extends Component {
                     }
                     alert(
                         this.state.find +
-                        ' has been used by advisor ' +
-                        this.state.blanksu[i4].advisorCode +
-                        ' and sold to ' +
-                        this.state.blanksu[i4].custName
+                            ' has been used by advisor ' +
+                            this.state.blanksu[i4].advisorCode +
+                            ' and sold to ' +
+                            this.state.blanksu[i4].custName
                     );
                 } else {
                     alert(
                         this.state.find +
-                        ' has been assigned to advisor ' +
-                        this.state.blanksa[i2].advisorCode
+                            ' has been assigned to advisor ' +
+                            this.state.blanksa[i2].advisorCode
                     );
                 }
             }
         }
     }
 
+    // Render the form to find the blank
     render() {
         return (
             <Container>

@@ -6,16 +6,15 @@ import {
 import 'react-notifications/lib/notifications.css';
 import { withRouter } from 'react-router';
 import axios from 'axios';
+
+// Notifications component
 class Notifications extends React.Component {
     state = {
         tempCustomer: {},
         sales: this.props.sales,
     };
 
-    // constructor(props) {
-    //     super(props);
-    // }
-
+    // Creates notificattion
     createNotification = (type) => {
         return () => {
             switch (type) {
@@ -34,6 +33,8 @@ class Notifications extends React.Component {
             }
         };
     };
+
+    // Calculates the number of days since the sale has been made.
     numberOfDaysSinceSale(date) {
         const saleDate = new Date(date);
         const todaysDate = new Date();
@@ -42,6 +43,8 @@ class Notifications extends React.Component {
 
         return diff / (1000 * 60 * 60 * 24);
     }
+
+    // Checks what notifications need to be made based on the properties passed through.
     componentDidUpdate() {
         this.props.sales.map((sale) => {
             if (
@@ -50,17 +53,6 @@ class Notifications extends React.Component {
                 sale.hasPayed === false
             ) {
                 setTimeout(async () => {
-                    // await axios
-                    //     .get('api/customers/' + sale.custName)
-                    //     .then((res) => {
-                    //         this.setState({ tempCustomer: res.data });
-                    //     });
-                    // var tempName =
-                    //     this.state.tempCustomer.firstName +
-                    //     this.state.tempCustomer.lastName
-                    //         .toUpperCase()
-                    //         .charAt(0);
-                    // this.createNotification('latePayment');
                     NotificationManager.error(
                         'Late Payment Alert for Ticket Number: ' +
                             sale.ticketNumber,
@@ -75,16 +67,10 @@ class Notifications extends React.Component {
         });
     }
 
+    // Render the Notification Container
     render() {
         return (
             <div>
-                {/* <button
-                    className="btn btn-danger"
-                    onClick={this.createNotification('latePayment')}
-                >
-                    Late Payment
-                </button> */}
-
                 <NotificationContainer />
             </div>
         );

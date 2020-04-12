@@ -7,13 +7,15 @@ import {
     FormLabel,
     FormControl,
     Dropdown,
-    Button
+    Button,
 } from 'react-bootstrap';
 import { withRouter } from 'react-router';
 
 const _ = require('lodash'); //Library to Change Cases of things
 
 let apiLinks = require('../api/config.json');
+
+// Table of customers
 class TableOfCustomers extends Component {
     mounted = false; //to make sure server process is stopped
     //Set the state to an empty list of objects that will be taken from the database
@@ -21,7 +23,7 @@ class TableOfCustomers extends Component {
         customers: [],
         filterString: '',
         filterCondition: 'Please Select',
-        sort: 'Please Select'
+        sort: 'Please Select',
     };
 
     //runs when component mounts, use to gets the data from db
@@ -30,13 +32,13 @@ class TableOfCustomers extends Component {
 
         await axios
             .get(apiLinks.CUSTOMERS)
-            .then(res => {
+            .then((res) => {
                 if (this.mounted) {
                     const customers = res.data;
                     this.setState({ customers });
                 }
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
         // const temp = []
         //     .concat(this.state.customers)
         //     .sort((a, b) => a.firstName > b.firstName);
@@ -47,6 +49,7 @@ class TableOfCustomers extends Component {
         console.log(_id);
     }
 
+    // Filter the customers saved in the state.
     filter() {
         // console.log(this.state.filterString);
         if (
@@ -57,30 +60,31 @@ class TableOfCustomers extends Component {
         ) {
             this.setState({
                 customers: this.state.customers.filter(
-                    customer =>
+                    (customer) =>
                         String(customer[this.state.filterCondition]) ===
                         String(this.state.filterString)
-                )
+                ),
             });
         }
     }
     reset() {
         axios
             .get(apiLinks.CUSTOMERS)
-            .then(res => {
+            .then((res) => {
                 const customers = res.data;
                 this.setState({ customers });
             })
-            .catch(err => console.log('Error code: ', err));
+            .catch((err) => console.log('Error code: ', err));
     }
     sortList(key) {
         this.setState({
             customers: []
                 .concat(this.state.customers)
-                .sort((a, b) => (a[`${key}`] > b[`${key}`] ? 1 : -1))
+                .sort((a, b) => (a[`${key}`] > b[`${key}`] ? 1 : -1)),
         });
     }
 
+    // render table
     render() {
         /**
          * Will return a Fragment to be used when mapping in the render function.
@@ -123,7 +127,7 @@ class TableOfCustomers extends Component {
                     <FormGroup controlId="filterCondition" bssize="large">
                         <FormLabel>Filter Condition</FormLabel>
                         <Dropdown
-                            onSelect={key => {
+                            onSelect={(key) => {
                                 this.setState({ filterCondition: key });
 
                                 // console.log(_.startCase(key));
@@ -161,9 +165,9 @@ class TableOfCustomers extends Component {
                             autoFocus
                             type="string"
                             value={this.state.filterString}
-                            onChange={e => {
+                            onChange={(e) => {
                                 this.setState({
-                                    filterString: e.target.value
+                                    filterString: e.target.value,
                                 });
                             }}
                         />
@@ -201,7 +205,7 @@ class TableOfCustomers extends Component {
                     <FormGroup controlId="sort" bssize="large">
                         <FormLabel>Sort</FormLabel>
                         <Dropdown
-                            onSelect={key => {
+                            onSelect={(key) => {
                                 this.setState({ sort: key });
                                 this.sortList(key);
                                 // console.log(_.startCase(key));
@@ -254,7 +258,7 @@ class TableOfCustomers extends Component {
                                 lastName,
                                 address,
                                 phoneNumber,
-                                customerType
+                                customerType,
                             }) => (
                                 <Fragment key={_id}>
                                     {row(

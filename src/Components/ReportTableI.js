@@ -19,6 +19,8 @@ import DatePicker from 'react-datepicker';
 const _ = require('lodash'); //Library to Change Cases of things
 
 let apiLinks = require('../api/config.json');
+
+// Report Table
 export default class ReportTableI extends Component {
     constructor(props) {
         super(props);
@@ -38,36 +40,33 @@ export default class ReportTableI extends Component {
             startDate: new Date(),
             endDate: new Date(),
             sType: '',
-            check: false
+            check: false,
         };
     }
 
     //runs when component mounts, use to gets the data from db
     componentDidMount() {
+        axios
+            .get(apiLinks.SALES)
+            .then((res) => {
+                const salesTemp = res.data;
+                this.setState({ salesTemp });
+                this.setState({ salesTemp2: salesTemp });
 
-            axios
-                .get(apiLinks.SALES)
-                .then((res) => {
-                    const salesTemp = res.data;
-                    this.setState({ salesTemp });
-                    this.setState({ salesTemp2:salesTemp });
+                const l = this.state.salesTemp.filter(
+                    (i) => i.saleType == 'Domestic'
+                );
+                this.setState({ salesTemp: l });
 
-
-                    const l = this.state.salesTemp.filter(
-                        (i) => i.saleType == 'Domestic'
-                    );
-                    this.setState({ salesTemp: l });
-
-                    const d = this.state.salesTemp2.filter(
-                        (i) => i.saleType == 'Interline'
-                    );
-                    this.setState({ salesTemp2: d });
-                })
-                .catch((err) => console.log('Error code: ', err));
+                const d = this.state.salesTemp2.filter(
+                    (i) => i.saleType == 'Interline'
+                );
+                this.setState({ salesTemp2: d });
+            })
+            .catch((err) => console.log('Error code: ', err));
     }
 
-
-//checking if displaying fare for cash or credit
+    //checking if displaying fare for cash or credit
     cashCheck(paymentMethod, fare) {
         if (paymentMethod === 'Cash') {
             return fare;
@@ -142,18 +141,15 @@ export default class ReportTableI extends Component {
                         bssize="medium"
                         variant="outline-danger"
                         onClick={() => {
-
                             //filtering dates
                             this.dateHandling();
                         }}
-
                     >
                         Filter Report
                     </Button>
                 </Fragment>
             );
-        }
-        else {
+        } else {
             return (
                 <Fragment>
                     <Button
@@ -232,9 +228,6 @@ export default class ReportTableI extends Component {
         }
         return x;
     }
-
-
-
 
     aggregate2(value) {
         //adding totals for total table at the end - INTERLINE
@@ -324,6 +317,7 @@ export default class ReportTableI extends Component {
         pdf.save('DomesticIndividualReport.pdf');
     }
 
+    // Create PDF file
     toPDFB() {
         var pdf = new jsPDF('l', 'pt', 'A4');
         pdf.setFontSize(9);
@@ -349,18 +343,14 @@ export default class ReportTableI extends Component {
                 : (a = '');
         }
 
-
-
-        if (a == "TravelAdvisor"){
+        if (a == 'TravelAdvisor') {
             this.props.staff !== undefined
                 ? (w = `${this.props.staff.advisorCode}`)
                 : (w = '');
-        }else {
-            w = this.state.code
-            alert(w)
-
+        } else {
+            w = this.state.code;
+            alert(w);
         }
-
 
         let start = new Date(this.state.startDate);
         let end = new Date(this.state.endDate);
@@ -370,33 +360,26 @@ export default class ReportTableI extends Component {
         //Date sorting
         for (let i = 0; i < this.state.salesTemp.length; i++) {
             if (
-                Date.parse(this.state.salesTemp[i].saleDate) >=
-                start &&
-                Date.parse(this.state.salesTemp[i].saleDate) <=
-                end &&
+                Date.parse(this.state.salesTemp[i].saleDate) >= start &&
+                Date.parse(this.state.salesTemp[i].saleDate) <= end &&
                 this.state.salesTemp[i].advisorCode == w
             ) {
                 this.state.sales.push(this.state.salesTemp[i]);
             }
         }
 
-
-
         for (let i = 0; i < this.state.salesTemp2.length; i++) {
             if (
-                Date.parse(this.state.salesTemp2[i].saleDate) >=
-                start &&
-                Date.parse(this.state.salesTemp2[i].saleDate) <=
-                end
+                Date.parse(this.state.salesTemp2[i].saleDate) >= start &&
+                Date.parse(this.state.salesTemp2[i].saleDate) <= end
             ) {
-                if( this.state.salesTemp2[i].advisorCode == w) {
+                if (this.state.salesTemp2[i].advisorCode == w) {
                     this.state.sales2.push(this.state.salesTemp2[i]);
                 }
             }
         }
 
-        this.componentDidMount()
-
+        this.componentDidMount();
     }
 
     render() {
@@ -433,345 +416,386 @@ export default class ReportTableI extends Component {
                 <button onClick={this.toPDF}>Download PDF</button>
                 <Table grid className="mt-4" id="export">
                     <thead>
-                    <tr>
-                        <th>Ticket Number</th>
-                        <th>Fare(Local)</th>
-                        <th>Fare(USD)</th>
-                        <th>Cash</th>
-                        <th>Credit Card(USD)</th>
-                        <th>Credit Card(local)</th>
-                        <th>Taxes</th>
-                        <th>Total Paid(local)</th>
-                        <th>Commission 9%</th>
-                        <th>Commission 5%</th>
-                        <th>Notes</th>
-                    </tr>
+                        <tr>
+                            <th>Ticket Number</th>
+                            <th>Fare(Local)</th>
+                            <th>Fare(USD)</th>
+                            <th>Cash</th>
+                            <th>Credit Card(USD)</th>
+                            <th>Credit Card(local)</th>
+                            <th>Taxes</th>
+                            <th>Total Paid(local)</th>
+                            <th>Commission 9%</th>
+                            <th>Commission 5%</th>
+                            <th>Notes</th>
+                        </tr>
                     </thead>
 
                     <tbody>
-                    {this.state.sales.map(
-                        ({
-                             ticketNumber,
-                             fare,
-                             USDExchangeRate,
-                             otherTax,
-                             paymentMethod,
-                             commissionRate,
-                             notes,
-                         }) => {
-                            return (
-                                <tr>
-                                    <td>{ticketNumber}</td>
-                                    <td> {fare.toString().substring(0,7)}</td>
-                                    <td>
-                                        {(fare * USDExchangeRate).toFixed(
-                                            3
-                                        )}
-                                    </td>
-                                    <td>
-                                        {' '}
-                                        {this.cashCheck(
-                                            paymentMethod,
-                                            fare
-                                        )}
-                                    </td>
-                                    <td>
-                                        {' '}
-                                        {this.creditCheck(
-                                            paymentMethod,
-                                            fare
-                                        )}
-                                    </td>
-                                    <td>
-                                        {' '}
-                                        {this.creditCheck(
-                                            paymentMethod,
-                                            fare
-                                        ) * USDExchangeRate}
-                                    </td>
-                                    <td> {otherTax}</td>
-                                    <td> {(parseFloat(otherTax) + parseFloat(fare)).toFixed(3)}</td>
-                                    <td>
-                                        {' '}
-                                        {this.commissionCheck9(
-                                            commissionRate,
-                                            fare
-                                        )}
-                                    </td>
-                                    <td>
-                                        {' '}
-                                        {this.commissionCheck5(
-                                            commissionRate,
-                                            fare
-                                        )}
-                                    </td>
-                                    <td> {notes}</td>
-                                </tr>
-                            );
-                        }
-                    )}
+                        {this.state.sales.map(
+                            ({
+                                ticketNumber,
+                                fare,
+                                USDExchangeRate,
+                                otherTax,
+                                paymentMethod,
+                                commissionRate,
+                                notes,
+                            }) => {
+                                return (
+                                    <tr>
+                                        <td>{ticketNumber}</td>
+                                        <td>
+                                            {' '}
+                                            {fare.toString().substring(0, 7)}
+                                        </td>
+                                        <td>
+                                            {(fare * USDExchangeRate).toFixed(
+                                                3
+                                            )}
+                                        </td>
+                                        <td>
+                                            {' '}
+                                            {this.cashCheck(
+                                                paymentMethod,
+                                                fare
+                                            )}
+                                        </td>
+                                        <td>
+                                            {' '}
+                                            {this.creditCheck(
+                                                paymentMethod,
+                                                fare
+                                            )}
+                                        </td>
+                                        <td>
+                                            {' '}
+                                            {this.creditCheck(
+                                                paymentMethod,
+                                                fare
+                                            ) * USDExchangeRate}
+                                        </td>
+                                        <td> {otherTax}</td>
+                                        <td>
+                                            {' '}
+                                            {(
+                                                parseFloat(otherTax) +
+                                                parseFloat(fare)
+                                            ).toFixed(3)}
+                                        </td>
+                                        <td>
+                                            {' '}
+                                            {this.commissionCheck9(
+                                                commissionRate,
+                                                fare
+                                            )}
+                                        </td>
+                                        <td>
+                                            {' '}
+                                            {this.commissionCheck5(
+                                                commissionRate,
+                                                fare
+                                            )}
+                                        </td>
+                                        <td> {notes}</td>
+                                    </tr>
+                                );
+                            }
+                        )}
                     </tbody>
                 </Table>
                 <Table grid className="mt-4" id="export2">
                     <thead>
-                    <tr>
-                        <th>Ticket Total</th>
-                        <th>Total Fare(Local)</th>
-                        <th>Total Fare(USD)</th>
-                        <th>Total Cash</th>
-                        <th>Total Credit Card(USD)</th>
-                        <th>Total Credit Card(local)</th>
-                        <th>Total Taxes</th>
-                        <th>Total Paid(local)</th>
-                        <th>Total Commission 9%</th>
-                        <th>Total Commission 5%</th>
-                        <th>Total Commission Amounts</th>
-                        <th>Net Amounts For Debit</th>
-                    </tr>
+                        <tr>
+                            <th>Ticket Total</th>
+                            <th>Total Fare(Local)</th>
+                            <th>Total Fare(USD)</th>
+                            <th>Total Cash</th>
+                            <th>Total Credit Card(USD)</th>
+                            <th>Total Credit Card(local)</th>
+                            <th>Total Taxes</th>
+                            <th>Total Paid(local)</th>
+                            <th>Total Commission 9%</th>
+                            <th>Total Commission 5%</th>
+                            <th>Total Commission Amounts</th>
+                            <th>Net Amounts For Debit</th>
+                        </tr>
                     </thead>
 
                     <tbody>
-                    <tr>
-                        <td>{this.state.sales.length}</td>
-                        <td> {this.aggregate(1).toFixed(3)}</td>
-                        <td> {this.aggregate(2).toFixed(3)}</td>
-                        <td> {this.aggregate(3)}</td>
-                        <td> {this.aggregate(4).toFixed(3)}</td>
-                        <td> {this.aggregate(8)}</td>
-                        <td> {this.aggregate(5)}</td>
-                        <td> {(this.aggregate(5) + this.aggregate(1)).toString().substring(0,7)}</td>
-                        <td> {this.aggregate(6)}</td>
-                        <td> {this.aggregate(7)}</td>
-                        <td>
-                            {(this.aggregate(6) * 0.09 +
-                            this.aggregate(7) * 0.05).toFixed(3)}
-                        </td>
-                        <td>
-                            {' '}
-                            {(this.aggregate(6) +
-                            this.aggregate(7) -
-                            (this.aggregate(6) * 0.09 +
-                                this.aggregate(7) * 0.05)).toFixed(3)}
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>{this.state.sales.length}</td>
+                            <td> {this.aggregate(1).toFixed(3)}</td>
+                            <td> {this.aggregate(2).toFixed(3)}</td>
+                            <td> {this.aggregate(3)}</td>
+                            <td> {this.aggregate(4).toFixed(3)}</td>
+                            <td> {this.aggregate(8)}</td>
+                            <td> {this.aggregate(5)}</td>
+                            <td>
+                                {' '}
+                                {(this.aggregate(5) + this.aggregate(1))
+                                    .toString()
+                                    .substring(0, 7)}
+                            </td>
+                            <td> {this.aggregate(6)}</td>
+                            <td> {this.aggregate(7)}</td>
+                            <td>
+                                {(
+                                    this.aggregate(6) * 0.09 +
+                                    this.aggregate(7) * 0.05
+                                ).toFixed(3)}
+                            </td>
+                            <td>
+                                {' '}
+                                {(
+                                    this.aggregate(6) +
+                                    this.aggregate(7) -
+                                    (this.aggregate(6) * 0.09 +
+                                        this.aggregate(7) * 0.05)
+                                ).toFixed(3)}
+                            </td>
+                        </tr>
                     </tbody>
                 </Table>
-
-
-
 
                 <h2>Interline Sales Report</h2>
                 <button onClick={this.toPDFB}>Download PDF</button>
                 <Table grid className="mt-4" id="exportB">
                     <thead>
-                    <tr>
-                        <th>Ticket Number</th>
-                        <th>Fare(USD)</th>
-                        <th>Exchange Rate</th>
-                        <th>Fare(local)</th>
-                        <th>Local Taxes</th>
-                        <th>Other Taxes</th>
-                        <th>Document Total</th>
-                    </tr>
+                        <tr>
+                            <th>Ticket Number</th>
+                            <th>Fare(USD)</th>
+                            <th>Exchange Rate</th>
+                            <th>Fare(local)</th>
+                            <th>Local Taxes</th>
+                            <th>Other Taxes</th>
+                            <th>Document Total</th>
+                        </tr>
                     </thead>
 
                     <tbody>
-                    {this.state.sales2.map(
-                        ({
-                             ticketNumber,
-                             fare,
-                             USDExchangeRate,
-                             otherTax,
-                             localTax,
-                         }) => {
-                            return (
-                                <tr>
-                                    <td>{ticketNumber}</td>
-                                    <td>
-                                        {(fare * USDExchangeRate).toFixed(
-                                            3
-                                        )}
-                                    </td>
-                                    <td>{USDExchangeRate}</td>
-                                    <td>{fare}</td>
-                                    <td>{localTax}</td>
-                                    <td>{otherTax}</td>
-                                    <td>{parseFloat(localTax) + parseFloat(otherTax) + parseFloat(fare)}</td>
-                                </tr>
-                            );
-                        }
-                    )}
+                        {this.state.sales2.map(
+                            ({
+                                ticketNumber,
+                                fare,
+                                USDExchangeRate,
+                                otherTax,
+                                localTax,
+                            }) => {
+                                return (
+                                    <tr>
+                                        <td>{ticketNumber}</td>
+                                        <td>
+                                            {(fare * USDExchangeRate).toFixed(
+                                                3
+                                            )}
+                                        </td>
+                                        <td>{USDExchangeRate}</td>
+                                        <td>{fare}</td>
+                                        <td>{localTax}</td>
+                                        <td>{otherTax}</td>
+                                        <td>
+                                            {parseFloat(localTax) +
+                                                parseFloat(otherTax) +
+                                                parseFloat(fare)}
+                                        </td>
+                                    </tr>
+                                );
+                            }
+                        )}
                     </tbody>
                 </Table>
 
                 <Table grid className="mt-4" id="exportB3">
                     <thead>
-                    <tr>
-                        <th>Ticket Number</th>
-                        <th>Cash</th>
-                        <th>Credit Card Number</th>
-                        <th>Credit Card(USD)</th>
-                        <th>Credit Card(local)</th>
-                        <th>Total Paid</th>
-                        <th>Commission 15%</th>
-                        <th>Commission 10%</th>
-                        <th>Commission 9%</th>
-                        <th>Non-Assessable Amounts</th>
-                    </tr>
+                        <tr>
+                            <th>Ticket Number</th>
+                            <th>Cash</th>
+                            <th>Credit Card Number</th>
+                            <th>Credit Card(USD)</th>
+                            <th>Credit Card(local)</th>
+                            <th>Total Paid</th>
+                            <th>Commission 15%</th>
+                            <th>Commission 10%</th>
+                            <th>Commission 9%</th>
+                            <th>Non-Assessable Amounts</th>
+                        </tr>
                     </thead>
 
                     <tbody>
-                    {this.state.sales2.map(
-                        ({
-                             ticketNumber,
-                             fare,
-                             USDExchangeRate,
-                             otherTax,
-                             localTax,
-                             paymentMethod,
-                             commissionRate,
-                             creditCardNum,
-                             expDate,
-                             securityCode,
-                             saleDate,
-                             notes,
-                             saleType,
-                         }) => {
-                            return (
-                                <tr>
-                                    <td>{ticketNumber}</td>
-                                    <td>
-                                        {' '}
-                                        {this.cashCheck(
-                                            paymentMethod,
-                                            fare
-                                        )}
-                                    </td>
-                                    <td>{creditCardNum}</td>
-                                    <td>
-                                        {' '}
-                                        {this.creditCheck(
-                                            paymentMethod,
-                                            fare
-                                        ) * USDExchangeRate}
-                                    </td>
-                                    <td>
-                                        {' '}
-                                        {this.creditCheck(
-                                            paymentMethod,
-                                            fare
-                                        )}
-                                    </td>
-                                    <td>{parseFloat(localTax) + parseFloat(otherTax) + parseFloat(fare)}</td>
-                                    <td>
-                                        {' '}
-                                        {this.commissionCheck15(
-                                            commissionRate,
-                                            fare
-                                        )}
-                                    </td>
-                                    <td>
-                                        {' '}
-                                        {this.commissionCheck10(
-                                            commissionRate,
-                                            fare
-                                        )}
-                                    </td>
-                                    <td>
-                                        {' '}
-                                        {this.commissionCheck9(
-                                            commissionRate,
-                                            fare
-                                        )}
-                                    </td>
-                                    <td> {parseFloat(localTax) + parseFloat(otherTax)}</td>
-                                </tr>
-                            );
-                        }
-                    )}
+                        {this.state.sales2.map(
+                            ({
+                                ticketNumber,
+                                fare,
+                                USDExchangeRate,
+                                otherTax,
+                                localTax,
+                                paymentMethod,
+                                commissionRate,
+                                creditCardNum,
+                                expDate,
+                                securityCode,
+                                saleDate,
+                                notes,
+                                saleType,
+                            }) => {
+                                return (
+                                    <tr>
+                                        <td>{ticketNumber}</td>
+                                        <td>
+                                            {' '}
+                                            {this.cashCheck(
+                                                paymentMethod,
+                                                fare
+                                            )}
+                                        </td>
+                                        <td>{creditCardNum}</td>
+                                        <td>
+                                            {' '}
+                                            {this.creditCheck(
+                                                paymentMethod,
+                                                fare
+                                            ) * USDExchangeRate}
+                                        </td>
+                                        <td>
+                                            {' '}
+                                            {this.creditCheck(
+                                                paymentMethod,
+                                                fare
+                                            )}
+                                        </td>
+                                        <td>
+                                            {parseFloat(localTax) +
+                                                parseFloat(otherTax) +
+                                                parseFloat(fare)}
+                                        </td>
+                                        <td>
+                                            {' '}
+                                            {this.commissionCheck15(
+                                                commissionRate,
+                                                fare
+                                            )}
+                                        </td>
+                                        <td>
+                                            {' '}
+                                            {this.commissionCheck10(
+                                                commissionRate,
+                                                fare
+                                            )}
+                                        </td>
+                                        <td>
+                                            {' '}
+                                            {this.commissionCheck9(
+                                                commissionRate,
+                                                fare
+                                            )}
+                                        </td>
+                                        <td>
+                                            {' '}
+                                            {parseFloat(localTax) +
+                                                parseFloat(otherTax)}
+                                        </td>
+                                    </tr>
+                                );
+                            }
+                        )}
                     </tbody>
                 </Table>
 
                 <Table grid className="mt-4" id="exportB2">
                     <thead>
-                    <tr>
-                        <th>Fare(USD)</th>
-                        <th>Fare(local)</th>
-                        <th>Local Taxes</th>
-                        <th>Other Taxes</th>
-                        <th>Document Total</th>
+                        <tr>
+                            <th>Fare(USD)</th>
+                            <th>Fare(local)</th>
+                            <th>Local Taxes</th>
+                            <th>Other Taxes</th>
+                            <th>Document Total</th>
 
-                        <th>Cash</th>
-                        <th>Credit(USD)</th>
-                        <th>Credit(local)</th>
-                        <th>Total Paid</th>
+                            <th>Cash</th>
+                            <th>Credit(USD)</th>
+                            <th>Credit(local)</th>
+                            <th>Total Paid</th>
 
-                        <th>Commission 15%</th>
-                        <th>Commission 10%</th>
-                        <th>Commission 9%</th>
+                            <th>Commission 15%</th>
+                            <th>Commission 10%</th>
+                            <th>Commission 9%</th>
 
-                        <th>Non-Assessable Amounts</th>
-                        <th>Commission Amounts</th>
-                        <th>Net Amount for Debit</th>
-                        <th>Net Amount for Remittance</th>
-                    </tr>
+                            <th>Non-Assessable Amounts</th>
+                            <th>Commission Amounts</th>
+                            <th>Net Amount for Debit</th>
+                            <th>Net Amount for Remittance</th>
+                        </tr>
                     </thead>
 
                     <tbody>
-                    <tr>
-                        <td> {this.aggregate2(2)}</td>
-                        <td> {this.aggregate2(1)}</td>
-                        <td> {this.aggregate2(8)}</td>
-                        <td> {this.aggregate2(5)}</td>
-                        <td>
-                            {' '}
-                            {(parseFloat(this.aggregate2(1)) +
-                            parseFloat(this.aggregate2(5)) +
-                           parseFloat( this.aggregate2(8))).toFixed(3)}
-                        </td>
+                        <tr>
+                            <td> {this.aggregate2(2)}</td>
+                            <td> {this.aggregate2(1)}</td>
+                            <td> {this.aggregate2(8)}</td>
+                            <td> {this.aggregate2(5)}</td>
+                            <td>
+                                {' '}
+                                {(
+                                    parseFloat(this.aggregate2(1)) +
+                                    parseFloat(this.aggregate2(5)) +
+                                    parseFloat(this.aggregate2(8))
+                                ).toFixed(3)}
+                            </td>
 
-                        <td> {this.aggregate2(3)}</td>
-                        <td> {this.aggregate2(10)}</td>
-                        <td> {this.aggregate2(4)}</td>
+                            <td> {this.aggregate2(3)}</td>
+                            <td> {this.aggregate2(10)}</td>
+                            <td> {this.aggregate2(4)}</td>
 
-                        <td> {this.aggregate2(1)}</td>
+                            <td> {this.aggregate2(1)}</td>
 
-                        <td> {this.aggregate2(9)}</td>
-                        <td>{this.aggregate2(7)}</td>
-                        <td>{this.aggregate2(6)}</td>
+                            <td> {this.aggregate2(9)}</td>
+                            <td>{this.aggregate2(7)}</td>
+                            <td>{this.aggregate2(6)}</td>
 
-                        <td>{((parseFloat(this.aggregate2(5)) +parseFloat( this.aggregate2(8))).toFixed(3)).toString().substring(0,7)}</td>
-                        <td>
-                            {' '}
-                            {(this.aggregate2(9) * 0.15 +
-                            this.aggregate2(7) * 0.1 +
-                            this.aggregate2(6) * 0.09).toFixed(3)}
-                        </td>
-                        <td>
-                            {' '}
-                            {(this.aggregate2(9) +
-                            this.aggregate2(7) +
-                            this.aggregate2(6) -
-                            this.aggregate2(9) * 0.15 +
-                            this.aggregate2(7) * 0.1 +
-                            this.aggregate2(6) * 0.09).toFixed(3)}
-                        </td>
-                        <td>
-                            {' '}
-                            {
-                                (parseFloat(this.aggregate2(9)) +
-                                parseFloat(this.aggregate2(7)) +
-                            parseFloat(this.aggregate2(6)) +
-                            parseFloat(this.aggregate2(8)) +
-                            parseFloat(this.aggregate2(5)) -
-                                (parseFloat(this.aggregate2(9)) * 0.15 )+
-                                (parseFloat(this.aggregate2(7)) * 0.1) +
-                                (parseFloat(this.aggregate2(6)) * 0.09)).toFixed(3)}
-                        </td>
-                    </tr>
+                            <td>
+                                {(
+                                    parseFloat(this.aggregate2(5)) +
+                                    parseFloat(this.aggregate2(8))
+                                )
+                                    .toFixed(3)
+                                    .toString()
+                                    .substring(0, 7)}
+                            </td>
+                            <td>
+                                {' '}
+                                {(
+                                    this.aggregate2(9) * 0.15 +
+                                    this.aggregate2(7) * 0.1 +
+                                    this.aggregate2(6) * 0.09
+                                ).toFixed(3)}
+                            </td>
+                            <td>
+                                {' '}
+                                {(
+                                    this.aggregate2(9) +
+                                    this.aggregate2(7) +
+                                    this.aggregate2(6) -
+                                    this.aggregate2(9) * 0.15 +
+                                    this.aggregate2(7) * 0.1 +
+                                    this.aggregate2(6) * 0.09
+                                ).toFixed(3)}
+                            </td>
+                            <td>
+                                {' '}
+                                {(
+                                    parseFloat(this.aggregate2(9)) +
+                                    parseFloat(this.aggregate2(7)) +
+                                    parseFloat(this.aggregate2(6)) +
+                                    parseFloat(this.aggregate2(8)) +
+                                    parseFloat(this.aggregate2(5)) -
+                                    parseFloat(this.aggregate2(9)) * 0.15 +
+                                    parseFloat(this.aggregate2(7)) * 0.1 +
+                                    parseFloat(this.aggregate2(6)) * 0.09
+                                ).toFixed(3)}
+                            </td>
+                        </tr>
                     </tbody>
                 </Table>
-
             </Container>
         );
     }

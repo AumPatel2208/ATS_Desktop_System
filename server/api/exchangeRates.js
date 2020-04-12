@@ -5,15 +5,15 @@ const ExchangeRate = require('../models/ExchangeRate');
 
 //adding in a new one into the database
 router.post('/', (q, a) => {
-let dt = new Date(Date.now());
-dt.setHours(0,0,0,0)
+    let dt = new Date(Date.now());
+    dt.setHours(0, 0, 0, 0);
     const newExchangeRate = new ExchangeRate({
         currencyCode: q.body.currencyCode,
         toUSDRate: q.body.toUSDRate,
-        date: dt
+        date: dt,
     });
 
-    newExchangeRate.save().then(item => a.json(item));
+    newExchangeRate.save().then((item) => a.json(item));
     console.log(newExchangeRate);
 });
 
@@ -21,29 +21,29 @@ dt.setHours(0,0,0,0)
 router.get('/', (q, a) => {
     ExchangeRate.find()
         .sort({ currencyCode: -1 })
-        .then(exchangeRates => a.json(exchangeRates));
+        .then((exchangeRates) => a.json(exchangeRates));
 });
 
+// GET by date
 router.get('/byDate', (q, a) => {
     let d = new Date(q.query.start);
-    d.setHours(0,0,0,0);
+    d.setHours(0, 0, 0, 0);
     console.log(d);
-    ExchangeRate.find({date:d})
-        .then(exchangeRates => a.json(exchangeRates));
+    ExchangeRate.find({ date: d }).then((exchangeRates) =>
+        a.json(exchangeRates)
+    );
 });
 
-
+// get exchange rate by sale
 router.get('/sale', (req, res) => {
     let d = new Date(Date.now());
-    d.setHours(0,0,0,0);
-    ExchangeRate.find({date: d})
-        .then(rates => res.json(rates));
-
+    d.setHours(0, 0, 0, 0);
+    ExchangeRate.find({ date: d }).then((rates) => res.json(rates));
 });
 
 // find rates, by currency code
 router.get('/', (q, a) => {
-    ExchangeRate.find(q.param.currencyCode).then(exchangeRates =>
+    ExchangeRate.find(q.param.currencyCode).then((exchangeRates) =>
         a.json(exchangeRates)
     );
 });
@@ -56,10 +56,10 @@ router.put('/:id', (q, a) => {
 //Delete one rate
 router.delete('/:id', (q, a) => {
     ExchangeRate.findById(q.params.id)
-        .then(exchangeRates =>
+        .then((exchangeRates) =>
             exchangeRates.remove().then(() => a.json({ success: true }))
         )
-        .catch(err => a.status(404).json({ success: false }));
+        .catch((err) => a.status(404).json({ success: false }));
 });
 
 module.exports = router;

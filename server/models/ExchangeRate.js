@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// Scema for Exhange Rates
 const ExchangeRateSchema = new Schema({
     currencyCode: {
         type: String,
-        required: true
+        required: true,
     },
     date: {
         type: Date,
@@ -12,8 +13,8 @@ const ExchangeRateSchema = new Schema({
     },
     toUSDRate: {
         type: Number,
-        required: true
-    }
+        required: true,
+    },
 });
 
 // eslint-disable-next-line no-undef

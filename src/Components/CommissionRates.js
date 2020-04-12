@@ -14,6 +14,8 @@ import { GetUSer } from '../store/User';
 const _ = require('lodash'); //Library to Change Cases of things
 
 let apiLinks = require('../api/config.json');
+
+// Component to manage Commission rates
 export default class CommissionRates extends Component {
     state = {
         commissions: [],
@@ -51,9 +53,10 @@ export default class CommissionRates extends Component {
             .catch((err) => console.log('Error code: ', err));
     }
 
+    // Create a commision rate
     createCommission(e) {
         e.preventDefault();
-    //adds a new commission into the database
+        //adds a new commission into the database
         const newCommission = {
             name: this.state.name,
             ticket440: this.state.t440,
@@ -70,14 +73,15 @@ export default class CommissionRates extends Component {
             })
             .catch((err) => console.log('Error code: ', err));
 
-        alert('New Commission Created:'+ ' ' + this.state.name);
-       // Window.location.reload();
+        alert('New Commission Created:' + ' ' + this.state.name);
+        // Window.location.reload();
     }
 
     onOpenClick(_id) {
         console.log(_id);
     }
 
+    // Render Components
     render() {
         const row = (name, ticket440, ticket444, ticket420, ticket201) => (
             <Fragment>
