@@ -5,13 +5,15 @@
     -   `cd server` move into server directory
     -   `yarn install` installs the dependancies for the backend
 -   to run project
+    -   `yarn dev`
+        -   Run Electron application and server
+    -   or
+        -   `yarn electron-dev` or `yarn start` start as desktop app or website
+        -   `cd server` move into server directory
+        -   `yarn start` run server
 
-    -   `yarn electron-dev` or `yarn start` start as desktop app or website
-    -   `cd server` move into server directory
-    -   `yarn start` run server
-
--   The list of dependancies can be found in the respective package.json files under dependancies.
--   In the submission we shall include the dependancies. However it is best to run `yarn install` to install them.
+*   The list of dependancies can be found in the respective package.json files under dependancies.
+*   In the submission we shall include the dependancies. However it is best to run `yarn install` to install them.
 
 ## Disclaimer
 
@@ -43,6 +45,10 @@ Follow `https://docs.mongodb.com/manual/installation/` for instructions on insta
 ## Available Scripts
 
 In the project directory, you can run:
+
+### `yarn dev`
+
+-   Run Electron application and server
 
 ### `yarn electron-dev`
 
