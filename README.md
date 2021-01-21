@@ -1,5 +1,19 @@
 # Team Project
 
+## Description
+A desktop application created using web technologies based on the project brief provided about managing air ticket sales.  
+
+Technology used:
+- React
+- Electron
+- Bootstrap
+- NodeJs
+- Express
+- MongoDB
+- check dependancy list for more.
+
+## Instructions
+
 -   Please run command before trying to run project:
     -   `yarn install` installs the dependancies for frontend
     -   `cd server` move into server directory
